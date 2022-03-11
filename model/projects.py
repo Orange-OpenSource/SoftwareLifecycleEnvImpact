@@ -1,18 +1,18 @@
-from tasks import Task, StandardProjectTask
+from model.tasks import Task, StandardProjectTask
 
 
 class Project:
-    def __init__(self, task: Task):
+    def __init__(self, task: Task) -> None:
         self.root_task = task
 
-    def get_impact_task(self):
-        return self.root_task.get_impact()
+    def get_impact_task(self) -> float:
+        return float(self.root_task.get_impact())  # TODO check cast
 
 
 # TODO remove noinspection
 # noinspection DuplicatedCode
 class StandardProject(Project):
-    def __init__(self):
+    def __init__(self) -> None:
         dev_days = 3000
         design_days = 300
         spec_days = 300
@@ -36,29 +36,29 @@ class StandardProject(Project):
         )
         super().__init__(self.root_task)
 
-    def set_dev_days(self, dev_days):
+    def set_dev_days(self, dev_days: int) -> None:
         self.root_task.set_dev_days(dev_days)
 
-    def set_design_days(self, design_days):
+    def set_design_days(self, design_days: int) -> None:
         self.root_task.set_design_days(design_days)
 
-    def set_spec_days(self, spec_days):
+    def set_spec_days(self, spec_days: int) -> None:
         self.root_task.set_spec_days(spec_days)
 
-    def set_management_days(self, management_days):
+    def set_management_days(self, management_days: int) -> None:
         self.root_task.set_management_days(management_days)
 
-    def set_maintenance_days(self, maintenance_days):
+    def set_maintenance_days(self, maintenance_days: int) -> None:
         self.root_task.set_maintenance_days(maintenance_days)
 
-    def set_user_hours(self, user_hours):
+    def set_user_hours(self, user_hours: int) -> None:
         self.root_task.set_user_hours(user_hours)
 
-    def set_server_hours(self, server_hours):
+    def set_server_hours(self, server_hours: int) -> None:
         self.root_task.set_server_hours(server_hours)
 
-    def set_storage_hours(self, storage_hours):
+    def set_storage_hours(self, storage_hours: int) -> None:
         self.root_task.set_storage_hours(storage_hours)
 
-    def set_network_gb(self, network_gb):
+    def set_network_gb(self, network_gb: int) -> None:
         self.root_task.set_network_gb(network_gb)

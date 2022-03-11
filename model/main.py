@@ -1,4 +1,4 @@
-from projects import StandardProject
+from model.projects import StandardProject
 
 if __name__ == "__main__":
     p = StandardProject()

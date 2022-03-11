@@ -34,7 +34,7 @@ MOTORBIKE_PERCENTAGE = 2.91722
 
 class ImpactSource:
     def __init__(self, co2: float) -> None:
-        self.co2 = co2
+        self.co2: float = co2
 
 
 class DeviceImpact(ImpactSource):
