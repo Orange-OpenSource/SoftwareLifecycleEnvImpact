@@ -31,6 +31,7 @@ class StandardProject(Project):
         management_days = 1000
         maintenance_days = 100
         user_hours = 300000
+        # ADEME https://bilans-ges.ademe.fr/fr/accueil/documentation-gene/index/page/Electricite_reglementaire
         electricity_mix = 0.0599
         pue = 1.5
         server_hours = 300
