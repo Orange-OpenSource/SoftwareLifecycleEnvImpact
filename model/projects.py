@@ -31,6 +31,8 @@ class StandardProject(Project):
         management_days = 1000
         maintenance_days = 100
         user_hours = 300000
+        electricity_mix = 0.0599
+        pue = 1.5
         server_hours = 300
         storage_hours = 3000
         network_gb = 30000000
@@ -42,6 +44,8 @@ class StandardProject(Project):
             management_days,
             maintenance_days,
             user_hours,
+            electricity_mix,
+            pue,
             server_hours,
             storage_hours,
             network_gb,

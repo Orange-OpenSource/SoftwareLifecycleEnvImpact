@@ -42,8 +42,8 @@ class ComputeResource(Resource):
     Computing resource, hours as quantity and servers as impact
     """
 
-    def __init__(self, hours: int) -> None:
-        self.server_impact = ServerImpact()
+    def __init__(self, electricity_mix: float, pue: float, hours: int) -> None:
+        self.server_impact = ServerImpact(electricity_mix, pue)
         super().__init__(hours, impacts=[self.server_impact])
 
     def get_impact(self) -> float:
@@ -85,8 +85,8 @@ class StorageResource(Resource):
     Storage resources, hours as input, disks lifecycle as impact # TODO change the input
     """
 
-    def __init__(self, tb_hour: int) -> None:
-        self.storage_impact = StorageImpact()
+    def __init__(self, electricity_mix: float, pue: float, tb_hour: int) -> None:
+        self.storage_impact = StorageImpact(electricity_mix, pue)
         super().__init__(tb_hour, impacts=[self.storage_impact])
 
     def get_impact(self) -> float:

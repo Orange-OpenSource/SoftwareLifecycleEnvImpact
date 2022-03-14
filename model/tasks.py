@@ -126,9 +126,16 @@ class HostingTask(Task):
     Hosting task representing datacenter (storage and compute) and network
     """
 
-    def __init__(self, server_hours: int, storage_hours: int, network_gb: int) -> None:
-        self.compute_resource = ComputeResource(server_hours)
-        self.storage_resource = StorageResource(storage_hours)
+    def __init__(
+        self,
+        electricity_mix: float,
+        pue: float,
+        server_hours: int,
+        storage_hours: int,
+        network_gb: int,
+    ) -> None:
+        self.compute_resource = ComputeResource(electricity_mix, pue, server_hours)
+        self.storage_resource = StorageResource(electricity_mix, pue, storage_hours)
         self.network_resource = NetworkResource(network_gb)
         super().__init__(resources=[self.compute_resource, self.storage_resource])
 
@@ -230,12 +237,16 @@ class RunTask(Task):
         self,
         maintenance_days: int,
         user_hours: int,
+        electricity_mix: float,
+        pue: float,
         server_hours: int,
         storage_hours: int,
         network_gb: int,
     ) -> None:
         self.maintenance_task = MaintenanceTask(maintenance_days)
-        self.hosting_task = HostingTask(server_hours, storage_hours, network_gb)
+        self.hosting_task = HostingTask(
+            electricity_mix, pue, server_hours, storage_hours, network_gb
+        )
 
         self.user_device_res = UserDeviceResource(user_hours)
 
@@ -320,13 +331,21 @@ class StandardProjectTask(Task):
         management_days: int,
         maintenance_days: int,
         user_hours: int,
+        electricity_mix: float,
+        pue: float,
         server_hours: int,
         storage_hours: int,
         network_gb: int,
     ) -> None:
         self.build_task = BuildTask(dev_days, design_days, spec_days, management_days)
         self.run_task = RunTask(
-            maintenance_days, user_hours, server_hours, storage_hours, network_gb
+            maintenance_days,
+            user_hours,
+            electricity_mix,
+            pue,
+            server_hours,
+            storage_hours,
+            network_gb,
         )
         super().__init__(subtasks=[self.build_task, self.run_task])
 
