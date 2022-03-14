@@ -33,11 +33,20 @@ MOTORBIKE_PERCENTAGE = 2.91722
 
 
 class ImpactSource:
+    """
+    Abstract class to define a source of impact emission(s)
+    """
+
     def __init__(self, co2: float) -> None:
         self.co2: float = co2
 
 
 class DeviceImpact(ImpactSource):
+    """
+    ImpactSource for devices (smartphone, pc) usage/amortization induced by application transferred
+    Ratio for 1h/user
+    """
+
     def __init__(self) -> None:
         smartphone_day_co2 = SMARTPHONE_CO2 / (SMARTPHONE_LIFE * 365)
         smartphone_hour_co2 = smartphone_day_co2 / SMARTPHONE_DAILY_USE
@@ -54,11 +63,21 @@ class DeviceImpact(ImpactSource):
 
 
 class NetworkImpact(ImpactSource):
+    """
+    ImpactSource for network usage caused by software induced data transferred
+    Ratio/gb transferred
+    """
+
     def __init__(self) -> None:
         super().__init__(0.0015)
 
 
 class OfficeImpact(ImpactSource):
+    """
+    ImpactSource for offices buildings construction and amortization
+    Ratio / day / person
+    """
+
     def __init__(self) -> None:
         office_emissions_sqr_meter_day = 3900 / (50 * 365)
         office_co2_person = ((18 * 100) / 70) * office_emissions_sqr_meter_day
@@ -66,6 +85,11 @@ class OfficeImpact(ImpactSource):
 
 
 class ServerImpact(ImpactSource):
+    """
+    ImpactSource for servers
+    Ratio/day
+    """
+
     def __init__(self) -> None:
         amortization_day = SERVER_FABRICATION_CO2 / (SERVER_LIFE * 365)
 
@@ -77,6 +101,11 @@ class ServerImpact(ImpactSource):
 
 
 class StorageImpact(ImpactSource):
+    """
+    Impact source for storage (disks)
+    Ratio / 4tb / hour
+    """
+
     def __init__(self) -> None:
         wh_to = SSD_TB_CONS
         wh_disk = DISK_SIZE * wh_to
@@ -90,6 +119,11 @@ class StorageImpact(ImpactSource):
 
 
 class TransportImpact(ImpactSource):
+    """
+    ImpactSource for all transports
+    Ratio/person/km
+    """
+
     def __init__(self) -> None:
         co2 = (
             FOOT_PERCENTAGE * 0
@@ -102,20 +136,40 @@ class TransportImpact(ImpactSource):
 
 
 class CarImpact(ImpactSource):
+    """
+    ImpactSource for car
+    Ratio /km
+    """
+
     def __init__(self) -> None:
         super().__init__(0.218)
 
 
 class BikeImpact(ImpactSource):
+    """
+    ImpactSource for bike
+    Ratio /km
+    """
+
     def __init__(self) -> None:
         super().__init__(0.00348)
 
 
 class PublicTransportImpact(ImpactSource):
+    """
+    ImpactSource for public transport
+    Ratio / km / person
+    """
+
     def __init__(self) -> None:
         super().__init__(0.00503)
 
 
 class MotorbikeImpact(ImpactSource):
+    """
+    ImpactSource for motorbike
+    Ratio / km / person
+    """
+
     def __init__(self) -> None:
         super().__init__(0.191)
