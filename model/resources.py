@@ -39,15 +39,22 @@ class Resource(ABC):
 
 class ComputeResource(Resource):
     """
-    Computing resource, hours as quantity and servers as impact
+    Computing resource, number of server * duration as quantity and servers as impact
     """
 
-    def __init__(self, electricity_mix: float, pue: float, hours: int) -> None:
+    def __init__(
+        self, electricity_mix: float, pue: float, servers_count: int, duration_days: int
+    ) -> None:
         self.server_impact = ServerImpact(electricity_mix, pue)
-        super().__init__(hours, impacts=[self.server_impact])
+        self.servers_count = servers_count
+        self.duration_days = duration_days
+        super().__init__(self._compute_quantity(), impacts=[self.server_impact])
 
     def get_co2_impact(self) -> float:
         return self.server_impact.co2 * self.quantity
+
+    def _compute_quantity(self):
+        return self.duration_days * self.servers_count
 
     def set_electricity_mix(self, electricity_mix: float) -> None:
         """
@@ -65,13 +72,23 @@ class ComputeResource(Resource):
         """
         self.server_impact.set_pue(pue)
 
-    def set_server_hours(self, server_hours: float):
+    def set_servers_count(self, servers_count: int):
         """
-        Setter for server hours reserved by the application
-        :param server_hours: server hours reserved by the app
+        Setter for server quantity reserved by the application
+        :param servers_count: servers reserved by the app
         :return: None
         """
-        self.quantity = server_hours
+        self.servers_count = servers_count
+        self.quantity = self._compute_quantity()
+
+    def set_duration(self, duration_days: int):
+        """
+        Setter for the days used, update quantity
+        :param duration_days: days reserved
+        :return: None
+        """
+        self.duration_days = duration_days
+        self.quantity = self._compute_quantity()
 
 
 class NetworkResource(Resource):
@@ -122,7 +139,7 @@ class PeopleResource(Resource):
 
 class StorageResource(Resource):
     """
-    Storage resources, hours as input, disks lifecycle as impact
+    Storage resources, tb * duration as input, disks lifecycle as impact
     """
 
     def __init__(

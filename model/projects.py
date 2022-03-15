@@ -40,7 +40,7 @@ class StandardProject(Project):
         # ADEME https://bilans-ges.ademe.fr/fr/accueil/documentation-gene/index/page/Electricite_reglementaire
         self.electricity_mix = 0.0599
         self.pue = 1.5
-        self.server_hours = 6
+        self.servers_count = 6
         self.storage_tb = 40
         self.network_gb = 1000000
         self.run_duration_days = 365
@@ -54,7 +54,7 @@ class StandardProject(Project):
             self.user_hours,
             self.electricity_mix,
             self.pue,
-            self.server_hours,
+            self.servers_count,
             self.storage_tb,
             self.network_gb,
             self.run_duration_days,
@@ -115,14 +115,14 @@ class StandardProject(Project):
         self.user_hours = user_hours
         self.root_task.set_user_hours(user_hours)
 
-    def set_server_hours(self, server_hours: int) -> None:
+    def set_servers_count(self, servers_count: int) -> None:
         """
-        Setter for server hours reserved by the application
-        :param server_hours: server hours reserved by the app
+        Setter for server quantity reserved by the application
+        :param servers_count: servers reserved by the app
         :return: None
         """
-        self.server_hours = server_hours
-        self.root_task.set_server_hours(server_hours)
+        self.servers_count = servers_count
+        self.root_task.set_servers_count(servers_count)
 
     def set_storage_tb(self, storage_tb: int) -> None:
         """

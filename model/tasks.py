@@ -143,12 +143,14 @@ class HostingTask(Task):
         self,
         electricity_mix: float,
         pue: float,
-        server_hours: int,
+        servers_count: int,
         storage_tb: int,
         network_gb: int,
         duration_days: int,
     ) -> None:
-        self.compute_resource = ComputeResource(electricity_mix, pue, server_hours)
+        self.compute_resource = ComputeResource(
+            electricity_mix, pue, servers_count, duration_days
+        )
         self.storage_resource = StorageResource(
             electricity_mix, pue, storage_tb, duration_days
         )
@@ -157,13 +159,13 @@ class HostingTask(Task):
             "Hosting", resources=[self.compute_resource, self.storage_resource]
         )
 
-    def set_server_hours(self, server_hours: int) -> None:
+    def set_servers_count(self, servers_count: int) -> None:
         """
-        Setter for server hours reserved by the application
-        :param server_hours: server hours reserved by the app
+        Setter for server quantity reserved by the application
+        :param servers_count: servers reserved by the app
         :return: None
         """
-        self.compute_resource.set_server_hours(server_hours)
+        self.compute_resource.set_servers_count(servers_count)
 
     def set_storage_tb(self, storage_tb: int) -> None:
         """
@@ -204,6 +206,7 @@ class HostingTask(Task):
         :return: None
         """
         self.storage_resource.set_duration(run_duration_days)
+        self.compute_resource.set_duration(run_duration_days)
 
 
 class ImplementationTask(Task):
@@ -281,14 +284,14 @@ class RunTask(Task):
         user_hours: int,
         electricity_mix: float,
         pue: float,
-        server_tb: int,
+        servers_count: int,
         storage_tb: int,
         network_gb: int,
         duration_days: int,
     ) -> None:
         self.maintenance_task = MaintenanceTask(maintenance_days)
         self.hosting_task = HostingTask(
-            electricity_mix, pue, server_tb, storage_tb, network_gb, duration_days
+            electricity_mix, pue, servers_count, storage_tb, network_gb, duration_days
         )
 
         self.user_device_res = UserDeviceResource(user_hours)
@@ -315,13 +318,13 @@ class RunTask(Task):
         """
         self.user_device_res.set_user_hours(user_hours)
 
-    def set_server_hours(self, server_hours: int) -> None:
+    def set_servers_count(self, servers_count: int) -> None:
         """
-        Setter for server hours reserved by the application
-        :param server_hours: server hours reserved by the app
+        Setter for server quantity reserved by the application
+        :param servers_count: servers reserved by the app
         :return: None
         """
-        self.hosting_task.set_server_hours(server_hours)
+        self.hosting_task.set_servers_count(servers_count)
 
     def set_storage_tb(self, storage_tb: int) -> None:
         """
@@ -402,7 +405,7 @@ class StandardProjectTask(Task):
         user_hours: int,
         electricity_mix: float,
         pue: float,
-        server_hours: int,
+        servers_count: int,
         storage_tb: int,
         network_gb: int,
         run_duration: int,
@@ -413,7 +416,7 @@ class StandardProjectTask(Task):
             user_hours,
             electricity_mix,
             pue,
-            server_hours,
+            servers_count,
             storage_tb,
             network_gb,
             run_duration,
@@ -468,13 +471,13 @@ class StandardProjectTask(Task):
         """
         self.run_task.set_user_hours(user_hours)
 
-    def set_server_hours(self, server_hours: int) -> None:
+    def set_servers_count(self, servers_count: int) -> None:
         """
-        Setter for server hours reserved by the application
-        :param server_hours: server hours reserved by the app
+        Setter for server quantity reserved by the application
+        :param servers_count: servers reserved by the app
         :return: None
         """
-        self.run_task.set_server_hours(server_hours)
+        self.run_task.set_servers_count(servers_count)
 
     def set_storage_tb(self, storage_tb: int) -> None:
         """
