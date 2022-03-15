@@ -133,12 +133,34 @@ class StorageImpact(ImpactSource):
     DISK_FABRICATION_CO2 = 250
 
     def __init__(self, electricity_mix: float, pue: float):
-        amortization_day = self.DISK_FABRICATION_CO2 / (self.DISK_LIFE * 365)
-        wh_pue = self.SSD_WH * pue
-        kwh_day = (wh_pue * 24) / 1000
-        disk_day = kwh_day * electricity_mix + amortization_day
+        self.electricity_mix = electricity_mix
+        self.pue = pue
+        super().__init__(self._compute_disk_day())
 
-        super().__init__(disk_day)
+    def _compute_disk_day(self) -> float:
+        amortization_day = self.DISK_FABRICATION_CO2 / (self.DISK_LIFE * 365)
+        wh_pue = self.SSD_WH * self.pue
+        kwh_day = (wh_pue * 24) / 1000
+        return kwh_day * self.electricity_mix + amortization_day
+
+    def set_electricity_mix(self, electricity_mix: float):
+        """
+        Setter for electricity-mix co2e emissions used by application devices/datacenters
+        Update the servers emissions
+        :param electricity_mix: The mix
+        :return: None
+        """
+        self.electricity_mix = electricity_mix
+        self.co2 = self._compute_disk_day()
+
+    def set_pue(self, pue: float):
+        """
+        Setter for the power usage effectiveness of the DC
+        :param pue: the pue
+        :return: None
+        """
+        self.pue = pue
+        self.co2 = self._compute_disk_day()
 
 
 class TransportImpact(ImpactSource):

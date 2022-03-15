@@ -156,7 +156,7 @@ class HostingTask(Task):
         )
         self.network_resource = NetworkResource(network_gb)
         super().__init__(
-            "Hosting", resources=[self.compute_resource, self.storage_resource]
+            "Hosting", resources=[self.compute_resource, self.storage_resource, self.network_resource]
         )
 
     def set_servers_count(self, servers_count: int):
@@ -190,6 +190,7 @@ class HostingTask(Task):
         :return: None
         """
         self.compute_resource.set_electricity_mix(electricity_mix)
+        self.storage_resource.set_electricity_mix(electricity_mix)
 
     def set_pue(self, pue: float):
         """

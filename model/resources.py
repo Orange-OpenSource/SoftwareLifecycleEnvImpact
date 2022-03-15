@@ -174,6 +174,22 @@ class StorageResource(Resource):
         self.storage_tb = storage_tb
         self.quantity = self._compute_quantity()
 
+    def set_electricity_mix(self, electricity_mix: float):
+        """
+        Setter for electricity-mix co2e emissions used by application devices/datacenters
+        :param electricity_mix: The mix
+        :return: None
+        """
+        self.storage_impact.set_electricity_mix(electricity_mix)
+
+    def set_pue(self, pue: float):
+        """
+        Setter for the power usage effectiveness of the DC
+        :param pue: the pue
+        :return: None
+        """
+        self.storage_impact.set_pue(pue)
+
 
 class UserDeviceResource(Resource):
     """
