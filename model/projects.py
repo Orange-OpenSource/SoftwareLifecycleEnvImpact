@@ -1,3 +1,4 @@
+from typing import Any, Union
 from model.tasks import Task, StandardProjectTask
 
 
@@ -9,47 +10,52 @@ class Project:
     def __init__(self, task: Task) -> None:
         self.root_task = task
 
-    def get_impact_task(self) -> float:
+    def get_global_impact(self) -> float:
+        """
+        Compute and return the project global CO2e footprint
+        :return: project global impact
+        """
+        return float(self.root_task.get_impact())  # TODO check cast
+
+    def get_impact_by_task(self) -> dict[str, Union[Union[float, list[None]], Any]]:
         """
         Compute the tasks impacts, regrouped by task/subtask
         :return: the impact # TODO return float not grouped by impact
         """
-        return float(self.root_task.get_impact())  # TODO check cast
+        return self.root_task.get_impact_notebook()
 
 
-# TODO remove noinspection
-# noinspection DuplicatedCode
 class StandardProject(Project):
     """
     Implementation of a standard base project
     """
 
     def __init__(self) -> None:
-        dev_days = 3000
-        design_days = 300
-        spec_days = 300
-        management_days = 1000
-        maintenance_days = 100
-        user_hours = 300000
+        self.dev_days = 2000
+        self.design_days = 130
+        self.spec_days = 200
+        self.management_days = 1000
+        self.maintenance_days = 700
+        self.user_hours = 150000
         # ADEME https://bilans-ges.ademe.fr/fr/accueil/documentation-gene/index/page/Electricite_reglementaire
-        electricity_mix = 0.0599
-        pue = 1.5
-        server_hours = 300
-        storage_hours = 3000
-        network_gb = 30000000
+        self.electricity_mix = 0.0599
+        self.pue = 1.5
+        self.server_hours = 6
+        self.storage_hours = 3000
+        self.network_gb = 1000000
 
         self.root_task = StandardProjectTask(
-            dev_days,
-            design_days,
-            spec_days,
-            management_days,
-            maintenance_days,
-            user_hours,
-            electricity_mix,
-            pue,
-            server_hours,
-            storage_hours,
-            network_gb,
+            self.dev_days,
+            self.design_days,
+            self.spec_days,
+            self.management_days,
+            self.maintenance_days,
+            self.user_hours,
+            self.electricity_mix,
+            self.pue,
+            self.server_hours,
+            self.storage_hours,
+            self.network_gb,
         )
         super().__init__(self.root_task)
 
@@ -59,6 +65,7 @@ class StandardProject(Project):
         :param dev_days: development days
         :return: None
         """
+        self.dev_days = dev_days
         self.root_task.set_dev_days(dev_days)
 
     def set_design_days(self, design_days: int) -> None:
@@ -67,6 +74,7 @@ class StandardProject(Project):
         :param design_days: design man-days
         :return: None
         """
+        self.design_days = design_days
         self.root_task.set_design_days(design_days)
 
     def set_spec_days(self, spec_days: int) -> None:
@@ -75,6 +83,7 @@ class StandardProject(Project):
         :param spec_days: specification and requirements man-days
         :return: None
         """
+        self.spec_days = spec_days
         self.root_task.set_spec_days(spec_days)
 
     def set_management_days(self, management_days: int) -> None:
@@ -83,6 +92,7 @@ class StandardProject(Project):
         :param management_days: management man-days
         :return: None
         """
+        self.management_days = management_days
         self.root_task.set_management_days(management_days)
 
     def set_maintenance_days(self, maintenance_days: int) -> None:
@@ -91,6 +101,7 @@ class StandardProject(Project):
         :param maintenance_days: management man-days
         :return: None
         """
+        self.maintenance_days = maintenance_days
         self.root_task.set_maintenance_days(maintenance_days)
 
     def set_user_hours(self, user_hours: int) -> None:
@@ -99,6 +110,7 @@ class StandardProject(Project):
         :param user_hours: user hours on the app
         :return: None
         """
+        self.user_hours = user_hours  # TODO replace all self by getters ?
         self.root_task.set_user_hours(user_hours)
 
     def set_server_hours(self, server_hours: int) -> None:
@@ -107,6 +119,7 @@ class StandardProject(Project):
         :param server_hours: server hours reserved by the app
         :return: None
         """
+        self.server_hours = server_hours
         self.root_task.set_server_hours(server_hours)
 
     def set_storage_hours(self, storage_hours: int) -> None:
@@ -115,6 +128,7 @@ class StandardProject(Project):
         :param storage_hours: storage hours reserved by the app # TODO wrong unit
         :return: None
         """
+        self.storage_hours = storage_hours
         self.root_task.set_storage_hours(storage_hours)
 
     def set_network_gb(self, network_gb: int) -> None:
@@ -123,4 +137,23 @@ class StandardProject(Project):
         :param network_gb: gb transferred
         :return: None
         """
+        self.network_gb = network_gb
         self.root_task.set_network_gb(network_gb)
+
+    def set_electricity_mix(self, electricity_mix: float) -> None:
+        """
+        Setter for electricity-mix co2e emissions used by application devices/datacenters
+        :param electricity_mix: The mix
+        :return: None
+        """
+        self.electricity_mix = electricity_mix
+        self.root_task.set_electricity_mix(electricity_mix)
+
+    def set_pue(self, pue: float) -> None:
+        """
+        Setter for the power usage effectiveness of the DC
+        :param pue: the pue
+        :return: None
+        """
+        self.pue = pue
+        self.root_task.set_pue(pue)

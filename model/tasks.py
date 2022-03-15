@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from abc import ABC
-from typing import List
+from typing import Any, List
 
 from model.resources import (
     PeopleResource,
@@ -18,7 +18,8 @@ class Task(ABC):
     Define a Task/Phase as a node containing an ImpactSource and/or Subtask(s)
     """
 
-    def __init__(self, resources: List[Resource] = None, subtasks: List[Task] = None):  # type: ignore
+    def __init__(self, name, resources: List[Resource] = None, subtasks: List[Task] = None):  # type: ignore
+        self.name = name
         if resources is None:
             resources = []
         if subtasks is None:
@@ -35,6 +36,17 @@ class Task(ABC):
             s.get_impact() for s in self.subtasks
         )
 
+    def get_impact_notebook(self) -> dict[str, float | list[None] | Any]:
+        """
+        Function traversing the tree to retrieve all the impacts for the jupyter notebook
+        :return: for each node the name, the associated co2 and the same thing for each  of its subtasks
+        """
+        return {
+            "name": self.name,
+            "co2e": self.get_impact(),
+            "subtasks": [s.get_impact_notebook() for s in self.subtasks],
+        }
+
 
 class BuildTask(Task):
     """
@@ -49,7 +61,8 @@ class BuildTask(Task):
         self.management_task = ManagementTask(management_days)
 
         super().__init__(
-            subtasks=[self.implementation_task, self.spec_task, self.management_task]
+            "Build",
+            subtasks=[self.implementation_task, self.spec_task, self.management_task],
         )
 
     def set_dev_days(self, dev_days: int) -> None:
@@ -92,7 +105,7 @@ class DevTask(Task):
 
     def __init__(self, dev_days: int) -> None:
         self.people_resource = PeopleResource(dev_days)
-        super().__init__(resources=[self.people_resource])
+        super().__init__("Development", resources=[self.people_resource])
 
     def set_dev_days(self, dev_days: int) -> None:
         """
@@ -110,7 +123,7 @@ class DesignTask(Task):
 
     def __init__(self, design_days: int) -> None:
         self.people_resource = PeopleResource(design_days)
-        super().__init__(resources=[self.people_resource])
+        super().__init__("Design", resources=[self.people_resource])
 
     def set_design_days(self, design_days: int) -> None:
         """
@@ -137,7 +150,9 @@ class HostingTask(Task):
         self.compute_resource = ComputeResource(electricity_mix, pue, server_hours)
         self.storage_resource = StorageResource(electricity_mix, pue, storage_hours)
         self.network_resource = NetworkResource(network_gb)
-        super().__init__(resources=[self.compute_resource, self.storage_resource])
+        super().__init__(
+            "Hosting", resources=[self.compute_resource, self.storage_resource]
+        )
 
     def set_server_hours(self, server_hours: int) -> None:
         """
@@ -163,6 +178,22 @@ class HostingTask(Task):
         """
         self.network_resource.set_quantity(network_gb)
 
+    def set_electricity_mix(self, electricity_mix: float) -> None:
+        """
+        Setter for electricity-mix co2e emissions used by application devices/datacenters
+        :param electricity_mix: The mix
+        :return: None
+        """
+        self.compute_resource.set_electricity_mix(electricity_mix)
+
+    def set_pue(self, pue: float) -> None:
+        """
+        Setter for the power usage effectiveness of the DC
+        :param pue: the pue
+        :return: None
+        """
+        self.compute_resource.set_pue(pue)
+
 
 class ImplementationTask(Task):
     """
@@ -172,7 +203,7 @@ class ImplementationTask(Task):
     def __init__(self, dev_days: int, design_days: int) -> None:
         self.dev_task = DevTask(dev_days)
         self.design_task = DesignTask(design_days)
-        super().__init__(subtasks=[self.dev_task, self.design_task])
+        super().__init__("Implementation", subtasks=[self.dev_task, self.design_task])
 
     def set_dev_days(self, dev_days: int) -> None:
         """
@@ -198,7 +229,7 @@ class ManagementTask(Task):
 
     def __init__(self, management_days: int) -> None:
         self.people_resource = PeopleResource(management_days)
-        super().__init__(resources=[self.people_resource])
+        super().__init__("Management", resources=[self.people_resource])
 
     def set_management_days(self, management_days: int) -> None:
         """
@@ -216,7 +247,7 @@ class MaintenanceTask(Task):
 
     def __init__(self, maintenance_days: int) -> None:
         self.people_resource = PeopleResource(maintenance_days)
-        super().__init__(resources=[self.people_resource])
+        super().__init__("Maintenance", resources=[self.people_resource])
 
     def set_maintenance_days(self, maintenance_days: int) -> None:
         """
@@ -251,6 +282,7 @@ class RunTask(Task):
         self.user_device_res = UserDeviceResource(user_hours)
 
         super().__init__(
+            "Run",
             resources=[self.user_device_res],
             subtasks=[self.maintenance_task, self.hosting_task],
         )
@@ -295,6 +327,23 @@ class RunTask(Task):
         """
         self.hosting_task.set_network_gb(network_gb)
 
+    def set_electricity_mix(self, electricity_mix: float) -> None:
+        """
+        Setter for electricity-mix co2e emissions used by application devices/datacenters
+        :param electricity_mix: The mix
+        :return: None
+        """
+        self.hosting_task.set_electricity_mix(electricity_mix)
+        # self.user_device_res.set_electricity_mix(electricity_mix)
+
+    def set_pue(self, pue: float) -> None:
+        """
+        Setter for the power usage effectiveness of the DC
+        :param pue: the pue
+        :return: None
+        """
+        self.hosting_task.set_pue(pue)
+
 
 class SpecTask(Task):
     """
@@ -303,7 +352,9 @@ class SpecTask(Task):
 
     def __init__(self, spec_days: int) -> None:
         self.people_resource = PeopleResource(spec_days)
-        super().__init__(resources=[self.people_resource])
+        super().__init__(
+            "Specifications and requirements", resources=[self.people_resource]
+        )
 
     def set_spec_days(self, spec_days: int) -> None:
         """
@@ -347,7 +398,7 @@ class StandardProjectTask(Task):
             storage_hours,
             network_gb,
         )
-        super().__init__(subtasks=[self.build_task, self.run_task])
+        super().__init__("Standard project", subtasks=[self.build_task, self.run_task])
 
     def set_dev_days(self, dev_days: int) -> None:
         """
@@ -420,3 +471,19 @@ class StandardProjectTask(Task):
         :return: None
         """
         self.run_task.set_network_gb(network_gb)
+
+    def set_electricity_mix(self, electricity_mix: float) -> None:
+        """
+        Setter for electricity-mix co2e emissions used by application devices/datacenters
+        :param electricity_mix: The mix
+        :return: None
+        """
+        self.run_task.set_electricity_mix(electricity_mix)
+
+    def set_pue(self, pue: float) -> None:
+        """
+        Setter for the power usage effectiveness of the DC
+        :param pue: the pue
+        :return: None
+        """
+        self.run_task.set_pue(pue)

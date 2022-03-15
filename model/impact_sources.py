@@ -15,9 +15,11 @@ class DeviceImpact(ImpactSource):
 
     SMARTPHONE_CO2 = 88.75
     SMARTPHONE_LIFE = 2
-    SMARTPHONE_DAILY_USE = 3.12 # https://ieeexplore.ieee.org/abstract/document/6360448
+    SMARTPHONE_DAILY_USE = 3.12  # https://ieeexplore.ieee.org/abstract/document/6360448
 
-    LAPTOP_CO2 = 307.37  # Boavizta - https://github.com/Boavizta/environmental-footprint-data
+    LAPTOP_CO2 = (
+        307.37  # Boavizta - https://github.com/Boavizta/environmental-footprint-data
+    )
     LAPTOP_LIFE = 4.34
     PC_DAILY_USE = 7
 
@@ -56,7 +58,7 @@ class OfficeImpact(ImpactSource):
     # Legifrance
     # https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000042994780
     # 18m2/office, offices occupancy rate 70%
-    OFFICE_SIZE = ((18 * 100) / 70) # TODO remove computation
+    OFFICE_SIZE = (18 * 100) / 70  # TODO remove computation
 
     # Observatoire de l'immobilier durable
     # https://resources.taloen.fr/resources/documents/7765_191210_poids_carbone_ACV_vdef.pdf
@@ -65,7 +67,9 @@ class OfficeImpact(ImpactSource):
     BUILDING_LIFE_EXPECTANCY = 50  # years
 
     def __init__(self) -> None:
-        office_emissions_sqr_meter_day = self.BUILDING_EMISSIONS / (self.BUILDING_LIFE_EXPECTANCY * 365)
+        office_emissions_sqr_meter_day = self.BUILDING_EMISSIONS / (
+            self.BUILDING_LIFE_EXPECTANCY * 365
+        )
         office_co2_person = self.OFFICE_SIZE * office_emissions_sqr_meter_day
         super().__init__(office_co2_person)  # TODO explain ratio
 
@@ -85,15 +89,38 @@ class ServerImpact(ImpactSource):
     SERVER_USAGE = 0.7
 
     def __init__(self, electricity_mix: float, pue: float) -> None:
+        self.electricity_mix = electricity_mix
+        self.pue = pue
+        super().__init__(self._compute_server_day())
+
+    def set_electricity_mix(self, electricity_mix: float) -> None:
+        """
+        Setter for electricity-mix co2e emissions used by application devices/datacenters
+        Update the servers emissions
+        :param electricity_mix: The mix
+        :return: None
+        """
+        self.electricity_mix = electricity_mix
+        self.co2 = self._compute_server_day()
+
+    def set_pue(self, pue: float) -> None:
+        """
+        Setter for the power usage effectiveness of the DC
+        :param pue: the pue
+        :return: None
+        """
+        self.pue = pue
+        self.co2 = self._compute_server_day()
+
+    def _compute_server_day(self) -> float:
         amortization_day = self.SERVER_FABRICATION_CO2 / (self.SERVER_LIFE * 365)
 
         wh = (
-                     self.SERVER_POWER_RUN - self.SERVER_POWER_IDLE
-             ) * self.SERVER_USAGE + self.SERVER_POWER_IDLE
-        wh_pue = wh * pue
+            self.SERVER_POWER_RUN - self.SERVER_POWER_IDLE
+        ) * self.SERVER_USAGE + self.SERVER_POWER_IDLE
+        wh_pue = wh * self.pue
         kwh_day = (wh_pue * 24) / 1000
-        server_day = kwh_day * electricity_mix + amortization_day
-        super().__init__(server_day)
+        return kwh_day * self.electricity_mix + amortization_day
 
 
 class StorageImpact(ImpactSource):
@@ -105,7 +132,7 @@ class StorageImpact(ImpactSource):
     SSD_TB_CONS = 1.52
 
     DISK_LIFE = 4
-    DISK_FABRICATION_CO2 = 250 # TODO not used
+    DISK_FABRICATION_CO2 = 250  # TODO not used
 
     def __init__(self, electricity_mix: float, pue: float) -> None:
         wh_to = self.SSD_TB_CONS
@@ -138,12 +165,12 @@ class TransportImpact(ImpactSource):
 
     def __init__(self) -> None:
         co2 = (
-                      self.FOOT_PERCENTAGE * 0
-                      + self.BIKE_PERCENTAGE * BikeImpact().co2
-                      + self.PUBLIC_TRANSPORT_PERCENTAGE * PublicTransportImpact().co2
-                      + self.CAR_PERCENTAGE * CarImpact().co2
-                      + self.MOTORBIKE_PERCENTAGE * MotorbikeImpact().co2
-              ) / 100
+            self.FOOT_PERCENTAGE * 0
+            + self.BIKE_PERCENTAGE * BikeImpact().co2
+            + self.PUBLIC_TRANSPORT_PERCENTAGE * PublicTransportImpact().co2
+            + self.CAR_PERCENTAGE * CarImpact().co2
+            + self.MOTORBIKE_PERCENTAGE * MotorbikeImpact().co2
+        ) / 100
         super().__init__(co2)
 
 

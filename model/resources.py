@@ -49,6 +49,22 @@ class ComputeResource(Resource):
     def get_impact(self) -> float:
         return float(self.server_impact.co2 * self.quantity)  # TODO check cast
 
+    def set_electricity_mix(self, electricity_mix: float) -> None:
+        """
+        Setter for electricity-mix co2e emissions used by application devices/datacenters
+        :param electricity_mix: The mix
+        :return: None
+        """
+        self.server_impact.set_electricity_mix(electricity_mix)
+
+    def set_pue(self, pue: float) -> None:
+        """
+        Setter for the power usage effectiveness of the DC
+        :param pue: the pue
+        :return: None
+        """
+        self.server_impact.set_pue(pue)
+
 
 class NetworkResource(Resource):
     """
