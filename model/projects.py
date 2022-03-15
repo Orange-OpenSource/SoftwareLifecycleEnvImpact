@@ -15,14 +15,14 @@ class Project:
         Compute and return the project global CO2e footprint
         :return: project global impact
         """
-        return float(self.root_task.get_impact())  # TODO check cast
+        return self.root_task.get_impact()
 
     def get_impact_by_task(self) -> dict[str, Union[Union[float, list[None]], Any]]:
         """
         Compute the tasks impacts, regrouped by task/subtask
-        :return: the impact # TODO return float not grouped by impact
+        :return: for each node the name, the associated co2 and the same thing for each  of its subtasks
         """
-        return self.root_task.get_impact_notebook()
+        return self.root_task.get_impact_by_task()
 
 
 class StandardProject(Project):
@@ -41,8 +41,9 @@ class StandardProject(Project):
         self.electricity_mix = 0.0599
         self.pue = 1.5
         self.server_hours = 6
-        self.storage_hours = 3000
+        self.storage_tb = 40
         self.network_gb = 1000000
+        self.run_duration_days = 365
 
         self.root_task = StandardProjectTask(
             self.dev_days,
@@ -54,8 +55,9 @@ class StandardProject(Project):
             self.electricity_mix,
             self.pue,
             self.server_hours,
-            self.storage_hours,
+            self.storage_tb,
             self.network_gb,
+            self.run_duration_days,
         )
         super().__init__(self.root_task)
 
@@ -110,7 +112,7 @@ class StandardProject(Project):
         :param user_hours: user hours on the app
         :return: None
         """
-        self.user_hours = user_hours  # TODO replace all self by getters ?
+        self.user_hours = user_hours
         self.root_task.set_user_hours(user_hours)
 
     def set_server_hours(self, server_hours: int) -> None:
@@ -122,14 +124,14 @@ class StandardProject(Project):
         self.server_hours = server_hours
         self.root_task.set_server_hours(server_hours)
 
-    def set_storage_hours(self, storage_hours: int) -> None:
+    def set_storage_tb(self, storage_tb: int) -> None:
         """
-        Setter for storage hours reserved by the application
-        :param storage_hours: storage hours reserved by the app # TODO wrong unit
+        Setter for storage tb reserved by the application
+        :param storage_tb: storage tb reserved by the app
         :return: None
         """
-        self.storage_hours = storage_hours
-        self.root_task.set_storage_hours(storage_hours)
+        self.storage_tb = storage_tb
+        self.root_task.set_storage_tb(storage_tb)
 
     def set_network_gb(self, network_gb: int) -> None:
         """
@@ -157,3 +159,12 @@ class StandardProject(Project):
         """
         self.pue = pue
         self.root_task.set_pue(pue)
+
+    def set_run_duration(self, run_duration_days: int) -> None:
+        """
+        Setter for the phase run duration as days
+        :param run_duration_days: run duration as days
+        :return: None
+        """
+        self.run_duration_days = run_duration_days
+        self.root_task.set_run_duration(run_duration_days)

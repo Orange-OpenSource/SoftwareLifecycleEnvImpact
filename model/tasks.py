@@ -32,11 +32,11 @@ class Task(ABC):
         Compute and return the impact of the task and those of the subtasks
         :return: co2 impact of task and subtasks
         """
-        return sum(r.get_impact() for r in self.resources) + sum(
+        return sum(r.get_co2_impact() for r in self.resources) + sum(
             s.get_impact() for s in self.subtasks
         )
 
-    def get_impact_notebook(self) -> dict[str, float | list[None] | Any]:
+    def get_impact_by_task(self) -> dict[str, float | list[None] | Any]:
         """
         Function traversing the tree to retrieve all the impacts for the jupyter notebook
         :return: for each node the name, the associated co2 and the same thing for each  of its subtasks
@@ -44,7 +44,7 @@ class Task(ABC):
         return {
             "name": self.name,
             "co2e": self.get_impact(),
-            "subtasks": [s.get_impact_notebook() for s in self.subtasks],
+            "subtasks": [s.get_impact_by_task() for s in self.subtasks],
         }
 
 
@@ -113,7 +113,7 @@ class DevTask(Task):
         :param dev_days: development man-days
         :return: None
         """
-        self.people_resource.set_quantity(dev_days)
+        self.people_resource.set_man_days(dev_days)
 
 
 class DesignTask(Task):
@@ -131,7 +131,7 @@ class DesignTask(Task):
         :param design_days: design man-days
         :return: None
         """
-        self.people_resource.set_quantity(design_days)
+        self.people_resource.set_man_days(design_days)
 
 
 class HostingTask(Task):
@@ -144,11 +144,14 @@ class HostingTask(Task):
         electricity_mix: float,
         pue: float,
         server_hours: int,
-        storage_hours: int,
+        storage_tb: int,
         network_gb: int,
+        duration_days: int,
     ) -> None:
         self.compute_resource = ComputeResource(electricity_mix, pue, server_hours)
-        self.storage_resource = StorageResource(electricity_mix, pue, storage_hours)
+        self.storage_resource = StorageResource(
+            electricity_mix, pue, storage_tb, duration_days
+        )
         self.network_resource = NetworkResource(network_gb)
         super().__init__(
             "Hosting", resources=[self.compute_resource, self.storage_resource]
@@ -160,15 +163,15 @@ class HostingTask(Task):
         :param server_hours: server hours reserved by the app
         :return: None
         """
-        self.compute_resource.set_quantity(server_hours)
+        self.compute_resource.set_server_hours(server_hours)
 
-    def set_storage_hours(self, storage_hours: int) -> None:
+    def set_storage_tb(self, storage_tb: int) -> None:
         """
-        Setter for storage hours reserved by the application
-        :param storage_hours: storage hours reserved by the app
+        Setter for storage tb reserved by the application
+        :param storage_tb: storage tb reserved by the app
         :return: None
         """
-        self.storage_resource.set_quantity(storage_hours)
+        self.storage_resource.set_storage_tb(storage_tb)
 
     def set_network_gb(self, network_gb: int) -> None:
         """
@@ -176,7 +179,7 @@ class HostingTask(Task):
         :param network_gb: gb transferred
         :return: None
         """
-        self.network_resource.set_quantity(network_gb)
+        self.network_resource.set_gb(network_gb)
 
     def set_electricity_mix(self, electricity_mix: float) -> None:
         """
@@ -193,6 +196,14 @@ class HostingTask(Task):
         :return: None
         """
         self.compute_resource.set_pue(pue)
+
+    def set_run_duration(self, run_duration_days: int) -> None:
+        """
+        Setter for the phase run duration as days
+        :param run_duration_days: run duration as days
+        :return: None
+        """
+        self.storage_resource.set_duration(run_duration_days)
 
 
 class ImplementationTask(Task):
@@ -237,7 +248,7 @@ class ManagementTask(Task):
         :param management_days: management man-days
         :return: None
         """
-        self.people_resource.set_quantity(management_days)
+        self.people_resource.set_man_days(management_days)
 
 
 class MaintenanceTask(Task):
@@ -255,7 +266,7 @@ class MaintenanceTask(Task):
         :param maintenance_days: management man-days
         :return: None
         """
-        self.people_resource.set_quantity(maintenance_days)
+        self.people_resource.set_man_days(maintenance_days)
 
 
 class RunTask(Task):
@@ -270,13 +281,14 @@ class RunTask(Task):
         user_hours: int,
         electricity_mix: float,
         pue: float,
-        server_hours: int,
-        storage_hours: int,
+        server_tb: int,
+        storage_tb: int,
         network_gb: int,
+        duration_days: int,
     ) -> None:
         self.maintenance_task = MaintenanceTask(maintenance_days)
         self.hosting_task = HostingTask(
-            electricity_mix, pue, server_hours, storage_hours, network_gb
+            electricity_mix, pue, server_tb, storage_tb, network_gb, duration_days
         )
 
         self.user_device_res = UserDeviceResource(user_hours)
@@ -301,7 +313,7 @@ class RunTask(Task):
         :param user_hours: user hours on the app
         :return: None
         """
-        self.user_device_res.set_quantity(user_hours)
+        self.user_device_res.set_user_hours(user_hours)
 
     def set_server_hours(self, server_hours: int) -> None:
         """
@@ -311,13 +323,13 @@ class RunTask(Task):
         """
         self.hosting_task.set_server_hours(server_hours)
 
-    def set_storage_hours(self, storage_hours: int) -> None:
+    def set_storage_tb(self, storage_tb: int) -> None:
         """
-        Setter for storage hours reserved by the application
-        :param storage_hours: storage hours reserved by the app
+        Setter for storage tb reserved by the application
+        :param storage_tb: storage tb reserved by the app
         :return: None
         """
-        self.hosting_task.set_storage_hours(storage_hours)
+        self.hosting_task.set_storage_tb(storage_tb)
 
     def set_network_gb(self, network_gb: int) -> None:
         """
@@ -344,6 +356,14 @@ class RunTask(Task):
         """
         self.hosting_task.set_pue(pue)
 
+    def set_run_duration(self, run_duration_days: int) -> None:
+        """
+        Setter for the phase run duration as days
+        :param run_duration_days: run duration as days
+        :return: None
+        """
+        self.hosting_task.set_run_duration(run_duration_days)
+
 
 class SpecTask(Task):
     """
@@ -362,11 +382,9 @@ class SpecTask(Task):
         :param spec_days: specification and requirements man-days
         :return: None
         """
-        self.people_resource.set_quantity(spec_days)
+        self.people_resource.set_man_days(spec_days)
 
 
-# TODO remove noinspection
-# noinspection DuplicatedCode
 class StandardProjectTask(Task):
     """
     Root task of a standard project, with the structure:
@@ -385,8 +403,9 @@ class StandardProjectTask(Task):
         electricity_mix: float,
         pue: float,
         server_hours: int,
-        storage_hours: int,
+        storage_tb: int,
         network_gb: int,
+        run_duration: int,
     ) -> None:
         self.build_task = BuildTask(dev_days, design_days, spec_days, management_days)
         self.run_task = RunTask(
@@ -395,8 +414,9 @@ class StandardProjectTask(Task):
             electricity_mix,
             pue,
             server_hours,
-            storage_hours,
+            storage_tb,
             network_gb,
+            run_duration,
         )
         super().__init__("Standard project", subtasks=[self.build_task, self.run_task])
 
@@ -456,13 +476,13 @@ class StandardProjectTask(Task):
         """
         self.run_task.set_server_hours(server_hours)
 
-    def set_storage_hours(self, storage_hours: int) -> None:
+    def set_storage_tb(self, storage_tb: int) -> None:
         """
-        Setter for storage hours reserved by the application
-        :param storage_hours: storage hours reserved by the app
+        Setter for storage tb reserved by the application
+        :param storage_tb: storage tb reserved by the app
         :return: None
         """
-        self.run_task.set_storage_hours(storage_hours)
+        self.run_task.set_storage_tb(storage_tb)
 
     def set_network_gb(self, network_gb: int) -> None:
         """
@@ -487,3 +507,11 @@ class StandardProjectTask(Task):
         :return: None
         """
         self.run_task.set_pue(pue)
+
+    def set_run_duration(self, run_duration_days: int) -> None:
+        """
+        Setter for the phase run duration as days
+        :param run_duration_days: run duration as days
+        :return: None
+        """
+        self.run_task.set_run_duration(run_duration_days)
