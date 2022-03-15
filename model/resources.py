@@ -17,11 +17,11 @@ class Resource(ABC):
     Define a resource, with a quantity and one or multiple ImpactSource
     """
 
-    def __init__(self, quantity: float, impacts: List[ImpactSource]) -> None:
+    def __init__(self, quantity: float, impacts: List[ImpactSource]):
         self.quantity: float = quantity
         self.impacts = impacts
 
-    def _set_quantity(self, quantity: float) -> None:
+    def _set_quantity(self, quantity: float):
         """
         Set the resource quantity
         :param quantity: quantity of the resource
@@ -44,7 +44,7 @@ class ComputeResource(Resource):
 
     def __init__(
         self, electricity_mix: float, pue: float, servers_count: int, duration_days: int
-    ) -> None:
+    ):
         self.server_impact = ServerImpact(electricity_mix, pue)
         self.servers_count = servers_count
         self.duration_days = duration_days
@@ -56,7 +56,7 @@ class ComputeResource(Resource):
     def _compute_quantity(self):
         return self.duration_days * self.servers_count
 
-    def set_electricity_mix(self, electricity_mix: float) -> None:
+    def set_electricity_mix(self, electricity_mix: float):
         """
         Setter for electricity-mix co2e emissions used by application devices/datacenters
         :param electricity_mix: The mix
@@ -64,7 +64,7 @@ class ComputeResource(Resource):
         """
         self.server_impact.set_electricity_mix(electricity_mix)
 
-    def set_pue(self, pue: float) -> None:
+    def set_pue(self, pue: float):
         """
         Setter for the power usage effectiveness of the DC
         :param pue: the pue
@@ -96,7 +96,7 @@ class NetworkResource(Resource):
     Network resource, gb transferred as quantity and network as impact
     """
 
-    def __init__(self, network_gb: int) -> None:
+    def __init__(self, network_gb: int):
         self.network_impact = NetworkImpact()
         super().__init__(network_gb, impacts=[self.network_impact])
 
@@ -117,7 +117,7 @@ class PeopleResource(Resource):
     People resources, man days as inputs, commuting and offices as impacts
     """
 
-    def __init__(self, man_days: int) -> None:
+    def __init__(self, man_days: int):
         self.office_impact = OfficeImpact()
         self.transport_impact = TransportImpact()
         super().__init__(man_days, [self.office_impact, self.transport_impact])
@@ -144,7 +144,7 @@ class StorageResource(Resource):
 
     def __init__(
         self, electricity_mix: float, pue: float, storage_tb: int, days_reserved: int
-    ) -> None:
+    ):
         self.storage_impact = StorageImpact(electricity_mix, pue)
         self.storage_tb = storage_tb
         self.days_reserved = days_reserved
@@ -156,7 +156,7 @@ class StorageResource(Resource):
     def _compute_quantity(self):
         return self.days_reserved * self.storage_tb
 
-    def set_duration(self, days_reserved: int) -> None:
+    def set_duration(self, days_reserved: int):
         """
         Setter for the days used, update quantity
         :param days_reserved: days reserved
@@ -180,7 +180,7 @@ class UserDeviceResource(Resource):
     User devices resources, hours as inputs and devices lifecycle as impacts
     """
 
-    def __init__(self, user_hours: int) -> None:
+    def __init__(self, user_hours: int):
         self.device_source = DeviceImpact()
         super().__init__(user_hours, [self.device_source])
 

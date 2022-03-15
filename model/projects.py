@@ -7,7 +7,7 @@ class Project:
     Abstract project, contains the root task to model the lifecycle
     """
 
-    def __init__(self, task: Task) -> None:
+    def __init__(self, task: Task):
         self.root_task = task
 
     def get_global_impact(self) -> float:
@@ -30,7 +30,7 @@ class StandardProject(Project):
     Implementation of a standard base project
     """
 
-    def __init__(self) -> None:
+    def __init__(self):
         self.dev_days = 2000
         self.design_days = 130
         self.spec_days = 200
@@ -61,7 +61,7 @@ class StandardProject(Project):
         )
         super().__init__(self.root_task)
 
-    def set_dev_days(self, dev_days: int) -> None:
+    def set_dev_days(self, dev_days: int):
         """
         Setter for development man-days
         :param dev_days: development days
@@ -70,7 +70,7 @@ class StandardProject(Project):
         self.dev_days = dev_days
         self.root_task.set_dev_days(dev_days)
 
-    def set_design_days(self, design_days: int) -> None:
+    def set_design_days(self, design_days: int):
         """
         Setter for design man-days
         :param design_days: design man-days
@@ -79,7 +79,7 @@ class StandardProject(Project):
         self.design_days = design_days
         self.root_task.set_design_days(design_days)
 
-    def set_spec_days(self, spec_days: int) -> None:
+    def set_spec_days(self, spec_days: int):
         """
         Setter for specification and requirements man-days
         :param spec_days: specification and requirements man-days
@@ -88,7 +88,7 @@ class StandardProject(Project):
         self.spec_days = spec_days
         self.root_task.set_spec_days(spec_days)
 
-    def set_management_days(self, management_days: int) -> None:
+    def set_management_days(self, management_days: int):
         """
         Setter for management man-days
         :param management_days: management man-days
@@ -97,7 +97,7 @@ class StandardProject(Project):
         self.management_days = management_days
         self.root_task.set_management_days(management_days)
 
-    def set_maintenance_days(self, maintenance_days: int) -> None:
+    def set_maintenance_days(self, maintenance_days: int):
         """
         Setter for maintenance man-days
         :param maintenance_days: management man-days
@@ -106,7 +106,7 @@ class StandardProject(Project):
         self.maintenance_days = maintenance_days
         self.root_task.set_maintenance_days(maintenance_days)
 
-    def set_user_hours(self, user_hours: int) -> None:
+    def set_user_hours(self, user_hours: int):
         """
         Setter for user hours on the application
         :param user_hours: user hours on the app
@@ -115,7 +115,7 @@ class StandardProject(Project):
         self.user_hours = user_hours
         self.root_task.set_user_hours(user_hours)
 
-    def set_servers_count(self, servers_count: int) -> None:
+    def set_servers_count(self, servers_count: int):
         """
         Setter for server quantity reserved by the application
         :param servers_count: servers reserved by the app
@@ -124,7 +124,7 @@ class StandardProject(Project):
         self.servers_count = servers_count
         self.root_task.set_servers_count(servers_count)
 
-    def set_storage_tb(self, storage_tb: int) -> None:
+    def set_storage_tb(self, storage_tb: int):
         """
         Setter for storage tb reserved by the application
         :param storage_tb: storage tb reserved by the app
@@ -133,7 +133,7 @@ class StandardProject(Project):
         self.storage_tb = storage_tb
         self.root_task.set_storage_tb(storage_tb)
 
-    def set_network_gb(self, network_gb: int) -> None:
+    def set_network_gb(self, network_gb: int):
         """
         Data transferred induced by the application
         :param network_gb: gb transferred
@@ -142,7 +142,7 @@ class StandardProject(Project):
         self.network_gb = network_gb
         self.root_task.set_network_gb(network_gb)
 
-    def set_electricity_mix(self, electricity_mix: float) -> None:
+    def set_electricity_mix(self, electricity_mix: float):
         """
         Setter for electricity-mix co2e emissions used by application devices/datacenters
         :param electricity_mix: The mix
@@ -151,7 +151,7 @@ class StandardProject(Project):
         self.electricity_mix = electricity_mix
         self.root_task.set_electricity_mix(electricity_mix)
 
-    def set_pue(self, pue: float) -> None:
+    def set_pue(self, pue: float):
         """
         Setter for the power usage effectiveness of the DC
         :param pue: the pue
@@ -160,7 +160,7 @@ class StandardProject(Project):
         self.pue = pue
         self.root_task.set_pue(pue)
 
-    def set_run_duration(self, run_duration_days: int) -> None:
+    def set_run_duration(self, run_duration_days: int):
         """
         Setter for the phase run duration as days
         :param run_duration_days: run duration as days
