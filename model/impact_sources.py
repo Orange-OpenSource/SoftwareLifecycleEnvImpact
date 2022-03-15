@@ -35,10 +35,6 @@ class DeviceImpact(ImpactSource):
         super().__init__(co2)
 
 
-# TODO add different devices
-# TODO better devices RATIO
-
-
 class NetworkImpact(ImpactSource):
     """
     ImpactSource for network usage caused by software induced data transferred
@@ -58,7 +54,8 @@ class OfficeImpact(ImpactSource):
     # Legifrance
     # https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000042994780
     # 18m2/office, offices occupancy rate 70%
-    OFFICE_SIZE = (18 * 100) / 70  # TODO remove computation
+    OFFICE_SIZE = 18
+    OFFICES_OCCUPANCY = 0.7
 
     # Observatoire de l'immobilier durable
     # https://resources.taloen.fr/resources/documents/7765_191210_poids_carbone_ACV_vdef.pdf
@@ -67,11 +64,12 @@ class OfficeImpact(ImpactSource):
     BUILDING_LIFE_EXPECTANCY = 50  # years
 
     def __init__(self) -> None:
+        sqr_meter_office = self.OFFICE_SIZE / self.OFFICES_OCCUPANCY
         office_emissions_sqr_meter_day = self.BUILDING_EMISSIONS / (
             self.BUILDING_LIFE_EXPECTANCY * 365
         )
-        office_co2_person = self.OFFICE_SIZE * office_emissions_sqr_meter_day
-        super().__init__(office_co2_person)  # TODO explain ratio
+        office_co2_person = sqr_meter_office * office_emissions_sqr_meter_day
+        super().__init__(office_co2_person)
 
 
 class ServerImpact(ImpactSource):
@@ -126,23 +124,21 @@ class ServerImpact(ImpactSource):
 class StorageImpact(ImpactSource):
     """
     Impact source for storage (disks)
-    Ratio / tb / hour
+    Ratio / tb / day
     """
 
-    SSD_TB_CONS = 1.52
+    SSD_WH = 1.52
 
     DISK_LIFE = 4
-    DISK_FABRICATION_CO2 = 250  # TODO not used
+    DISK_FABRICATION_CO2 = 250
 
     def __init__(self, electricity_mix: float, pue: float) -> None:
-        wh_to = self.SSD_TB_CONS
-        wh_pue = wh_to * pue
-        kwh = wh_pue / 1000
-        disk_hour = kwh * electricity_mix
+        amortization_day = self.DISK_FABRICATION_CO2 / (self.DISK_LIFE * 365)
+        wh_pue = self.SSD_WH * pue
+        kwh_day = (wh_pue * 24) / 1000
+        disk_day = kwh_day * electricity_mix + amortization_day
 
-        super().__init__(disk_hour)
-
-    # TODO REDO
+        super().__init__(disk_day)
 
 
 class TransportImpact(ImpactSource):
@@ -164,14 +160,15 @@ class TransportImpact(ImpactSource):
     MEAN_DISTANCE = 19 * 2
 
     def __init__(self) -> None:
-        co2 = (
+        co2_km = (
             self.FOOT_PERCENTAGE * 0
             + self.BIKE_PERCENTAGE * BikeImpact().co2
             + self.PUBLIC_TRANSPORT_PERCENTAGE * PublicTransportImpact().co2
             + self.CAR_PERCENTAGE * CarImpact().co2
             + self.MOTORBIKE_PERCENTAGE * MotorbikeImpact().co2
         ) / 100
-        super().__init__(co2)
+        co2_day = co2_km * self.MEAN_DISTANCE
+        super().__init__(co2_day)
 
 
 class CarImpact(ImpactSource):
@@ -196,7 +193,7 @@ class BikeImpact(ImpactSource):
     # https://view.publitas.com/trek-bicycle/trek-bicycle-2021-sustainability-report/page/5
 
     def __init__(self) -> None:
-        super().__init__(0.00348)  # TODO ratio computation
+        super().__init__(0.00348)
 
 
 class PublicTransportImpact(ImpactSource):
