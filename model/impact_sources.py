@@ -17,13 +17,15 @@ class DeviceImpact(ImpactSource):
     SMARTPHONE_LIFE = 2
     SMARTPHONE_DAILY_USE = 3.12  # https://ieeexplore.ieee.org/abstract/document/6360448
 
-    LAPTOP_CO2 = (
-        307.37  # Boavizta - https://github.com/Boavizta/environmental-footprint-data
-    )
+    # Boavizta - https://github.com/Boavizta/environmental-footprint-data
+    LAPTOP_CO2 = 307.37
     LAPTOP_LIFE = 4.34
     PC_DAILY_USE = 7
 
     def __init__(self):
+        """
+        Standard ratio for one hour of user device, half on a laptop and the ohter on a smartphone
+        """
         smartphone_day_co2 = self.SMARTPHONE_CO2 / (self.SMARTPHONE_LIFE * 365)
         smartphone_hour_co2 = smartphone_day_co2 / self.SMARTPHONE_DAILY_USE
 
@@ -64,7 +66,13 @@ class OfficeImpact(ImpactSource):
     BUILDING_LIFE_EXPECTANCY = 50  # years
 
     def __init__(self):
-        sqr_meter_office = self.OFFICE_SIZE / self.OFFICES_OCCUPANCY
+        """
+        Define a space per person as office space + corridors, halls, lavatory etc... then multiply by square meter
+        LCA / building expectancy
+        """
+        sqr_meter_office = (
+            self.OFFICE_SIZE / self.OFFICES_OCCUPANCY
+        )  # Adding corridors halls etc. to single offices
         office_emissions_sqr_meter_day = self.BUILDING_EMISSIONS / (
             self.BUILDING_LIFE_EXPECTANCY * 365
         )
@@ -111,12 +119,18 @@ class ServerImpact(ImpactSource):
         self.co2 = self._compute_server_day()
 
     def _compute_server_day(self) -> float:
+        """
+        Compute the co2 cost of a server, adding consumption pondered with pue and amortization
+        :return: co2e / day
+        """
         amortization_day = self.SERVER_FABRICATION_CO2 / (self.SERVER_LIFE * 365)
 
         wh = (
             self.SERVER_POWER_RUN - self.SERVER_POWER_IDLE
         ) * self.SERVER_USAGE + self.SERVER_POWER_IDLE
-        wh_pue = wh * self.pue
+        # using SERVER_USAGE to avoid having the server at full power
+        # all the time
+        wh_pue = wh * self.pue  # Pondering the consumption with the PUE
         kwh_day = (wh_pue * 24) / 1000
         return kwh_day * self.electricity_mix + amortization_day
 
@@ -138,6 +152,10 @@ class StorageImpact(ImpactSource):
         super().__init__(self._compute_disk_day())
 
     def _compute_disk_day(self) -> float:
+        """
+        Compute the co2 of a 1tb disk for a day, using amortization and power consumption
+        :return: co2/disk(1tb)
+        """
         amortization_day = self.DISK_FABRICATION_CO2 / (self.DISK_LIFE * 365)
         wh_pue = self.SSD_WH * self.pue
         kwh_day = (wh_pue * 24) / 1000
@@ -182,6 +200,10 @@ class TransportImpact(ImpactSource):
     MEAN_DISTANCE = 19 * 2
 
     def __init__(self):
+        """
+        Using the ratios of transportation mode, define a generic co2 emissions/km
+        Then multiply by the mean distance per day per person
+        """
         co2_km = (
             self.FOOT_PERCENTAGE * 0
             + self.BIKE_PERCENTAGE * BikeImpact().co2
