@@ -36,14 +36,15 @@ class StandardProject(Project):
         self.spec_days = 200
         self.management_days = 1000
         self.maintenance_days = 700
-        self.user_hours = 150000
         # ADEME https://bilans-ges.ademe.fr/fr/accueil/documentation-gene/index/page/Electricite_reglementaire
         self.electricity_mix = 0.0599
         self.pue = 1.5
         self.servers_count = 6
         self.storage_tb = 40
-        self.network_gb = 1000000
         self.run_duration_days = 365
+        self.avg_user_day = 300
+        self.avg_user_minutes = 30
+        self.avg_user_data = 1
 
         self.root_task = StandardProjectTask(
             self.dev_days,
@@ -51,13 +52,14 @@ class StandardProject(Project):
             self.spec_days,
             self.management_days,
             self.maintenance_days,
-            self.user_hours,
             self.electricity_mix,
             self.pue,
             self.servers_count,
             self.storage_tb,
-            self.network_gb,
             self.run_duration_days,
+            self.avg_user_day,
+            self.avg_user_minutes,
+            self.avg_user_data,
         )
         super().__init__(self.root_task)
 
@@ -106,15 +108,6 @@ class StandardProject(Project):
         self.maintenance_days = maintenance_days
         self.root_task.set_maintenance_days(maintenance_days)
 
-    def set_user_hours(self, user_hours: int):
-        """
-        Setter for user hours on the application
-        :param user_hours: user hours on the app
-        :return: None
-        """
-        self.user_hours = user_hours
-        self.root_task.set_user_hours(user_hours)
-
     def set_servers_count(self, servers_count: int):
         """
         Setter for server quantity reserved by the application
@@ -132,15 +125,6 @@ class StandardProject(Project):
         """
         self.storage_tb = storage_tb
         self.root_task.set_storage_tb(storage_tb)
-
-    def set_network_gb(self, network_gb: int):
-        """
-        Data transferred induced by the application
-        :param network_gb: gb transferred
-        :return: None
-        """
-        self.network_gb = network_gb
-        self.root_task.set_network_gb(network_gb)
 
     def set_electricity_mix(self, electricity_mix: float):
         """
@@ -168,3 +152,30 @@ class StandardProject(Project):
         """
         self.run_duration_days = run_duration_days
         self.root_task.set_run_duration(run_duration_days)
+
+    def set_avg_user_day(self, avg_user_day: int):
+        """
+        Setter for avg number of user each day
+        :param avg_user_day: avg user each day
+        :return: None
+        """
+        self.avg_user_day = avg_user_day
+        self.root_task.set_avg_user_day(avg_user_day)
+
+    def set_avg_user_minutes(self, avg_user_minutes: int):
+        """
+        Setter for avg time user spend on app each day in minutes
+        :param avg_user_minutes: minutes per day per user
+        :return: None
+        """
+        self.avg_user_minutes = avg_user_minutes
+        self.root_task.set_avg_user_minutes(avg_user_minutes)
+
+    def set_avg_user_data(self, avg_user_data: float):
+        """
+        Setter for avg user data each day as float gb
+        :param avg_user_data: gb per day per user
+        :return: None
+        """
+        self.avg_user_data = avg_user_data
+        self.root_task.set_avg_user_data(avg_user_data)

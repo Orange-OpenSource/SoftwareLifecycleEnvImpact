@@ -96,14 +96,14 @@ class NetworkResource(Resource):
     Network resource, gb transferred as quantity and network as impact
     """
 
-    def __init__(self, network_gb: int):
+    def __init__(self, network_gb: float):
         self.network_impact = NetworkImpact()
         super().__init__(network_gb, impacts=[self.network_impact])
 
     def get_co2_impact(self) -> float:
         return self.network_impact.co2 * self.quantity
 
-    def set_gb(self, network_gb: int):
+    def set_gb(self, network_gb: float):
         """
         Set resource quantity as gb transferred
         :param network_gb: gb transferred
@@ -196,17 +196,17 @@ class UserDeviceResource(Resource):
     User devices resources, hours as inputs and devices lifecycle as impacts
     """
 
-    def __init__(self, user_hours: int):
+    def __init__(self, user_hours: float):
         self.device_source = DeviceImpact()
         super().__init__(user_hours, [self.device_source])
 
     def get_co2_impact(self) -> float:
         return self.device_source.co2 * self.quantity
 
-    def set_user_hours(self, user_hours: int):
+    def set_user_hours(self, user_hours: float):
         """
         Setter for user hours as resource quantity
-        :param user_hours: users spend by users on app
+        :param user_hours: hours spend by users on app on complete lifecycle
         :return: None
         """
         self.quantity = user_hours

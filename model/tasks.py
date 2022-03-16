@@ -145,7 +145,7 @@ class HostingTask(Task):
         pue: float,
         servers_count: int,
         storage_tb: int,
-        network_gb: int,
+        network_gb: float,
         duration_days: int,
     ):
         self.compute_resource = ComputeResource(
@@ -156,7 +156,12 @@ class HostingTask(Task):
         )
         self.network_resource = NetworkResource(network_gb)
         super().__init__(
-            "Hosting", resources=[self.compute_resource, self.storage_resource, self.network_resource]
+            "Hosting",
+            resources=[
+                self.compute_resource,
+                self.storage_resource,
+                self.network_resource,
+            ],
         )
 
     def set_servers_count(self, servers_count: int):
@@ -175,9 +180,9 @@ class HostingTask(Task):
         """
         self.storage_resource.set_storage_tb(storage_tb)
 
-    def set_network_gb(self, network_gb: int):
+    def set_network_gb(self, network_gb: float):
         """
-        Data transferred induced by the application
+        Data transferred induced by the application complete lifcecyle, in gb
         :param network_gb: gb transferred
         :return: None
         """
@@ -282,20 +287,32 @@ class RunTask(Task):
     def __init__(
         self,
         maintenance_days: int,
-        user_hours: int,
         electricity_mix: float,
         pue: float,
         servers_count: int,
         storage_tb: int,
-        network_gb: int,
         duration_days: int,
+        avg_user_day: int,
+        avg_user_minutes: int,
+        avg_user_data: float,
     ):
+
+        self.avg_user_day = avg_user_day
+        self.avg_user_minutes = avg_user_minutes
+        self.avg_user_data = avg_user_data
+        self.run_duration_days = duration_days
+
         self.maintenance_task = MaintenanceTask(maintenance_days)
         self.hosting_task = HostingTask(
-            electricity_mix, pue, servers_count, storage_tb, network_gb, duration_days
+            electricity_mix,
+            pue,
+            servers_count,
+            storage_tb,
+            self._compute_users_data(),
+            duration_days,
         )
 
-        self.user_device_res = UserDeviceResource(user_hours)
+        self.user_device_res = UserDeviceResource(self._compute_users_hours())
 
         super().__init__(
             "Run",
@@ -310,14 +327,6 @@ class RunTask(Task):
         :return: None
         """
         self.maintenance_task.set_maintenance_days(maintenance_days)
-
-    def set_user_hours(self, user_hours: int):
-        """
-        Setter for user hours on the application
-        :param user_hours: user hours on the app
-        :return: None
-        """
-        self.user_device_res.set_user_hours(user_hours)
 
     def set_servers_count(self, servers_count: int):
         """
@@ -334,14 +343,6 @@ class RunTask(Task):
         :return: None
         """
         self.hosting_task.set_storage_tb(storage_tb)
-
-    def set_network_gb(self, network_gb: int):
-        """
-        Data transferred induced by the application
-        :param network_gb: gb transferred
-        :return: None
-        """
-        self.hosting_task.set_network_gb(network_gb)
 
     def set_electricity_mix(self, electricity_mix: float):
         """
@@ -367,6 +368,44 @@ class RunTask(Task):
         :return: None
         """
         self.hosting_task.set_run_duration(run_duration_days)
+        self.run_duration_days = run_duration_days
+
+        self.user_device_res.set_user_hours(self._compute_users_hours())
+        self.hosting_task.set_network_gb(self._compute_users_data())
+
+    def set_avg_user_day(self, avg_user_day: int):
+        """
+        Setter for avg number of user each day
+        :param avg_user_day: avg user each day
+        :return: None
+        """
+        self.avg_user_day = avg_user_day
+        self.user_device_res.set_user_hours(self._compute_users_hours())
+        self.hosting_task.set_network_gb(self._compute_users_data())
+
+    def set_avg_user_minutes(self, avg_user_minutes: int):
+        """
+        Setter for avg time user spend on app each day in minutes
+        :param avg_user_minutes: minutes per day per user
+        :return: None
+        """
+        self.avg_user_minutes = avg_user_minutes
+        self.user_device_res.set_user_hours(self._compute_users_hours())
+
+    def set_avg_user_data(self, avg_user_data: float):
+        """
+        Setter for avg user data each day as float gb
+        :param avg_user_data: gb per day per user
+        :return: None
+        """
+        self.avg_user_data = avg_user_data
+        self.hosting_task.set_network_gb(self._compute_users_data())
+
+    def _compute_users_hours(self) -> float:
+        return (self.avg_user_minutes / 60) * self.avg_user_day * self.run_duration_days
+
+    def _compute_users_data(self):
+        return self.avg_user_data * self.avg_user_day * self.run_duration_days
 
 
 class SpecTask(Task):
@@ -403,24 +442,26 @@ class StandardProjectTask(Task):
         spec_days: int,
         management_days: int,
         maintenance_days: int,
-        user_hours: int,
         electricity_mix: float,
         pue: float,
         servers_count: int,
         storage_tb: int,
-        network_gb: int,
         run_duration: int,
+        avg_user_day: int,
+        avg_user_minutes: int,
+        avg_user_data: int,
     ):
         self.build_task = BuildTask(dev_days, design_days, spec_days, management_days)
         self.run_task = RunTask(
             maintenance_days,
-            user_hours,
             electricity_mix,
             pue,
             servers_count,
             storage_tb,
-            network_gb,
             run_duration,
+            avg_user_day,
+            avg_user_minutes,
+            avg_user_data,
         )
         super().__init__("Standard project", subtasks=[self.build_task, self.run_task])
 
@@ -464,14 +505,6 @@ class StandardProjectTask(Task):
         """
         self.run_task.set_maintenance_days(maintenance_days)
 
-    def set_user_hours(self, user_hours: int):
-        """
-        Setter for user hours on the application
-        :param user_hours: user hours on the app
-        :return: None
-        """
-        self.run_task.set_user_hours(user_hours)
-
     def set_servers_count(self, servers_count: int):
         """
         Setter for server quantity reserved by the application
@@ -487,14 +520,6 @@ class StandardProjectTask(Task):
         :return: None
         """
         self.run_task.set_storage_tb(storage_tb)
-
-    def set_network_gb(self, network_gb: int):
-        """
-        Data transferred induced by the application
-        :param network_gb: gb transferred
-        :return: None
-        """
-        self.run_task.set_network_gb(network_gb)
 
     def set_electricity_mix(self, electricity_mix: float):
         """
@@ -519,3 +544,27 @@ class StandardProjectTask(Task):
         :return: None
         """
         self.run_task.set_run_duration(run_duration_days)
+
+    def set_avg_user_day(self, avg_user_day: int):
+        """
+        Setter for avg number of user each day
+        :param avg_user_day: avg user each day
+        :return: None
+        """
+        self.run_task.set_avg_user_day(avg_user_day)
+
+    def set_avg_user_minutes(self, avg_user_minutes: int):
+        """
+        Setter for avg time user spend on app each day in minutes
+        :param avg_user_minutes: minutes per day per user
+        :return: None
+        """
+        self.run_task.set_avg_user_minutes(avg_user_minutes)
+
+    def set_avg_user_data(self, avg_user_data: float):
+        """
+        Setter for avg user data each day as float gb
+        :param avg_user_data: gb per day per user
+        :return: None
+        """
+        self.run_task.set_avg_user_data(avg_user_data)
