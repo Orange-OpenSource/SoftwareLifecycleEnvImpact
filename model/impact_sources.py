@@ -4,7 +4,15 @@ class ImpactSource:
     """
 
     def __init__(self, co2: float):
-        self.co2: float = co2
+        self._co2: float = co2
+
+    @property
+    def co2(self):
+        """
+        Getter for co2 property
+        :return: co2 as float
+        """
+        return self._co2
 
 
 class DeviceImpact(ImpactSource):
@@ -24,7 +32,7 @@ class DeviceImpact(ImpactSource):
 
     def __init__(self):
         """
-        Standard ratio for one hour of user device, half on a laptop and the ohter on a smartphone
+        Standard ratio for one hour of user device, half on a laptop and the other on a smartphone
         """
         smartphone_day_co2 = self.SMARTPHONE_CO2 / (self.SMARTPHONE_LIFE * 365)
         smartphone_hour_co2 = smartphone_day_co2 / self.SMARTPHONE_DAILY_USE
@@ -97,28 +105,10 @@ class ServerImpact(ImpactSource):
     def __init__(self, electricity_mix: float, pue: float):
         self.electricity_mix = electricity_mix
         self.pue = pue
-        super().__init__(self._compute_server_day())
+        super().__init__(self.co2)
 
-    def set_electricity_mix(self, electricity_mix: float):
-        """
-        Setter for electricity-mix co2e emissions used by application devices/datacenters
-        Update the servers emissions
-        :param electricity_mix: The mix
-        :return: None
-        """
-        self.electricity_mix = electricity_mix
-        self.co2 = self._compute_server_day()
-
-    def set_pue(self, pue: float):
-        """
-        Setter for the power usage effectiveness of the DC
-        :param pue: the pue
-        :return: None
-        """
-        self.pue = pue
-        self.co2 = self._compute_server_day()
-
-    def _compute_server_day(self) -> float:
+    @property
+    def co2(self):
         """
         Compute the co2 cost of a server, adding consumption pondered with pue and amortization
         :return: co2e / day
@@ -149,9 +139,10 @@ class StorageImpact(ImpactSource):
     def __init__(self, electricity_mix: float, pue: float):
         self.electricity_mix = electricity_mix
         self.pue = pue
-        super().__init__(self._compute_disk_day())
+        super().__init__(self.co2)
 
-    def _compute_disk_day(self) -> float:
+    @property
+    def co2(self):
         """
         Compute the co2 of a 1tb disk for a day, using amortization and power consumption
         :return: co2/disk(1tb)
@@ -160,25 +151,6 @@ class StorageImpact(ImpactSource):
         wh_pue = self.SSD_WH * self.pue
         kwh_day = (wh_pue * 24) / 1000
         return kwh_day * self.electricity_mix + amortization_day
-
-    def set_electricity_mix(self, electricity_mix: float):
-        """
-        Setter for electricity-mix co2e emissions used by application devices/datacenters
-        Update the servers emissions
-        :param electricity_mix: The mix
-        :return: None
-        """
-        self.electricity_mix = electricity_mix
-        self.co2 = self._compute_disk_day()
-
-    def set_pue(self, pue: float):
-        """
-        Setter for the power usage effectiveness of the DC
-        :param pue: the pue
-        :return: None
-        """
-        self.pue = pue
-        self.co2 = self._compute_disk_day()
 
 
 class TransportImpact(ImpactSource):

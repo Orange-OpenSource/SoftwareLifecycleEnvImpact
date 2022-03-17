@@ -65,38 +65,6 @@ class BuildTask(Task):
             subtasks=[self.implementation_task, self.spec_task, self.management_task],
         )
 
-    def set_dev_days(self, dev_days: int):
-        """
-        Setter for development man-days
-        :param dev_days: development man-days
-        :return: None
-        """
-        self.implementation_task.set_dev_days(dev_days)
-
-    def set_design_days(self, design_days: int):
-        """
-        Setter for design man-days
-        :param design_days: design man-days
-        :return: None
-        """
-        self.implementation_task.set_design_days(design_days)
-
-    def set_spec_days(self, spec_days: int):
-        """
-        Setter for specification and requirements man-days
-        :param spec_days: specification and requirements man-days
-        :return: None
-        """
-        self.spec_task.set_spec_days(spec_days)
-
-    def set_management_days(self, management_days: int):
-        """
-        Setter for management man-days
-        :param management_days: management man-days
-        :return: None
-        """
-        self.management_task.set_management_days(management_days)
-
 
 class DevTask(Task):
     """
@@ -107,14 +75,6 @@ class DevTask(Task):
         self.people_resource = PeopleResource(dev_days)
         super().__init__("Development", resources=[self.people_resource])
 
-    def set_dev_days(self, dev_days: int):
-        """
-        Setter for development man-days
-        :param dev_days: development man-days
-        :return: None
-        """
-        self.people_resource.set_man_days(dev_days)
-
 
 class DesignTask(Task):
     """
@@ -124,14 +84,6 @@ class DesignTask(Task):
     def __init__(self, design_days: int):
         self.people_resource = PeopleResource(design_days)
         super().__init__("Design", resources=[self.people_resource])
-
-    def set_design_days(self, design_days: int):
-        """
-        Setter for design man-days
-        :param design_days: design man-days
-        :return: None
-        """
-        self.people_resource.set_man_days(design_days)
 
 
 class HostingTask(Task):
@@ -148,12 +100,18 @@ class HostingTask(Task):
         network_gb: float,
         duration_days: int,
     ):
+        self._pue = pue
+        self._servers_count = servers_count
+        self._storage_tb = storage_tb
+        self._duration_days = duration_days
+        self._electricity_mix = electricity_mix
         self.compute_resource = ComputeResource(
-            electricity_mix, pue, servers_count, duration_days
-        )
+            self._electricity_mix, self.pue, self.server_days
+        )  # TODO update server_days
         self.storage_resource = StorageResource(
-            electricity_mix, pue, storage_tb, duration_days
+            electricity_mix, pue, self.storage_days  # TODO update storage_days
         )
+
         self.network_resource = NetworkResource(network_gb)
         super().__init__(
             "Hosting",
@@ -164,55 +122,58 @@ class HostingTask(Task):
             ],
         )
 
-    def set_servers_count(self, servers_count: int):
-        """
-        Setter for server quantity reserved by the application
-        :param servers_count: servers reserved by the app
-        :return: None
-        """
-        self.compute_resource.set_servers_count(servers_count)
+    @property
+    def server_days(self):
+        """Server days reserved by the application as number reserved * duration in days"""
+        return self._servers_count * self.duration_days
 
-    def set_storage_tb(self, storage_tb: int):
-        """
-        Setter for storage tb reserved by the application
-        :param storage_tb: storage tb reserved by the app
-        :return: None
-        """
-        self.storage_resource.set_storage_tb(storage_tb)
+    @property
+    def storage_days(self):
+        """Storage days reserved by the application as tb reserved * duration in days"""
+        return self._storage_tb * self.duration_days
 
-    def set_network_gb(self, network_gb: float):
-        """
-        Data transferred induced by the application complete lifcecyle, in gb
-        :param network_gb: gb transferred
-        :return: None
-        """
-        self.network_resource.set_gb(network_gb)
+    @property
+    def pue(self):
+        """Power Usage Effectiveness of the DC"""
+        return self._pue
 
-    def set_electricity_mix(self, electricity_mix: float):
+    @pue.setter
+    def pue(self, pue: float):
         """
-        Setter for electricity-mix co2e emissions used by application devices/datacenters
-        :param electricity_mix: The mix
-        :return: None
-        """
-        self.compute_resource.set_electricity_mix(electricity_mix)
-        self.storage_resource.set_electricity_mix(electricity_mix)
-
-    def set_pue(self, pue: float):
-        """
-        Setter for the power usage effectiveness of the DC
+        Power usage effectiveness of the DC
         :param pue: the pue
         :return: None
         """
-        self.compute_resource.set_pue(pue)
+        self._pue = pue
+        self.compute_resource.server_impact.pue = pue  # TODO remove
+        self.storage_resource.storage_impact.pue = pue  # TODO remove
 
-    def set_run_duration(self, run_duration_days: int):
+    @property
+    def electricity_mix(self):
+        """Electricity mix CO2e emissions of the DC"""
+        return self._electricity_mix
+
+    @electricity_mix.setter
+    def electricity_mix(self, electricity_mix: float):
+        self._electricity_mix = electricity_mix
+        self.compute_resource.server_impact.pue = electricity_mix  # TODO remove
+        self.storage_resource.storage_impact.pue = electricity_mix  # TODO remove
+
+    @property
+    def duration_days(self):
+        """Days of the phase"""
+        return self._duration_days
+
+    @duration_days.setter
+    def duration_days(self, duration_days: int):
         """
         Setter for the phase run duration as days
-        :param run_duration_days: run duration as days
+        :param duration_days: run duration as days
         :return: None
         """
-        self.storage_resource.set_duration(run_duration_days)
-        self.compute_resource.set_duration(run_duration_days)
+        self._duration_days = duration_days
+        self.compute_resource.quantity = self.server_days
+        self.storage_resource.quantity = self.storage_days
 
 
 class ImplementationTask(Task):
@@ -225,22 +186,6 @@ class ImplementationTask(Task):
         self.design_task = DesignTask(design_days)
         super().__init__("Implementation", subtasks=[self.dev_task, self.design_task])
 
-    def set_dev_days(self, dev_days: int):
-        """
-        Setter for development man-days
-        :param dev_days: development man-days
-        :return: None
-        """
-        self.dev_task.set_dev_days(dev_days)
-
-    def set_design_days(self, design_days: int):
-        """
-        Setter for design man-days
-        :param design_days: design man-days
-        :return: None
-        """
-        self.design_task.set_design_days(design_days)
-
 
 class ManagementTask(Task):
     """
@@ -251,14 +196,6 @@ class ManagementTask(Task):
         self.people_resource = PeopleResource(management_days)
         super().__init__("Management", resources=[self.people_resource])
 
-    def set_management_days(self, management_days: int):
-        """
-        Setter for management man-days
-        :param management_days: management man-days
-        :return: None
-        """
-        self.people_resource.set_man_days(management_days)
-
 
 class MaintenanceTask(Task):
     """
@@ -268,14 +205,6 @@ class MaintenanceTask(Task):
     def __init__(self, maintenance_days: int):
         self.people_resource = PeopleResource(maintenance_days)
         super().__init__("Maintenance", resources=[self.people_resource])
-
-    def set_maintenance_days(self, maintenance_days: int):
-        """
-        Setter for maintenance man-days
-        :param maintenance_days: management man-days
-        :return: None
-        """
-        self.people_resource.set_man_days(maintenance_days)
 
 
 class RunTask(Task):
@@ -300,7 +229,8 @@ class RunTask(Task):
         self.avg_user_day = avg_user_day
         self.avg_user_minutes = avg_user_minutes
         self.avg_user_data = avg_user_data
-        self.run_duration_days = duration_days
+        self.duration_days = duration_days  # TODO make as property
+        self.storage_tb = storage_tb  # TODO make as a property
 
         self.maintenance_task = MaintenanceTask(maintenance_days)
         self.hosting_task = HostingTask(
@@ -308,11 +238,11 @@ class RunTask(Task):
             pue,
             servers_count,
             storage_tb,
-            self._compute_users_data(),
+            self.users_data,
             duration_days,
         )
 
-        self.user_device_res = UserDeviceResource(self._compute_users_hours())
+        self.user_device_res = UserDeviceResource(self.users_hours)
 
         super().__init__(
             "Run",
@@ -320,92 +250,15 @@ class RunTask(Task):
             subtasks=[self.maintenance_task, self.hosting_task],
         )
 
-    def set_maintenance_days(self, maintenance_days: int):
-        """
-        Setter for maintenance man-days
-        :param maintenance_days: management man-days
-        :return: None
-        """
-        self.maintenance_task.set_maintenance_days(maintenance_days)
+    @property
+    def users_hours(self):
+        """Hours users spend on the app during the entire phase"""
+        return (self.avg_user_minutes / 60) * self.avg_user_day * self.duration_days
 
-    def set_servers_count(self, servers_count: int):
-        """
-        Setter for server quantity reserved by the application
-        :param servers_count: servers reserved by the app
-        :return: None
-        """
-        self.hosting_task.set_servers_count(servers_count)
-
-    def set_storage_tb(self, storage_tb: int):
-        """
-        Setter for storage tb reserved by the application
-        :param storage_tb: storage tb reserved by the app
-        :return: None
-        """
-        self.hosting_task.set_storage_tb(storage_tb)
-
-    def set_electricity_mix(self, electricity_mix: float):
-        """
-        Setter for electricity-mix co2e emissions used by application devices/datacenters
-        :param electricity_mix: The mix
-        :return: None
-        """
-        self.hosting_task.set_electricity_mix(electricity_mix)
-        # self.user_device_res.set_electricity_mix(electricity_mix)
-
-    def set_pue(self, pue: float):
-        """
-        Setter for the power usage effectiveness of the DC
-        :param pue: the pue
-        :return: None
-        """
-        self.hosting_task.set_pue(pue)
-
-    def set_run_duration(self, run_duration_days: int):
-        """
-        Setter for the phase run duration as days
-        :param run_duration_days: run duration as days
-        :return: None
-        """
-        self.hosting_task.set_run_duration(run_duration_days)
-        self.run_duration_days = run_duration_days
-
-        self.user_device_res.set_user_hours(self._compute_users_hours())
-        self.hosting_task.set_network_gb(self._compute_users_data())
-
-    def set_avg_user_day(self, avg_user_day: int):
-        """
-        Setter for avg number of user each day
-        :param avg_user_day: avg user each day
-        :return: None
-        """
-        self.avg_user_day = avg_user_day
-        self.user_device_res.set_user_hours(self._compute_users_hours())
-        self.hosting_task.set_network_gb(self._compute_users_data())
-
-    def set_avg_user_minutes(self, avg_user_minutes: int):
-        """
-        Setter for avg time user spend on app each day in minutes
-        :param avg_user_minutes: minutes per day per user
-        :return: None
-        """
-        self.avg_user_minutes = avg_user_minutes
-        self.user_device_res.set_user_hours(self._compute_users_hours())
-
-    def set_avg_user_data(self, avg_user_data: float):
-        """
-        Setter for avg user data each day as float gb
-        :param avg_user_data: gb per day per user
-        :return: None
-        """
-        self.avg_user_data = avg_user_data
-        self.hosting_task.set_network_gb(self._compute_users_data())
-
-    def _compute_users_hours(self) -> float:
-        return (self.avg_user_minutes / 60) * self.avg_user_day * self.run_duration_days
-
-    def _compute_users_data(self):
-        return self.avg_user_data * self.avg_user_day * self.run_duration_days
+    @property
+    def users_data(self):
+        """Data transfer induced byt the app usage during the entire phase"""
+        return self.avg_user_data * self.avg_user_day * self.duration_days
 
 
 class SpecTask(Task):
@@ -418,14 +271,6 @@ class SpecTask(Task):
         super().__init__(
             "Specifications and requirements", resources=[self.people_resource]
         )
-
-    def set_spec_days(self, spec_days: int):
-        """
-        Setter for specification and requirements man-days
-        :param spec_days: specification and requirements man-days
-        :return: None
-        """
-        self.people_resource.set_man_days(spec_days)
 
 
 class StandardProjectTask(Task):
@@ -464,107 +309,3 @@ class StandardProjectTask(Task):
             avg_user_data,
         )
         super().__init__("Standard project", subtasks=[self.build_task, self.run_task])
-
-    def set_dev_days(self, dev_days: int):
-        """
-        Setter for development man-days
-        :param dev_days: development days
-        :return: None
-        """
-        self.build_task.set_dev_days(dev_days)
-
-    def set_design_days(self, design_days: int):
-        """
-        Setter for design man-days
-        :param design_days: design man-days
-        :return: None
-        """
-        self.build_task.set_design_days(design_days)
-
-    def set_spec_days(self, spec_days: int):
-        """
-        Setter for specification and requirements man-days
-        :param spec_days: specification and requirements man-days
-        :return: None
-        """
-        self.build_task.set_spec_days(spec_days)
-
-    def set_management_days(self, management_days: int):
-        """
-        Setter for management man-days
-        :param management_days: management man-days
-        :return: None
-        """
-        self.build_task.set_management_days(management_days)
-
-    def set_maintenance_days(self, maintenance_days: int):
-        """
-        Setter for maintenance man-days
-        :param maintenance_days: management man-days
-        :return: None
-        """
-        self.run_task.set_maintenance_days(maintenance_days)
-
-    def set_servers_count(self, servers_count: int):
-        """
-        Setter for server quantity reserved by the application
-        :param servers_count: servers reserved by the app
-        :return: None
-        """
-        self.run_task.set_servers_count(servers_count)
-
-    def set_storage_tb(self, storage_tb: int):
-        """
-        Setter for storage tb reserved by the application
-        :param storage_tb: storage tb reserved by the app
-        :return: None
-        """
-        self.run_task.set_storage_tb(storage_tb)
-
-    def set_electricity_mix(self, electricity_mix: float):
-        """
-        Setter for electricity-mix co2e emissions used by application devices/datacenters
-        :param electricity_mix: The mix
-        :return: None
-        """
-        self.run_task.set_electricity_mix(electricity_mix)
-
-    def set_pue(self, pue: float):
-        """
-        Setter for the power usage effectiveness of the DC
-        :param pue: the pue
-        :return: None
-        """
-        self.run_task.set_pue(pue)
-
-    def set_run_duration(self, run_duration_days: int):
-        """
-        Setter for the phase run duration as days
-        :param run_duration_days: run duration as days
-        :return: None
-        """
-        self.run_task.set_run_duration(run_duration_days)
-
-    def set_avg_user_day(self, avg_user_day: int):
-        """
-        Setter for avg number of user each day
-        :param avg_user_day: avg user each day
-        :return: None
-        """
-        self.run_task.set_avg_user_day(avg_user_day)
-
-    def set_avg_user_minutes(self, avg_user_minutes: int):
-        """
-        Setter for avg time user spend on app each day in minutes
-        :param avg_user_minutes: minutes per day per user
-        :return: None
-        """
-        self.run_task.set_avg_user_minutes(avg_user_minutes)
-
-    def set_avg_user_data(self, avg_user_data: float):
-        """
-        Setter for avg user data each day as float gb
-        :param avg_user_data: gb per day per user
-        :return: None
-        """
-        self.run_task.set_avg_user_data(avg_user_data)
