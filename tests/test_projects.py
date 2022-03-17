@@ -96,19 +96,19 @@ def test_run_duration():
 def test_avg_user_day():
     """Test getter/setter of avg_user_day property"""
     s = StandardProject()
-    s.avg_user_day = 1000  # setter
-    assert s.avg_user_day == 1000  # getter
+    s.avg_user = 1000  # setter
+    assert s.avg_user == 1000  # getter
 
 
 def test_avg_user_minutes():
     """Test getter/setter of avg_user_minutes property"""
     s = StandardProject()
-    s.avg_user_minutes = 1000  # setter
-    assert s.avg_user_minutes == 1000  # getter
+    s.avg_time = 1000  # setter
+    assert s.avg_time == 1000  # getter
 
 
 def test_avg_user_data():
     """Test getter/setter of avg_user_data property"""
     s = StandardProject()
-    s.avg_user_data = 1000.999  # setter
-    assert s.avg_user_data == 1000.999  # getter
+    s.avg_data = 1000.999  # setter
+    assert s.avg_data == 1000.999  # getter

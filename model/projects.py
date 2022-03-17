@@ -131,13 +131,13 @@ class StandardProject(Project):
         self.root_task.run_task.hosting_task.pue = pue
 
     @property
-    def servers_count(self):
+    def servers_count(self) -> int:
         """Number of servers reserved by the application"""
-        return self.root_task.run_task
+        return self.root_task.run_task.hosting_task.servers_count
 
     @servers_count.setter
     def servers_count(self, servers_count: int):
-        self.root_task.run_task = servers_count
+        self.root_task.run_task.hosting_task.servers_count = servers_count
 
     @property
     def storage_size(self):
@@ -176,7 +176,7 @@ class StandardProject(Project):
         self.root_task.run_task.avg_time = avg_time
 
     @property
-    def avg_data(self):
+    def avg_data(self) -> float:
         """Average user data each day as float gb"""
         return self.root_task.run_task.avg_data
 
