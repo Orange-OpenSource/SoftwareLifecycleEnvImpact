@@ -1,4 +1,3 @@
-from typing import Any, Union
 from model.tasks import Task, StandardProjectTask
 
 
@@ -15,14 +14,7 @@ class Project:
         Compute and return the project global CO2e footprint
         :return: project global impact
         """
-        return self.root_task.get_impact()
-
-    def get_impact_by_task(self) -> dict[str, Union[Union[float, list[None]], Any]]:
-        """
-        Compute the tasks impacts, regrouped by task/subtask
-        :return: for each node the name, the associated co2 and the same thing for each  of its subtasks
-        """
-        return self.root_task.get_impact_by_task()
+        return self.root_task.get_co2_impact()
 
 
 class StandardProject(Project):
@@ -40,11 +32,11 @@ class StandardProject(Project):
         electricity_mix = 0.0599
         pue = 1.5
         servers_count = 6
-        storage_tb = 40
+        storage_size = 40
         run_duration = 365
-        avg_user_day = 300
-        avg_user_minutes = 30
-        avg_user_data = 1
+        avg_user = 300
+        avg_time = 30
+        avg_data = 1
 
         self.root_task = StandardProjectTask(
             dev_days,
@@ -55,11 +47,11 @@ class StandardProject(Project):
             electricity_mix,
             pue,
             servers_count,
-            storage_tb,
+            storage_size,
             run_duration,
-            avg_user_day,
-            avg_user_minutes,
-            avg_user_data,
+            avg_user,
+            avg_time,
+            avg_data,
         )
         super().__init__(self.root_task)
 
@@ -148,46 +140,46 @@ class StandardProject(Project):
         self.root_task.run_task = servers_count
 
     @property
-    def storage_tb(self):
+    def storage_size(self):
         """Storage tb reserved by the application"""
-        return self.root_task.run_task.hosting_task.storage_tb
+        return self.root_task.run_task.hosting_task.storage_size
 
-    @storage_tb.setter
-    def storage_tb(self, storage_tb: int):
-        self.root_task.run_task.hosting_task.storage_tb = storage_tb
+    @storage_size.setter
+    def storage_size(self, storage_size: int):
+        self.root_task.run_task.hosting_task.storage_size = storage_size
 
     @property
     def run_duration(self):
         """Run phase duration as days"""
-        return self.root_task.run_task.run_duration_days
+        return self.root_task.run_task.duration
 
     @run_duration.setter
     def run_duration(self, run_duration: int):
-        self.root_task.run_task.duration_days = run_duration
+        self.root_task.run_task.duration = run_duration
 
     @property
-    def avg_user_day(self):
+    def avg_user(self):
         """Average number of user each day"""
-        return self.root_task.run_task.avg_user_day
+        return self.root_task.run_task.avg_user
 
-    @avg_user_day.setter
-    def avg_user_day(self, avg_user_day: int):
-        self.root_task.run_task.avg_user_day = avg_user_day
+    @avg_user.setter
+    def avg_user(self, avg_user: int):
+        self.root_task.run_task.avg_user = avg_user
 
     @property
-    def avg_user_minutes(self):
+    def avg_time(self):
         """Average time user spend on app each day in minutes"""
-        return self.root_task.run_task.avg_user_minutes
+        return self.root_task.run_task.avg_time
 
-    @avg_user_minutes.setter
-    def avg_user_minutes(self, avg_user_minutes: int):
-        self.root_task.run_task.avg_user_minutes = avg_user_minutes
+    @avg_time.setter
+    def avg_time(self, avg_time: int):
+        self.root_task.run_task.avg_time = avg_time
 
     @property
-    def avg_user_data(self):
+    def avg_data(self):
         """Average user data each day as float gb"""
-        return self.root_task.run_task.avg_user_data
+        return self.root_task.run_task.avg_data
 
-    @avg_user_data.setter
-    def avg_user_data(self, avg_user_data: float):
-        self.root_task.run_task.avg_user_data = avg_user_data
+    @avg_data.setter
+    def avg_data(self, avg_data: float):
+        self.root_task.run_task.avg_data = avg_data

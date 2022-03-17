@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from abc import ABC
-from typing import Any, List
+from typing import List
 
 from model.resources import (
     PeopleResource,
@@ -27,25 +27,14 @@ class Task(ABC):
         self.subtasks = subtasks
         self.resources = resources
 
-    def get_impact(self) -> float:
+    def get_co2_impact(self) -> float:
         """
         Compute and return the impact of the task and those of the subtasks
         :return: co2 impact of task and subtasks
         """
         return sum(r.get_co2_impact() for r in self.resources) + sum(
-            s.get_impact() for s in self.subtasks
+            s.get_co2_impact() for s in self.subtasks
         )
-
-    def get_impact_by_task(self) -> dict[str, float | list[None] | Any]:
-        """
-        Function traversing the tree to retrieve all the impacts for the jupyter notebook
-        :return: for each node the name, the associated co2 and the same thing for each  of its subtasks
-        """
-        return {
-            "name": self.name,
-            "co2e": self.get_impact(),
-            "subtasks": [s.get_impact_by_task() for s in self.subtasks],
-        }
 
 
 class BuildTask(Task):
@@ -96,20 +85,22 @@ class HostingTask(Task):
         electricity_mix: float,
         pue: float,
         servers_count: int,
-        storage_tb: int,
+        storage_size: int,
         network_gb: float,
-        duration_days: int,
+        duration: int,
     ):
+        self._electricity_mix = electricity_mix
         self._pue = pue
         self._servers_count = servers_count
-        self._storage_tb = storage_tb
-        self._duration_days = duration_days
-        self._electricity_mix = electricity_mix
+        self._storage_size = storage_size
+        self._network_gb = (network_gb,)
+        self._duration = duration
+
         self.compute_resource = ComputeResource(
-            self._electricity_mix, self.pue, self.server_days
-        )  # TODO update server_days
+            self.electricity_mix, self.pue, self.server_days
+        )
         self.storage_resource = StorageResource(
-            electricity_mix, pue, self.storage_days  # TODO update storage_days
+            self.electricity_mix, self.pue, self.storage_days
         )
 
         self.network_resource = NetworkResource(network_gb)
@@ -125,12 +116,32 @@ class HostingTask(Task):
     @property
     def server_days(self):
         """Server days reserved by the application as number reserved * duration in days"""
-        return self._servers_count * self.duration_days
+        return self.servers_count * self.duration
 
     @property
     def storage_days(self):
         """Storage days reserved by the application as tb reserved * duration in days"""
-        return self._storage_tb * self.duration_days
+        return self.storage_size * self.duration
+
+    @property
+    def servers_count(self):
+        """Number of servers reserved"""
+        return self._servers_count
+
+    @servers_count.setter
+    def servers_count(self, servers_count: int):
+        self._servers_count = servers_count
+        self.compute_resource.quantity = self.server_days
+
+    @property
+    def storage_size(self):
+        """Tb reserved"""
+        return self._storage_size
+
+    @storage_size.setter
+    def storage_size(self, storage_size: int):
+        self._storage_size = storage_size
+        self.storage_resource.quantity = self.storage_days
 
     @property
     def pue(self):
@@ -145,8 +156,8 @@ class HostingTask(Task):
         :return: None
         """
         self._pue = pue
-        self.compute_resource.server_impact.pue = pue  # TODO remove
-        self.storage_resource.storage_impact.pue = pue  # TODO remove
+        self.compute_resource.server_impact.pue = pue
+        self.storage_resource.storage_impact.pue = pue
 
     @property
     def electricity_mix(self):
@@ -156,22 +167,22 @@ class HostingTask(Task):
     @electricity_mix.setter
     def electricity_mix(self, electricity_mix: float):
         self._electricity_mix = electricity_mix
-        self.compute_resource.server_impact.pue = electricity_mix  # TODO remove
-        self.storage_resource.storage_impact.pue = electricity_mix  # TODO remove
+        self.compute_resource.server_impact.electricity_mix = self.electricity_mix
+        self.storage_resource.storage_impact.electricity_mix = self.electricity_mix
 
     @property
-    def duration_days(self):
+    def duration(self):
         """Days of the phase"""
-        return self._duration_days
+        return self._duration
 
-    @duration_days.setter
-    def duration_days(self, duration_days: int):
+    @duration.setter
+    def duration(self, duration: int):
         """
         Setter for the phase run duration as days
-        :param duration_days: run duration as days
+        :param duration: run duration as days
         :return: None
         """
-        self._duration_days = duration_days
+        self._duration = duration
         self.compute_resource.quantity = self.server_days
         self.storage_resource.quantity = self.storage_days
 
@@ -219,27 +230,27 @@ class RunTask(Task):
         electricity_mix: float,
         pue: float,
         servers_count: int,
-        storage_tb: int,
-        duration_days: int,
-        avg_user_day: int,
-        avg_user_minutes: int,
-        avg_user_data: float,
+        storage_size: int,
+        duration: int,
+        avg_user: int,
+        avg_time: int,
+        avg_data: float,
     ):
 
-        self.avg_user_day = avg_user_day
-        self.avg_user_minutes = avg_user_minutes
-        self.avg_user_data = avg_user_data
-        self.duration_days = duration_days  # TODO make as property
-        self.storage_tb = storage_tb  # TODO make as a property
+        self._duration = duration
+        self._avg_user = avg_user
+        self._avg_time = avg_time
+        self._avg_data = avg_data
+        self._storage_size = storage_size
 
         self.maintenance_task = MaintenanceTask(maintenance_days)
         self.hosting_task = HostingTask(
             electricity_mix,
             pue,
             servers_count,
-            storage_tb,
+            storage_size,
             self.users_data,
-            duration_days,
+            duration,
         )
 
         self.user_device_res = UserDeviceResource(self.users_hours)
@@ -251,14 +262,55 @@ class RunTask(Task):
         )
 
     @property
+    def duration(self):
+        """Run phase duration in days"""
+        return self._duration
+
+    @duration.setter
+    def duration(self, duration: int):
+        self._duration = duration
+        self.hosting_task.duration = duration
+
+    @property
+    def avg_user(self):
+        """Average users per day"""
+        return self._avg_user
+
+    @avg_user.setter
+    def avg_user(self, avg_user: int):
+        self._avg_user = avg_user
+        self.user_device_res.quantity = self.users_hours
+        self.hosting_task.network_resource.quantity = self.users_data
+
+    @property
+    def avg_time(self):
+        """Average time per user per day"""
+        return self._avg_time
+
+    @avg_time.setter
+    def avg_time(self, avg_time: int):
+        self._avg_time = avg_time
+        self.user_device_res.quantity = self.users_hours
+
+    @property
+    def avg_data(self):
+        """Average data per user per day"""
+        return self._avg_data
+
+    @avg_data.setter
+    def avg_data(self, avg_data: int):
+        self._avg_data = avg_data
+        self.hosting_task.network_resource.quantity = self.users_data
+
+    @property
     def users_hours(self):
         """Hours users spend on the app during the entire phase"""
-        return (self.avg_user_minutes / 60) * self.avg_user_day * self.duration_days
+        return (self.avg_time / 60) * self.avg_user * self.duration
 
     @property
     def users_data(self):
         """Data transfer induced byt the app usage during the entire phase"""
-        return self.avg_user_data * self.avg_user_day * self.duration_days
+        return self.avg_data * self.avg_user * self.duration
 
 
 class SpecTask(Task):
@@ -290,11 +342,11 @@ class StandardProjectTask(Task):
         electricity_mix: float,
         pue: float,
         servers_count: int,
-        storage_tb: int,
+        storage_size: int,
         run_duration: int,
-        avg_user_day: int,
-        avg_user_minutes: int,
-        avg_user_data: int,
+        avg_user: int,
+        avg_time: int,
+        avg_data: int,
     ):
         self.build_task = BuildTask(dev_days, design_days, spec_days, management_days)
         self.run_task = RunTask(
@@ -302,10 +354,10 @@ class StandardProjectTask(Task):
             electricity_mix,
             pue,
             servers_count,
-            storage_tb,
+            storage_size,
             run_duration,
-            avg_user_day,
-            avg_user_minutes,
-            avg_user_data,
+            avg_user,
+            avg_time,
+            avg_data,
         )
         super().__init__("Standard project", subtasks=[self.build_task, self.run_task])
