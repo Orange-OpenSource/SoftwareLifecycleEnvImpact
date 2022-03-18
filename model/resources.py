@@ -25,7 +25,7 @@ class Resource:
         Compute and return the co2-equivalent impact associated to the given quantity
         :return: the impact
         """
-        co2 = 0
+        co2 = 0.0
         for impact in self.impacts:
             co2 += self.quantity * impact.co2
         return co2
@@ -46,7 +46,7 @@ class StorageResource(Resource):
     Storage resources, tb * duration as input, disks lifecycle as impact
     """
 
-    def __init__(self, electricity_mix: float, pue: float, tb_days: int):
+    def __init__(self, electricity_mix: float, pue: float, tb_days: float):
         self.storage_impact = StorageImpact(electricity_mix, pue)
         super().__init__(tb_days, impacts=[self.storage_impact])
 

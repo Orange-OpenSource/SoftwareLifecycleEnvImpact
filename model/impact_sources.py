@@ -7,7 +7,7 @@ class ImpactSource:
         self._co2: float = co2
 
     @property
-    def co2(self):
+    def co2(self) -> float:
         """
         Getter for co2 property
         :return: co2 as float
@@ -108,7 +108,7 @@ class ServerImpact(ImpactSource):
         super().__init__(self.co2)
 
     @property
-    def co2(self):
+    def co2(self) -> float:
         """
         Compute the co2 cost of a server, adding consumption pondered with pue and amortization
         :return: co2e / day
@@ -142,7 +142,7 @@ class StorageImpact(ImpactSource):
         super().__init__(self.co2)
 
     @property
-    def co2(self):
+    def co2(self) -> float:
         """
         Compute the co2 of a 1tb disk for a day, using amortization and power consumption
         :return: co2/disk(1tb)

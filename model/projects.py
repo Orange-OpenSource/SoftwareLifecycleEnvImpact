@@ -56,7 +56,7 @@ class StandardProject(Project):
         super().__init__(self.root_task)
 
     @property
-    def dev_days(self):
+    def dev_days(self) -> int:
         """Development man-days"""
         return (
             self.root_task.build_task.implementation_task.dev_task.people_resource.quantity
@@ -69,7 +69,7 @@ class StandardProject(Project):
         )
 
     @property
-    def design_days(self):
+    def design_days(self) -> int:
         """Design man-days"""
         return (
             self.root_task.build_task.implementation_task.design_task.people_resource.quantity
@@ -82,7 +82,7 @@ class StandardProject(Project):
         )
 
     @property
-    def spec_days(self):
+    def spec_days(self) -> int:
         """Specification and requirements man-days"""
         return self.root_task.build_task.spec_task.people_resource.quantity
 
@@ -91,7 +91,7 @@ class StandardProject(Project):
         self.root_task.build_task.spec_task.people_resource.quantity = spec_days
 
     @property
-    def management_days(self):
+    def management_days(self) -> int:
         """Management man-days"""
         return self.root_task.build_task.management_task.people_resource.quantity
 
@@ -102,7 +102,7 @@ class StandardProject(Project):
         )
 
     @property
-    def maintenance_days(self):
+    def maintenance_days(self) -> int:
         """Maintenance man-days"""
         return self.root_task.run_task.maintenance_task.people_resource.quantity
 
@@ -113,7 +113,7 @@ class StandardProject(Project):
         )
 
     @property
-    def electricity_mix(self):
+    def electricity_mix(self) -> float:
         """Electricity-mix co2e emissions used by application devices/datacenters"""
         return self.root_task.run_task.hosting_task.electricity_mix
 
@@ -122,7 +122,7 @@ class StandardProject(Project):
         self.root_task.run_task.hosting_task.electricity_mix = electricity_mix
 
     @property
-    def pue(self):
+    def pue(self) -> float:
         """Power usage effectiveness of the DC"""
         return self.root_task.run_task.hosting_task.pue
 
@@ -140,7 +140,7 @@ class StandardProject(Project):
         self.root_task.run_task.hosting_task.servers_count = servers_count
 
     @property
-    def storage_size(self):
+    def storage_size(self) -> int:
         """Storage tb reserved by the application"""
         return self.root_task.run_task.hosting_task.storage_size
 
@@ -149,7 +149,7 @@ class StandardProject(Project):
         self.root_task.run_task.hosting_task.storage_size = storage_size
 
     @property
-    def run_duration(self):
+    def run_duration(self) -> int:
         """Run phase duration as days"""
         return self.root_task.run_task.duration
 
@@ -158,7 +158,7 @@ class StandardProject(Project):
         self.root_task.run_task.duration = run_duration
 
     @property
-    def avg_user(self):
+    def avg_user(self) -> int:
         """Average number of user each day"""
         return self.root_task.run_task.avg_user
 
@@ -167,7 +167,7 @@ class StandardProject(Project):
         self.root_task.run_task.avg_user = avg_user
 
     @property
-    def avg_time(self):
+    def avg_time(self) -> int:
         """Average time user spend on app each day in minutes"""
         return self.root_task.run_task.avg_time
 

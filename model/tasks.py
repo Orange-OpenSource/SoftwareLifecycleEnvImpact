@@ -114,17 +114,17 @@ class HostingTask(Task):
         )
 
     @property
-    def server_days(self):
+    def server_days(self) -> int:
         """Server days reserved by the application as number reserved * duration in days"""
         return self.servers_count * self.duration
 
     @property
-    def storage_days(self):
+    def storage_days(self) -> int:
         """Storage days reserved by the application as tb reserved * duration in days"""
         return self.storage_size * self.duration
 
     @property
-    def servers_count(self):
+    def servers_count(self) -> int:
         """Number of servers reserved"""
         return self._servers_count
 
@@ -134,7 +134,7 @@ class HostingTask(Task):
         self.compute_resource.quantity = self.server_days
 
     @property
-    def storage_size(self):
+    def storage_size(self) -> int:
         """Tb reserved"""
         return self._storage_size
 
@@ -144,7 +144,7 @@ class HostingTask(Task):
         self.storage_resource.quantity = self.storage_days
 
     @property
-    def pue(self):
+    def pue(self) -> float:
         """Power Usage Effectiveness of the DC"""
         return self._pue
 
@@ -160,7 +160,7 @@ class HostingTask(Task):
         self.storage_resource.storage_impact.pue = pue
 
     @property
-    def electricity_mix(self):
+    def electricity_mix(self) -> float:
         """Electricity mix CO2e emissions of the DC"""
         return self._electricity_mix
 
@@ -171,7 +171,7 @@ class HostingTask(Task):
         self.storage_resource.storage_impact.electricity_mix = self.electricity_mix
 
     @property
-    def duration(self):
+    def duration(self) -> int:
         """Days of the phase"""
         return self._duration
 
@@ -262,7 +262,7 @@ class RunTask(Task):
         )
 
     @property
-    def duration(self):
+    def duration(self) -> int:
         """Run phase duration in days"""
         return self._duration
 
@@ -272,7 +272,7 @@ class RunTask(Task):
         self.hosting_task.duration = duration
 
     @property
-    def avg_user(self):
+    def avg_user(self) -> int:
         """Average users per day"""
         return self._avg_user
 
@@ -283,7 +283,7 @@ class RunTask(Task):
         self.hosting_task.network_resource.quantity = self.users_data
 
     @property
-    def avg_time(self):
+    def avg_time(self) -> int:
         """Average time per user per day"""
         return self._avg_time
 
@@ -293,22 +293,22 @@ class RunTask(Task):
         self.user_device_res.quantity = self.users_hours
 
     @property
-    def avg_data(self):
+    def avg_data(self) -> float:
         """Average data per user per day"""
         return self._avg_data
 
     @avg_data.setter
-    def avg_data(self, avg_data: int):
+    def avg_data(self, avg_data: float):
         self._avg_data = avg_data
         self.hosting_task.network_resource.quantity = self.users_data
 
     @property
-    def users_hours(self):
+    def users_hours(self) -> float:
         """Hours users spend on the app during the entire phase"""
         return (self.avg_time / 60) * self.avg_user * self.duration
 
     @property
-    def users_data(self):
+    def users_data(self) -> float:
         """Data transfer induced byt the app usage during the entire phase"""
         return self.avg_data * self.avg_user * self.duration
 
