@@ -13,7 +13,7 @@ def draw_task(task: TaskImpact) -> None:
     Draw one task as a chart, using TaskImpact format
     :param task: TaskImpact format
     """
-    fig1, ax1 = plt.subplots()
+    _, ax1 = plt.subplots()
     emissions = [s["CO2"] for s in task["subtasks"]]  # type: ignore
     names = [s["name"] for s in task["subtasks"]]  # type: ignore
     ax1.pie(emissions, labels=names)
@@ -171,7 +171,7 @@ class ModelPieChart:
             avg_user_minutes=widgets.IntSlider(
                 min=0,
                 max=250,
-                value=self.p.avg_user,
+                value=self.p.avg_time,
                 description="Average user time(minutes)",
                 style=slider_style,
                 layout=widgets.Layout(width=slider_width),
