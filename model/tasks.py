@@ -1,10 +1,18 @@
 from __future__ import annotations
 
 from abc import ABC
-from typing import List
+from typing import Any, List, Union
 
-from model.resources import (ComputeResource, NetworkResource, PeopleResource, Resource, StorageResource,
-                             UserDeviceResource)
+from model.resources import (
+    ComputeResource,
+    NetworkResource,
+    PeopleResource,
+    Resource,
+    StorageResource,
+    UserDeviceResource,
+)
+
+TaskImpact = dict[str, Union[str, float, Any]]
 
 
 class Task(ABC):
@@ -18,17 +26,36 @@ class Task(ABC):
             resources = []
         if subtasks is None:
             subtasks = []
-        self.subtasks = subtasks
-        self.resources = resources
+        self._subtasks = subtasks
+        self._resources = resources
 
     def get_co2_impact(self) -> float:
         """
-        Compute and return the impact of the task and those of the subtasks
-        :return: co2 impact of task and subtasks
+        Compute and return the impact of the task and those of the _subtasks
+        :return: co2 impact of task and _subtasks
         """
-        return sum(r.get_co2_impact() for r in self.resources) + sum(
-            s.get_co2_impact() for s in self.subtasks
+        return sum(r.get_co2_impact() for r in self._resources) + sum(
+            s.get_co2_impact() for s in self._subtasks
         )
+
+    def get_impact(self) -> TaskImpact:
+        """
+        Return all impacts as a dict with format:
+        {
+            "name": xxx
+            "CO2": xxx
+            "subtasks": {
+                "name": xxx
+                "CO2": xxx
+                "subtasks": }
+            }
+        }
+        """
+        return {
+            "name": self.name,
+            "CO2": self.get_co2_impact(),
+            "subtasks": [r.get_impact() for r in self._subtasks],
+        }
 
 
 class BuildTask(Task):
@@ -299,7 +326,7 @@ class UsageTask(Task):
 class RunTask(Task):
     """
     Run  task including Maintenance and hosting task
-    Also includes user device resources/impact
+    Also includes user device _resources/impact
     """
 
     def __init__(

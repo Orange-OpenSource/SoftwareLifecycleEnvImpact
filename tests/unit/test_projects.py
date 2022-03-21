@@ -28,6 +28,12 @@ def test_get_global_impact() -> None:
 ###################
 # StandardProject #
 ###################
+def test_get_impact_by_task() -> None:
+    """Test that project level impact_by_task is same as root_task one"""
+    s = StandardProject()
+    assert s.get_impact_by_task() == s.root_task.get_impact()
+
+
 def test_dev_days() -> None:
     """Test getter/setter of dev_days property"""
     s = StandardProject()

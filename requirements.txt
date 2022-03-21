@@ -11,5 +11,5 @@ astroid~=2.9.3
 mccabe~=0.6.1
 platformdirs~=2.5.1
 wrapt~=1.13.3
-ipywidgets
+ipywidgets~=7.6.5
 matplotlib

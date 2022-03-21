@@ -19,7 +19,7 @@ from model.tasks import (
 
 
 def test_get_co2_impact() -> None:
-    """Test that task co2 impact is those of all resources from itself and its children"""
+    """Test that task co2 impact is those of all _resources from itself and its children"""
     is1 = ImpactSource(1000)
     is2 = ImpactSource(776)
 
@@ -32,6 +32,40 @@ def test_get_co2_impact() -> None:
     task = Task("Task", subtasks=[subtask], resources=[r2])  # 1000 + 1776
 
     assert task.get_co2_impact() == 2776
+
+
+def test_get_impact() -> None:
+    """
+    Test return value of get_impact is in form of
+    {
+        "name": xxx
+        "CO2": xxx
+        "subtasks": {
+            "name": xxx
+            "CO2": xxx
+            "subtasks": }
+        }
+    }
+    """
+    is1 = ImpactSource(1000)
+    is2 = ImpactSource(776)
+
+    r1 = PeopleResource(1)  # 1 quantity
+    r1.impacts = [is1, is2]  # change impacts to have static ones # 1776
+    r2 = PeopleResource(1)
+    r2.impacts = [is1]  # 1000
+
+    subtask = Task("Subtask", resources=[r1])  # 1776
+    task = Task("Task", subtasks=[subtask], resources=[r2])  # 1000 + 1776
+
+    impact = task.get_impact()
+    assert isinstance(task.get_impact(), dict)
+    assert impact["name"] == "Task"
+    assert impact["CO2"] == task.get_co2_impact()
+
+    # Test subtask
+    assert impact["subtasks"][0]["name"] == "Subtask"  # type: ignore
+    assert impact["subtasks"][0]["CO2"] == subtask.get_co2_impact()  # type: ignore
 
 
 ###########

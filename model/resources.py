@@ -1,8 +1,15 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from model.impact_sources import (DeviceImpact, ImpactSource, NetworkImpact, OfficeImpact, ServerImpact, StorageImpact,
-                                  TransportImpact)
+from model.impact_sources import (
+    DeviceImpact,
+    ImpactSource,
+    NetworkImpact,
+    OfficeImpact,
+    ServerImpact,
+    StorageImpact,
+    TransportImpact,
+)
 
 
 class Resource(ABC):
@@ -51,7 +58,7 @@ class ComputeResource(Resource):
 
 class StorageResource(Resource):
     """
-    Storage resources, tb * duration as input, disks lifecycle as impact
+    Storage _resources, tb * duration as input, disks lifecycle as impact
     """
 
     def __init__(
@@ -70,7 +77,7 @@ class StorageResource(Resource):
 
 class PeopleResource(Resource):
     """
-    People resources, man days as inputs, commuting and offices as impacts
+    People _resources, man days as inputs, commuting and offices as impacts
     """
 
     def __init__(self, man_days: int) -> None:
@@ -91,7 +98,7 @@ class PeopleResource(Resource):
 
 class UserDeviceResource(Resource):
     """
-    User devices resources, hours as inputs and devices lifecycle as impacts
+    User devices _resources, hours as inputs and devices lifecycle as impacts
     """
 
     def __init__(self, avg_user: int, avg_time: int, duration: int) -> None:

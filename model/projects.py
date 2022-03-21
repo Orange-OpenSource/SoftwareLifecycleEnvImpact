@@ -1,4 +1,4 @@
-from model.tasks import StandardProjectTask, Task
+from model.tasks import StandardProjectTask, Task, TaskImpact
 
 
 class Project:
@@ -58,6 +58,10 @@ class StandardProject(Project):
             avg_data,
         )
         super().__init__(self.root_task)
+
+    def get_impact_by_task(self) -> TaskImpact:
+        """Return all impacts by task"""
+        return self.root_task.get_impact()
 
     @property
     def dev_days(self) -> int:
