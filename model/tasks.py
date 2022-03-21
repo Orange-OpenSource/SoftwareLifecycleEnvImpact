@@ -332,7 +332,7 @@ class RunTask(Task):
 
         super().__init__(
             "Run",
-            subtasks=[self.maintenance_task, self.hosting_task],
+            subtasks=[self.maintenance_task, self.hosting_task, self.usage_task],
         )
 
     @property
