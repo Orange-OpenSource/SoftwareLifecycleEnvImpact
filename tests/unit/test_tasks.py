@@ -18,7 +18,7 @@ from model.tasks import (
 ########
 
 
-def test_get_co2_impact():
+def test_get_co2_impact() -> None:
     """Test that task co2 impact is those of all resources from itself and its children"""
     is1 = ImpactSource(1000)
     is2 = ImpactSource(776)
@@ -39,7 +39,7 @@ def test_get_co2_impact():
 ###########
 
 
-def test_dev_days():
+def test_dev_days() -> None:
     """Test DevTask.dev_days property getters and setters"""
     d = DevTask(236)
     assert d.dev_days == 236  # check init/getter
@@ -52,7 +52,7 @@ def test_dev_days():
 ##############
 
 
-def test_design_days():
+def test_design_days() -> None:
     """Test Design.design_days property getters and setters"""
     d = DesignTask(123)
     assert d.design_days == 123  # check init/getter
@@ -65,7 +65,7 @@ def test_design_days():
 ############
 
 
-def test_spec_days():
+def test_spec_days() -> None:
     """Test SpecTask.spec_days property getters and setters"""
     d = SpecTask(642)
     assert d.spec_days == 642  # check init/getter
@@ -78,7 +78,7 @@ def test_spec_days():
 ##################
 
 
-def test_management_days():
+def test_management_days() -> None:
     """Test ManagementTask.management_days property getters and setters"""
     d = ManagementTask(523)
     assert d.management_days == 523  # check init/getter
@@ -91,7 +91,7 @@ def test_management_days():
 ##################
 
 
-def test_maintenance_days():
+def test_maintenance_days() -> None:
     """Test MaintenanceTask.maintenance_days property getters and setters"""
     d = MaintenanceTask(4532)
     assert d.maintenance_days == 4532  # check init/getter
@@ -104,7 +104,7 @@ def test_maintenance_days():
 ###############
 
 
-def test_servers_count():
+def test_servers_count() -> None:
     """Test HostingTask.servers_count property getters and setters"""
     h = HostingTask(0.6, 1.5, 12, 124, 364)
     assert h.servers_count == 12  # check init/getter
@@ -112,7 +112,7 @@ def test_servers_count():
     assert h.servers_count == 113  # check setter
 
 
-def test_storage_size():
+def test_storage_size() -> None:
     """Test HostingTask.storage_size property getters and setters"""
     h = HostingTask(0.6, 1.5, 12, 124, 364)
     assert h.storage_size == 124  # check init/getter
@@ -120,7 +120,7 @@ def test_storage_size():
     assert h.storage_size == 113  # check setter
 
 
-def test_pue():
+def test_pue() -> None:
     """Test getter/setter and child updates for property pue"""
     h = HostingTask(0.6, 1.5, 12, 124, 364)
     assert h.pue == 1.5  # check init/getter
@@ -130,21 +130,21 @@ def test_pue():
     assert h._storage_resource.storage_impact.pue == 2.37946587  # check children update
 
 
-def test_electricity_mix():
+def test_electricity_mix() -> None:
     """Test getter/setter and child updates for property electricity_mix"""
     h = HostingTask(0.6, 1.5, 12, 124, 364)
     assert h.electricity_mix == 0.6  # check init/getter
     h.electricity_mix = 0.727
     assert h.electricity_mix == 0.727  # check setter
     assert (
-        h._compute_resource.server_impact.electricity_mix == 0.727
+            h._compute_resource.server_impact.electricity_mix == 0.727
     )  # check children update
     assert (
-        h._storage_resource.storage_impact.electricity_mix == 0.727
+            h._storage_resource.storage_impact.electricity_mix == 0.727
     )  # check children update
 
 
-def test_hosting_task_duration():
+def test_hosting_task_duration() -> None:
     """Test getter/setter and child updates for property duration"""
     h = HostingTask(0.6, 1.5, 12, 124, 364)
     assert h.duration == 364  # check init/getter
@@ -159,7 +159,7 @@ def test_hosting_task_duration():
 #############
 
 
-def test_avg_user():
+def test_avg_user() -> None:
     """Test UsageTask.avg_user property getters and setters and children update"""
     u = UsageTask(1200, 39, 1.235, 365)
     assert u.avg_user == 1200  # check init / getter
@@ -169,7 +169,7 @@ def test_avg_user():
     assert u._network_resource.avg_user == 4323  # check children update
 
 
-def test_duration():
+def test_duration() -> None:
     """Test UsageTask. duration property getters and setters and children update"""
     u = UsageTask(1200, 39, 1.235, 365)
     assert u.duration == 365  # check init / getter
@@ -179,7 +179,7 @@ def test_duration():
     assert u._network_resource.duration == 5432  # check children update
 
 
-def test_avg_time():
+def test_avg_time() -> None:
     """Test UsageTask.avg_time property getters and setters and children update"""
     u = UsageTask(1200, 39, 1.235, 365)
     assert u.avg_time == 39  # check init / getter
@@ -188,7 +188,7 @@ def test_avg_time():
     assert u._user_device_res.avg_time == 120  # check children update
 
 
-def test_avg_data():
+def test_avg_data() -> None:
     """Test UsageTask.avg_data property getters and setters and children update"""
     u = UsageTask(1200, 39, 1.235, 365)
     assert u.avg_data == 1.235  # check init / getter
@@ -200,7 +200,7 @@ def test_avg_data():
 ###########
 # RunTask #
 ###########
-def test_run_task_duration():
+def test_run_task_duration() -> None:
     """Test getter/setter and child updates for property duration"""
     r = RunTask(100, 0.6, 1.5, 15, 500, 365, 3000, 23, 0.4)
     assert r.duration == 365  # check init/getter

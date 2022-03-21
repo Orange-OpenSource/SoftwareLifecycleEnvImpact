@@ -8,7 +8,7 @@ from model.tasks import Task
 ###########
 
 
-def test_get_global_impact():
+def test_get_global_impact() -> None:
     """Test consistency with the tasks individual impacts"""
     is1 = ImpactSource(1000)
     is2 = ImpactSource(776)
@@ -28,7 +28,7 @@ def test_get_global_impact():
 ###################
 # StandardProject #
 ###################
-def test_dev_days():
+def test_dev_days() -> None:
     """Test getter/setter of dev_days property"""
     s = StandardProject()
     assert s.dev_days  # exist
@@ -36,7 +36,7 @@ def test_dev_days():
     assert s.dev_days == 1000  # getter
 
 
-def test_design_days():
+def test_design_days() -> None:
     """Test getter/setter of design_days property"""
     s = StandardProject()
     assert s.design_days  # exist
@@ -44,7 +44,7 @@ def test_design_days():
     assert s.design_days == 1000  # getter
 
 
-def test_spec_days():
+def test_spec_days() -> None:
     """Test getter/setter of spec_days property"""
     s = StandardProject()
     assert s.spec_days  # exist
@@ -52,7 +52,7 @@ def test_spec_days():
     assert s.spec_days == 1000  # getter
 
 
-def test_management_days():
+def test_management_days() -> None:
     """Test getter/setter of management_days property"""
     s = StandardProject()
     assert s.management_days  # exist
@@ -60,7 +60,7 @@ def test_management_days():
     assert s.management_days == 1000  # getter
 
 
-def test_maintenance_days():
+def test_maintenance_days() -> None:
     """Test getter/setter of maintenance_days property"""
     s = StandardProject()
     assert s.maintenance_days  # exist
@@ -68,7 +68,7 @@ def test_maintenance_days():
     assert s.maintenance_days == 1000  # getter
 
 
-def test_electricity_mix():
+def test_electricity_mix() -> None:
     """Test getter/setter of electricity_mix property"""
     s = StandardProject()
     assert s.electricity_mix  # exist
@@ -76,7 +76,7 @@ def test_electricity_mix():
     assert s.electricity_mix == 0.88707  # getter
 
 
-def test_pue():
+def test_pue() -> None:
     """Test getter/setter of pue property"""
     s = StandardProject()
     assert s.pue  # exist
@@ -84,7 +84,7 @@ def test_pue():
     assert s.pue == 1.999  # getter
 
 
-def test_servers_count():
+def test_servers_count() -> None:
     """Test getter/setter of servers_count property"""
     s = StandardProject()
     assert s.servers_count  # exist
@@ -92,7 +92,7 @@ def test_servers_count():
     assert s.servers_count == 1000  # getter
 
 
-def test_storage_size():
+def test_storage_size() -> None:
     """Test getter/setter of storage_size property"""
     s = StandardProject()
     assert s.storage_size  # exist
@@ -100,7 +100,7 @@ def test_storage_size():
     assert s.storage_size == 1000  # getter
 
 
-def test_run_duration():
+def test_run_duration() -> None:
     """Test getter/setter of run_duration property"""
     s = StandardProject()
     assert s.run_duration  # exist
@@ -108,7 +108,7 @@ def test_run_duration():
     assert s.run_duration == 1000  # getter
 
 
-def test_avg_user():
+def test_avg_user() -> None:
     """Test getter/setter of avg_user property"""
     s = StandardProject()
     assert s.avg_user  # exist
@@ -116,7 +116,7 @@ def test_avg_user():
     assert s.avg_user == 1000  # getter
 
 
-def test_avg_time():
+def test_avg_time() -> None:
     """Test getter/setter of avg_time property"""
     s = StandardProject()
     assert s.avg_time  # exist
@@ -124,7 +124,7 @@ def test_avg_time():
     assert s.avg_time == 1000  # getter
 
 
-def test_avg_data():
+def test_avg_data() -> None:
     """Test getter/setter of avg_data property"""
     s = StandardProject()
     assert s.avg_data  # exist

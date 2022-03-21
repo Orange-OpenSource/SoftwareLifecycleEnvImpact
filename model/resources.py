@@ -1,15 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from model.impact_sources import (
-    ImpactSource,
-    ServerImpact,
-    NetworkImpact,
-    OfficeImpact,
-    TransportImpact,
-    StorageImpact,
-    DeviceImpact,
-)
+from model.impact_sources import (DeviceImpact, ImpactSource, NetworkImpact, OfficeImpact, ServerImpact, StorageImpact,
+                                  TransportImpact)
 
 
 class Resource(ABC):
@@ -23,7 +16,7 @@ class Resource(ABC):
 
     @property
     @abstractmethod
-    def quantity(self):
+    def quantity(self) -> float:
         """Quantity consumed by the resource, define by implementations"""
 
     def get_co2_impact(self) -> float:
@@ -80,7 +73,7 @@ class PeopleResource(Resource):
     People resources, man days as inputs, commuting and offices as impacts
     """
 
-    def __init__(self, man_days: int):
+    def __init__(self, man_days: int) -> None:
         self._quantity = man_days
         self.office_impact = OfficeImpact()
         self.transport_impact = TransportImpact()
@@ -92,7 +85,7 @@ class PeopleResource(Resource):
         return self._quantity
 
     @quantity.setter
-    def quantity(self, man_days: int):
+    def quantity(self, man_days: int) -> None:
         self._quantity = man_days
 
 
@@ -101,7 +94,7 @@ class UserDeviceResource(Resource):
     User devices resources, hours as inputs and devices lifecycle as impacts
     """
 
-    def __init__(self, avg_user: int, avg_time: int, duration: int):
+    def __init__(self, avg_user: int, avg_time: int, duration: int) -> None:
         self.avg_user = avg_user
         self.avg_time = avg_time
         self.duration = duration
@@ -120,7 +113,7 @@ class NetworkResource(Resource):
     Network resource, gb transferred as quantity and network as impact
     """
 
-    def __init__(self, avg_user: int, avg_data: float, duration: int):
+    def __init__(self, avg_user: int, avg_data: float, duration: int) -> None:
         self.avg_user = avg_user
         self.avg_data = avg_data
         self.duration = duration

@@ -1,10 +1,12 @@
-from model.tasks import Task, StandardProjectTask
+from model.tasks import StandardProjectTask, Task
 
 
 class Project:
     """
     Abstract project, contains the root task to model the lifecycle
     """
+
+    root_task: Task
 
     def __init__(self, task: Task):
         self.root_task = task
@@ -22,7 +24,9 @@ class StandardProject(Project):
     Implementation of a standard base project
     """
 
-    def __init__(self):
+    root_task: StandardProjectTask  # Enforce root_task type
+
+    def __init__(self) -> None:
         dev_days = 2000
         design_days = 130
         spec_days = 200
@@ -61,7 +65,7 @@ class StandardProject(Project):
         return self.root_task.build_task.implementation_task.dev_task.dev_days
 
     @dev_days.setter
-    def dev_days(self, dev_days: int):
+    def dev_days(self, dev_days: int) -> None:
         self.root_task.build_task.implementation_task.dev_task.dev_days = dev_days
 
     @property
@@ -70,7 +74,7 @@ class StandardProject(Project):
         return self.root_task.build_task.implementation_task.design_task.design_days
 
     @design_days.setter
-    def design_days(self, design_days: int):
+    def design_days(self, design_days: int) -> None:
         self.root_task.build_task.implementation_task.design_task.design_days = (
             design_days
         )
@@ -81,7 +85,7 @@ class StandardProject(Project):
         return self.root_task.build_task.spec_task.spec_days
 
     @spec_days.setter
-    def spec_days(self, spec_days: int):
+    def spec_days(self, spec_days: int) -> None:
         self.root_task.build_task.spec_task.spec_days = spec_days
 
     @property
@@ -90,7 +94,7 @@ class StandardProject(Project):
         return self.root_task.build_task.management_task.management_days
 
     @management_days.setter
-    def management_days(self, management_days: int):
+    def management_days(self, management_days: int) -> None:
         self.root_task.build_task.management_task.management_days = management_days
 
     @property
@@ -99,7 +103,7 @@ class StandardProject(Project):
         return self.root_task.run_task.maintenance_task.maintenance_days
 
     @maintenance_days.setter
-    def maintenance_days(self, maintenance_days: int):
+    def maintenance_days(self, maintenance_days: int) -> None:
         self.root_task.run_task.maintenance_task.maintenance_days = maintenance_days
 
     @property
@@ -108,7 +112,7 @@ class StandardProject(Project):
         return self.root_task.run_task.hosting_task.electricity_mix
 
     @electricity_mix.setter
-    def electricity_mix(self, electricity_mix: float):
+    def electricity_mix(self, electricity_mix: float) -> None:
         self.root_task.run_task.hosting_task.electricity_mix = electricity_mix
 
     @property
@@ -117,7 +121,7 @@ class StandardProject(Project):
         return self.root_task.run_task.hosting_task.pue
 
     @pue.setter
-    def pue(self, pue: float):
+    def pue(self, pue: float) -> None:
         self.root_task.run_task.hosting_task.pue = pue
 
     @property
@@ -126,7 +130,7 @@ class StandardProject(Project):
         return self.root_task.run_task.hosting_task.servers_count
 
     @servers_count.setter
-    def servers_count(self, servers_count: int):
+    def servers_count(self, servers_count: int) -> None:
         self.root_task.run_task.hosting_task.servers_count = servers_count
 
     @property
@@ -135,7 +139,7 @@ class StandardProject(Project):
         return self.root_task.run_task.hosting_task.storage_size
 
     @storage_size.setter
-    def storage_size(self, storage_size: int):
+    def storage_size(self, storage_size: int) -> None:
         self.root_task.run_task.hosting_task.storage_size = storage_size
 
     @property
@@ -144,7 +148,7 @@ class StandardProject(Project):
         return self.root_task.run_task.duration
 
     @run_duration.setter
-    def run_duration(self, run_duration: int):
+    def run_duration(self, run_duration: int) -> None:
         self.root_task.run_task.duration = run_duration
 
     @property
@@ -153,7 +157,7 @@ class StandardProject(Project):
         return self.root_task.run_task.usage_task.avg_user
 
     @avg_user.setter
-    def avg_user(self, avg_user: int):
+    def avg_user(self, avg_user: int) -> None:
         self.root_task.run_task.usage_task.avg_user = avg_user
 
     @property
@@ -162,7 +166,7 @@ class StandardProject(Project):
         return self.root_task.run_task.usage_task.avg_time
 
     @avg_time.setter
-    def avg_time(self, avg_time: int):
+    def avg_time(self, avg_time: int) -> None:
         self.root_task.run_task.usage_task.avg_time = avg_time
 
     @property
@@ -171,5 +175,5 @@ class StandardProject(Project):
         return self.root_task.run_task.usage_task.avg_data
 
     @avg_data.setter
-    def avg_data(self, avg_data: float):
+    def avg_data(self, avg_data: float) -> None:
         self.root_task.run_task.usage_task.avg_data = avg_data

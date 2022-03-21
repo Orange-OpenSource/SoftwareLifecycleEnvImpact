@@ -30,7 +30,7 @@ class DeviceImpact(ImpactSource):
     LAPTOP_LIFE = 4.34
     PC_DAILY_USE = 7
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Standard ratio for one hour of user device, half on a laptop and the other on a smartphone
         """
@@ -51,7 +51,7 @@ class NetworkImpact(ImpactSource):
     Ratio/gb transferred
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(0.0015)
 
 
@@ -73,16 +73,16 @@ class OfficeImpact(ImpactSource):
     BUILDING_EMISSIONS = 3900
     BUILDING_LIFE_EXPECTANCY = 50  # years
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Define a space per person as office space + corridors, halls, lavatory etc... then multiply by square meter
         LCA / building expectancy
         """
         sqr_meter_office = (
-            self.OFFICE_SIZE / self.OFFICES_OCCUPANCY
+                self.OFFICE_SIZE / self.OFFICES_OCCUPANCY
         )  # Adding corridors halls etc. to single offices
         office_emissions_sqr_meter_day = self.BUILDING_EMISSIONS / (
-            self.BUILDING_LIFE_EXPECTANCY * 365
+                self.BUILDING_LIFE_EXPECTANCY * 365
         )
         office_co2_person = sqr_meter_office * office_emissions_sqr_meter_day
         super().__init__(office_co2_person)
@@ -171,18 +171,18 @@ class TransportImpact(ImpactSource):
     # https://www.observatoire-des-territoires.gouv.fr/kiosque/2019-mobilite-10-les-cadres-parcourent-chaque-annee-pres-de-3000-km-de-plus-que-les
     MEAN_DISTANCE = 19 * 2
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Using the ratios of transportation mode, define a generic co2 emissions/km
         Then multiply by the mean distance per day per person
         """
         co2_km = (
-            self.FOOT_PERCENTAGE * 0
-            + self.BIKE_PERCENTAGE * BikeImpact().co2
-            + self.PUBLIC_TRANSPORT_PERCENTAGE * PublicTransportImpact().co2
-            + self.CAR_PERCENTAGE * CarImpact().co2
-            + self.MOTORBIKE_PERCENTAGE * MotorbikeImpact().co2
-        ) / 100
+                         self.FOOT_PERCENTAGE * 0
+                         + self.BIKE_PERCENTAGE * BikeImpact().co2
+                         + self.PUBLIC_TRANSPORT_PERCENTAGE * PublicTransportImpact().co2
+                         + self.CAR_PERCENTAGE * CarImpact().co2
+                         + self.MOTORBIKE_PERCENTAGE * MotorbikeImpact().co2
+                 ) / 100
         co2_day = co2_km * self.MEAN_DISTANCE
         super().__init__(co2_day)
 
@@ -195,7 +195,7 @@ class CarImpact(ImpactSource):
 
     # ADEME
     # https://bilans-ges.ademe.fr/fr/basecarbone/donnees-consulter/liste-element/categorie/151
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(0.218)
 
 
@@ -208,7 +208,7 @@ class BikeImpact(ImpactSource):
     # TREK
     # https://view.publitas.com/trek-bicycle/trek-bicycle-2021-sustainability-report/page/5
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(0.00348)
 
 
@@ -220,7 +220,7 @@ class PublicTransportImpact(ImpactSource):
 
     # ADEME
     # https://bilans-ges.ademe.fr/fr/accueil/documentation-gene/index/page/Ferroviaire2
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(0.00503)
 
 
@@ -232,5 +232,5 @@ class MotorbikeImpact(ImpactSource):
 
     # ADEME
     # https://bilans-ges.ademe.fr/fr/accueil/documentation-gene/index/page/Routier2
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(0.191)

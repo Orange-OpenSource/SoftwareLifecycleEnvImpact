@@ -6,13 +6,13 @@ from model.impact_sources import ImpactSource, ServerImpact, StorageImpact
 ################
 
 
-def test_co2():
+def test_co2() -> None:
     """Test ImpactSource co2 property getter"""
     i = ImpactSource(103.72)
     assert i.co2 == 103.72
 
 
-def test_server_impact():
+def test_server_impact() -> None:
     """
     Test that ServerImpact co2 is updated when electricity_mix or pue changes, and that the output is the same with
     the same input
@@ -34,7 +34,7 @@ def test_server_impact():
     assert s.co2 == first_co2
 
 
-def test_storage_impact():
+def test_storage_impact() -> None:
     """
     Test that StorageImpact co2 is updated when electricity_mix or pue changes, and that the output is the same with
     the same input

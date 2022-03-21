@@ -3,14 +3,8 @@ from __future__ import annotations
 from abc import ABC
 from typing import List
 
-from model.resources import (
-    PeopleResource,
-    ComputeResource,
-    Resource,
-    StorageResource,
-    NetworkResource,
-    UserDeviceResource,
-)
+from model.resources import (ComputeResource, NetworkResource, PeopleResource, Resource, StorageResource,
+                             UserDeviceResource)
 
 
 class Task(ABC):
@@ -70,7 +64,7 @@ class DevTask(Task):
         return self._people_resource.quantity
 
     @dev_days.setter
-    def dev_days(self, dev_days: int):
+    def dev_days(self, dev_days: int) -> None:
         self._people_resource.quantity = dev_days
 
 
@@ -89,7 +83,7 @@ class DesignTask(Task):
         return self._people_resource.quantity
 
     @design_days.setter
-    def design_days(self, dev_days: int):
+    def design_days(self, dev_days: int) -> None:
         self._people_resource.quantity = dev_days
 
 
@@ -110,7 +104,7 @@ class SpecTask(Task):
         return self._people_resource.quantity
 
     @spec_days.setter
-    def spec_days(self, spec_days: int):
+    def spec_days(self, spec_days: int) -> None:
         self._people_resource.quantity = spec_days
 
 
@@ -140,7 +134,7 @@ class ManagementTask(Task):
         return self._people_resource.quantity
 
     @management_days.setter
-    def management_days(self, management_days: int):
+    def management_days(self, management_days: int) -> None:
         self._people_resource.quantity = management_days
 
 
@@ -159,7 +153,7 @@ class MaintenanceTask(Task):
         return self._people_resource.quantity
 
     @maintenance_days.setter
-    def maintenance_days(self, maintenance_days: int):
+    def maintenance_days(self, maintenance_days: int) -> None:
         self._people_resource.quantity = maintenance_days
 
 
@@ -197,7 +191,7 @@ class HostingTask(Task):
         return self._compute_resource.servers_count
 
     @servers_count.setter
-    def servers_count(self, servers_count: int):
+    def servers_count(self, servers_count: int) -> None:
         self._compute_resource.servers_count = servers_count
 
     @property
@@ -206,7 +200,7 @@ class HostingTask(Task):
         return self._storage_resource.storage_size
 
     @storage_size.setter
-    def storage_size(self, storage_size: int):
+    def storage_size(self, storage_size: int) -> None:
         self._storage_resource.storage_size = storage_size
 
     @property
@@ -215,7 +209,7 @@ class HostingTask(Task):
         return self._compute_resource.server_impact.pue
 
     @pue.setter
-    def pue(self, pue: float):
+    def pue(self, pue: float) -> None:
         """
         Power usage effectiveness of the DC
         :param pue: the pue
@@ -230,7 +224,7 @@ class HostingTask(Task):
         return self._compute_resource.server_impact.electricity_mix
 
     @electricity_mix.setter
-    def electricity_mix(self, electricity_mix: float):
+    def electricity_mix(self, electricity_mix: float) -> None:
         self._compute_resource.server_impact.electricity_mix = electricity_mix
         self._storage_resource.storage_impact.electricity_mix = electricity_mix
 
@@ -240,7 +234,7 @@ class HostingTask(Task):
         return self._compute_resource.duration
 
     @duration.setter
-    def duration(self, duration: int):
+    def duration(self, duration: int) -> None:
         """
         Setter for the phase run duration as days
         :param duration: run duration as days
@@ -269,7 +263,7 @@ class UsageTask(Task):
         return self._user_device_res.avg_user
 
     @avg_user.setter
-    def avg_user(self, avg_user: int):
+    def avg_user(self, avg_user: int) -> None:
         self._user_device_res.avg_user = avg_user
         self._network_resource.avg_user = avg_user
 
@@ -279,7 +273,7 @@ class UsageTask(Task):
         return self._user_device_res.duration
 
     @duration.setter
-    def duration(self, duration: int):
+    def duration(self, duration: int) -> None:
         self._user_device_res.duration = duration
         self._network_resource.duration = duration
 
@@ -289,7 +283,7 @@ class UsageTask(Task):
         return self._user_device_res.avg_time
 
     @avg_time.setter
-    def avg_time(self, avg_time: int):
+    def avg_time(self, avg_time: int) -> None:
         self._user_device_res.avg_time = avg_time
 
     @property
@@ -298,7 +292,7 @@ class UsageTask(Task):
         return self._network_resource.avg_data
 
     @avg_data.setter
-    def avg_data(self, avg_data: float):
+    def avg_data(self, avg_data: float) -> None:
         self._network_resource.avg_data = avg_data
 
 
@@ -341,7 +335,7 @@ class RunTask(Task):
         return self.hosting_task.duration
 
     @duration.setter
-    def duration(self, duration: int):
+    def duration(self, duration: int) -> None:
         self.hosting_task.duration = duration
         self.usage_task.duration = duration
 

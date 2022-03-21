@@ -2,11 +2,12 @@ from model.projects import StandardProject
 
 
 #
-# Accepation tests on impacts to assess that changing the inputs on a projects results in the right tasks impacts updates (check propagation and computation)
+# Acceptation tests on impacts to assess that changing the inputs on a projects results in the right tasks impacts
+# updates (check propagation and computation)
 #
 
 
-def test_build_task_impacts():
+def test_build_task_impacts() -> None:
     """Test co2 consequence of updating all project's inputs for build task"""
     s = StandardProject()
 
@@ -31,7 +32,7 @@ def test_build_task_impacts():
     assert s.root_task.build_task.get_co2_impact() != old_co2
 
 
-def test_run_task_impacts():
+def test_run_task_impacts() -> None:
     """Test co2 consequence of updating all project's inputs for run task"""
     s = StandardProject()
 
@@ -81,28 +82,28 @@ def test_run_task_impacts():
     assert s.root_task.run_task.get_co2_impact() != old_co2
 
 
-def test_dev_task_impacts():
+def test_dev_task_impacts() -> None:
     """Test co2 consequence of updating all project's inputs for dev task"""
     s = StandardProject()
     old_co2 = s.root_task.build_task.implementation_task.dev_task.get_co2_impact()
     s.dev_days = 234832443
     assert (
-        s.root_task.build_task.implementation_task.dev_task.get_co2_impact() != old_co2
+            s.root_task.build_task.implementation_task.dev_task.get_co2_impact() != old_co2
     )
 
 
-def test_design_task_impacts():
+def test_design_task_impacts() -> None:
     """Test co2 consequence of updating all project's inputs for design task"""
     s = StandardProject()
     old_co2 = s.root_task.build_task.implementation_task.design_task.get_co2_impact()
     s.design_days = 23123
     assert (
-        s.root_task.build_task.implementation_task.design_task.get_co2_impact()
-        != old_co2
+            s.root_task.build_task.implementation_task.design_task.get_co2_impact()
+            != old_co2
     )
 
 
-def test_spec_task_impacts():
+def test_spec_task_impacts() -> None:
     """Test co2 consequence of updating all project's inputs for spec task"""
     s = StandardProject()
     old_co2 = s.root_task.build_task.spec_task.get_co2_impact()
@@ -110,7 +111,7 @@ def test_spec_task_impacts():
     assert s.root_task.build_task.spec_task.get_co2_impact() != old_co2
 
 
-def test_implementation_task_impacts():
+def test_implementation_task_impacts() -> None:
     """Test co2 consequence of updating all project's inputs for implementation task"""
     s = StandardProject()
 
@@ -125,7 +126,7 @@ def test_implementation_task_impacts():
     assert s.root_task.build_task.implementation_task.get_co2_impact() != old_co2
 
 
-def test_management_task_impacts():
+def test_management_task_impacts() -> None:
     """Test co2 consequence of updating all project's inputs for management task"""
     s = StandardProject()
     old_co2 = s.root_task.build_task.management_task.get_co2_impact()
@@ -133,7 +134,7 @@ def test_management_task_impacts():
     assert s.root_task.build_task.management_task.get_co2_impact() != old_co2
 
 
-def test_maintenance_task_impacts():
+def test_maintenance_task_impacts() -> None:
     """Test co2 consequence of updating all project's inputs for maintenance task"""
     s = StandardProject()
     old_co2 = s.root_task.run_task.maintenance_task.get_co2_impact()
@@ -141,7 +142,7 @@ def test_maintenance_task_impacts():
     assert s.root_task.run_task.maintenance_task.get_co2_impact() != old_co2
 
 
-def test_hosting_task_impacts():
+def test_hosting_task_impacts() -> None:
     """Test co2 consequence of updating all project's inputs for hosting task"""
     s = StandardProject()
 
@@ -171,7 +172,7 @@ def test_hosting_task_impacts():
     assert s.root_task.run_task.hosting_task.get_co2_impact() != old_co2
 
 
-def test_usage_task_impacts():
+def test_usage_task_impacts() -> None:
     """Test co2 consequence of updating all project's inputs for usage task"""
     s = StandardProject()
 
@@ -180,9 +181,8 @@ def test_usage_task_impacts():
     s.avg_user = 5325235435
     assert s.root_task.run_task.usage_task.get_co2_impact() != old_co2
 
-    # Avg time
-    old_co2 = s.root_task.run_task.usage_task.get_co2_impact()
-    s.avg_time = 0.253490
+    # Avg time   old_co2 = s.root_task.run_task.usage_task.get_co2_impact()
+    s.avg_time = 64
     assert s.root_task.run_task.usage_task.get_co2_impact() != old_co2
 
     # Avg data

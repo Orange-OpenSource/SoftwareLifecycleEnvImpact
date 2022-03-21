@@ -13,7 +13,7 @@ from model.resources import (
 ############
 
 
-def test_get_co2_impact():
+def test_get_co2_impact() -> None:
     """
     For Resource.get_co2_impact test computation, quantity change and resource adding
     :return: None
@@ -42,7 +42,7 @@ def test_get_co2_impact():
 ###################
 
 
-def test_compute_res_quantity():
+def test_compute_res_quantity() -> None:
     """Test quantity properties of ComputeResource and the update of its components"""
     c = ComputeResource(0.6, 1.7, 13, 365)
     assert c.quantity == 13 * 365  # check init/getter
@@ -57,7 +57,7 @@ def test_compute_res_quantity():
 ###################
 
 
-def test_storage_res_quantity():
+def test_storage_res_quantity() -> None:
     """Test quantity properties of StorageResource and the update of its components"""
     c = StorageResource(0.6, 1.7, 250, 365)
     assert c.quantity == 250 * 365  # check init/getter
@@ -72,7 +72,7 @@ def test_storage_res_quantity():
 ###################
 
 
-def test_man_days():
+def test_man_days() -> None:
     """Test quantity properties of PeopleResource"""
     p = PeopleResource(2343)
     assert p.quantity == 2343  # check init/getter
@@ -85,7 +85,7 @@ def test_man_days():
 ######################
 
 
-def test_user_device_res_quantity():
+def test_user_device_res_quantity() -> None:
     """Test quantity properties of UserDeviceResource and the update of its components"""
     u = UserDeviceResource(123, 32, 365)
     assert u.quantity == (32 / 60) * 123 * 365  # check init/getter
@@ -102,7 +102,7 @@ def test_user_device_res_quantity():
 ###################
 
 
-def test_network_res_quantity():
+def test_network_res_quantity() -> None:
     """Test quantity properties of NetworkResource and the update of its components"""
     n = NetworkResource(233, 1.723, 364)
     assert n.quantity == 233 * 1.723 * 364  # check init/getter
