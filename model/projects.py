@@ -1,3 +1,4 @@
+from model.resources import ResourcesList
 from model.tasks import StandardProjectTask, Task, TaskImpact
 
 
@@ -35,6 +36,22 @@ class Project:
                 {'name': 'Usage', 'CO2': 1989.7700948245304, 'subtasks': []}]}]}
         """
         return self.root_task.get_impact()
+
+    def get_impact_by_resource(self) -> ResourcesList:
+        """
+        Return project-level ResourcesList (impacts grouped by resource)
+
+        Example:
+        {
+            'People': {'CO2': 48675.23095202091},
+            'Compute': {'CO2': 6456.161285102313},
+            'Storage': {'CO2': 2547.8548288},
+            'UserDevice': {'CO2': 1825.5200948245304},
+            'Network': {'CO2': 164.25}
+        }
+        :return:
+        """
+        return self.root_task.get_impact_by_resource()
 
 
 class StandardProject(Project):

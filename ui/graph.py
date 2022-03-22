@@ -2,6 +2,7 @@ import ipywidgets as widgets
 from matplotlib import pyplot as plt
 
 from model.projects import StandardProject
+from model.resources import ResourcesList
 from model.tasks import TaskImpact
 
 slider_style = {"description_width": "initial"}
@@ -29,6 +30,22 @@ def draw_tasks(task_impact: TaskImpact) -> None:
         draw_task(task_impact)
         for subtask in task_impact["subtasks"]:  # type: ignore
             draw_tasks(subtask)  # type: ignore
+
+
+def draw_resources(resources: ResourcesList) -> None:
+    """
+    Draw a resourcesList a one chart
+    :param resources: ResourcesList to draw
+    """
+    names = []
+    co2 = []
+
+    for r in resources:
+        names.append(r)
+        co2.append(resources[r]["CO2"])
+    _, ax1 = plt.subplots()
+    ax1.pie(co2, labels=names)
+    ax1.set_title("Resources")
 
 
 class ModelPieChart:
@@ -71,6 +88,7 @@ class ModelPieChart:
         self.p.avg_user = avg_user_day
         self.p.avg_time = avg_user_minutes
         self.p.avg_data = avg_user_data
+        draw_resources(self.p.get_impact_by_resource())
         draw_tasks(self.p.get_impact_by_task())
 
     def get_widget(self) -> widgets.interactive:
