@@ -59,7 +59,7 @@ class Resource(ABC):
             new_impacts = self.get_impacts()
             for impact in new_impacts:
                 if (
-                        impact in resource_list[self.name]
+                    impact in resource_list[self.name]
                 ):  # impact already in the list, add to it
                     resource_list[self.name][impact] += new_impacts[impact]
                 else:
