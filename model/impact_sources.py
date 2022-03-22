@@ -1,3 +1,8 @@
+ImpactKind = str
+ImpactValue = float
+ImpactsList = dict[ImpactKind, ImpactValue]
+
+
 class ImpactSource:
     """
     Abstract class to define a source of impact emission(s)

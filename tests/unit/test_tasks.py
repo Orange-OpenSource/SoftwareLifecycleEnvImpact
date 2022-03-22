@@ -1,4 +1,5 @@
 from model.impact_sources import ImpactSource
+from model.projects import StandardProject
 from model.resources import PeopleResource
 from model.tasks import (
     DesignTask,
@@ -66,6 +67,44 @@ def test_get_impact() -> None:
     # Test subtask
     assert impact["subtasks"][0]["name"] == "Subtask"  # type: ignore
     assert impact["subtasks"][0]["CO2"] == subtask.get_co2_impact()  # type: ignore
+
+
+def test_get_impact_by_resource() -> None:
+    """
+    Test Task.get_impact_by_resource() method, by adding a new resource, an existing one, and adding a subtask
+    :return:
+    """
+    is1 = ImpactSource(1000)
+    r2 = PeopleResource(1)
+    r2.impacts = [is1]  # 1000
+
+    # Test one res
+    task = Task("Task", resources=[r2])  # 1000 + 1776
+    res_dict = task.get_impact_by_resource()
+    assert res_dict[r2.name]["CO2"] == task.get_co2_impact()
+
+    # Test two resources
+    task2 = Task("Task", resources=[r2, r2])  # 1000 + 1776
+    res_dict = task2.get_impact_by_resource()
+    assert res_dict[r2.name]["CO2"] == task2.get_co2_impact()
+
+    # Test subtasks
+    task3 = Task("Task", subtasks=[task, task2])
+    res_dict = task3.get_impact_by_resource()
+    assert res_dict[r2.name]["CO2"] == task3.get_co2_impact()
+
+
+def test_get_impact_by_resource_quantity() -> None:
+    """
+    Assess that get_impact_by_resource() get all the co2 impact quantity for all the tasks/substasks/resources
+    :return:
+    """
+    p = StandardProject()
+    co2 = 0.0
+    d = p.root_task.get_impact_by_resource()
+    for resource in d.keys():
+        co2 += d[resource]["CO2"]
+    assert p.get_global_impact() == co2
 
 
 ###########

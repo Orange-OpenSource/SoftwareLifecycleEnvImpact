@@ -8,6 +8,7 @@ from model.resources import (
     NetworkResource,
     PeopleResource,
     Resource,
+    ResourcesList,
     StorageResource,
     UserDeviceResource,
 )
@@ -57,6 +58,27 @@ class Task(ABC):
             "subtasks": [r.get_impact() for r in self._subtasks],
         }
 
+    def get_impact_by_resource(self, resources: ResourcesList = None) -> ResourcesList:
+        """
+        Return all impacts grouped by resource type, int the format of ResourcesList:
+
+         {'People': {'CO2': 2000.0}}
+         {'Build': {'CO2': 234325.0}}
+
+        :param resources: Optional ResourceList to add to
+        :return: ResourceList containing resources for this task + those passed as parameter
+        """
+        if resources is None:
+            resources = {}
+
+        for r in self._resources:
+            resources = r.add_to_list(resources)
+
+        for s in self._subtasks:
+            s.get_impact_by_resource(resources)
+
+        return resources
+
 
 class BuildTask(Task):
     """
@@ -64,7 +86,7 @@ class BuildTask(Task):
     """
 
     def __init__(
-        self, dev_days: int, design_days: int, spec_days: int, management_days: int
+            self, dev_days: int, design_days: int, spec_days: int, management_days: int
     ):
         self.implementation_task = ImplementationTask(dev_days, design_days)
         self.spec_task = SpecTask(spec_days)

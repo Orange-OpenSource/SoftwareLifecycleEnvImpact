@@ -3,6 +3,7 @@ from typing import List
 
 from model.impact_sources import (
     DeviceImpact,
+    ImpactsList,
     ImpactSource,
     NetworkImpact,
     OfficeImpact,
@@ -11,6 +12,9 @@ from model.impact_sources import (
     TransportImpact,
 )
 
+ResourceName = str
+ResourcesList = dict[ResourceName, ImpactsList]
+
 
 class Resource(ABC):
     """
@@ -18,7 +22,8 @@ class Resource(ABC):
     Should not be directly instantiated
     """
 
-    def __init__(self, impacts: List[ImpactSource]):
+    def __init__(self, name: str, impacts: List[ImpactSource]):
+        self.name = name
         self.impacts = impacts
 
     @property
@@ -36,6 +41,36 @@ class Resource(ABC):
             co2 += self.quantity * impact.co2
         return co2
 
+    def get_impacts(self) -> ImpactsList:
+        """
+        Return all resource impact as an ImpactsLists
+        :return: ImpactsList with all ImpactKind used by the resource
+        """
+        return {"CO2": self.get_co2_impact()}
+
+    def add_to_list(self, resource_list: ResourcesList) -> ResourcesList:
+        """
+        Append a resource to a resource list if not in it, else append/add each of its impacts
+        :param resource_list: the resource list to complete
+        :return: resource list with the new resource added
+        """
+
+        if self.name in resource_list:
+            new_impacts = self.get_impacts()
+            for impact in new_impacts:
+                if (
+                        impact in resource_list[self.name]
+                ):  # impact already in the list, add to it
+                    resource_list[self.name][impact] += new_impacts[impact]
+                else:
+                    resource_list[self.name][impact] = new_impacts[
+                        impact
+                    ]  # impact not in the list, create it
+        else:
+            resource_list[self.name] = self.get_impacts()  # res not in the list
+
+        return resource_list
+
 
 class ComputeResource(Resource):
     """
@@ -43,12 +78,12 @@ class ComputeResource(Resource):
     """
 
     def __init__(
-        self, electricity_mix: float, pue: float, servers_count: int, duration: int
+            self, electricity_mix: float, pue: float, servers_count: int, duration: int
     ):
         self.servers_count = servers_count
         self.duration = duration
         self.server_impact = ServerImpact(electricity_mix, pue)
-        super().__init__(impacts=[self.server_impact])
+        super().__init__("Compute", impacts=[self.server_impact])
 
     @property
     def quantity(self) -> int:
@@ -67,7 +102,7 @@ class StorageResource(Resource):
         self.storage_size = storage_size
         self.duration = duration
         self.storage_impact = StorageImpact(electricity_mix, pue)
-        super().__init__(impacts=[self.storage_impact])
+        super().__init__("Storage", impacts=[self.storage_impact])
 
     @property
     def quantity(self) -> int:
@@ -84,7 +119,7 @@ class PeopleResource(Resource):
         self._quantity = man_days
         self.office_impact = OfficeImpact()
         self.transport_impact = TransportImpact()
-        super().__init__([self.office_impact, self.transport_impact])
+        super().__init__("People", [self.office_impact, self.transport_impact])
 
     @property
     def quantity(self) -> int:
@@ -107,7 +142,7 @@ class UserDeviceResource(Resource):
         self.duration = duration
 
         self.device_source = DeviceImpact()
-        super().__init__([self.device_source])
+        super().__init__("UserDevice", [self.device_source])
 
     @property
     def quantity(self) -> float:
@@ -126,7 +161,7 @@ class NetworkResource(Resource):
         self.duration = duration
 
         self._network_impact = NetworkImpact()
-        super().__init__([self._network_impact])
+        super().__init__("Network", [self._network_impact])
 
     @property
     def quantity(self) -> float:

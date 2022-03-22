@@ -3,7 +3,7 @@ from model.tasks import StandardProjectTask, Task, TaskImpact
 
 class Project:
     """
-    Abstract project, contains the root task to model the lifecycle
+    A project represent the complete lifecycle, contains the root task to model it
     """
 
     root_task: Task
@@ -17,6 +17,24 @@ class Project:
         :return: project global impact
         """
         return self.root_task.get_co2_impact()
+
+    def get_impact_by_task(self) -> TaskImpact:
+        """
+        Return all impacts by task
+        >>> StandardProject().get_impact_by_task()
+        {'name': 'Standard project', 'CO2': 59669.01716074775, 'subtasks': [
+            {'name': 'Build', 'CO2': 40220.476196086754, 'subtasks': [
+                {'name': 'Implementation', 'CO2': 25726.610900199637, 'subtasks': [
+                    {'name': 'Development', 'CO2': 24156.442159811868, 'subtasks': []},
+                    {'name': 'Design', 'CO2': 1570.1687403877713, 'subtasks': []}]},
+                {'name': 'Specifications and requirements', 'CO2': 2415.644215981187, 'subtasks': []},
+                {'name': 'Management', 'CO2': 12078.221079905934, 'subtasks': []}]},
+            {'name': 'Run', 'CO2': 19448.540964660995, 'subtasks': [
+                {'name': 'Maintenance', 'CO2': 8454.754755934153, 'subtasks': []},
+                {'name': 'Hosting', 'CO2': 9004.016113902313, 'subtasks': []},
+                {'name': 'Usage', 'CO2': 1989.7700948245304, 'subtasks': []}]}]}
+        """
+        return self.root_task.get_impact()
 
 
 class StandardProject(Project):
@@ -58,10 +76,6 @@ class StandardProject(Project):
             avg_data,
         )
         super().__init__(self.root_task)
-
-    def get_impact_by_task(self) -> TaskImpact:
-        """Return all impacts by task"""
-        return self.root_task.get_impact()
 
     @property
     def dev_days(self) -> int:

@@ -3,6 +3,7 @@ from model.resources import (
     ComputeResource,
     NetworkResource,
     PeopleResource,
+    ResourcesList,
     StorageResource,
     UserDeviceResource,
 )
@@ -35,6 +36,33 @@ def test_get_co2_impact() -> None:
     is3 = ImpactSource(432)
     r.impacts.append(is3)
     assert r.get_co2_impact() == (9999 + 1.123 + 432) * 123
+
+
+def test_add_to_dict() -> None:
+    """
+    Test Resource.add_to_list() method, by adding a new resource, an existing one, and new impact and assessing
+    the value returned the corresponding ResourceList
+    :return:
+    """
+    resource_list: ResourcesList = {
+        "FirstRes": {"CO2": 234.567},
+        "SecondRes": {"CO2": 999.999},
+    }
+    new_res = PeopleResource(1)
+
+    # Test new one
+    assert len(resource_list) == 2
+    resource_list = new_res.add_to_list(resource_list)
+    assert len(resource_list) == 3
+    assert resource_list[new_res.name]["CO2"] == new_res.get_co2_impact()
+
+    # Test existing one
+    resource_list = new_res.add_to_list(resource_list)
+    assert len(resource_list) == 3
+    assert resource_list[new_res.name]["CO2"] == new_res.get_co2_impact() * 2
+
+    # Test new impact
+    # Only co2 impact for now, test here for new impacts (water, kwh...)
 
 
 ###################

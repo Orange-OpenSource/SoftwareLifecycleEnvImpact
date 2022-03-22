@@ -3,6 +3,7 @@ from model.projects import Project, StandardProject
 from model.resources import PeopleResource
 from model.tasks import Task
 
+
 ###########
 # Project #
 ###########
