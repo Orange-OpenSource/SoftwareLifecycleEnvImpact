@@ -1,23 +1,21 @@
 from model.impact_sources import ImpactSource
 from model.projects import Project, StandardProject
-from model.resources import PeopleResource
 from model.tasks import Task
 
 
 ###########
 # Project #
 ###########
+from tests.unit.test_resources import TestResource
 
 
 def test_get_global_impact() -> None:
-    """Test consistency with the tasks individual impacts"""
+    """Test consistency with the tasks individual _impacts"""
     is1 = ImpactSource(1000)
     is2 = ImpactSource(776)
 
-    r1 = PeopleResource(1)  # 1 quantity
-    r1.impacts = [is1, is2]  # change impacts to have static ones # 1776
-    r2 = PeopleResource(1)
-    r2.impacts = [is1]  # 1000
+    r1 = TestResource(1, impacts=[is1, is2])  # Impacts = 1 * 1776
+    r2 = TestResource(1, impacts=[is1])  # Impacts = 1 * 1000
 
     subtask = Task("Test", resources=[r1])  # 1776
     task = Task("Task", subtasks=[subtask], resources=[r1, r2])  # 2776

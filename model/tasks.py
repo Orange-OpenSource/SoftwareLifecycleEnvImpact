@@ -41,7 +41,7 @@ class Task(ABC):
 
     def get_impact(self) -> TaskImpact:
         """
-        Return all impacts as a dict with format:
+        Return all _impacts as a dict with format:
         {
             "name": xxx
             "CO2": xxx
@@ -60,7 +60,7 @@ class Task(ABC):
 
     def get_impact_by_resource(self, resources: ResourcesList = None) -> ResourcesList:
         """
-        Return all impacts grouped by resource type, int the format of ResourcesList:
+        Return all _impacts grouped by resource type, int the format of ResourcesList:
 
          {'People': {'CO2': 2000.0}}
          {'Build': {'CO2': 234325.0}}

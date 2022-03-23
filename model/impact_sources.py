@@ -1,5 +1,3 @@
-from uncertainties import ufloat
-
 ImpactKind = str
 ImpactValue = float
 ImpactsList = dict[ImpactKind, ImpactValue]
@@ -170,8 +168,10 @@ class TransportImpact(ImpactSource):
     # https://www.statistiques.developpement-durable.gouv.fr/resultats-detailles-de-lenquete-mobilite-des-personnes-de-2019?rubrique=60&dossier=1345
     FOOT_PERCENTAGE = 1.3818
     BIKE_PERCENTAGE = 1.44675
-    PUBLIC_TRANSPORT_PERCENTAGE = ufloat(17.77558, 10)
-    CAR_PERCENTAGE = ufloat(76.32407 + 0.15459, 10)  # other categories (tractors...)
+    PUBLIC_TRANSPORT_PERCENTAGE = 17.77558  # 10% uncertainty
+    CAR_PERCENTAGE = (
+            76.32407 + 0.15459
+    )  # other categories (tractors...) # 10% uncertainty
     MOTORBIKE_PERCENTAGE = 2.91722
 
     # Observatoire des territoires
@@ -204,7 +204,7 @@ class CarImpact(ImpactSource):
     # 0.218 incertitude = 60%
     # https://bilans-ges.ademe.fr/fr/basecarbone/donnees-consulter/liste-element/categorie/151
     def __init__(self) -> None:
-        super().__init__(ufloat(0.218, 0.218 * 0.6))
+        super().__init__(0.218)
 
 
 class BikeImpact(ImpactSource):

@@ -21,7 +21,7 @@ class Project:
 
     def get_impact_by_task(self) -> TaskImpact:
         """
-        Return all impacts by task
+        Return all _impacts by task
         >>> StandardProject().get_impact_by_task()
         {'name': 'Standard project', 'CO2': 59669.01716074775, 'subtasks': [
             {'name': 'Build', 'CO2': 40220.476196086754, 'subtasks': [
@@ -39,7 +39,7 @@ class Project:
 
     def get_impact_by_resource(self) -> ResourcesList:
         """
-        Return project-level ResourcesList (impacts grouped by resource)
+        Return project-level ResourcesList (_impacts grouped by resource)
 
         Example:
         {

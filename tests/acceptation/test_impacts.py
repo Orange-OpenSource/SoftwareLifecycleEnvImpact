@@ -2,7 +2,7 @@ from model.projects import StandardProject
 
 
 #
-# Acceptation tests on impacts to assess that changing the inputs on a projects results in the right tasks impacts
+# Acceptation tests on _impacts to assess that changing the inputs on a projects results in the right tasks _impacts
 # updates (check propagation and computation)
 #
 

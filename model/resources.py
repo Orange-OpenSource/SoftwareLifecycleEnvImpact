@@ -24,7 +24,7 @@ class Resource(ABC):
 
     def __init__(self, name: str, impacts: List[ImpactSource]):
         self.name = name
-        self.impacts = impacts
+        self._impacts = impacts
 
     @property
     @abstractmethod
@@ -37,7 +37,7 @@ class Resource(ABC):
         :return: the impact
         """
         co2 = 0.0
-        for impact in self.impacts:
+        for impact in self._impacts:
             co2 += self.quantity * impact.co2
         return co2
 
@@ -50,7 +50,7 @@ class Resource(ABC):
 
     def add_to_list(self, resource_list: ResourcesList) -> ResourcesList:
         """
-        Append a resource to a resource list if not in it, else append/add each of its impacts
+        Append a resource to a resource list if not in it, else append/add each of its _impacts
         :param resource_list: the resource list to complete
         :return: resource list with the new resource added
         """
@@ -112,7 +112,7 @@ class StorageResource(Resource):
 
 class PeopleResource(Resource):
     """
-    People _resources, man days as inputs, commuting and offices as impacts
+    People _resources, man days as inputs, commuting and offices as _impacts
     """
 
     def __init__(self, man_days: int) -> None:
@@ -133,7 +133,7 @@ class PeopleResource(Resource):
 
 class UserDeviceResource(Resource):
     """
-    User devices _resources, hours as inputs and devices lifecycle as impacts
+    User devices _resources, hours as inputs and devices lifecycle as _impacts
     """
 
     def __init__(self, avg_user: int, avg_time: int, duration: int) -> None:

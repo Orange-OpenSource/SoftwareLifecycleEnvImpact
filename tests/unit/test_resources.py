@@ -1,12 +1,37 @@
+from typing import List
+
 from model.impact_sources import ImpactSource
 from model.resources import (
     ComputeResource,
     NetworkResource,
     PeopleResource,
+    Resource,
     ResourcesList,
     StorageResource,
     UserDeviceResource,
 )
+
+
+class TestResource(Resource):
+    """
+    Test resource implementation to fully control its quantity and ImpactSources
+    """
+
+    def __init__(self, quantity: float, impacts: List[ImpactSource]):
+        self._quantity = quantity
+        super().__init__("TestResource", impacts)
+
+    @property
+    def quantity(self) -> float:
+        """
+        For testing purpose, give direct access to quantity property
+        :return: quantity as float
+        """
+        return self._quantity
+
+    @quantity.setter
+    def quantity(self, quantity: float) -> None:
+        self._quantity = quantity
 
 
 ############
@@ -22,8 +47,7 @@ def test_get_co2_impact() -> None:
     is1 = ImpactSource(9999)
     is2 = ImpactSource(1.123)
 
-    r = PeopleResource(1)  # 1 quantity
-    r.impacts = [is1, is2]  # change impacts to have static ones # 1776
+    r = TestResource(1, impacts=[is1, is2])  # Impacts =  1 * 1776
 
     # Test ImpactSource computation
     assert r.get_co2_impact() == 9999 + 1.123
@@ -34,7 +58,7 @@ def test_get_co2_impact() -> None:
 
     # Test add impact source
     is3 = ImpactSource(432)
-    r.impacts.append(is3)
+    r._impacts.append(is3)
     assert r.get_co2_impact() == (9999 + 1.123 + 432) * 123
 
 
@@ -62,7 +86,7 @@ def test_add_to_dict() -> None:
     assert resource_list[new_res.name]["CO2"] == new_res.get_co2_impact() * 2
 
     # Test new impact
-    # Only co2 impact for now, test here for new impacts (water, kwh...)
+    # Only co2 impact for now, test here for new _impacts (water, kwh...)
 
 
 ###################

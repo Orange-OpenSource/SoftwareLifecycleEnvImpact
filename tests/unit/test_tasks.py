@@ -25,9 +25,9 @@ def test_get_co2_impact() -> None:
     is2 = ImpactSource(776)
 
     r1 = PeopleResource(1)  # 1 quantity
-    r1.impacts = [is1, is2]  # change impacts to have static ones # 1776
+    r1._impacts = [is1, is2]  # change _impacts to have static ones # 1776
     r2 = PeopleResource(1)
-    r2.impacts = [is1]  # 1000
+    r2._impacts = [is1]  # 1000
 
     subtask = Task("Test", resources=[r1])  # 1776
     task = Task("Task", subtasks=[subtask], resources=[r2])  # 1000 + 1776
@@ -52,9 +52,9 @@ def test_get_impact() -> None:
     is2 = ImpactSource(776)
 
     r1 = PeopleResource(1)  # 1 quantity
-    r1.impacts = [is1, is2]  # change impacts to have static ones # 1776
+    r1._impacts = [is1, is2]  # change _impacts to have static ones # 1776
     r2 = PeopleResource(1)
-    r2.impacts = [is1]  # 1000
+    r2._impacts = [is1]  # 1000
 
     subtask = Task("Subtask", resources=[r1])  # 1776
     task = Task("Task", subtasks=[subtask], resources=[r2])  # 1000 + 1776
@@ -76,7 +76,7 @@ def test_get_impact_by_resource() -> None:
     """
     is1 = ImpactSource(1000)
     r2 = PeopleResource(1)
-    r2.impacts = [is1]  # 1000
+    r2._impacts = [is1]  # 1000
 
     # Test one res
     task = Task("Task", resources=[r2])  # 1000 + 1776
