@@ -22,6 +22,12 @@ class Task(ABC):
     """
 
     def __init__(self, name, resources: List[Resource] = None, subtasks: List[Task] = None):  # type: ignore
+        """
+        Define a task with a name, resources and subtasks
+        :param name: the name of the resource
+        :param resources: optional list of resources
+        :param subtasks: optional list of subtasks
+        """
         self.name = name
         if resources is None:
             resources = []
@@ -32,8 +38,8 @@ class Task(ABC):
 
     def get_co2_impact(self) -> float:
         """
-        Compute and return the impact of the task and those of the _subtasks
-        :return: co2 impact of task and _subtasks
+        Return the computed co2 of this task resources, and those of its subtasks
+        :return: complete co2 of task + its subtasks
         """
         return sum(r.get_co2_impact() for r in self._resources) + sum(
             s.get_co2_impact() for s in self._subtasks
@@ -41,15 +47,19 @@ class Task(ABC):
 
     def get_impact(self) -> TaskImpact:
         """
-        Return all _impacts as a dict with format:
-        {
-            "name": xxx
-            "CO2": xxx
-            "subtasks": {
-                "name": xxx
-                "CO2": xxx
-                "subtasks": }
-            }
+        All impacts of the task, and those of its subtasks
+
+        :return: impacts of task and subtasks with format TaskImpact
+
+        Example:
+                {
+                    "name": xxx
+                    "CO2": xxx
+                    "subtasks": {
+                        "name": xxx
+                        "CO2": xxx
+                        "subtasks": }
+                }
         }
         """
         return {
@@ -58,7 +68,7 @@ class Task(ABC):
             "subtasks": [r.get_impact() for r in self._subtasks],
         }
 
-    def get_impact_by_resource(self, resources: ResourcesList = None) -> ResourcesList:
+    def get_impact_by_resource(self, resources: ResourcesList = None) -> ResourcesList:  # type: ignore
         """
         Return all _impacts grouped by resource type, int the format of ResourcesList:
 
@@ -88,6 +98,13 @@ class BuildTask(Task):
     def __init__(
             self, dev_days: int, design_days: int, spec_days: int, management_days: int
     ):
+        """
+        Define a build task with an implementation, spec and management subtasks
+        :param dev_days: development man days
+        :param design_days: design man days
+        :param spec_days: specifications man days
+        :param management_days: management man days
+        """
         self.implementation_task = ImplementationTask(dev_days, design_days)
         self.spec_task = SpecTask(spec_days)
         self.management_task = ManagementTask(management_days)
@@ -104,12 +121,19 @@ class DevTask(Task):
     """
 
     def __init__(self, dev_days: int):
+        """
+        Development task with people resources as impact and development days as quantity
+        :param dev_days: development man days
+        """
         self._people_resource = PeopleResource(dev_days)
         super().__init__("Development", resources=[self._people_resource])
 
     @property
     def dev_days(self) -> int:
-        """Define development resource quantity as man-days"""
+        """
+        Define development resource quantity as man-days
+        :return: development man days
+        """
         return self._people_resource.quantity
 
     @dev_days.setter
@@ -123,12 +147,19 @@ class DesignTask(Task):
     """
 
     def __init__(self, design_days: int):
+        """
+        Design task with people resources as impact and design days as quantity
+        :param design_days: design man days
+        """
         self._people_resource = PeopleResource(design_days)
         super().__init__("Design", resources=[self._people_resource])
 
     @property
     def design_days(self) -> int:
-        """Define design resource quantity as man-days"""
+        """
+        Define design resource quantity as man-days
+        :return: design man days
+        """
         return self._people_resource.quantity
 
     @design_days.setter
@@ -142,6 +173,10 @@ class SpecTask(Task):
     """
 
     def __init__(self, spec_days: int):
+        """
+        Spec task with people resources as impact and spec days as quantity
+        :param spec_days: spec man days
+        """
         self._people_resource = PeopleResource(spec_days)
         super().__init__(
             "Specifications and requirements", resources=[self._people_resource]
@@ -149,7 +184,10 @@ class SpecTask(Task):
 
     @property
     def spec_days(self) -> int:
-        """Define specifications and requirements resource quantity as man-days"""
+        """
+        Define specification resource quantity as man-days
+        :return: Specifications man days
+        """
         return self._people_resource.quantity
 
     @spec_days.setter
@@ -163,6 +201,11 @@ class ImplementationTask(Task):
     """
 
     def __init__(self, dev_days: int, design_days: int):
+        """
+        Define ImplementationTask regrouping development and design
+        :param dev_days: development man days
+        :param design_days: design man days
+        """
         self.dev_task = DevTask(dev_days)
         self.design_task = DesignTask(design_days)
         super().__init__("Implementation", subtasks=[self.dev_task, self.design_task])
@@ -174,12 +217,19 @@ class ManagementTask(Task):
     """
 
     def __init__(self, management_days: int):
+        """
+        Management task with people resources as impact and management days as quantity
+        :param management_days: Management man days
+        """
         self._people_resource = PeopleResource(management_days)
         super().__init__("Management", resources=[self._people_resource])
 
     @property
     def management_days(self) -> int:
-        """Define management resource quantity as man-days"""
+        """
+        Define management resource quantity as man-days
+        :return: Management man days
+        """
         return self._people_resource.quantity
 
     @management_days.setter
@@ -193,12 +243,19 @@ class MaintenanceTask(Task):
     """
 
     def __init__(self, maintenance_days: int):
+        """
+        Maintenance task with people resources as impact and maintenance days as quantity
+        :param maintenance_days: Maintenance man days
+        """
         self._people_resource = PeopleResource(maintenance_days)
         super().__init__("Maintenance", resources=[self._people_resource])
 
     @property
     def maintenance_days(self) -> int:
-        """Define maintenance resource quantity as man-days"""
+        """
+        Define maintenance resource quantity as man-days
+        :return: Maintenance man days
+        """
         return self._people_resource.quantity
 
     @maintenance_days.setter
@@ -212,13 +269,21 @@ class HostingTask(Task):
     """
 
     def __init__(
-        self,
-        electricity_mix: float,
-        pue: float,
-        servers_count: int,
-        storage_size: int,
-        duration: int,
+            self,
+            electricity_mix: float,
+            pue: float,
+            servers_count: int,
+            storage_size: int,
+            duration: int,
     ):
+        """
+        Hosting task with Compute, Storage resources as impacts
+        :param electricity_mix: dc electricity mix
+        :param pue: dc power usage effectiveness
+        :param servers_count: number of server used
+        :param storage_size: terabytes reserved
+        :param duration: duration of the phase
+        """
         self._compute_resource = ComputeResource(
             electricity_mix, pue, servers_count, duration
         )
@@ -236,7 +301,10 @@ class HostingTask(Task):
 
     @property
     def servers_count(self) -> int:
-        """Number of servers reserved"""
+        """
+        NUmber of server reserved
+        :return: server reserved quantity
+        """
         return self._compute_resource.servers_count
 
     @servers_count.setter
@@ -245,7 +313,10 @@ class HostingTask(Task):
 
     @property
     def storage_size(self) -> int:
-        """Tb reserved"""
+        """
+        Terabytes reserved
+        :return: tb reserved
+        """
         return self._storage_resource.storage_size
 
     @storage_size.setter
@@ -254,22 +325,23 @@ class HostingTask(Task):
 
     @property
     def pue(self) -> float:
-        """Power Usage Effectiveness of the DC"""
+        """
+        Power usage effectiveness of the datacenter
+        :return: PUE of the DC
+        """
         return self._compute_resource.server_impact.pue
 
     @pue.setter
     def pue(self, pue: float) -> None:
-        """
-        Power usage effectiveness of the DC
-        :param pue: the pue
-        :return: None
-        """
         self._compute_resource.server_impact.pue = pue
         self._storage_resource.storage_impact.pue = pue
 
     @property
     def electricity_mix(self) -> float:
-        """Electricity mix CO2e emissions of the DC"""
+        """
+        Electricity mix of the dc
+        :return: eectricity mix float
+        """
         return self._compute_resource.server_impact.electricity_mix
 
     @electricity_mix.setter
@@ -279,16 +351,14 @@ class HostingTask(Task):
 
     @property
     def duration(self) -> int:
-        """Days of the phase"""
+        """
+        Duration of the phase as days
+        :return: days of the phase
+        """
         return self._compute_resource.duration
 
     @duration.setter
     def duration(self, duration: int) -> None:
-        """
-        Setter for the phase run duration as days
-        :param duration: run duration as days
-        :return: None
-        """
         self._compute_resource.duration = duration
         self._storage_resource.duration = duration
 
@@ -299,6 +369,13 @@ class UsageTask(Task):
     """
 
     def __init__(self, avg_user: int, avg_time: int, avg_data: float, duration: int):
+        """
+        UsageTask with user devices and networks as resources
+        :param avg_user: avg user per day
+        :param avg_time: avg time spent by user per day
+        :param avg_data: avg data transferred by user per day
+        :param duration: task duration in days
+        """
         self._user_device_res = UserDeviceResource(avg_user, avg_time, duration)
         self._network_resource = NetworkResource(avg_user, avg_data, duration)
 
@@ -308,7 +385,10 @@ class UsageTask(Task):
 
     @property
     def avg_user(self) -> int:
-        """Average number of user each day"""
+        """
+        Average user each day
+        :return: avg user per day
+        """
         return self._user_device_res.avg_user
 
     @avg_user.setter
@@ -318,7 +398,10 @@ class UsageTask(Task):
 
     @property
     def duration(self) -> int:
-        """Duration of the usage of the application, in days"""
+        """
+        Phase duration
+        :return: duration in days
+        """
         return self._user_device_res.duration
 
     @duration.setter
@@ -328,7 +411,10 @@ class UsageTask(Task):
 
     @property
     def avg_time(self) -> int:
-        """Average time spent by one user each day"""
+        """
+        Average time spent by one user per day
+        :return: avg time as minutes
+        """
         return self._user_device_res.avg_time
 
     @avg_time.setter
@@ -337,7 +423,10 @@ class UsageTask(Task):
 
     @property
     def avg_data(self) -> float:
-        """Average time data exchanged by one user each day"""
+        """
+        Average data transferred by user per day
+        :return: gb transferred per day
+        """
         return self._network_resource.avg_data
 
     @avg_data.setter
@@ -380,7 +469,10 @@ class RunTask(Task):
 
     @property
     def duration(self) -> int:
-        """Run phase duration in days"""
+        """
+        Phase duration in days
+        :return: duration in days
+        """
         return self.hosting_task.duration
 
     @duration.setter

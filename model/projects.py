@@ -10,6 +10,10 @@ class Project:
     root_task: Task
 
     def __init__(self, task: Task):
+        """
+        Project constructor, define the root task hosting all the others as a tree
+        :param task: the root task of the tree
+        """
         self.root_task = task
 
     def get_global_impact(self) -> float:
@@ -21,23 +25,27 @@ class Project:
 
     def get_impact_by_task(self) -> TaskImpact:
         """
-        Return all _impacts by task
-        >>> StandardProject().get_impact_by_task()
-        {'name': 'Standard project', 'CO2': 59669.01716074775, 'subtasks': [
-            {'name': 'Build', 'CO2': 40220.476196086754, 'subtasks': [
-                {'name': 'Implementation', 'CO2': 25726.610900199637, 'subtasks': [
-                    {'name': 'Development', 'CO2': 24156.442159811868, 'subtasks': []},
-                    {'name': 'Design', 'CO2': 1570.1687403877713, 'subtasks': []}]},
-                {'name': 'Specifications and requirements', 'CO2': 2415.644215981187, 'subtasks': []},
-                {'name': 'Management', 'CO2': 12078.221079905934, 'subtasks': []}]},
-            {'name': 'Run', 'CO2': 19448.540964660995, 'subtasks': [
-                {'name': 'Maintenance', 'CO2': 8454.754755934153, 'subtasks': []},
-                {'name': 'Hosting', 'CO2': 9004.016113902313, 'subtasks': []},
-                {'name': 'Usage', 'CO2': 1989.7700948245304, 'subtasks': []}]}]}
+        Return all impacts regrouped by task
+        :return: impacts regrouped under format TaskImpact
+
+        Example:
+                >>> StandardProject().get_impact_by_task()
+                {'name': 'Standard project', 'CO2': 59669.01716074775, 'subtasks': [
+                    {'name': 'Build', 'CO2': 40220.476196086754, 'subtasks': [
+                        {'name': 'Implementation', 'CO2': 25726.610900199637, 'subtasks': [
+                            {'name': 'Development', 'CO2': 24156.442159811868, 'subtasks': []},
+                            {'name': 'Design', 'CO2': 1570.1687403877713, 'subtasks': []}]},
+                        {'name': 'Specifications and requirements', 'CO2': 2415.644215981187, 'subtasks': []},
+                        {'name': 'Management', 'CO2': 12078.221079905934, 'subtasks': []}]},
+                    {'name': 'Run', 'CO2': 19448.540964660995, 'subtasks': [
+                        {'name': 'Maintenance', 'CO2': 8454.754755934153, 'subtasks': []},
+                        {'name': 'Hosting', 'CO2': 9004.016113902313, 'subtasks': []},
+                        {'name': 'Usage', 'CO2': 1989.7700948245304, 'subtasks': []}]}]}
         """
         return self.root_task.get_impact()
 
     def get_impact_by_resource(self) -> ResourcesList:
+
         """
         Return project-level ResourcesList (_impacts grouped by resource)
 
@@ -49,7 +57,7 @@ class Project:
             'UserDevice': {'CO2': 1825.5200948245304},
             'Network': {'CO2': 164.25}
         }
-        :return:
+        :return: impacts regrouped under format ResourcesList
         """
         return self.root_task.get_impact_by_resource()
 
@@ -96,7 +104,10 @@ class StandardProject(Project):
 
     @property
     def dev_days(self) -> int:
-        """Development man-days"""
+        """
+        Development man days
+        :return: Dev man days of the project
+        """
         return self.root_task.build_task.implementation_task.dev_task.dev_days
 
     @dev_days.setter
@@ -105,7 +116,10 @@ class StandardProject(Project):
 
     @property
     def design_days(self) -> int:
-        """Design man-days"""
+        """
+        Design man days
+        :return: Design man days of the project
+        """
         return self.root_task.build_task.implementation_task.design_task.design_days
 
     @design_days.setter
@@ -116,7 +130,10 @@ class StandardProject(Project):
 
     @property
     def spec_days(self) -> int:
-        """Specification and requirements man-days"""
+        """
+        Specification and requirements man days
+        :return: Specification and requirements man days of the project
+        """
         return self.root_task.build_task.spec_task.spec_days
 
     @spec_days.setter
@@ -125,7 +142,10 @@ class StandardProject(Project):
 
     @property
     def management_days(self) -> int:
-        """Management man-days"""
+        """
+        Management man days
+        :return: Management man days of the project
+        """
         return self.root_task.build_task.management_task.management_days
 
     @management_days.setter
@@ -134,7 +154,10 @@ class StandardProject(Project):
 
     @property
     def maintenance_days(self) -> int:
-        """Maintenance man-days"""
+        """
+        Maintenance man days
+        :return: Maintenance man days of the project
+        """
         return self.root_task.run_task.maintenance_task.maintenance_days
 
     @maintenance_days.setter
@@ -143,7 +166,10 @@ class StandardProject(Project):
 
     @property
     def electricity_mix(self) -> float:
-        """Electricity-mix co2e emissions used by application devices/datacenters"""
+        """
+        Electricity-mix co2e emissions used by application devices/datacenters
+        :return: The electricity mix
+        """
         return self.root_task.run_task.hosting_task.electricity_mix
 
     @electricity_mix.setter
@@ -152,7 +178,10 @@ class StandardProject(Project):
 
     @property
     def pue(self) -> float:
-        """Power usage effectiveness of the DC"""
+        """
+        Power usage effectiveness of the DC
+        :return: the PUE
+        """
         return self.root_task.run_task.hosting_task.pue
 
     @pue.setter
@@ -161,7 +190,10 @@ class StandardProject(Project):
 
     @property
     def servers_count(self) -> int:
-        """Number of servers reserved by the application"""
+        """
+        Number of servers reserved by the application
+        :return: nb of servers
+        """
         return self.root_task.run_task.hosting_task.servers_count
 
     @servers_count.setter
@@ -170,7 +202,10 @@ class StandardProject(Project):
 
     @property
     def storage_size(self) -> int:
-        """Storage tb reserved by the application"""
+        """
+        Storage tb reserved by the application
+        :return: storage as terabytes
+        """
         return self.root_task.run_task.hosting_task.storage_size
 
     @storage_size.setter
@@ -179,7 +214,10 @@ class StandardProject(Project):
 
     @property
     def run_duration(self) -> int:
-        """Run phase duration as days"""
+        """
+        Run phase duration as days
+        :return: number of days in the running phase
+        """
         return self.root_task.run_task.duration
 
     @run_duration.setter
@@ -188,7 +226,10 @@ class StandardProject(Project):
 
     @property
     def avg_user(self) -> int:
-        """Average number of user each day"""
+        """
+        Average number of user each day of the running phase
+        :return: avg user each day
+        """
         return self.root_task.run_task.usage_task.avg_user
 
     @avg_user.setter
@@ -197,7 +238,10 @@ class StandardProject(Project):
 
     @property
     def avg_time(self) -> int:
-        """Average time user spend on app each day in minutes"""
+        """
+        Average time user spend on app each day in minutes
+        :return: average daily time in minutes
+        """
         return self.root_task.run_task.usage_task.avg_time
 
     @avg_time.setter
@@ -206,7 +250,10 @@ class StandardProject(Project):
 
     @property
     def avg_data(self) -> float:
-        """Average user data each day as float gb"""
+        """
+        Average gigabyte transferred by user by day
+        :return: User data each day as gigabyte
+        """
         return self.root_task.run_task.usage_task.avg_data
 
     @avg_data.setter

@@ -9,6 +9,10 @@ class ImpactSource:
     """
 
     def __init__(self, co2: float):
+        """
+        Should be used by implementations, define the different impacts sources
+        :param co2: co2 emitted by one unit of the ImpactSource
+        """
         self._co2: float = co2
 
     @property
@@ -108,6 +112,11 @@ class ServerImpact(ImpactSource):
     SERVER_USAGE = 0.7
 
     def __init__(self, electricity_mix: float, pue: float):
+        """
+        Server impact source, defined by the electricity mix used to make it run, and the pue of its datacenter
+        :param electricity_mix: electricity mix used by the DC
+        :param pue: power usage effectiveness of the datacenter
+        """
         self.electricity_mix = electricity_mix
         self.pue = pue
         super().__init__(self.co2)
@@ -142,6 +151,11 @@ class StorageImpact(ImpactSource):
     DISK_FABRICATION_CO2 = 250
 
     def __init__(self, electricity_mix: float, pue: float):
+        """
+        Storage impact source, defined by the electricity mix used to make it run, and the pue of its datacenter
+        :param electricity_mix: electricity mix used by the DC
+        :param pue: power usage effectiveness of the datacenter
+        """
         self.electricity_mix = electricity_mix
         self.pue = pue
         super().__init__(self.co2)

@@ -23,13 +23,21 @@ class Resource(ABC):
     """
 
     def __init__(self, name: str, impacts: List[ImpactSource]):
+        """
+        Should only be used by implementations, define the name and impacts of the resource
+        :param name: name of the resource
+        :param impacts: list of resource ImpactSources
+        """
         self.name = name
         self._impacts = impacts
 
     @property
     @abstractmethod
     def quantity(self) -> float:
-        """Quantity consumed by the resource, define by implementations"""
+        """
+        Quantity consumed by the resource, define by implementations
+        :return: implementation quantity
+        """
 
     def get_co2_impact(self) -> float:
         """
@@ -80,6 +88,13 @@ class ComputeResource(Resource):
     def __init__(
             self, electricity_mix: float, pue: float, servers_count: int, duration: int
     ):
+        """
+        Instanciate a compure resource with a ServerImpact
+        :param electricity_mix: electricity mix used by the DC
+        :param pue: pue of the datacenter
+        :param servers_count: number of server used
+        :param duration: duration of the resource as days
+        """
         self.servers_count = servers_count
         self.duration = duration
         self.server_impact = ServerImpact(electricity_mix, pue)
@@ -87,7 +102,11 @@ class ComputeResource(Resource):
 
     @property
     def quantity(self) -> int:
-        """Server days reserved by the application as number reserved * duration in days"""
+        """
+        Server days reserved by the application as number reserved * duration in days
+        :return: server days reserved
+        """
+
         return self.servers_count * self.duration
 
 
@@ -97,8 +116,15 @@ class StorageResource(Resource):
     """
 
     def __init__(
-        self, electricity_mix: float, pue: float, storage_size: int, duration: int
+            self, electricity_mix: float, pue: float, storage_size: int, duration: int
     ):
+        """
+        Instanciate a storage resource with a storage impact
+        :param electricity_mix: electricity mix used by the DC
+        :param pue: pue of the datacenter
+        :param storage_size: terabytes reserved
+        :param duration: duration of the resource as days
+        """
         self.storage_size = storage_size
         self.duration = duration
         self.storage_impact = StorageImpact(electricity_mix, pue)
@@ -106,7 +132,10 @@ class StorageResource(Resource):
 
     @property
     def quantity(self) -> int:
-        """Storage days reserved by the application as tb reserved * duration in days"""
+        """
+        Storage days reserved by the application as tb reserved * duration in days
+        :return: storage days reserved
+        """
         return self.storage_size * self.duration
 
 
@@ -116,6 +145,10 @@ class PeopleResource(Resource):
     """
 
     def __init__(self, man_days: int) -> None:
+        """
+        Instanciate a PeopleResource with offices and transports impacts
+        :param man_days: man days as quantity
+        """
         self._quantity = man_days
         self.office_impact = OfficeImpact()
         self.transport_impact = TransportImpact()
@@ -123,7 +156,10 @@ class PeopleResource(Resource):
 
     @property
     def quantity(self) -> int:
-        """Man-days as quantity"""
+        """
+        Resource quantity as man days
+        :return: man days
+        """
         return self._quantity
 
     @quantity.setter
@@ -137,6 +173,12 @@ class UserDeviceResource(Resource):
     """
 
     def __init__(self, avg_user: int, avg_time: int, duration: int) -> None:
+        """
+        Instantiate a UserDeviceResource with device as impact
+        :param avg_user: average user per day
+        :param avg_time: average time spent by user on the app per day
+        :param duration: number of day
+        """
         self.avg_user = avg_user
         self.avg_time = avg_time
         self.duration = duration
@@ -146,7 +188,10 @@ class UserDeviceResource(Resource):
 
     @property
     def quantity(self) -> float:
-        """Hours users spend on the app during the entire phase"""
+        """
+        Hours-equivalent users spend on the app during the entire phase
+        :return: total hours spent by users on app
+        """
         return (self.avg_time / 60) * self.avg_user * self.duration
 
 
@@ -156,6 +201,12 @@ class NetworkResource(Resource):
     """
 
     def __init__(self, avg_user: int, avg_data: float, duration: int) -> None:
+        """
+        Instantiate a NetworkResource with network as impact
+        :param avg_user: average user per day
+        :param avg_data: average data transferred by user on the app per day
+        :param duration: number of day
+        """
         self.avg_user = avg_user
         self.avg_data = avg_data
         self.duration = duration
@@ -165,5 +216,8 @@ class NetworkResource(Resource):
 
     @property
     def quantity(self) -> float:
-        """Data transfer induced byt the app usage during the entire phase"""
+        """
+        Total gigabytes transferred by all users during the duration
+        :return: total giagbytes transferred
+        """
         return self.avg_data * self.avg_user * self.duration
