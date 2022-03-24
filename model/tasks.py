@@ -74,7 +74,6 @@ class Task(ABC):
 
          {'People': {'CO2': 2000.0}}
          {'Build': {'CO2': 234325.0}}
-
         :param resources: Optional ResourceList to add to
         :return: ResourceList containing resources for this task + those passed as parameter
         """
@@ -96,22 +95,28 @@ class BuildTask(Task):
     """
 
     def __init__(
-            self, dev_days: int, design_days: int, spec_days: int, management_days: int
+            self,
+            implementation_task: ImplementationTask,
+            spec_task: SpecTask,
+            management_task: ManagementTask,
     ):
         """
-        Define a build task with an implementation, spec and management subtasks
-        :param dev_days: development man days
-        :param design_days: design man days
-        :param spec_days: specifications man days
-        :param management_days: management man days
+        Initialize a BuildTask with implementation, specification and management as subtasks
+        :param implementation_task: Implementation subtask
+        :param spec_task: Specifications subtask
+        :param management_task: Management subtask
         """
-        self.implementation_task = ImplementationTask(dev_days, design_days)
-        self.spec_task = SpecTask(spec_days)
-        self.management_task = ManagementTask(management_days)
+        self._implementation_task = implementation_task
+        self._spec_task = spec_task
+        self._management_task = management_task
 
         super().__init__(
             "Build",
-            subtasks=[self.implementation_task, self.spec_task, self.management_task],
+            subtasks=[
+                self._implementation_task,
+                self._spec_task,
+                self._management_task,
+            ],
         )
 
 
@@ -200,15 +205,16 @@ class ImplementationTask(Task):
     Implementation task containing development and design
     """
 
-    def __init__(self, dev_days: int, design_days: int):
+    def __init__(self, dev_task: DevTask, design_task: DesignTask):
         """
-        Define ImplementationTask regrouping development and design
-        :param dev_days: development man days
-        :param design_days: design man days
+        Initialize a ImplementationTask with development and design
+        :param dev_task: Development subtask
+        :param design_task: Design subtask
         """
-        self.dev_task = DevTask(dev_days)
-        self.design_task = DesignTask(design_days)
-        super().__init__("Implementation", subtasks=[self.dev_task, self.design_task])
+
+        self._dev_task = dev_task
+        self._design_task = design_task
+        super().__init__("Implementation", subtasks=[self._dev_task, self._design_task])
 
 
 class ManagementTask(Task):
@@ -340,7 +346,7 @@ class HostingTask(Task):
     def electricity_mix(self) -> float:
         """
         Electricity mix of the dc
-        :return: eectricity mix float
+        :return: electricity mix float
         """
         return self._compute_resource.server_impact.electricity_mix
 
@@ -441,30 +447,25 @@ class RunTask(Task):
     """
 
     def __init__(
-        self,
-        maintenance_days: int,
-        electricity_mix: float,
-        pue: float,
-        servers_count: int,
-        storage_size: int,
-        duration: int,
-        avg_user: int,
-        avg_time: int,
-        avg_data: float,
+            self,
+            maintenance_task: MaintenanceTask,
+            hosting_task: HostingTask,
+            usage_task: UsageTask,
     ):
-        self.maintenance_task = MaintenanceTask(maintenance_days)
-        self.hosting_task = HostingTask(
-            electricity_mix,
-            pue,
-            servers_count,
-            storage_size,
-            duration,
-        )
-        self.usage_task = UsageTask(avg_user, avg_time, avg_data, duration)
+        """
+        Implement a RunTask with maintenance, hosting and usage subtasks
+        :param maintenance_task: Maintenance subtask
+        :param hosting_task: Hosting subtask
+        :param usage_task: Usage subtask
+        """
+        self._maintenance_task = maintenance_task
+
+        self._hosting_task = hosting_task
+        self._usage_task = usage_task
 
         super().__init__(
             "Run",
-            subtasks=[self.maintenance_task, self.hosting_task, self.usage_task],
+            subtasks=[self._maintenance_task, self._hosting_task, self._usage_task],
         )
 
     @property
@@ -473,12 +474,12 @@ class RunTask(Task):
         Phase duration in days
         :return: duration in days
         """
-        return self.hosting_task.duration
+        return self._hosting_task.duration
 
     @duration.setter
     def duration(self, duration: int) -> None:
-        self.hosting_task.duration = duration
-        self.usage_task.duration = duration
+        self._hosting_task.duration = duration
+        self._usage_task.duration = duration
 
 
 class StandardProjectTask(Task):
@@ -489,31 +490,12 @@ class StandardProjectTask(Task):
     """
 
     def __init__(
-        self,
-        dev_days: int,
-        design_days: int,
-        spec_days: int,
-        management_days: int,
-        maintenance_days: int,
-        electricity_mix: float,
-        pue: float,
-        servers_count: int,
-        storage_size: int,
-        run_duration: int,
-        avg_user: int,
-        avg_time: int,
-        avg_data: int,
+            self,
+            build_task: BuildTask,
+            run_task: RunTask,
     ):
-        self.build_task = BuildTask(dev_days, design_days, spec_days, management_days)
-        self.run_task = RunTask(
-            maintenance_days,
-            electricity_mix,
-            pue,
-            servers_count,
-            storage_size,
-            run_duration,
-            avg_user,
-            avg_time,
-            avg_data,
+        self._build_task = build_task
+        self._run_task = run_task
+        super().__init__(
+            "Standard project", subtasks=[self._build_task, self._run_task]
         )
-        super().__init__("Standard project", subtasks=[self.build_task, self.run_task])

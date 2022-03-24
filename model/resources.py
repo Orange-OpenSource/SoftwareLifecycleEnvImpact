@@ -89,7 +89,7 @@ class ComputeResource(Resource):
             self, electricity_mix: float, pue: float, servers_count: int, duration: int
     ):
         """
-        Instanciate a compure resource with a ServerImpact
+        Instantiate a ComputeResource with a ServerImpact
         :param electricity_mix: electricity mix used by the DC
         :param pue: pue of the datacenter
         :param servers_count: number of server used
@@ -119,7 +119,7 @@ class StorageResource(Resource):
             self, electricity_mix: float, pue: float, storage_size: int, duration: int
     ):
         """
-        Instanciate a storage resource with a storage impact
+        Instantiate a storage resource with a storage impact
         :param electricity_mix: electricity mix used by the DC
         :param pue: pue of the datacenter
         :param storage_size: terabytes reserved
@@ -146,7 +146,7 @@ class PeopleResource(Resource):
 
     def __init__(self, man_days: int) -> None:
         """
-        Instanciate a PeopleResource with offices and transports impacts
+        Instantiate a PeopleResource with offices and transports impacts
         :param man_days: man days as quantity
         """
         self._quantity = man_days
@@ -218,6 +218,6 @@ class NetworkResource(Resource):
     def quantity(self) -> float:
         """
         Total gigabytes transferred by all users during the duration
-        :return: total giagbytes transferred
+        :return: total gigabytes transferred
         """
         return self.avg_data * self.avg_user * self.duration

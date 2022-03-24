@@ -96,7 +96,7 @@ def test_get_impact_by_resource() -> None:
 
 def test_get_impact_by_resource_quantity() -> None:
     """
-    Assess that get_impact_by_resource() get all the co2 impact quantity for all the tasks/substasks/resources
+    Assess that get_impact_by_resource() get all the co2 impact quantity for all the tasks/subtasks/resources
     :return:
     """
     p = StandardProject()
@@ -275,8 +275,14 @@ def test_avg_data() -> None:
 ###########
 def test_run_task_duration() -> None:
     """Test getter/setter and child updates for property duration"""
-    r = RunTask(100, 0.6, 1.5, 15, 500, 365, 3000, 23, 0.4)
-    assert r.duration == 365  # check init/getter
-    r.duration = 243
-    assert r.duration == 243  # check setter
-    assert r.hosting_task.duration == 243  # check children update
+    maintenance_task = MaintenanceTask(123)
+    hosting_task = HostingTask(0.6, 1.5, 15, 64, 365)
+    usage_task = UsageTask(1, 1, 1, 365)
+
+    run_task = RunTask(maintenance_task, hosting_task, usage_task)
+
+    assert run_task.duration == 365  # check init/getter
+    run_task.duration = 243
+    assert run_task.duration == 243  # check setter
+    assert hosting_task.duration == 243  # check children update
+    assert usage_task.duration == 243  # check children update

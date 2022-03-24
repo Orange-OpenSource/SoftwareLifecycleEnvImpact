@@ -1,5 +1,19 @@
 from model.resources import ResourcesList
-from model.tasks import StandardProjectTask, Task, TaskImpact
+from model.tasks import (
+    BuildTask,
+    DesignTask,
+    DevTask,
+    HostingTask,
+    ImplementationTask,
+    MaintenanceTask,
+    ManagementTask,
+    RunTask,
+    SpecTask,
+    StandardProjectTask,
+    Task,
+    TaskImpact,
+    UsageTask,
+)
 
 
 class Project:
@@ -85,21 +99,29 @@ class StandardProject(Project):
         avg_time = 30
         avg_data = 1
 
-        self.root_task = StandardProjectTask(
-            dev_days,
-            design_days,
-            spec_days,
-            management_days,
-            maintenance_days,
-            electricity_mix,
-            pue,
-            servers_count,
-            storage_size,
-            run_duration,
-            avg_user,
-            avg_time,
-            avg_data,
+        # Build Task
+        self.dev_task = DevTask(dev_days)
+        self.design_task = DesignTask(design_days)
+        self.implementation_task = ImplementationTask(self.dev_task, self.design_task)
+
+        self.spec_task = SpecTask(spec_days)
+        self.management_task = ManagementTask(management_days)
+
+        self.build_task = BuildTask(
+            self.implementation_task, self.spec_task, self.management_task
         )
+
+        # Run Task
+        self.maintenance_task = MaintenanceTask(maintenance_days)
+        self.hosting_task = HostingTask(
+            electricity_mix, pue, servers_count, storage_size, run_duration
+        )
+        self.usage_task = UsageTask(avg_user, avg_time, avg_data, run_duration)
+        self.run_task = RunTask(
+            self.maintenance_task, self.hosting_task, self.usage_task
+        )
+        self.root_task = StandardProjectTask(self.build_task, self.run_task)
+
         super().__init__(self.root_task)
 
     @property
@@ -108,11 +130,11 @@ class StandardProject(Project):
         Development man days
         :return: Dev man days of the project
         """
-        return self.root_task.build_task.implementation_task.dev_task.dev_days
+        return self.dev_task.dev_days
 
     @dev_days.setter
     def dev_days(self, dev_days: int) -> None:
-        self.root_task.build_task.implementation_task.dev_task.dev_days = dev_days
+        self.dev_task.dev_days = dev_days
 
     @property
     def design_days(self) -> int:
@@ -120,13 +142,11 @@ class StandardProject(Project):
         Design man days
         :return: Design man days of the project
         """
-        return self.root_task.build_task.implementation_task.design_task.design_days
+        return self.design_task.design_days
 
     @design_days.setter
     def design_days(self, design_days: int) -> None:
-        self.root_task.build_task.implementation_task.design_task.design_days = (
-            design_days
-        )
+        self.design_task.design_days = design_days
 
     @property
     def spec_days(self) -> int:
@@ -134,11 +154,11 @@ class StandardProject(Project):
         Specification and requirements man days
         :return: Specification and requirements man days of the project
         """
-        return self.root_task.build_task.spec_task.spec_days
+        return self.spec_task.spec_days
 
     @spec_days.setter
     def spec_days(self, spec_days: int) -> None:
-        self.root_task.build_task.spec_task.spec_days = spec_days
+        self.spec_task.spec_days = spec_days
 
     @property
     def management_days(self) -> int:
@@ -146,11 +166,11 @@ class StandardProject(Project):
         Management man days
         :return: Management man days of the project
         """
-        return self.root_task.build_task.management_task.management_days
+        return self.management_task.management_days
 
     @management_days.setter
     def management_days(self, management_days: int) -> None:
-        self.root_task.build_task.management_task.management_days = management_days
+        self.management_task.management_days = management_days
 
     @property
     def maintenance_days(self) -> int:
@@ -158,11 +178,11 @@ class StandardProject(Project):
         Maintenance man days
         :return: Maintenance man days of the project
         """
-        return self.root_task.run_task.maintenance_task.maintenance_days
+        return self.maintenance_task.maintenance_days
 
     @maintenance_days.setter
     def maintenance_days(self, maintenance_days: int) -> None:
-        self.root_task.run_task.maintenance_task.maintenance_days = maintenance_days
+        self.maintenance_task.maintenance_days = maintenance_days
 
     @property
     def electricity_mix(self) -> float:
@@ -170,11 +190,11 @@ class StandardProject(Project):
         Electricity-mix co2e emissions used by application devices/datacenters
         :return: The electricity mix
         """
-        return self.root_task.run_task.hosting_task.electricity_mix
+        return self.hosting_task.electricity_mix
 
     @electricity_mix.setter
     def electricity_mix(self, electricity_mix: float) -> None:
-        self.root_task.run_task.hosting_task.electricity_mix = electricity_mix
+        self.hosting_task.electricity_mix = electricity_mix
 
     @property
     def pue(self) -> float:
@@ -182,11 +202,11 @@ class StandardProject(Project):
         Power usage effectiveness of the DC
         :return: the PUE
         """
-        return self.root_task.run_task.hosting_task.pue
+        return self.hosting_task.pue
 
     @pue.setter
     def pue(self, pue: float) -> None:
-        self.root_task.run_task.hosting_task.pue = pue
+        self.hosting_task.pue = pue
 
     @property
     def servers_count(self) -> int:
@@ -194,11 +214,11 @@ class StandardProject(Project):
         Number of servers reserved by the application
         :return: nb of servers
         """
-        return self.root_task.run_task.hosting_task.servers_count
+        return self.hosting_task.servers_count
 
     @servers_count.setter
     def servers_count(self, servers_count: int) -> None:
-        self.root_task.run_task.hosting_task.servers_count = servers_count
+        self.hosting_task.servers_count = servers_count
 
     @property
     def storage_size(self) -> int:
@@ -206,11 +226,11 @@ class StandardProject(Project):
         Storage tb reserved by the application
         :return: storage as terabytes
         """
-        return self.root_task.run_task.hosting_task.storage_size
+        return self.hosting_task.storage_size
 
     @storage_size.setter
     def storage_size(self, storage_size: int) -> None:
-        self.root_task.run_task.hosting_task.storage_size = storage_size
+        self.hosting_task.storage_size = storage_size
 
     @property
     def run_duration(self) -> int:
@@ -218,11 +238,11 @@ class StandardProject(Project):
         Run phase duration as days
         :return: number of days in the running phase
         """
-        return self.root_task.run_task.duration
+        return self.run_task.duration
 
     @run_duration.setter
     def run_duration(self, run_duration: int) -> None:
-        self.root_task.run_task.duration = run_duration
+        self.run_task.duration = run_duration
 
     @property
     def avg_user(self) -> int:
@@ -230,11 +250,11 @@ class StandardProject(Project):
         Average number of user each day of the running phase
         :return: avg user each day
         """
-        return self.root_task.run_task.usage_task.avg_user
+        return self.usage_task.avg_user
 
     @avg_user.setter
     def avg_user(self, avg_user: int) -> None:
-        self.root_task.run_task.usage_task.avg_user = avg_user
+        self.usage_task.avg_user = avg_user
 
     @property
     def avg_time(self) -> int:
@@ -242,11 +262,11 @@ class StandardProject(Project):
         Average time user spend on app each day in minutes
         :return: average daily time in minutes
         """
-        return self.root_task.run_task.usage_task.avg_time
+        return self.usage_task.avg_time
 
     @avg_time.setter
     def avg_time(self, avg_time: int) -> None:
-        self.root_task.run_task.usage_task.avg_time = avg_time
+        self.usage_task.avg_time = avg_time
 
     @property
     def avg_data(self) -> float:
@@ -254,8 +274,8 @@ class StandardProject(Project):
         Average gigabyte transferred by user by day
         :return: User data each day as gigabyte
         """
-        return self.root_task.run_task.usage_task.avg_data
+        return self.usage_task.avg_data
 
     @avg_data.setter
     def avg_data(self, avg_data: float) -> None:
-        self.root_task.run_task.usage_task.avg_data = avg_data
+        self.usage_task.avg_data = avg_data
