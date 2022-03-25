@@ -179,7 +179,7 @@ def test_maintenance_days() -> None:
 
 def test_servers_count() -> None:
     """Test HostingTask.servers_count property getters and setters"""
-    h = HostingTask(0.6, 1.5, 12, 124, 364)
+    h = HostingTask(12, 124, 364)
     assert h.servers_count == 12  # check init/getter
     h.servers_count = 113
     assert h.servers_count == 113  # check setter
@@ -187,39 +187,15 @@ def test_servers_count() -> None:
 
 def test_storage_size() -> None:
     """Test HostingTask.storage_size property getters and setters"""
-    h = HostingTask(0.6, 1.5, 12, 124, 364)
+    h = HostingTask(12, 124, 364)
     assert h.storage_size == 124  # check init/getter
     h.storage_size = 113
     assert h.storage_size == 113  # check setter
 
 
-def test_pue() -> None:
-    """Test getter/setter and child updates for property pue"""
-    h = HostingTask(0.6, 1.5, 12, 124, 364)
-    assert h.pue == 1.5  # check init/getter
-    h.pue = 2.37946587
-    assert h.pue == 2.37946587  # check setter
-    assert h._compute_resource.server_impact.pue == 2.37946587  # check children update
-    assert h._storage_resource.storage_impact.pue == 2.37946587  # check children update
-
-
-def test_electricity_mix() -> None:
-    """Test getter/setter and child updates for property electricity_mix"""
-    h = HostingTask(0.6, 1.5, 12, 124, 364)
-    assert h.electricity_mix == 0.6  # check init/getter
-    h.electricity_mix = 0.727
-    assert h.electricity_mix == 0.727  # check setter
-    assert (
-            h._compute_resource.server_impact.electricity_mix == 0.727
-    )  # check children update
-    assert (
-            h._storage_resource.storage_impact.electricity_mix == 0.727
-    )  # check children update
-
-
 def test_hosting_task_duration() -> None:
     """Test getter/setter and child updates for property duration"""
-    h = HostingTask(0.6, 1.5, 12, 124, 364)
+    h = HostingTask(12, 124, 364)
     assert h.duration == 364  # check init/getter
     h.duration = 726
     assert h.duration == 726  # check setter
@@ -276,7 +252,7 @@ def test_avg_data() -> None:
 def test_run_task_duration() -> None:
     """Test getter/setter and child updates for property duration"""
     maintenance_task = MaintenanceTask(123)
-    hosting_task = HostingTask(0.6, 1.5, 15, 64, 365)
+    hosting_task = HostingTask(15, 64, 365)
     usage_task = UsageTask(1, 1, 1, 365)
 
     run_task = RunTask(maintenance_task, hosting_task, usage_task)

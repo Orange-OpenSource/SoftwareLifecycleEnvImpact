@@ -71,9 +71,8 @@ class Resource(ABC):
                 ):  # impact already in the list, add to it
                     resource_list[self.name][impact] += new_impacts[impact]
                 else:
-                    resource_list[self.name][impact] = new_impacts[
-                        impact
-                    ]  # impact not in the list, create it
+                    # impact not in the list, create it
+                    resource_list[self.name][impact] = new_impacts[impact]
         else:
             resource_list[self.name] = self.get_impacts()  # res not in the list
 
@@ -85,19 +84,15 @@ class ComputeResource(Resource):
     Computing resource, server days as quantity and servers as impact
     """
 
-    def __init__(
-            self, electricity_mix: float, pue: float, servers_count: int, duration: int
-    ):
+    def __init__(self, servers_count: int, duration: int):
         """
         Instantiate a ComputeResource with a ServerImpact
-        :param electricity_mix: electricity mix used by the DC
-        :param pue: pue of the datacenter
         :param servers_count: number of server used
         :param duration: duration of the resource as days
         """
         self.servers_count = servers_count
         self.duration = duration
-        self.server_impact = ServerImpact(electricity_mix, pue)
+        self.server_impact = ServerImpact()
         super().__init__("Compute", impacts=[self.server_impact])
 
     @property
@@ -115,19 +110,15 @@ class StorageResource(Resource):
     Storage _resources, tb * duration as input, disks lifecycle as impact
     """
 
-    def __init__(
-            self, electricity_mix: float, pue: float, storage_size: int, duration: int
-    ):
+    def __init__(self, storage_size: int, duration: int):
         """
         Instantiate a storage resource with a storage impact
-        :param electricity_mix: electricity mix used by the DC
-        :param pue: pue of the datacenter
         :param storage_size: terabytes reserved
         :param duration: duration of the resource as days
         """
         self.storage_size = storage_size
         self.duration = duration
-        self.storage_impact = StorageImpact(electricity_mix, pue)
+        self.storage_impact = StorageImpact()
         super().__init__("Storage", impacts=[self.storage_impact])
 
     @property

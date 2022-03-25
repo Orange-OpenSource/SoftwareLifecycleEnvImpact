@@ -1,4 +1,26 @@
-from model.impact_sources import ImpactSource, ServerImpact, StorageImpact
+from model.impact_sources import (
+    ImpactSource,
+    ImpactsRegistry,
+    ServerImpact,
+    StorageImpact,
+)
+
+
+###################
+# ImpactsRegistry #
+###################
+
+
+def test_impact_registry_singleton() -> None:
+    """Test that ImpactRegistry follow the singleton pattern"""
+    ir1 = ImpactsRegistry()
+    ir2 = ImpactsRegistry()
+
+    assert ir1 == ir2
+    ir1.pue = 3.4
+    assert ir2.pue == 3.4
+    ir2.electricity_mix = 2.1234
+    assert ir1.electricity_mix == 2.1234
 
 
 ################
@@ -18,19 +40,22 @@ def test_server_impact() -> None:
     the same input
     :return: None
     """
-    s = ServerImpact(0.7543, 1.5)
+    s = ServerImpact()
+    impacts_registry = ImpactsRegistry()
+    impacts_registry.electricity_mix = 0.7543
+    impacts_registry.pue = 1.5
     first_co2 = s.co2
 
     old_co2 = s.co2
-    s.electricity_mix = 1.432
+    impacts_registry.electricity_mix = 1.432
     assert s.co2 != old_co2
 
     old_co2 = s.co2
-    s.pue = 2.3
+    impacts_registry.pue = 2.3
     assert s.co2 != old_co2
 
-    s.electricity_mix = 0.7543
-    s.pue = 1.5
+    impacts_registry.electricity_mix = 0.7543
+    impacts_registry.pue = 1.5
     assert s.co2 == first_co2
 
 
@@ -40,17 +65,20 @@ def test_storage_impact() -> None:
     the same input
     :return: None
     """
-    s = StorageImpact(0.7543, 1.5)
+    s = StorageImpact()
+    registry = ImpactsRegistry()
+    registry.pue = 1.5
+    registry.electricity_mix = 0.7543
     first_co2 = s.co2
 
     old_co2 = s.co2
-    s.electricity_mix = 1.432
+    registry.electricity_mix = 1.432
     assert s.co2 != old_co2
 
     old_co2 = s.co2
-    s.pue = 2.3
+    registry.pue = 2.3
     assert s.co2 != old_co2
 
-    s.electricity_mix = 0.7543
-    s.pue = 1.5
+    registry.electricity_mix = 0.7543
+    registry.pue = 1.5
     assert s.co2 == first_co2

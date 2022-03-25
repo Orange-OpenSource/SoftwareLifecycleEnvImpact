@@ -96,7 +96,7 @@ def test_add_to_dict() -> None:
 
 def test_compute_res_quantity() -> None:
     """Test quantity properties of ComputeResource and the update of its components"""
-    c = ComputeResource(0.6, 1.7, 13, 365)
+    c = ComputeResource(13, 365)
     assert c.quantity == 13 * 365  # check init/getter
     c.servers_count = 432
     assert c.quantity == 432 * 365  # check servers_count update
@@ -111,7 +111,7 @@ def test_compute_res_quantity() -> None:
 
 def test_storage_res_quantity() -> None:
     """Test quantity properties of StorageResource and the update of its components"""
-    c = StorageResource(0.6, 1.7, 250, 365)
+    c = StorageResource(250, 365)
     assert c.quantity == 250 * 365  # check init/getter
     c.storage_size = 34
     assert c.quantity == 34 * 365  # check storage size update

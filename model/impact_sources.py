@@ -3,6 +3,22 @@ ImpactValue = float
 ImpactsList = dict[ImpactKind, ImpactValue]
 
 
+class ImpactsRegistry:
+    __instance = None
+
+    def __init__(self) -> None:
+        self.pue = 1.5
+        # ADEME https://bilans-ges.ademe.fr/fr/accueil/documentation-gene/index/page/Electricite_reglementaire
+        self.electricity_mix = 0.0599
+
+    def __new__(cls, *args: object, **kwargs: object) -> object:  # type: ignore
+        if ImpactsRegistry.__instance is None:
+            ImpactsRegistry.__instance = super(ImpactsRegistry, cls).__new__(
+                cls, *args, **kwargs
+            )
+        return ImpactsRegistry.__instance
+
+
 class ImpactSource:
     """
     Abstract class to define a source of impact emission(s)
@@ -88,10 +104,10 @@ class OfficeImpact(ImpactSource):
         LCA / building expectancy
         """
         sqr_meter_office = (
-                self.OFFICE_SIZE / self.OFFICES_OCCUPANCY
+            self.OFFICE_SIZE / self.OFFICES_OCCUPANCY
         )  # Adding corridors halls etc. to single offices
         office_emissions_sqr_meter_day = self.BUILDING_EMISSIONS / (
-                self.BUILDING_LIFE_EXPECTANCY * 365
+            self.BUILDING_LIFE_EXPECTANCY * 365
         )
         office_co2_person = sqr_meter_office * office_emissions_sqr_meter_day
         super().__init__(office_co2_person)
@@ -111,14 +127,12 @@ class ServerImpact(ImpactSource):
     SERVER_FABRICATION_CO2 = 1613.25
     SERVER_USAGE = 0.7
 
-    def __init__(self, electricity_mix: float, pue: float):
+    def __init__(self) -> None:
         """
         Server impact source, defined by the electricity mix used to make it run, and the pue of its datacenter
-        :param electricity_mix: electricity mix used by the DC
-        :param pue: power usage effectiveness of the datacenter
+        Uses the impactRegistry to get pue and electricity_mix
         """
-        self.electricity_mix = electricity_mix
-        self.pue = pue
+        self.registry = ImpactsRegistry()
         super().__init__(self.co2)
 
     @property
@@ -134,9 +148,9 @@ class ServerImpact(ImpactSource):
         ) * self.SERVER_USAGE + self.SERVER_POWER_IDLE
         # using SERVER_USAGE to avoid having the server at full power
         # all the time
-        wh_pue = wh * self.pue  # Pondering the consumption with the PUE
+        wh_pue = wh * self.registry.pue  # Pondering the consumption with the PUE
         kwh_day = (wh_pue * 24) / 1000
-        return kwh_day * self.electricity_mix + amortization_day
+        return kwh_day * self.registry.electricity_mix + amortization_day
 
 
 class StorageImpact(ImpactSource):
@@ -150,14 +164,12 @@ class StorageImpact(ImpactSource):
     DISK_LIFE = 4
     DISK_FABRICATION_CO2 = 250
 
-    def __init__(self, electricity_mix: float, pue: float):
+    def __init__(self) -> None:
         """
         Storage impact source, defined by the electricity mix used to make it run, and the pue of its datacenter
-        :param electricity_mix: electricity mix used by the DC
-        :param pue: power usage effectiveness of the datacenter
+        Uses the impactRegistry to get pue and electricity_mix
         """
-        self.electricity_mix = electricity_mix
-        self.pue = pue
+        self.registry = ImpactsRegistry()
         super().__init__(self.co2)
 
     @property
@@ -167,9 +179,9 @@ class StorageImpact(ImpactSource):
         :return: co2/disk(1tb)
         """
         amortization_day = self.DISK_FABRICATION_CO2 / (self.DISK_LIFE * 365)
-        wh_pue = self.SSD_WH * self.pue
+        wh_pue = self.SSD_WH * self.registry.pue
         kwh_day = (wh_pue * 24) / 1000
-        return kwh_day * self.electricity_mix + amortization_day
+        return kwh_day * self.registry.electricity_mix + amortization_day
 
 
 class TransportImpact(ImpactSource):
@@ -184,7 +196,7 @@ class TransportImpact(ImpactSource):
     BIKE_PERCENTAGE = 1.44675
     PUBLIC_TRANSPORT_PERCENTAGE = 17.77558  # 10% uncertainty
     CAR_PERCENTAGE = (
-            76.32407 + 0.15459
+        76.32407 + 0.15459
     )  # other categories (tractors...) # 10% uncertainty
     MOTORBIKE_PERCENTAGE = 2.91722
 
@@ -198,12 +210,12 @@ class TransportImpact(ImpactSource):
         Then multiply by the mean distance per day per person
         """
         co2_km = (
-                         self.FOOT_PERCENTAGE * 0
-                         + self.BIKE_PERCENTAGE * BikeImpact().co2
-                         + self.PUBLIC_TRANSPORT_PERCENTAGE * PublicTransportImpact().co2
-                         + self.CAR_PERCENTAGE * CarImpact().co2
-                         + self.MOTORBIKE_PERCENTAGE * MotorbikeImpact().co2
-                 ) / 100
+            self.FOOT_PERCENTAGE * 0
+            + self.BIKE_PERCENTAGE * BikeImpact().co2
+            + self.PUBLIC_TRANSPORT_PERCENTAGE * PublicTransportImpact().co2
+            + self.CAR_PERCENTAGE * CarImpact().co2
+            + self.MOTORBIKE_PERCENTAGE * MotorbikeImpact().co2
+        ) / 100
         co2_day = co2_km * self.MEAN_DISTANCE
         super().__init__(co2_day)
 

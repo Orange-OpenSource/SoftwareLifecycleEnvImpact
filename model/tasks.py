@@ -95,10 +95,10 @@ class BuildTask(Task):
     """
 
     def __init__(
-            self,
-            implementation_task: ImplementationTask,
-            spec_task: SpecTask,
-            management_task: ManagementTask,
+        self,
+        implementation_task: ImplementationTask,
+        spec_task: SpecTask,
+        management_task: ManagementTask,
     ):
         """
         Initialize a BuildTask with implementation, specification and management as subtasks
@@ -275,27 +275,19 @@ class HostingTask(Task):
     """
 
     def __init__(
-            self,
-            electricity_mix: float,
-            pue: float,
-            servers_count: int,
-            storage_size: int,
-            duration: int,
+        self,
+        servers_count: int,
+        storage_size: int,
+        duration: int,
     ):
         """
         Hosting task with Compute, Storage resources as impacts
-        :param electricity_mix: dc electricity mix
-        :param pue: dc power usage effectiveness
         :param servers_count: number of server used
         :param storage_size: terabytes reserved
         :param duration: duration of the phase
         """
-        self._compute_resource = ComputeResource(
-            electricity_mix, pue, servers_count, duration
-        )
-        self._storage_resource = StorageResource(
-            electricity_mix, pue, storage_size, duration
-        )
+        self._compute_resource = ComputeResource(servers_count, duration)
+        self._storage_resource = StorageResource(storage_size, duration)
 
         super().__init__(
             "Hosting",
@@ -328,32 +320,6 @@ class HostingTask(Task):
     @storage_size.setter
     def storage_size(self, storage_size: int) -> None:
         self._storage_resource.storage_size = storage_size
-
-    @property
-    def pue(self) -> float:
-        """
-        Power usage effectiveness of the datacenter
-        :return: PUE of the DC
-        """
-        return self._compute_resource.server_impact.pue
-
-    @pue.setter
-    def pue(self, pue: float) -> None:
-        self._compute_resource.server_impact.pue = pue
-        self._storage_resource.storage_impact.pue = pue
-
-    @property
-    def electricity_mix(self) -> float:
-        """
-        Electricity mix of the dc
-        :return: electricity mix float
-        """
-        return self._compute_resource.server_impact.electricity_mix
-
-    @electricity_mix.setter
-    def electricity_mix(self, electricity_mix: float) -> None:
-        self._compute_resource.server_impact.electricity_mix = electricity_mix
-        self._storage_resource.storage_impact.electricity_mix = electricity_mix
 
     @property
     def duration(self) -> int:
@@ -447,10 +413,10 @@ class RunTask(Task):
     """
 
     def __init__(
-            self,
-            maintenance_task: MaintenanceTask,
-            hosting_task: HostingTask,
-            usage_task: UsageTask,
+        self,
+        maintenance_task: MaintenanceTask,
+        hosting_task: HostingTask,
+        usage_task: UsageTask,
     ):
         """
         Implement a RunTask with maintenance, hosting and usage subtasks
@@ -490,9 +456,9 @@ class StandardProjectTask(Task):
     """
 
     def __init__(
-            self,
-            build_task: BuildTask,
-            run_task: RunTask,
+        self,
+        build_task: BuildTask,
+        run_task: RunTask,
     ):
         self._build_task = build_task
         self._run_task = run_task

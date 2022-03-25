@@ -1,3 +1,4 @@
+from model.impact_sources import ImpactsRegistry
 from model.resources import ResourcesList
 from model.tasks import (
     BuildTask,
@@ -89,9 +90,6 @@ class StandardProject(Project):
         spec_days = 200
         management_days = 1000
         maintenance_days = 700
-        # ADEME https://bilans-ges.ademe.fr/fr/accueil/documentation-gene/index/page/Electricite_reglementaire
-        electricity_mix = 0.0599
-        pue = 1.5
         servers_count = 6
         storage_size = 40
         run_duration = 365
@@ -113,14 +111,13 @@ class StandardProject(Project):
 
         # Run Task
         self.maintenance_task = MaintenanceTask(maintenance_days)
-        self.hosting_task = HostingTask(
-            electricity_mix, pue, servers_count, storage_size, run_duration
-        )
+        self.hosting_task = HostingTask(servers_count, storage_size, run_duration)
         self.usage_task = UsageTask(avg_user, avg_time, avg_data, run_duration)
         self.run_task = RunTask(
             self.maintenance_task, self.hosting_task, self.usage_task
         )
         self.root_task = StandardProjectTask(self.build_task, self.run_task)
+        self._impacts_registry = ImpactsRegistry()
 
         super().__init__(self.root_task)
 
@@ -190,11 +187,11 @@ class StandardProject(Project):
         Electricity-mix co2e emissions used by application devices/datacenters
         :return: The electricity mix
         """
-        return self.hosting_task.electricity_mix
+        return self._impacts_registry.electricity_mix
 
     @electricity_mix.setter
     def electricity_mix(self, electricity_mix: float) -> None:
-        self.hosting_task.electricity_mix = electricity_mix
+        self._impacts_registry.electricity_mix = electricity_mix
 
     @property
     def pue(self) -> float:
@@ -202,11 +199,11 @@ class StandardProject(Project):
         Power usage effectiveness of the DC
         :return: the PUE
         """
-        return self.hosting_task.pue
+        return self._impacts_registry.pue
 
     @pue.setter
     def pue(self, pue: float) -> None:
-        self.hosting_task.pue = pue
+        self._impacts_registry.pue = pue
 
     @property
     def servers_count(self) -> int:

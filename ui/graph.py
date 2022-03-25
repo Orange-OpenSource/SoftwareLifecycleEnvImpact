@@ -57,20 +57,20 @@ class ModelPieChart:
         self.p = p
 
     def _update(
-            self,
-            dev_days: int,
-            design_days: int,
-            spec_days: int,
-            management_days: int,
-            maintenance_days: int,
-            electricity_mix: float,
-            pue: float,
-            servers_count: int,
-            storage_tb: int,
-            run_duration: int,
-            avg_user_day: int,
-            avg_user_minutes: int,
-            avg_user_data: float,
+        self,
+        dev_days: int,
+        design_days: int,
+        spec_days: int,
+        management_days: int,
+        maintenance_days: int,
+        electricity_mix: float,
+        pue: float,
+        servers_count: int,
+        storage_tb: int,
+        run_duration: int,
+        avg_user_day: int,
+        avg_user_minutes: int,
+        avg_user_data: float,
     ) -> None:
         """
         Helper function to interact widget to update all values and draw again after a change

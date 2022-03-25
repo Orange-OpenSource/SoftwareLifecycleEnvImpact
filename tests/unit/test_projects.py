@@ -33,6 +33,12 @@ def test_get_impact_by_task() -> None:
     assert s.get_impact_by_task() == s.root_task.get_impact()
 
 
+def test_get_impact_by_resource() -> None:
+    """Test that project level impact_by_resource is same as root_task one"""
+    s = StandardProject()
+    assert s.get_impact_by_resource() == s.root_task.get_impact_by_resource()
+
+
 def test_dev_days() -> None:
     """Test getter/setter of dev_days property"""
     s = StandardProject()

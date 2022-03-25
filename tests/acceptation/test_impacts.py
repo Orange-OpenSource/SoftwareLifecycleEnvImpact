@@ -1,3 +1,4 @@
+from model.impact_sources import ImpactsRegistry
 from model.projects import StandardProject
 
 
@@ -14,7 +15,7 @@ def test_build_task_impacts() -> None:
     # Dev days
     old_co2 = s.build_task.get_co2_impact()
     s.dev_days = 4432
-    assert s.root_task.get_co2_impact() != old_co2
+    assert s.build_task.get_co2_impact() != old_co2
 
     # Design days
     old_co2 = s.build_task.get_co2_impact()
@@ -43,12 +44,12 @@ def test_run_task_impacts() -> None:
 
     # Electricity mix
     old_co2 = s.run_task.get_co2_impact()
-    s.electricity_mix = 4432
+    ImpactsRegistry().electricity_mix = 4432
     assert s.run_task.get_co2_impact() != old_co2
 
     # PUE
     old_co2 = s.run_task.get_co2_impact()
-    s.pue = 4432
+    ImpactsRegistry().pue = 4432
     assert s.run_task.get_co2_impact() != old_co2
 
     # Servers count
@@ -143,12 +144,12 @@ def test_hosting_task_impacts() -> None:
 
     # Electricity mix
     old_co2 = s.hosting_task.get_co2_impact()
-    s.electricity_mix = 2.12312312
+    ImpactsRegistry().electricity_mix = 2.12312312
     assert s.hosting_task.get_co2_impact() != old_co2
 
     # PUE
     old_co2 = s.hosting_task.get_co2_impact()
-    s.pue = 1.2342342344
+    ImpactsRegistry().pue = 1.2342342344
     assert s.hosting_task.get_co2_impact() != old_co2
 
     # Servers count
