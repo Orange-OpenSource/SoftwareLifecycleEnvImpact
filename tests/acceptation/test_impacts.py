@@ -1,5 +1,6 @@
 from model.impact_sources import ImpactsRegistry
 from model.projects import StandardProject
+from model.units import Q_, ureg
 
 
 #
@@ -44,12 +45,12 @@ def test_run_task_impacts() -> None:
 
     # Electricity mix
     old_co2 = s.run_task.get_co2_impact()
-    ImpactsRegistry().electricity_mix = 4432
+    ImpactsRegistry().electricity_mix = Q_(4432, ureg.electricity_mix)
     assert s.run_task.get_co2_impact() != old_co2
 
     # PUE
     old_co2 = s.run_task.get_co2_impact()
-    ImpactsRegistry().pue = 4432
+    ImpactsRegistry().pue = Q_(4432, ureg.pue)
     assert s.run_task.get_co2_impact() != old_co2
 
     # Servers count
@@ -144,12 +145,12 @@ def test_hosting_task_impacts() -> None:
 
     # Electricity mix
     old_co2 = s.hosting_task.get_co2_impact()
-    ImpactsRegistry().electricity_mix = 2.12312312
+    ImpactsRegistry().electricity_mix = Q_(2.12312312, ureg.electricity_mix)
     assert s.hosting_task.get_co2_impact() != old_co2
 
     # PUE
     old_co2 = s.hosting_task.get_co2_impact()
-    ImpactsRegistry().pue = 1.2342342344
+    ImpactsRegistry().pue = Q_(1.2342342344, ureg.pue)
     assert s.hosting_task.get_co2_impact() != old_co2
 
     # Servers count

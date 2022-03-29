@@ -1,3 +1,5 @@
+from pint import Quantity
+
 from model.impact_sources import ImpactsRegistry
 from model.resources import ResourcesList
 from model.tasks import (
@@ -15,6 +17,7 @@ from model.tasks import (
     TaskImpact,
     UsageTask,
 )
+from model.units import Q_, ureg
 
 
 class Project:
@@ -31,7 +34,7 @@ class Project:
         """
         self.root_task = task
 
-    def get_global_impact(self) -> float:
+    def get_global_impact(self) -> Quantity["kg_co2e"]:
         """
         Compute and return the project global CO2e footprint
         :return: project global impact
@@ -187,11 +190,13 @@ class StandardProject(Project):
         Electricity-mix co2e emissions used by application devices/datacenters
         :return: The electricity mix
         """
-        return self._impacts_registry.electricity_mix
+        return float(self._impacts_registry.electricity_mix.magnitude)
 
     @electricity_mix.setter
     def electricity_mix(self, electricity_mix: float) -> None:
-        self._impacts_registry.electricity_mix = electricity_mix
+        self._impacts_registry.electricity_mix = Q_(
+            electricity_mix, ureg.electricity_mix
+        )
 
     @property
     def pue(self) -> float:
@@ -199,11 +204,11 @@ class StandardProject(Project):
         Power usage effectiveness of the DC
         :return: the PUE
         """
-        return self._impacts_registry.pue
+        return float(self._impacts_registry.pue.magnitude)
 
     @pue.setter
     def pue(self, pue: float) -> None:
-        self._impacts_registry.pue = pue
+        self._impacts_registry.pue = Q_(pue, ureg.pue)
 
     @property
     def servers_count(self) -> int:

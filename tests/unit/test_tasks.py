@@ -12,6 +12,7 @@ from model.tasks import (
     Task,
     UsageTask,
 )
+from model.units import Q_, ureg
 
 
 ########
@@ -21,8 +22,8 @@ from model.tasks import (
 
 def test_get_co2_impact() -> None:
     """Test that task co2 impact is those of all _resources from itself and its children"""
-    is1 = ImpactSource(1000)
-    is2 = ImpactSource(776)
+    is1 = ImpactSource(Q_(1000, ureg.kg_co2e))
+    is2 = ImpactSource(Q_(776, ureg.kg_co2e))
 
     r1 = PeopleResource(1)  # 1 quantity
     r1._impacts = [is1, is2]  # change _impacts to have static ones # 1776
@@ -32,7 +33,7 @@ def test_get_co2_impact() -> None:
     subtask = Task("Test", resources=[r1])  # 1776
     task = Task("Task", subtasks=[subtask], resources=[r2])  # 1000 + 1776
 
-    assert task.get_co2_impact() == 2776
+    assert task.get_co2_impact() == 2776 * ureg.kg_co2e
 
 
 def test_get_impact() -> None:
@@ -48,8 +49,8 @@ def test_get_impact() -> None:
         }
     }
     """
-    is1 = ImpactSource(1000)
-    is2 = ImpactSource(776)
+    is1 = ImpactSource(Q_(1000, ureg.kg_co2e))
+    is2 = ImpactSource(Q_(776, ureg.kg_co2e))
 
     r1 = PeopleResource(1)  # 1 quantity
     r1._impacts = [is1, is2]  # change _impacts to have static ones # 1776
@@ -62,11 +63,11 @@ def test_get_impact() -> None:
     impact = task.get_impact()
     assert isinstance(task.get_impact(), dict)
     assert impact["name"] == "Task"
-    assert impact["CO2"] == task.get_co2_impact()
+    assert impact["CO2"] == task.get_co2_impact().magnitude
 
     # Test subtask
     assert impact["subtasks"][0]["name"] == "Subtask"  # type: ignore
-    assert impact["subtasks"][0]["CO2"] == subtask.get_co2_impact()  # type: ignore
+    assert impact["subtasks"][0]["CO2"] == subtask.get_co2_impact().magnitude  # type: ignore
 
 
 def test_get_impact_by_resource() -> None:
@@ -74,24 +75,24 @@ def test_get_impact_by_resource() -> None:
     Test Task.get_impact_by_resource() method, by adding a new resource, an existing one, and adding a subtask
     :return:
     """
-    is1 = ImpactSource(1000)
+    is1 = ImpactSource(Q_(1000, ureg.kg_co2e))
     r2 = PeopleResource(1)
     r2._impacts = [is1]  # 1000
 
     # Test one res
     task = Task("Task", resources=[r2])  # 1000 + 1776
     res_dict = task.get_impact_by_resource()
-    assert res_dict[r2.name]["CO2"] == task.get_co2_impact()
+    assert res_dict[r2.name]["CO2"] == task.get_co2_impact().magnitude
 
     # Test two resources
     task2 = Task("Task", resources=[r2, r2])  # 1000 + 1776
     res_dict = task2.get_impact_by_resource()
-    assert res_dict[r2.name]["CO2"] == task2.get_co2_impact()
+    assert res_dict[r2.name]["CO2"] == task2.get_co2_impact().magnitude
 
     # Test subtasks
     task3 = Task("Task", subtasks=[task, task2])
     res_dict = task3.get_impact_by_resource()
-    assert res_dict[r2.name]["CO2"] == task3.get_co2_impact()
+    assert res_dict[r2.name]["CO2"] == task3.get_co2_impact().magnitude
 
 
 def test_get_impact_by_resource_quantity() -> None:
@@ -104,7 +105,7 @@ def test_get_impact_by_resource_quantity() -> None:
     d = p.root_task.get_impact_by_resource()
     for resource in d.keys():
         co2 += d[resource]["CO2"]
-    assert p.get_global_impact() == co2
+    assert p.get_global_impact().magnitude == co2
 
 
 ###########

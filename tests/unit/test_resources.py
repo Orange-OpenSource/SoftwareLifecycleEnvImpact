@@ -10,6 +10,7 @@ from model.resources import (
     StorageResource,
     UserDeviceResource,
 )
+from model.units import Q_, ureg
 
 
 class TestResource(Resource):
@@ -44,22 +45,22 @@ def test_get_co2_impact() -> None:
     For Resource.get_co2_impact test computation, quantity change and resource adding
     :return: None
     """
-    is1 = ImpactSource(9999)
-    is2 = ImpactSource(1.123)
+    is1 = ImpactSource(Q_(9999, ureg.kg_co2e))
+    is2 = ImpactSource(Q_(1.123, ureg.kg_co2e))
 
     r = TestResource(1, impacts=[is1, is2])  # Impacts =  1 * 1776
 
     # Test ImpactSource computation
-    assert r.get_co2_impact() == 9999 + 1.123
+    assert r.get_co2_impact() == Q_(9999 + 1.123, ureg.kg_co2e)
 
     # Test quantity change
     r._quantity = 123
-    assert r.get_co2_impact() == (9999 + 1.123) * 123
+    assert r.get_co2_impact() == Q_((9999 + 1.123) * 123, ureg.kg_co2e)
 
     # Test add impact source
-    is3 = ImpactSource(432)
+    is3 = ImpactSource(Q_(432, ureg.kg_co2e))
     r._impacts.append(is3)
-    assert r.get_co2_impact() == (9999 + 1.123 + 432) * 123
+    assert r.get_co2_impact() == ((9999 + 1.123 + 432) * 123) * ureg.kg_co2e
 
 
 def test_add_to_dict() -> None:
@@ -78,12 +79,12 @@ def test_add_to_dict() -> None:
     assert len(resource_list) == 2
     resource_list = new_res.add_to_list(resource_list)
     assert len(resource_list) == 3
-    assert resource_list[new_res.name]["CO2"] == new_res.get_co2_impact()
+    assert resource_list[new_res.name]["CO2"] == new_res.get_co2_impact().magnitude
 
     # Test existing one
     resource_list = new_res.add_to_list(resource_list)
     assert len(resource_list) == 3
-    assert resource_list[new_res.name]["CO2"] == new_res.get_co2_impact() * 2
+    assert resource_list[new_res.name]["CO2"] == new_res.get_co2_impact().magnitude * 2
 
     # Test new impact
     # Only co2 impact for now, test here for new _impacts (water, kwh...)

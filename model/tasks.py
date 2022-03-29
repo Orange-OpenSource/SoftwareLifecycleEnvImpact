@@ -3,6 +3,8 @@ from __future__ import annotations
 from abc import ABC
 from typing import Any, List, Union
 
+from pint import Quantity
+
 from model.resources import (
     ComputeResource,
     NetworkResource,
@@ -12,6 +14,7 @@ from model.resources import (
     StorageResource,
     UserDeviceResource,
 )
+from model.units import ureg
 
 TaskImpact = dict[str, Union[str, float, Any]]
 
@@ -36,14 +39,19 @@ class Task(ABC):
         self._subtasks = subtasks
         self._resources = resources
 
-    def get_co2_impact(self) -> float:
+    def get_co2_impact(self) -> Quantity["kg_co2e"]:
         """
         Return the computed co2 of this task resources, and those of its subtasks
         :return: complete co2 of task + its subtasks
         """
-        return sum(r.get_co2_impact() for r in self._resources) + sum(
-            s.get_co2_impact() for s in self._subtasks
-        )
+        total: Quantity["kg_co2e"] = 0 * ureg.kg_co2e
+        for r in self._resources:
+            total += r.get_co2_impact()
+
+        for s in self._subtasks:
+            total += s.get_co2_impact()
+
+        return total
 
     def get_impact(self) -> TaskImpact:
         """
@@ -64,7 +72,7 @@ class Task(ABC):
         """
         return {
             "name": self.name,
-            "CO2": self.get_co2_impact(),
+            "CO2": self.get_co2_impact().magnitude,
             "subtasks": [r.get_impact() for r in self._subtasks],
         }
 

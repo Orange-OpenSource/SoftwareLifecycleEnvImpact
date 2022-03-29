@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import List
 
+from pint import Quantity
+
 from model.impact_sources import (
     DeviceImpact,
     ImpactsList,
@@ -11,6 +13,7 @@ from model.impact_sources import (
     StorageImpact,
     TransportImpact,
 )
+from model.units import ureg
 
 ResourceName = str
 ResourcesList = dict[ResourceName, ImpactsList]
@@ -39,12 +42,12 @@ class Resource(ABC):
         :return: implementation quantity
         """
 
-    def get_co2_impact(self) -> float:
+    def get_co2_impact(self) -> Quantity["kg_co2e"]:
         """
         Compute and return the co2-equivalent impact associated to the given quantity
         :return: the impact
         """
-        co2 = 0.0
+        co2: Quantity["kg_co2e"] = 0 * ureg.kg_co2e
         for impact in self._impacts:
             co2 += self.quantity * impact.co2
         return co2
@@ -54,7 +57,7 @@ class Resource(ABC):
         Return all resource impact as an ImpactsLists
         :return: ImpactsList with all ImpactKind used by the resource
         """
-        return {"CO2": self.get_co2_impact()}
+        return {"CO2": self.get_co2_impact().magnitude}
 
     def add_to_list(self, resource_list: ResourcesList) -> ResourcesList:
         """
