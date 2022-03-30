@@ -39,12 +39,12 @@ class Task(ABC):
         self._subtasks = subtasks
         self._resources = resources
 
-    def get_co2_impact(self) -> Quantity["kg_co2e"]:
+    def get_co2_impact(self) -> Quantity["kg_co2e"]:  # type: ignore
         """
         Return the computed co2 of this task resources, and those of its subtasks
         :return: complete co2 of task + its subtasks
         """
-        total: Quantity["kg_co2e"] = 0 * ureg.kg_co2e
+        total: Quantity["kg_co2e"] = 0 * ureg.kg_co2e  # type: ignore
         for r in self._resources:
             total += r.get_co2_impact()
 

@@ -4,7 +4,6 @@ from typing import List
 from pint import Quantity
 
 from model.impact_sources import (
-    DeviceImpact,
     ImpactsList,
     ImpactSource,
     NetworkImpact,
@@ -12,6 +11,7 @@ from model.impact_sources import (
     ServerImpact,
     StorageImpact,
     TransportImpact,
+    UserDeviceImpact,
 )
 from model.units import ureg
 
@@ -42,12 +42,12 @@ class Resource(ABC):
         :return: implementation quantity
         """
 
-    def get_co2_impact(self) -> Quantity["kg_co2e"]:
+    def get_co2_impact(self) -> Quantity["kg_co2e"]:  # type: ignore
         """
         Compute and return the co2-equivalent impact associated to the given quantity
         :return: the impact
         """
-        co2: Quantity["kg_co2e"] = 0 * ureg.kg_co2e
+        co2: Quantity["kg_co2e"] = 0 * ureg.kg_co2e  # type: ignore
         for impact in self._impacts:
             co2 += self.quantity * impact.co2
         return co2
@@ -177,7 +177,7 @@ class UserDeviceResource(Resource):
         self.avg_time = avg_time
         self.duration = duration
 
-        self.device_source = DeviceImpact()
+        self.device_source = UserDeviceImpact()
         super().__init__("UserDevice", [self.device_source])
 
     @property

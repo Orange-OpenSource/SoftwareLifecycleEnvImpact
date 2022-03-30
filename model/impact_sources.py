@@ -14,9 +14,9 @@ class ImpactsRegistry:
     __instance = None
 
     def __init__(self) -> None:
-        self.pue: Quantity["pue"] = Q_(1.5, ureg.pue)
+        self.pue: Quantity["pue"] = Q_(1.5, ureg.pue)  # type: ignore
         # ADEME https://bilans-ges.ademe.fr/fr/accueil/documentation-gene/index/page/Electricite_reglementaire
-        self.electricity_mix: Quantity["electricity_mix"] = Q_(
+        self.electricity_mix: Quantity["electricity_mix"] = Q_(  # type: ignore
             0.0599, ureg.electricity_mix
         )
 
@@ -33,15 +33,15 @@ class ImpactSource:
     Abstract class to define a source of impact emission(s)
     """
 
-    def __init__(self, co2: Quantity["kg_co2e"]):
+    def __init__(self, co2: Quantity["kg_co2e"]):  # type: ignore
         """
         Should be used by implementations, define the different impacts sources
         :param co2: co2 emitted by one unit of the ImpactSource
         """
-        self._co2: Quantity["kg_co2e"] = co2
+        self._co2: Quantity["kg_co2e"] = co2  # type: ignore
 
     @property
-    def co2(self) -> Quantity["kg_co2e"]:
+    def co2(self) -> Quantity["kg_co2e"]:  # type: ignore
         """
         Getter for co2 property
         :return: co2 as float
@@ -49,15 +49,47 @@ class ImpactSource:
         return self._co2
 
 
-class DeviceImpact(ImpactSource):
+class UserDeviceImpact(ImpactSource):
     """
     ImpactSource for devices (smartphone, pc) usage/amortization induced by application transferred
     Ratio for 1h/user
     """
 
-    SMARTPHONE_CO2 = 88.75
-    SMARTPHONE_LIFE = 2
-    SMARTPHONE_DAILY_USE = 3.12  # https://ieeexplore.ieee.org/abstract/document/6360448
+    RATIO_TABLET = 0.0784
+    RATIO_PC = 0.1373
+    RATIO_TV = 0.2549
+    RATIO_SMARTPHONE = 0.5294
+
+    def __init__(self) -> None:
+        """
+        Standard ratio for one hour of user device, half on a laptop and the other on a smartphone
+        """
+        self.smartphone_impact = SmartphoneImpact()
+        self.laptop_impact = LaptopImpact()
+        self.tablet_impact = TabletImpact()
+        self.tv_impact = TelevisionImpact()
+        super().__init__(self.co2)
+
+    @property
+    def co2(self) -> Quantity["kg_co2e"]:  # type: ignore
+        """
+        Compute a standard UserDevice hour impact, by using the registry ratio of devices
+        :return: kg_co2e impact for 1h of UserDevice
+        """
+        co2 = (
+            self.RATIO_TABLET * self.tablet_impact.co2
+            + self.RATIO_PC * self.laptop_impact.co2
+            + self.RATIO_TV * self.tv_impact.co2
+            + self.RATIO_SMARTPHONE * self.smartphone_impact.co2
+        )
+        return Q_(co2, ureg.kg_co2e)
+
+
+class LaptopImpact(ImpactSource):
+    """
+    ImpactSource for a laptop usage/amortization induced by application transferred
+    Ratio for 1h/laptop
+    """
 
     # Boavizta - https://github.com/Boavizta/environmental-footprint-data
     LAPTOP_CO2 = 307.37
@@ -66,17 +98,68 @@ class DeviceImpact(ImpactSource):
 
     def __init__(self) -> None:
         """
-        Standard ratio for one hour of user device, half on a laptop and the other on a smartphone
+        Init a laptop hour usage co2 emissions as amortization by hour
+        co2 for 1h of usage
+        """
+        laptop_day_co2 = self.LAPTOP_CO2 / (self.LAPTOP_LIFE * 365)
+        laptop_hour_co2 = laptop_day_co2 / self.PC_DAILY_USE
+
+        super().__init__(Q_(laptop_hour_co2, ureg.kg_co2e))
+
+
+class SmartphoneImpact(ImpactSource):
+    """
+    ImpactSource for a smartphone usage/amortization induced by application transferred
+    Ratio for 1h/smartphone # TODO update and add uncertainty
+    """
+
+    SMARTPHONE_CO2 = 88.75
+    SMARTPHONE_LIFE = 2
+    SMARTPHONE_DAILY_USE = 3.12  # https://ieeexplore.ieee.org/abstract/document/6360448
+
+    def __init__(self) -> None:
+        """
+        Init a smartphone hour usage co2 emissions as amortization by hour
+        co2 for 1h of usage
         """
         smartphone_day_co2 = self.SMARTPHONE_CO2 / (self.SMARTPHONE_LIFE * 365)
         smartphone_hour_co2 = smartphone_day_co2 / self.SMARTPHONE_DAILY_USE
 
-        laptop_day_co2 = self.LAPTOP_CO2 / (self.LAPTOP_LIFE * 365)
-        laptop_hour_co2 = laptop_day_co2 / self.PC_DAILY_USE
+        super().__init__(Q_(smartphone_hour_co2, ureg.kg_co2e))
 
-        co2 = laptop_hour_co2 * 0.5 + smartphone_hour_co2 * 0.5
 
-        super().__init__(Q_(co2, ureg.kg_co2e))
+class TabletImpact(ImpactSource):
+    """
+    ImpactSource for a Tablet usage/amortization induced by application
+    Ratio for 1h/smartphone
+    """
+
+    TABLET_LIFE = 5
+    TABLET_DAILY_USE = 1
+
+    def __init__(self) -> None:
+        tablet_co2 = 63.2 * ureg.kg_co2e  # .plus_minus(0.5, relative=True)
+        # Source: https://bilans-ges.ademe.fr/fr/basecarbone/donnees-consulter/liste-element?recherche=tablette
+        tablet_day_co2 = tablet_co2 / (self.TABLET_LIFE * 365)
+        tablet_hour_co2 = tablet_day_co2 / self.TABLET_DAILY_USE
+        super().__init__(Q_(tablet_hour_co2, ureg.kg_co2e))
+
+
+class TelevisionImpact(ImpactSource):
+    """
+    ImpactSource for a 49-inch tv usage/amortization induced by application
+    Ratio for 1h watched
+    """
+
+    TELEVISION_LIFE = 10
+    TELEVISION_DAILY_USE = 3
+
+    def __init__(self) -> None:
+        television_co2 = 500 * ureg.kg_co2e  # .plus_minus(0.5, relative=True)
+        # Source: https://bilans-ges.ademe.fr/fr/basecarbone/donnees-consulter/liste-element?recherche=tablette
+        tablet_day_co2 = television_co2 / (self.TELEVISION_LIFE * 365)
+        tablet_hour_co2 = tablet_day_co2 / self.TELEVISION_DAILY_USE
+        super().__init__(Q_(tablet_hour_co2, ureg.kg_co2e))
 
 
 class NetworkImpact(ImpactSource):
@@ -145,7 +228,7 @@ class ServerImpact(ImpactSource):
         super().__init__(self.co2)
 
     @property
-    def co2(self) -> Quantity["kg_co2e"]:
+    def co2(self) -> Quantity["kg_co2e"]:  # type: ignore
         """
         Compute the co2 cost of a server, adding consumption pondered with pue and amortization
         :return: kg_co2e / day
@@ -192,7 +275,7 @@ class StorageImpact(ImpactSource):
         super().__init__(self.co2)
 
     @property
-    def co2(self) -> Quantity["kg_co2e"]:
+    def co2(self) -> Quantity["kg_co2e"]:  # type: ignore
         """
         Compute the co2 of a 1tb disk for a day, using amortization and power consumption
         :return: kg_co2e/disk(1tb)

@@ -1,5 +1,5 @@
-import ipywidgets as widgets
-from matplotlib import pyplot as plt
+import ipywidgets as widgets  # type: ignore
+from matplotlib import pyplot as plt  # type: ignore
 
 from model.projects import StandardProject
 from model.resources import ResourcesList

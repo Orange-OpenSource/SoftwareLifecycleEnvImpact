@@ -34,7 +34,7 @@ class Project:
         """
         self.root_task = task
 
-    def get_global_impact(self) -> Quantity["kg_co2e"]:
+    def get_global_impact(self) -> Quantity["kg_co2e"]:  # type: ignore
         """
         Compute and return the project global CO2e footprint
         :return: project global impact
