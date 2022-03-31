@@ -17,7 +17,7 @@ from model.tasks import (
     TaskImpact,
     UsageTask,
 )
-from model.units import Q_, ureg
+from model.units import ureg
 
 
 class Project:
@@ -194,9 +194,7 @@ class StandardProject(Project):
 
     @electricity_mix.setter
     def electricity_mix(self, electricity_mix: float) -> None:
-        self._impacts_registry.electricity_mix = Q_(
-            electricity_mix, ureg.electricity_mix
-        )
+        self._impacts_registry.electricity_mix = electricity_mix * ureg.electricity_mix
 
     @property
     def pue(self) -> float:
@@ -204,11 +202,11 @@ class StandardProject(Project):
         Power usage effectiveness of the DC
         :return: the PUE
         """
-        return float(self._impacts_registry.pue.magnitude)
+        return self._impacts_registry.pue
 
     @pue.setter
     def pue(self, pue: float) -> None:
-        self._impacts_registry.pue = Q_(pue, ureg.pue)
+        self._impacts_registry.pue = pue
 
     @property
     def servers_count(self) -> int:

@@ -1,6 +1,6 @@
 from pint import Quantity
 
-from model.units import Q_, ureg
+from model.units import ureg
 
 ImpactKind = str
 ImpactsList = dict[str, float]
@@ -14,11 +14,9 @@ class ImpactsRegistry:
     __instance = None
 
     def __init__(self) -> None:
-        self.pue: Quantity["pue"] = Q_(1.5, ureg.pue)  # type: ignore
+        self.pue: float = 1.5
         # ADEME https://bilans-ges.ademe.fr/fr/accueil/documentation-gene/index/page/Electricite_reglementaire
-        self.electricity_mix: Quantity["electricity_mix"] = Q_(  # type: ignore
-            0.0599, ureg.electricity_mix
-        )
+        self.electricity_mix: Quantity["electricity_mix"] = 0.0599 * ureg.electricity_mix  # type: ignore
 
     def __new__(cls, *args: object, **kwargs: object) -> object:  # type: ignore
         if ImpactsRegistry.__instance is None:
@@ -76,13 +74,13 @@ class UserDeviceImpact(ImpactSource):
         Compute a standard UserDevice hour impact, by using the registry ratio of devices
         :return: kg_co2e impact for 1h of UserDevice
         """
-        co2 = (
+        co2: Quantity["kg_co2e"] = (  # type: ignore
             self.RATIO_TABLET * self.tablet_impact.co2
             + self.RATIO_PC * self.laptop_impact.co2
             + self.RATIO_TV * self.tv_impact.co2
             + self.RATIO_SMARTPHONE * self.smartphone_impact.co2
         )
-        return Q_(co2, ureg.kg_co2e)
+        return co2
 
 
 class LaptopImpact(ImpactSource):
@@ -102,9 +100,9 @@ class LaptopImpact(ImpactSource):
         co2 for 1h of usage
         """
         laptop_day_co2 = self.LAPTOP_CO2 / (self.LAPTOP_LIFE * 365)
-        laptop_hour_co2 = laptop_day_co2 / self.PC_DAILY_USE
+        laptop_hour_co2 = (laptop_day_co2 / self.PC_DAILY_USE) * ureg.kg_co2e
 
-        super().__init__(Q_(laptop_hour_co2, ureg.kg_co2e))
+        super().__init__(laptop_hour_co2)
 
 
 class SmartphoneImpact(ImpactSource):
@@ -125,7 +123,7 @@ class SmartphoneImpact(ImpactSource):
         smartphone_day_co2 = self.SMARTPHONE_CO2 / (self.SMARTPHONE_LIFE * 365)
         smartphone_hour_co2 = smartphone_day_co2 / self.SMARTPHONE_DAILY_USE
 
-        super().__init__(Q_(smartphone_hour_co2, ureg.kg_co2e))
+        super().__init__(smartphone_hour_co2 * ureg.kg_co2e)
 
 
 class TabletImpact(ImpactSource):
@@ -142,7 +140,7 @@ class TabletImpact(ImpactSource):
         # Source: https://bilans-ges.ademe.fr/fr/basecarbone/donnees-consulter/liste-element?recherche=tablette
         tablet_day_co2 = tablet_co2 / (self.TABLET_LIFE * 365)
         tablet_hour_co2 = tablet_day_co2 / self.TABLET_DAILY_USE
-        super().__init__(Q_(tablet_hour_co2, ureg.kg_co2e))
+        super().__init__(tablet_hour_co2)
 
 
 class TelevisionImpact(ImpactSource):
@@ -159,7 +157,7 @@ class TelevisionImpact(ImpactSource):
         # Source: https://bilans-ges.ademe.fr/fr/basecarbone/donnees-consulter/liste-element?recherche=tablette
         tablet_day_co2 = television_co2 / (self.TELEVISION_LIFE * 365)
         tablet_hour_co2 = tablet_day_co2 / self.TELEVISION_DAILY_USE
-        super().__init__(Q_(tablet_hour_co2, ureg.kg_co2e))
+        super().__init__(tablet_hour_co2)
 
 
 class NetworkImpact(ImpactSource):
@@ -169,7 +167,7 @@ class NetworkImpact(ImpactSource):
     """
 
     def __init__(self) -> None:
-        super().__init__(Q_(0.0015, ureg.kg_co2e))
+        super().__init__(0.0015 * ureg.kg_co2e)
 
 
 class OfficeImpact(ImpactSource):
@@ -202,7 +200,7 @@ class OfficeImpact(ImpactSource):
             self.BUILDING_LIFE_EXPECTANCY * 365
         )
         office_co2_person = sqr_meter_office * office_emissions_sqr_meter_day
-        super().__init__(Q_(office_co2_person, ureg.kg_co2e))
+        super().__init__(office_co2_person * ureg.kg_co2e)
 
 
 class ServerImpact(ImpactSource):
@@ -213,10 +211,10 @@ class ServerImpact(ImpactSource):
 
     # Boavizta
     # https://github.com/Boavizta/environmental-footprint-data
-    SERVER_POWER_IDLE = 234
-    SERVER_POWER_RUN = 1100
+    SERVER_POWER_IDLE = 234 * ureg.kWh
+    SERVER_POWER_RUN = 1100 * ureg.kWh
     SERVER_LIFE = 3.89
-    SERVER_FABRICATION_CO2 = 1613.25
+    SERVER_FABRICATION_CO2 = 1613.25 * ureg.kg_co2e
     SERVER_USAGE = 0.7
 
     def __init__(self) -> None:
@@ -234,25 +232,22 @@ class ServerImpact(ImpactSource):
         :return: kg_co2e / day
         """
 
-        amortization_day = Q_(
-            self.SERVER_FABRICATION_CO2 / (self.SERVER_LIFE * 365), ureg.kg_co2e
+        amortization_day = (
+            self.SERVER_FABRICATION_CO2 / self.SERVER_LIFE
         )
-        wh = Q_(
+        kwh = (
             (self.SERVER_POWER_RUN - self.SERVER_POWER_IDLE) * self.SERVER_USAGE
-            + self.SERVER_POWER_IDLE,
-            ureg.watt_hour,
+            + self.SERVER_POWER_IDLE
         )
         # using SERVER_USAGE to avoid having the server at full power
         # all the time
-        wh_pue = wh * self.registry.pue  # Pondering the consumption with the PUE
-        wh_pue.ito("watt_hour")
-        wh_day = wh_pue * 24  # wh consumed for a complete day
-        kwh_day = wh_day.to("kWh")
+        kwh_pue = kwh * self.registry.pue  # Pondering the consumption with the PUE
+        kwh_day = kwh_pue * 24  # wh consumed for a complete day
         consumption_co2 = (
             kwh_day * self.registry.electricity_mix
         )  # consumption co2 emissions
 
-        return Q_(consumption_co2.to("kg_co2e") + amortization_day, ureg.kg_co2e)
+        return consumption_co2 + amortization_day
 
 
 class StorageImpact(ImpactSource):
@@ -261,7 +256,7 @@ class StorageImpact(ImpactSource):
     Ratio / tb / day
     """
 
-    SSD_WH = Q_(1.52, ureg.watt_hour)
+    SSD_WH = 1.52 * ureg.watt_hour
 
     DISK_LIFE = 4
     DISK_FABRICATION_CO2 = 250
@@ -280,9 +275,7 @@ class StorageImpact(ImpactSource):
         Compute the co2 of a 1tb disk for a day, using amortization and power consumption
         :return: kg_co2e/disk(1tb)
         """
-        amortization_day = Q_(
-            self.DISK_FABRICATION_CO2 / (self.DISK_LIFE * 365), ureg.kg_co2e
-        )
+        amortization_day: Quantity["ureg.kg_co2e"] = (self.DISK_FABRICATION_CO2 / (self.DISK_LIFE * 365)) * ureg.kg_co2e  # type: ignore
         wh_pue = (
             self.SSD_WH * self.registry.pue
         )  # Pondering the consumption with the PUE
@@ -292,7 +285,7 @@ class StorageImpact(ImpactSource):
             kwh_day * self.registry.electricity_mix
         )  # consumption co2 emissions
 
-        return Q_(consumption_co2 + amortization_day, ureg.kg_co2e)
+        return consumption_co2 + amortization_day
 
 
 class TransportImpact(ImpactSource):
@@ -341,7 +334,7 @@ class CarImpact(ImpactSource):
     # 0.218 incertitude = 60%
     # https://bilans-ges.ademe.fr/fr/basecarbone/donnees-consulter/liste-element/categorie/151
     def __init__(self) -> None:
-        super().__init__(Q_(0.218, ureg.kg_co2e))
+        super().__init__(0.218 * ureg.kg_co2e)
 
 
 class BikeImpact(ImpactSource):
@@ -354,7 +347,7 @@ class BikeImpact(ImpactSource):
     # https://view.publitas.com/trek-bicycle/trek-bicycle-2021-sustainability-report/page/5
 
     def __init__(self) -> None:
-        super().__init__(Q_(0.00348, ureg.kg_co2e))
+        super().__init__(0.00348 * ureg.kg_co2e)
 
 
 class PublicTransportImpact(ImpactSource):
@@ -366,7 +359,7 @@ class PublicTransportImpact(ImpactSource):
     # ADEME
     # https://bilans-ges.ademe.fr/fr/accueil/documentation-gene/index/page/Ferroviaire2
     def __init__(self) -> None:
-        super().__init__(Q_(0.00503, ureg.kg_co2e))
+        super().__init__(0.00503 * ureg.kg_co2e)
 
 
 class MotorbikeImpact(ImpactSource):
@@ -378,4 +371,4 @@ class MotorbikeImpact(ImpactSource):
     # ADEME
     # https://bilans-ges.ademe.fr/fr/accueil/documentation-gene/index/page/Routier2
     def __init__(self) -> None:
-        super().__init__(Q_(0.191 * ureg.kg_co2e))
+        super().__init__(0.191 * ureg.kg_co2e)

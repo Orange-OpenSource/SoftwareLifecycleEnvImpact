@@ -10,7 +10,7 @@ from model.resources import (
     StorageResource,
     UserDeviceResource,
 )
-from model.units import Q_, ureg
+from model.units import ureg
 
 
 class TestResource(Resource):
@@ -45,20 +45,20 @@ def test_get_co2_impact() -> None:
     For Resource.get_co2_impact test computation, quantity change and resource adding
     :return: None
     """
-    is1 = ImpactSource(Q_(9999, ureg.kg_co2e))
-    is2 = ImpactSource(Q_(1.123, ureg.kg_co2e))
+    is1 = ImpactSource(9999 * ureg.kg_co2e)
+    is2 = ImpactSource(1.123 * ureg.kg_co2e)
 
     r = TestResource(1, impacts=[is1, is2])  # Impacts =  1 * 1776
 
     # Test ImpactSource computation
-    assert r.get_co2_impact() == Q_(9999 + 1.123, ureg.kg_co2e)
+    assert r.get_co2_impact() == (9999 + 1.123) * ureg.kg_co2e
 
     # Test quantity change
     r._quantity = 123
-    assert r.get_co2_impact() == Q_((9999 + 1.123) * 123, ureg.kg_co2e)
+    assert r.get_co2_impact() == ((9999 + 1.123) * 123) * ureg.kg_co2e
 
     # Test add impact source
-    is3 = ImpactSource(Q_(432, ureg.kg_co2e))
+    is3 = ImpactSource(432* ureg.kg_co2e)
     r._impacts.append(is3)
     assert r.get_co2_impact() == ((9999 + 1.123 + 432) * 123) * ureg.kg_co2e
 

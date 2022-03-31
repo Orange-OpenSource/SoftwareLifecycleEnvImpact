@@ -12,7 +12,7 @@ from model.tasks import (
     Task,
     UsageTask,
 )
-from model.units import Q_, ureg
+from model.units import ureg
 
 
 ########
@@ -22,8 +22,8 @@ from model.units import Q_, ureg
 
 def test_get_co2_impact() -> None:
     """Test that task co2 impact is those of all _resources from itself and its children"""
-    is1 = ImpactSource(Q_(1000, ureg.kg_co2e))
-    is2 = ImpactSource(Q_(776, ureg.kg_co2e))
+    is1 = ImpactSource(1000 * ureg.kg_co2e)
+    is2 = ImpactSource(776 * ureg.kg_co2e)
 
     r1 = PeopleResource(1)  # 1 quantity
     r1._impacts = [is1, is2]  # change _impacts to have static ones # 1776
@@ -49,8 +49,8 @@ def test_get_impact() -> None:
         }
     }
     """
-    is1 = ImpactSource(Q_(1000, ureg.kg_co2e))
-    is2 = ImpactSource(Q_(776, ureg.kg_co2e))
+    is1 = ImpactSource(1000 * ureg.kg_co2e)
+    is2 = ImpactSource(776 * ureg.kg_co2e)
 
     r1 = PeopleResource(1)  # 1 quantity
     r1._impacts = [is1, is2]  # change _impacts to have static ones # 1776
@@ -75,7 +75,7 @@ def test_get_impact_by_resource() -> None:
     Test Task.get_impact_by_resource() method, by adding a new resource, an existing one, and adding a subtask
     :return:
     """
-    is1 = ImpactSource(Q_(1000, ureg.kg_co2e))
+    is1 = ImpactSource(1000 * ureg.kg_co2e)
     r2 = PeopleResource(1)
     r2._impacts = [is1]  # 1000
 
