@@ -211,8 +211,8 @@ class ServerImpact(ImpactSource):
 
     # Boavizta
     # https://github.com/Boavizta/environmental-footprint-data
-    SERVER_POWER_IDLE = 234 * ureg.kWh
-    SERVER_POWER_RUN = 1100 * ureg.kWh
+    SERVER_POWER_IDLE = 234 * ureg.watt_hour
+    SERVER_POWER_RUN = 1100 * ureg.watt_hour
     SERVER_LIFE = 3.89
     SERVER_FABRICATION_CO2 = 1613.25 * ureg.kg_co2e
     SERVER_USAGE = 0.7
@@ -232,9 +232,7 @@ class ServerImpact(ImpactSource):
         :return: kg_co2e / day
         """
 
-        amortization_day = (
-            self.SERVER_FABRICATION_CO2 / self.SERVER_LIFE
-        )
+        amortization_day = self.SERVER_FABRICATION_CO2 / (self.SERVER_LIFE * 365)
         kwh = (
             (self.SERVER_POWER_RUN - self.SERVER_POWER_IDLE) * self.SERVER_USAGE
             + self.SERVER_POWER_IDLE
@@ -243,11 +241,9 @@ class ServerImpact(ImpactSource):
         # all the time
         kwh_pue = kwh * self.registry.pue  # Pondering the consumption with the PUE
         kwh_day = kwh_pue * 24  # wh consumed for a complete day
-        consumption_co2 = (
-            kwh_day * self.registry.electricity_mix
-        )  # consumption co2 emissions
-
-        return consumption_co2 + amortization_day
+        consumption_co2 = (kwh_day * self.registry.electricity_mix)  # consumption co2 emissions
+        co2_total: Quantity["kg_co2e"] = consumption_co2 + amortization_day  # type: ignore
+        return co2_total
 
 
 class StorageImpact(ImpactSource):
@@ -284,8 +280,8 @@ class StorageImpact(ImpactSource):
         consumption_co2 = (
             kwh_day * self.registry.electricity_mix
         )  # consumption co2 emissions
-
-        return consumption_co2 + amortization_day
+        co2_total: Quantity["kg_co2e"] = consumption_co2 + amortization_day  # type: ignore
+        return co2_total
 
 
 class TransportImpact(ImpactSource):

@@ -1,8 +1,5 @@
 kg_co2e = kilogram
 man_day = day
 kWh = watt_hour * 1000
-electricity_mix = kg_co2e / kWh
-electricity_co2 = electricity_mix * kWh
 
-life_expectancy = year
-daily_use = hour
+electricity_mix = kg_co2e / kWh
