@@ -5,7 +5,7 @@ from model.impact_sources import (
     StorageImpact,
 )
 
-from model.units import ureg
+from model.quantities import ureg
 
 
 ###################

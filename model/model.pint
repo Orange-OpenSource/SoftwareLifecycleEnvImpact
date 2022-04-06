@@ -3,3 +3,7 @@ man_day = day
 kWh = watt_hour * 1000
 
 electricity_mix = kg_co2e / kWh
+life_expectancy = year
+
+amortization = kg_co2e / day
+

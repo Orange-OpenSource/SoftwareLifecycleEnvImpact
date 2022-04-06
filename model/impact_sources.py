@@ -1,6 +1,6 @@
 from pint import Quantity
 
-from model.units import ureg
+from model.quantities import ureg
 
 ImpactKind = str
 ImpactsList = dict[str, float]
@@ -90,19 +90,26 @@ class LaptopImpact(ImpactSource):
     """
 
     # Boavizta - https://github.com/Boavizta/environmental-footprint-data
-    LAPTOP_CO2 = 307.37
-    LAPTOP_LIFE = 4.34
-    PC_DAILY_USE = 7
+    LAPTOP_CO2 = 307.37 * ureg.kg_co2e
+    LAPTOP_LIFE = 4.34 * ureg.year
+    PC_DAILY_USE = 7 * ureg.hour
+
+    DAY_AMORTIZATION = (LAPTOP_CO2 / LAPTOP_LIFE).to("amortization")
 
     def __init__(self) -> None:
         """
         Init a laptop hour usage co2 emissions as amortization by hour
         co2 for 1h of usage
         """
-        laptop_day_co2 = self.LAPTOP_CO2 / (self.LAPTOP_LIFE * 365)
-        laptop_hour_co2 = (laptop_day_co2 / self.PC_DAILY_USE) * ureg.kg_co2e
 
-        super().__init__(laptop_hour_co2)
+        one_day_amortization = self.DAY_AMORTIZATION * (
+            1 * ureg.day
+        )  # compute the co2 for 1 day
+        hour_amortization = (one_day_amortization / self.PC_DAILY_USE) * (
+            1 * ureg.hour
+        )  # Cannot directly compute as laptop isn't used 24h/24h. Take 1 hour
+
+        super().__init__(hour_amortization.to("kg_co2e"))
 
 
 class SmartphoneImpact(ImpactSource):
@@ -111,19 +118,26 @@ class SmartphoneImpact(ImpactSource):
     Ratio for 1h/smartphone # TODO update and add uncertainty
     """
 
-    SMARTPHONE_CO2 = 88.75
-    SMARTPHONE_LIFE = 2
-    SMARTPHONE_DAILY_USE = 3.12  # https://ieeexplore.ieee.org/abstract/document/6360448
+    SMARTPHONE_CO2 = 88.75 * ureg.kg_co2e
+    SMARTPHONE_LIFE = 2 * ureg.year
+    SMARTPHONE_DAILY_USE = (
+        3.12 * ureg.hour
+    )  # https://ieeexplore.ieee.org/abstract/document/6360448
+    DAY_AMORTIZATION = (SMARTPHONE_CO2 / SMARTPHONE_LIFE).to("amortization")
 
     def __init__(self) -> None:
         """
         Init a smartphone hour usage co2 emissions as amortization by hour
         co2 for 1h of usage
         """
-        smartphone_day_co2 = self.SMARTPHONE_CO2 / (self.SMARTPHONE_LIFE * 365)
-        smartphone_hour_co2 = smartphone_day_co2 / self.SMARTPHONE_DAILY_USE
+        one_day_amortization = self.DAY_AMORTIZATION * (
+            1 * ureg.day
+        )  # compute the co2 for 1 day
+        hour_amortization = (one_day_amortization / self.SMARTPHONE_DAILY_USE) * (
+            1 * ureg.hour
+        )  # Cannot directly compute as smartphone isn't used 24h/24h. Take 1 hour
 
-        super().__init__(smartphone_hour_co2 * ureg.kg_co2e)
+        super().__init__(hour_amortization.to("kg_co2e"))
 
 
 class TabletImpact(ImpactSource):
@@ -132,15 +146,21 @@ class TabletImpact(ImpactSource):
     Ratio for 1h/smartphone
     """
 
-    TABLET_LIFE = 5
-    TABLET_DAILY_USE = 1
+    TABLET_CO2 = 63.2 * ureg.kg_co2e  # Source: https://bilans-ges.ademe.fr/fr/basecarbone/donnees-consulter/liste-element?recherche=tablette
+    TABLET_LIFE = 5 * ureg.year
+    TABLET_DAILY_USE = 1 * ureg.hour
+
+    DAY_AMORTIZATION = (TABLET_CO2 / TABLET_LIFE).to("amortization")
 
     def __init__(self) -> None:
-        tablet_co2 = 63.2 * ureg.kg_co2e  # .plus_minus(0.5, relative=True)
-        # Source: https://bilans-ges.ademe.fr/fr/basecarbone/donnees-consulter/liste-element?recherche=tablette
-        tablet_day_co2 = tablet_co2 / (self.TABLET_LIFE * 365)
-        tablet_hour_co2 = tablet_day_co2 / self.TABLET_DAILY_USE
-        super().__init__(tablet_hour_co2)
+        one_day_amortization = self.DAY_AMORTIZATION * (
+            1 * ureg.day
+        )  # compute the co2 for 1 day
+        hour_amortization = (one_day_amortization / self.TABLET_DAILY_USE) * (
+            1 * ureg.hour
+        )  # Cannot directly compute as tablet isn't used 24h/24h. Take 1 hour
+
+        super().__init__(hour_amortization.to("kg_co2e"))
 
 
 class TelevisionImpact(ImpactSource):
@@ -149,15 +169,26 @@ class TelevisionImpact(ImpactSource):
     Ratio for 1h watched
     """
 
-    TELEVISION_LIFE = 10
-    TELEVISION_DAILY_USE = 3
+    TELEVISION_CO2 = 500 * ureg.kg_co2e
+    # Source: https://bilans-ges.ademe.fr/fr/basecarbone/donnees-consulter/liste-element?recherche=tablette
+    TELEVISION_LIFE = 10 * ureg.year
+    TELEVISION_DAILY_USE = 3 * ureg.hour
+
+    DAY_AMORTIZATION = (TELEVISION_CO2 / TELEVISION_LIFE).to("amortization")
 
     def __init__(self) -> None:
-        television_co2 = 500 * ureg.kg_co2e  # .plus_minus(0.5, relative=True)
-        # Source: https://bilans-ges.ademe.fr/fr/basecarbone/donnees-consulter/liste-element?recherche=tablette
-        tablet_day_co2 = television_co2 / (self.TELEVISION_LIFE * 365)
-        tablet_hour_co2 = tablet_day_co2 / self.TELEVISION_DAILY_USE
-        super().__init__(tablet_hour_co2)
+        """
+        Init a television hour usage co2 emissions as amortization by hour
+        co2 for 1h of usage
+        """
+        one_day_amortization = self.DAY_AMORTIZATION * (
+            1 * ureg.day
+        )  # compute the co2 for 1 day
+        hour_amortization = (one_day_amortization / self.TELEVISION_DAILY_USE) * (
+            1 * ureg.hour
+        )  # Cannot directly compute as television isn't used 24h/24h. Take 1 hour
+
+        super().__init__(hour_amortization.to("kg_co2e"))
 
 
 class NetworkImpact(ImpactSource):
@@ -185,7 +216,7 @@ class OfficeImpact(ImpactSource):
     # Observatoire de l'immobilier durable
     # https://resources.taloen.fr/resources/documents/7765_191210_poids_carbone_ACV_vdef.pdf
     # LCA offices, emissions/m2
-    BUILDING_EMISSIONS = 3900
+    BUILDING_EMISSIONS = 3900 * ureg.kg_co2e
     BUILDING_LIFE_EXPECTANCY = 50  # years
 
     def __init__(self) -> None:
@@ -200,7 +231,7 @@ class OfficeImpact(ImpactSource):
             self.BUILDING_LIFE_EXPECTANCY * 365
         )
         office_co2_person = sqr_meter_office * office_emissions_sqr_meter_day
-        super().__init__(office_co2_person * ureg.kg_co2e)
+        super().__init__(office_co2_person)
 
 
 class ServerImpact(ImpactSource):
@@ -234,14 +265,15 @@ class ServerImpact(ImpactSource):
 
         amortization_day = self.SERVER_FABRICATION_CO2 / (self.SERVER_LIFE * 365)
         kwh = (
-            (self.SERVER_POWER_RUN - self.SERVER_POWER_IDLE) * self.SERVER_USAGE
-            + self.SERVER_POWER_IDLE
-        )
+            self.SERVER_POWER_RUN - self.SERVER_POWER_IDLE
+        ) * self.SERVER_USAGE + self.SERVER_POWER_IDLE
         # using SERVER_USAGE to avoid having the server at full power
         # all the time
         kwh_pue = kwh * self.registry.pue  # Pondering the consumption with the PUE
         kwh_day = kwh_pue * 24  # wh consumed for a complete day
-        consumption_co2 = (kwh_day * self.registry.electricity_mix)  # consumption co2 emissions
+        consumption_co2 = (
+            kwh_day * self.registry.electricity_mix
+        )  # consumption co2 emissions
         co2_total: Quantity["kg_co2e"] = consumption_co2 + amortization_day  # type: ignore
         return co2_total
 
@@ -255,7 +287,7 @@ class StorageImpact(ImpactSource):
     SSD_WH = 1.52 * ureg.watt_hour
 
     DISK_LIFE = 4
-    DISK_FABRICATION_CO2 = 250
+    DISK_FABRICATION_CO2 = 250 * ureg.kg_co2e
 
     def __init__(self) -> None:
         """
@@ -271,7 +303,7 @@ class StorageImpact(ImpactSource):
         Compute the co2 of a 1tb disk for a day, using amortization and power consumption
         :return: kg_co2e/disk(1tb)
         """
-        amortization_day: Quantity["ureg.kg_co2e"] = (self.DISK_FABRICATION_CO2 / (self.DISK_LIFE * 365)) * ureg.kg_co2e  # type: ignore
+        amortization_day = self.DISK_FABRICATION_CO2 / (self.DISK_LIFE * 365)
         wh_pue = (
             self.SSD_WH * self.registry.pue
         )  # Pondering the consumption with the PUE
@@ -361,7 +393,7 @@ class PublicTransportImpact(ImpactSource):
 class MotorbikeImpact(ImpactSource):
     """
     ImpactSource for motorbike
-    Ratio / km / person
+    Ratio / km / personq
     """
 
     # ADEME

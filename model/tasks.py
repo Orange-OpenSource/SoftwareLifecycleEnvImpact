@@ -5,6 +5,7 @@ from typing import Any, List, Union
 
 from pint import Quantity
 
+from model.quantities import ureg
 from model.resources import (
     ComputeResource,
     NetworkResource,
@@ -14,7 +15,6 @@ from model.resources import (
     StorageResource,
     UserDeviceResource,
 )
-from model.units import ureg
 
 TaskImpact = dict[str, Union[str, float, Any]]
 

@@ -1,6 +1,7 @@
 from pint import Quantity
 
 from model.impact_sources import ImpactsRegistry
+from model.quantities import ureg
 from model.resources import ResourcesList
 from model.tasks import (
     BuildTask,
@@ -17,7 +18,6 @@ from model.tasks import (
     TaskImpact,
     UsageTask,
 )
-from model.units import ureg
 
 
 class Project:

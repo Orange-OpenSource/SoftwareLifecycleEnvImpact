@@ -1,6 +1,7 @@
 from typing import List
 
 from model.impact_sources import ImpactSource
+from model.quantities import ureg
 from model.resources import (
     ComputeResource,
     NetworkResource,
@@ -10,7 +11,6 @@ from model.resources import (
     StorageResource,
     UserDeviceResource,
 )
-from model.units import ureg
 
 
 class TestResource(Resource):
@@ -58,7 +58,7 @@ def test_get_co2_impact() -> None:
     assert r.get_co2_impact() == ((9999 + 1.123) * 123) * ureg.kg_co2e
 
     # Test add impact source
-    is3 = ImpactSource(432* ureg.kg_co2e)
+    is3 = ImpactSource(432 * ureg.kg_co2e)
     r._impacts.append(is3)
     assert r.get_co2_impact() == ((9999 + 1.123 + 432) * 123) * ureg.kg_co2e
 

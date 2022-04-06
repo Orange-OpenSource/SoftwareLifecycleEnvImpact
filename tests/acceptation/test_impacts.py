@@ -1,6 +1,6 @@
 from model.impact_sources import ImpactsRegistry
 from model.projects import StandardProject
-from model.units import ureg
+from model.quantities import ureg
 
 
 #

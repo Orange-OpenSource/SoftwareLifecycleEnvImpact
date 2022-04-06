@@ -1,7 +1,7 @@
 from model.impact_sources import ImpactSource
 from model.projects import Project, StandardProject
+from model.quantities import ureg
 from model.tasks import Task
-from model.units import ureg
 from tests.unit.test_resources import TestResource  # type: ignore
 
 

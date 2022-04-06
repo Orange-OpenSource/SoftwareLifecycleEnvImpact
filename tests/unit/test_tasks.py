@@ -1,5 +1,6 @@
 from model.impact_sources import ImpactSource
 from model.projects import StandardProject
+from model.quantities import ureg
 from model.resources import PeopleResource
 from model.tasks import (
     DesignTask,
@@ -12,7 +13,6 @@ from model.tasks import (
     Task,
     UsageTask,
 )
-from model.units import ureg
 
 
 ########
@@ -105,7 +105,7 @@ def test_get_impact_by_resource_quantity() -> None:
     d = p.root_task.get_impact_by_resource()
     for resource in d.keys():
         co2 += d[resource]["CO2"]
-    assert p.get_global_impact().magnitude == co2
+    assert round(p.get_global_impact().magnitude, 10) == round(co2, 10)
 
 
 ###########

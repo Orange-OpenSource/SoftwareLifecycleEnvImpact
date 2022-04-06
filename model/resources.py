@@ -13,7 +13,7 @@ from model.impact_sources import (
     TransportImpact,
     UserDeviceImpact,
 )
-from model.units import ureg
+from model.quantities import ureg
 
 ResourceName = str
 ResourcesList = dict[ResourceName, ImpactsList]
