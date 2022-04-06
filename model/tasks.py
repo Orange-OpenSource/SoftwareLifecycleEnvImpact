@@ -3,9 +3,7 @@ from __future__ import annotations
 from abc import ABC
 from typing import Any, List, Union
 
-from pint import Quantity
-
-from model.quantities import ureg
+from model.quantities import KG_CO2E
 from model.resources import (
     ComputeResource,
     NetworkResource,
@@ -39,12 +37,12 @@ class Task(ABC):
         self._subtasks = subtasks
         self._resources = resources
 
-    def get_co2_impact(self) -> Quantity["kg_co2e"]:  # type: ignore
+    def get_co2_impact(self) -> KG_CO2E:
         """
         Return the computed co2 of this task resources, and those of its subtasks
         :return: complete co2 of task + its subtasks
         """
-        total: Quantity["kg_co2e"] = 0 * ureg.kg_co2e  # type: ignore
+        total: KG_CO2E = 0 * KG_CO2E
         for r in self._resources:
             total += r.get_co2_impact()
 

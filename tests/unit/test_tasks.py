@@ -1,6 +1,6 @@
 from model.impact_sources import ImpactSource
 from model.projects import StandardProject
-from model.quantities import ureg
+from model.quantities import KG_CO2E
 from model.resources import PeopleResource
 from model.tasks import (
     DesignTask,
@@ -22,8 +22,8 @@ from model.tasks import (
 
 def test_get_co2_impact() -> None:
     """Test that task co2 impact is those of all _resources from itself and its children"""
-    is1 = ImpactSource(1000 * ureg.kg_co2e)
-    is2 = ImpactSource(776 * ureg.kg_co2e)
+    is1 = ImpactSource(1000 * KG_CO2E)
+    is2 = ImpactSource(776 * KG_CO2E)
 
     r1 = PeopleResource(1)  # 1 quantity
     r1._impacts = [is1, is2]  # change _impacts to have static ones # 1776
@@ -33,7 +33,7 @@ def test_get_co2_impact() -> None:
     subtask = Task("Test", resources=[r1])  # 1776
     task = Task("Task", subtasks=[subtask], resources=[r2])  # 1000 + 1776
 
-    assert task.get_co2_impact() == 2776 * ureg.kg_co2e
+    assert task.get_co2_impact() == 2776 * KG_CO2E
 
 
 def test_get_impact() -> None:
@@ -49,8 +49,8 @@ def test_get_impact() -> None:
         }
     }
     """
-    is1 = ImpactSource(1000 * ureg.kg_co2e)
-    is2 = ImpactSource(776 * ureg.kg_co2e)
+    is1 = ImpactSource(1000 * KG_CO2E)
+    is2 = ImpactSource(776 * KG_CO2E)
 
     r1 = PeopleResource(1)  # 1 quantity
     r1._impacts = [is1, is2]  # change _impacts to have static ones # 1776
@@ -66,8 +66,8 @@ def test_get_impact() -> None:
     assert impact["CO2"] == task.get_co2_impact().magnitude
 
     # Test subtask
-    assert impact["subtasks"][0]["name"] == "Subtask"  # type: ignore
-    assert impact["subtasks"][0]["CO2"] == subtask.get_co2_impact().magnitude  # type: ignore
+    assert impact["subtasks"][0]["name"] == "Subtask"
+    assert impact["subtasks"][0]["CO2"] == subtask.get_co2_impact().magnitude
 
 
 def test_get_impact_by_resource() -> None:
@@ -75,7 +75,7 @@ def test_get_impact_by_resource() -> None:
     Test Task.get_impact_by_resource() method, by adding a new resource, an existing one, and adding a subtask
     :return:
     """
-    is1 = ImpactSource(1000 * ureg.kg_co2e)
+    is1 = ImpactSource(1000 * KG_CO2E)
     r2 = PeopleResource(1)
     r2._impacts = [is1]  # 1000
 

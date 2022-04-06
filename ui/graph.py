@@ -15,8 +15,8 @@ def draw_task(task: TaskImpact) -> None:
     :param task: TaskImpact format
     """
     _, ax1 = plt.subplots()
-    emissions = [s["CO2"] for s in task["subtasks"]]  # type: ignore
-    names = [s["name"] for s in task["subtasks"]]  # type: ignore
+    emissions = [s["CO2"] for s in task["subtasks"]]
+    names = [s["name"] for s in task["subtasks"]]
     ax1.pie(emissions, labels=names)
     ax1.set_title(task["name"])
 
@@ -28,8 +28,8 @@ def draw_tasks(task_impact: TaskImpact) -> None:
     """
     if task_impact["subtasks"]:
         draw_task(task_impact)
-        for subtask in task_impact["subtasks"]:  # type: ignore
-            draw_tasks(subtask)  # type: ignore
+        for subtask in task_impact["subtasks"]:
+            draw_tasks(subtask)
 
 
 def draw_resources(resources: ResourcesList) -> None:

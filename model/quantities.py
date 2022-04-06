@@ -6,6 +6,12 @@ try:
     ureg = UnitRegistry()
     ureg.load_definitions(_os.path.join(abspath, "model.pint"))
     ureg.add_context(Context('test'))
-    # Q_ = ureg.Quantity
+
+    ELECTRICITY_MIX = ureg.electricity_mix
+    KG_CO2E = ureg.kg_co2e
+    YEAR = ureg.year
+    HOUR = ureg.hour
+    DAY = ureg.day
+    WATT_HOUR = ureg.watt_hour
 except ImportError:
     print("Pint not installed")

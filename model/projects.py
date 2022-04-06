@@ -1,7 +1,5 @@
-from pint import Quantity
-
 from model.impact_sources import ImpactsRegistry
-from model.quantities import ureg
+from model.quantities import ELECTRICITY_MIX, KG_CO2E
 from model.resources import ResourcesList
 from model.tasks import (
     BuildTask,
@@ -34,7 +32,7 @@ class Project:
         """
         self.root_task = task
 
-    def get_global_impact(self) -> Quantity["kg_co2e"]:  # type: ignore
+    def get_global_impact(self) -> KG_CO2E:
         """
         Compute and return the project global CO2e footprint
         :return: project global impact
@@ -193,8 +191,8 @@ class StandardProject(Project):
         return float(self._impacts_registry.electricity_mix.magnitude)
 
     @electricity_mix.setter
-    def electricity_mix(self, electricity_mix: float) -> None:
-        self._impacts_registry.electricity_mix = electricity_mix * ureg.electricity_mix
+    def electricity_mix(self, mix: float) -> None:
+        self._impacts_registry.electricity_mix = mix * ELECTRICITY_MIX
 
     @property
     def pue(self) -> float:

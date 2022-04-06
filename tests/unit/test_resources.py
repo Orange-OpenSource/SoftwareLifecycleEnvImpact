@@ -1,7 +1,7 @@
 from typing import List
 
 from model.impact_sources import ImpactSource
-from model.quantities import ureg
+from model.quantities import KG_CO2E
 from model.resources import (
     ComputeResource,
     NetworkResource,
@@ -45,22 +45,22 @@ def test_get_co2_impact() -> None:
     For Resource.get_co2_impact test computation, quantity change and resource adding
     :return: None
     """
-    is1 = ImpactSource(9999 * ureg.kg_co2e)
-    is2 = ImpactSource(1.123 * ureg.kg_co2e)
+    is1 = ImpactSource(9999 * KG_CO2E)
+    is2 = ImpactSource(1.123 * KG_CO2E)
 
     r = TestResource(1, impacts=[is1, is2])  # Impacts =  1 * 1776
 
     # Test ImpactSource computation
-    assert r.get_co2_impact() == (9999 + 1.123) * ureg.kg_co2e
+    assert r.get_co2_impact() == (9999 + 1.123) * KG_CO2E
 
     # Test quantity change
     r._quantity = 123
-    assert r.get_co2_impact() == ((9999 + 1.123) * 123) * ureg.kg_co2e
+    assert r.get_co2_impact() == ((9999 + 1.123) * 123) * KG_CO2E
 
     # Test add impact source
-    is3 = ImpactSource(432 * ureg.kg_co2e)
+    is3 = ImpactSource(432 * KG_CO2E)
     r._impacts.append(is3)
-    assert r.get_co2_impact() == ((9999 + 1.123 + 432) * 123) * ureg.kg_co2e
+    assert r.get_co2_impact() == ((9999 + 1.123 + 432) * 123) * KG_CO2E
 
 
 def test_add_to_dict() -> None:

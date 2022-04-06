@@ -1,6 +1,6 @@
 from model.impact_sources import ImpactSource
 from model.projects import Project, StandardProject
-from model.quantities import ureg
+from model.quantities import KG_CO2E
 from model.tasks import Task
 from tests.unit.test_resources import TestResource  # type: ignore
 
@@ -13,8 +13,8 @@ from tests.unit.test_resources import TestResource  # type: ignore
 def test_get_global_impact() -> None:
     """Test consistency with the tasks individual _impacts"""
 
-    is1 = ImpactSource(1000 * ureg.kg_co2e)
-    is2 = ImpactSource(776 * ureg.kg_co2e)
+    is1 = ImpactSource(1000 * KG_CO2E)
+    is2 = ImpactSource(776 * KG_CO2E)
 
     r1 = TestResource(1, impacts=[is1, is2])  # Impacts = 1 * 1776
     r2 = TestResource(1, impacts=[is1])  # Impacts = 1 * 1000
@@ -88,7 +88,7 @@ def test_electricity_mix() -> None:
     s.electricity_mix = 0.88707  # setter
     assert isinstance(
         s.electricity_mix, float
-    )  # should be abstracted from ureg.electricity_mix
+    )  # should be abstracted from electricity_mix unit
     assert s.electricity_mix == 0.88707  # getter
 
 
@@ -97,7 +97,7 @@ def test_pue() -> None:
     s = StandardProject()
     assert s.pue  # exist
     s.pue = 1.999  # setter
-    assert isinstance(s.pue, float)  # should be abstracted from ureg.pue
+    assert isinstance(s.pue, float)  # should be abstracted from pue unit
     assert s.pue == 1.999  # getter
 
 

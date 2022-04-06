@@ -1,12 +1,12 @@
 from model.impact_sources import ImpactsRegistry
 from model.projects import StandardProject
-from model.quantities import ureg
 
 
 #
 # Acceptation tests on _impacts to assess that changing the inputs on a projects results in the right tasks _impacts
 # updates (check propagation and computation)
 #
+from model.quantities import ELECTRICITY_MIX
 
 
 def test_build_task_impacts() -> None:
@@ -45,7 +45,7 @@ def test_run_task_impacts() -> None:
 
     # Electricity mix
     old_co2 = s.run_task.get_co2_impact()
-    ImpactsRegistry().electricity_mix = 4432 * ureg.electricity_mix
+    ImpactsRegistry().electricity_mix = 4432 * ELECTRICITY_MIX
     assert s.run_task.get_co2_impact() != old_co2
 
     # PUE
@@ -145,7 +145,7 @@ def test_hosting_task_impacts() -> None:
 
     # Electricity mix
     old_co2 = s.hosting_task.get_co2_impact()
-    ImpactsRegistry().electricity_mix = 2.12312312 * ureg.electricity_mix
+    ImpactsRegistry().electricity_mix = 2.12312312 * ELECTRICITY_MIX
     assert s.hosting_task.get_co2_impact() != old_co2
 
     # PUE
