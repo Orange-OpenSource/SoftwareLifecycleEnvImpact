@@ -1,4 +1,4 @@
-from model.impact_sources import ImpactsRegistry
+from model.impacts.impact_factors import ImpactsFactorsRegistry
 from model.quantities import ELECTRICITY_MIX, KG_CO2E
 from model.resources import ResourcesList
 from model.tasks import (
@@ -32,7 +32,7 @@ class Project:
         """
         self.root_task = task
 
-    def get_global_impact(self) -> KG_CO2E:
+    def get_co2_impact(self) -> KG_CO2E:
         """
         Compute and return the project global CO2e footprint
         :return: project global impact
@@ -41,8 +41,8 @@ class Project:
 
     def get_impact_by_task(self) -> TaskImpact:
         """
-        Return all impacts regrouped by task
-        :return: impacts regrouped under format TaskImpact
+        Return all impacts_sources regrouped by task
+        :return: impacts_sources regrouped under format TaskImpact
 
         Example:
                 >>> StandardProject().get_impact_by_task()
@@ -58,7 +58,7 @@ class Project:
                         {'name': 'Hosting', 'CO2': 9004.016113902313, 'subtasks': []},
                         {'name': 'Usage', 'CO2': 1989.7700948245304, 'subtasks': []}]}]}
         """
-        return self.root_task.get_impact()
+        return self.root_task.get_impacts()
 
     def get_impact_by_resource(self) -> ResourcesList:
 
@@ -73,7 +73,7 @@ class Project:
             'UserDevice': {'CO2': 1825.5200948245304},
             'Network': {'CO2': 164.25}
         }
-        :return: impacts regrouped under format ResourcesList
+        :return: impacts_sources regrouped under format ResourcesList
         """
         return self.root_task.get_impact_by_resource()
 
@@ -118,7 +118,7 @@ class StandardProject(Project):
             self.maintenance_task, self.hosting_task, self.usage_task
         )
         self.root_task = StandardProjectTask(self.build_task, self.run_task)
-        self._impacts_registry = ImpactsRegistry()
+        self._impacts_registry = ImpactsFactorsRegistry()
 
         super().__init__(self.root_task)
 

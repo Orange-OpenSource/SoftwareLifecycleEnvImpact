@@ -3,9 +3,11 @@ from __future__ import annotations
 from abc import ABC
 from typing import Any, List, Union
 
+from model.impacts.impacts import ImpactsList, merge_impacts_lists
 from model.quantities import KG_CO2E
 from model.resources import (
     ComputeResource,
+    merge_resource_list,
     NetworkResource,
     PeopleResource,
     Resource,
@@ -19,10 +21,10 @@ TaskImpact = dict[str, Union[str, float, Any]]
 
 class Task(ABC):
     """
-    Define a Task/Phase as a node containing an ImpactSource and/or Subtask(s)
+    Define a Task/Phase as a node containing an ImpactFactor and/or Subtask(s)
     """
 
-    def __init__(self, name, resources: List[Resource] = None, subtasks: List[Task] = None):  # type: ignore
+    def __init__(self, name: str, resources: List[Resource] = None, subtasks: List[Task] = None):  # type: ignore
         """
         Define a task with a name, resources and subtasks
         :param name: the name of the resource
@@ -51,48 +53,54 @@ class Task(ABC):
 
         return total
 
-    def get_impact(self) -> TaskImpact:
+    def get_impacts(self) -> TaskImpact:
         """
-        All impacts of the task, and those of its subtasks
-
-        :return: impacts of task and subtasks with format TaskImpact
-
-        Example:
-                {
-                    "name": xxx
-                    "CO2": xxx
-                    "subtasks": {
-                        "name": xxx
-                        "CO2": xxx
-                        "subtasks": }
-                }
-        }
+        Return a task impact for this one and its childrens
+        :return: TaskImpact with name, impact sources and subtasks
         """
         return {
             "name": self.name,
-            "CO2": self.get_co2_impact().magnitude,
-            "subtasks": [r.get_impact() for r in self._subtasks],
+            "impacts_sources": self.get_impacts_list(),
+            "subtasks": [r.get_impacts() for r in self._subtasks],
         }
 
-    def get_impact_by_resource(self, resources: ResourcesList = None) -> ResourcesList:  # type: ignore
+    def get_impacts_list(self) -> ImpactsList:
+        """
+        Return the task impacts as an ImpactsList
+
+        :return: an ImpactsList for this task impacts
+        """
+        impacts: ImpactsList = {}
+
+        for r in self._resources:
+            impacts = merge_impacts_lists(impacts, r.get_impacts())
+
+        for s in self._subtasks:
+            impacts = merge_impacts_lists(impacts, s.get_impacts_list())
+
+        return impacts
+
+    def get_impact_by_resource(self) -> ResourcesList:
         """
         Return all _impacts grouped by resource type, int the format of ResourcesList:
 
          {'People': {'CO2': 2000.0}}
          {'Build': {'CO2': 234325.0}}
-        :param resources: Optional ResourceList to add to
-        :return: ResourceList containing resources for this task + those passed as parameter
+        :return: ResourceList containing resources for this task
         """
-        if resources is None:
-            resources = {}
+        resource_list: ResourcesList = {}
 
         for r in self._resources:
-            resources = r.add_to_list(resources)
+            resource_list = merge_resource_list(
+                resource_list, {r.name: r.get_impacts()}
+            )
 
         for s in self._subtasks:
-            s.get_impact_by_resource(resources)
+            resource_list = merge_resource_list(
+                resource_list, s.get_impact_by_resource()
+            )
 
-        return resources
+        return resource_list
 
 
 class BuildTask(Task):
@@ -287,7 +295,7 @@ class HostingTask(Task):
         duration: int,
     ):
         """
-        Hosting task with Compute, Storage resources as impacts
+        Hosting task with Compute, Storage resources as impacts_sources
         :param servers_count: number of server used
         :param storage_size: terabytes reserved
         :param duration: duration of the phase

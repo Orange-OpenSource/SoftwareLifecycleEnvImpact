@@ -1,44 +1,45 @@
-from model.impact_sources import ImpactSource
+from model.impacts.impact_factors import ImpactFactor
 from model.projects import Project, StandardProject
 from model.quantities import KG_CO2E
 from model.tasks import Task
 from tests.unit.test_resources import TestResource  # type: ignore
 
-
 ###########
 # Project #
 ###########
 
+is1 = ImpactFactor(1000 * KG_CO2E)
+is2 = ImpactFactor(776 * KG_CO2E)
+
+r1 = TestResource(1, impacts=[is1, is2])  # Impacts = 1 * 1776
+r2 = TestResource(1, impacts=[is1])  # Impacts = 1 * 1000
+
+subtask = Task("Test", resources=[r1])  # 1776
+task = Task("Task", subtasks=[subtask], resources=[r1, r2])  # 2776
+
+project = Project(task)
+
 
 def test_get_global_impact() -> None:
     """Test consistency with the tasks individual _impacts"""
+    assert project.root_task.get_co2_impact() == project.get_co2_impact()
 
-    is1 = ImpactSource(1000 * KG_CO2E)
-    is2 = ImpactSource(776 * KG_CO2E)
 
-    r1 = TestResource(1, impacts=[is1, is2])  # Impacts = 1 * 1776
-    r2 = TestResource(1, impacts=[is1])  # Impacts = 1 * 1000
+def test_get_impact_by_task() -> None:
+    """Test that project level impact_by_task is same as root_task one"""
+    assert project.root_task.get_impacts() == project.get_impact_by_task()
 
-    subtask = Task("Test", resources=[r1])  # 1776
-    task = Task("Task", subtasks=[subtask], resources=[r1, r2])  # 2776
 
-    p = Project(task)
-    assert p.root_task.get_co2_impact() == p.get_global_impact()
+def test_get_impact_by_resource() -> None:
+    """Test that project level impact_by_resource is same as root_task one"""
+    assert (
+        project.root_task.get_impact_by_resource() == project.get_impact_by_resource()
+    )
 
 
 ###################
 # StandardProject #
 ###################
-def test_get_impact_by_task() -> None:
-    """Test that project level impact_by_task is same as root_task one"""
-    s = StandardProject()
-    assert s.get_impact_by_task() == s.root_task.get_impact()
-
-
-def test_get_impact_by_resource() -> None:
-    """Test that project level impact_by_resource is same as root_task one"""
-    s = StandardProject()
-    assert s.get_impact_by_resource() == s.root_task.get_impact_by_resource()
 
 
 def test_dev_days() -> None:

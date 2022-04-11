@@ -1,9 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from model.impact_sources import (
-    ImpactsList,
-    ImpactSource,
+from model.impacts.impact_factors import (
+    ImpactFactor,
     NetworkImpact,
     OfficeImpact,
     ServerImpact,
@@ -11,21 +10,43 @@ from model.impact_sources import (
     TransportImpact,
     UserDeviceImpact,
 )
+from model.impacts.impacts import ImpactsList, merge_impacts_lists
 from model.quantities import KG_CO2E
 
 ResourceName = str
+
 ResourcesList = dict[ResourceName, ImpactsList]
 
 
-class Resource(ABC):
+def merge_resource_list(
+    first_list: ResourcesList, second_list: ResourcesList
+) -> ResourcesList:
     """
-    Abstract definition of a resource, with a quantity and one or multiple ImpactSource
+    Merge two list of Resource, adding them if they are in each list or merge them
+    :param first_list: first list to merge
+    :param second_list: second list to merge with
+    :return: a new list containing the parameters merged
+    """
+
+    result = {**first_list, **second_list}
+    for resource_name, _ in result.items():
+        if resource_name in first_list and resource_name in second_list:
+            result[resource_name] = merge_impacts_lists(
+                first_list[resource_name], second_list[resource_name]
+            )
+    return result
+
+
+class Resource(ABC):
+
+    """
+    Abstract definition of a resource, with a quantity and one or multiple ImpactFactor
     Should not be directly instantiated
     """
 
-    def __init__(self, name: str, impacts: List[ImpactSource]):
+    def __init__(self, name: ResourceName, impacts: List[ImpactFactor]):
         """
-        Should only be used by implementations, define the name and impacts of the resource
+        Should only be used by implementations, define the name and impacts_sources of the resource
         :param name: name of the resource
         :param impacts: list of resource ImpactSources
         """
@@ -52,32 +73,35 @@ class Resource(ABC):
 
     def get_impacts(self) -> ImpactsList:
         """
-        Return all resource impact as an ImpactsLists
-        :return: ImpactsList with all ImpactKind used by the resource
+        Return all impacts for the resource, with the format ImpactsList For each impact kind, it's multiplied by the
+        resource quantity example:
+        >>> self.get_impacts()
+         {
+            'Climate change': <Quantity(10000.123, 'kg_co2e')>,
+            'Natural resources depletion': <Quantity(0, 'kg_Sbe')>,
+            'Acidification': <Quantity(0,'mol_Hpos')>,
+            'Fine particles': <Quantity(0, 'disease_incidence')>,
+            'Ionizing radiations': <Quantity(0, 'kg_Bq_u235e')>,
+            'Water depletion': <Quantity(0, 'cubic_meter')>,
+            'Electronic waste': <Quantity(0, 'electronic_waste')>,
+            'Primary energy consumption': <Quantity(0, 'primary_MJ')>,
+            'Raw materials': <Quantity(213.3, 'tonne_mips')>
+         }
+        :return: ImpactsList for the resource
         """
-        return {"CO2": self.get_co2_impact().magnitude}
+        impacts: ImpactsList = {}
 
-    def add_to_list(self, resource_list: ResourcesList) -> ResourcesList:
-        """
-        Append a resource to a resource list if not in it, else append/add each of its _impacts
-        :param resource_list: the resource list to complete
-        :return: resource list with the new resource added
-        """
+        for impact_source in self._impacts:
+            impact_source_quantities = {}
 
-        if self.name in resource_list:
-            new_impacts = self.get_impacts()
-            for impact in new_impacts:
-                if (
-                    impact in resource_list[self.name]
-                ):  # impact already in the list, add to it
-                    resource_list[self.name][impact] += new_impacts[impact]
-                else:
-                    # impact not in the list, create it
-                    resource_list[self.name][impact] = new_impacts[impact]
-        else:
-            resource_list[self.name] = self.get_impacts()  # res not in the list
+            for impact_indicator in impact_source.impacts:
+                impact_source_quantities[impact_indicator] = (
+                    impact_source.impacts[impact_indicator] * self.quantity
+                )
 
-        return resource_list
+            impacts = merge_impacts_lists(impacts, impact_source_quantities)
+
+        return impacts
 
 
 class ComputeResource(Resource):
@@ -138,7 +162,7 @@ class PeopleResource(Resource):
 
     def __init__(self, man_days: int) -> None:
         """
-        Instantiate a PeopleResource with offices and transports impacts
+        Instantiate a PeopleResource with offices and transports impacts_sources
         :param man_days: man days as quantity
         """
         self._quantity = man_days

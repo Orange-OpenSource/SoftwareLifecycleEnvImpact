@@ -1,6 +1,7 @@
-import ipywidgets as widgets  # type: ignore
-from matplotlib import pyplot as plt  # type: ignore
+import ipywidgets as widgets
+from matplotlib import pyplot as plt
 
+from model.impacts.impacts import ImpactIndicator
 from model.projects import StandardProject
 from model.resources import ResourcesList
 from model.tasks import TaskImpact
@@ -15,7 +16,7 @@ def draw_task(task: TaskImpact) -> None:
     :param task: TaskImpact format
     """
     _, ax1 = plt.subplots()
-    emissions = [s["CO2"] for s in task["subtasks"]]
+    emissions = [s[ImpactIndicator.CLIMATE_CHANGE].magnitude for s in task["impacts_sources"]]
     names = [s["name"] for s in task["subtasks"]]
     ax1.pie(emissions, labels=names)
     ax1.set_title(task["name"])
@@ -42,7 +43,7 @@ def draw_resources(resources: ResourcesList) -> None:
 
     for r in resources:
         names.append(r)
-        co2.append(resources[r]["CO2"])
+        co2.append(resources[r][ImpactIndicator.CLIMATE_CHANGE])
     _, ax1 = plt.subplots()
     ax1.pie(co2, labels=names)
     ax1.set_title("Resources")
