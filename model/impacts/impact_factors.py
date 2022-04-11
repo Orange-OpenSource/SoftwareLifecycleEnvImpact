@@ -133,11 +133,11 @@ class LaptopImpact(ImpactFactor):
     """
 
     # Boavizta - https://github.com/Boavizta/environmental-footprint-data
-    LAPTOP_CO2 = 307.37 * KG_CO2E
-    LAPTOP_LIFE = 4.34 * YEAR
-    PC_DAILY_USE = 7 * HOUR
+    FABRICATION_CO2 = 307.37 * KG_CO2E
+    LIFE_EXPECTANCY = 4.34 * YEAR
+    DAILY_USE = 7 * HOUR
 
-    DAY_AMORTIZATION = (LAPTOP_CO2 / LAPTOP_LIFE).to("amortization")
+    DAY_AMORTIZATION = (FABRICATION_CO2 / LIFE_EXPECTANCY).to("amortization")
 
     def __init__(self) -> None:
         """
@@ -148,7 +148,7 @@ class LaptopImpact(ImpactFactor):
         one_day_amortization = self.DAY_AMORTIZATION * (
             1 * DAY
         )  # compute the co2 for 1 day
-        hour_amortization = (one_day_amortization / self.PC_DAILY_USE) * (
+        hour_amortization = (one_day_amortization / self.DAILY_USE) * (
             1 * HOUR
         )  # Cannot directly compute as laptop isn't used 24h/24h. Take 1 hour
 
@@ -161,12 +161,12 @@ class SmartphoneImpact(ImpactFactor):
     Ratio for 1h/smartphone
     """
 
-    SMARTPHONE_CO2 = 88.75 * KG_CO2E
-    SMARTPHONE_LIFE = 2 * YEAR
-    SMARTPHONE_DAILY_USE = (
+    FABRICATION_CO2 = 88.75 * KG_CO2E
+    LIFE_EXPECTANCY = 2 * YEAR
+    DAILY_USE = (
         3.12 * HOUR
     )  # https://ieeexplore.ieee.org/abstract/document/6360448
-    DAY_AMORTIZATION = (SMARTPHONE_CO2 / SMARTPHONE_LIFE).to("amortization")
+    DAY_AMORTIZATION = (FABRICATION_CO2 / LIFE_EXPECTANCY).to("amortization")
 
     def __init__(self) -> None:
         """
@@ -176,7 +176,7 @@ class SmartphoneImpact(ImpactFactor):
         one_day_amortization = self.DAY_AMORTIZATION * (
             1 * DAY
         )  # compute the co2 for 1 day
-        hour_amortization = (one_day_amortization / self.SMARTPHONE_DAILY_USE) * (
+        hour_amortization = (one_day_amortization / self.DAILY_USE) * (
             1 * HOUR
         )  # Cannot directly compute as smartphone isn't used 24h/24h. Take 1 hour
 
@@ -189,19 +189,19 @@ class TabletImpact(ImpactFactor):
     Ratio for 1h/smartphone
     """
 
-    TABLET_CO2 = (
+    FABRICATION_CO2 = (
         63.2 * KG_CO2E
     )  # Source: https://bilans-ges.ademe.fr/fr/basecarbone/donnees-consulter/liste-element?recherche=tablette
-    TABLET_LIFE = 5 * YEAR
-    TABLET_DAILY_USE = 1 * HOUR
+    LIFE_EXPECTANCY = 5 * YEAR
+    DAILY_USE = 1 * HOUR
 
-    DAY_AMORTIZATION = (TABLET_CO2 / TABLET_LIFE).to("amortization")
+    DAY_AMORTIZATION = (FABRICATION_CO2 / LIFE_EXPECTANCY).to("amortization")
 
     def __init__(self) -> None:
         one_day_amortization = self.DAY_AMORTIZATION * (
             1 * DAY
         )  # compute the co2 for 1 day
-        hour_amortization = (one_day_amortization / self.TABLET_DAILY_USE) * (
+        hour_amortization = (one_day_amortization / self.DAILY_USE) * (
             1 * HOUR
         )  # Cannot directly compute as tablet isn't used 24h/24h. Take 1 hour
 
@@ -214,12 +214,12 @@ class TelevisionImpact(ImpactFactor):
     Ratio for 1h watched
     """
 
-    TELEVISION_CO2 = 500 * KG_CO2E
+    FABRICATION_CO2 = 500 * KG_CO2E
     # Source: https://bilans-ges.ademe.fr/fr/basecarbone/donnees-consulter/liste-element?recherche=tablette
-    TELEVISION_LIFE = 10 * YEAR
-    TELEVISION_DAILY_USE = 3 * HOUR
+    LIFE_EXPECTANCY = 10 * YEAR
+    DAILY_USE = 3 * HOUR
 
-    DAY_AMORTIZATION = (TELEVISION_CO2 / TELEVISION_LIFE).to("amortization")
+    DAY_AMORTIZATION = (FABRICATION_CO2 / LIFE_EXPECTANCY).to("amortization")
 
     def __init__(self) -> None:
         """
@@ -229,7 +229,7 @@ class TelevisionImpact(ImpactFactor):
         one_day_amortization = self.DAY_AMORTIZATION * (
             1 * DAY
         )  # compute the co2 for 1 day
-        hour_amortization = (one_day_amortization / self.TELEVISION_DAILY_USE) * (
+        hour_amortization = (one_day_amortization / self.DAILY_USE) * (
             1 * HOUR
         )  # Cannot directly compute as television isn't used 24h/24h. Take 1 hour
 
@@ -262,7 +262,7 @@ class OfficeImpact(ImpactFactor):
     # https://resources.taloen.fr/resources/documents/7765_191210_poids_carbone_ACV_vdef.pdf
     # LCA offices, emissions/m2
     BUILDING_EMISSIONS = 3900 * KG_CO2E
-    BUILDING_LIFE_EXPECTANCY = 50  # years
+    LIFE_EXPECTANCY = 50  # years
 
     def __init__(self) -> None:
         """
@@ -273,7 +273,7 @@ class OfficeImpact(ImpactFactor):
             self.OFFICE_SIZE / self.OFFICES_OCCUPANCY
         )  # Adding corridors halls etc. to single offices
         office_emissions_sqr_meter_day = self.BUILDING_EMISSIONS / (
-            self.BUILDING_LIFE_EXPECTANCY * 365
+                self.LIFE_EXPECTANCY * 365
         )
         office_co2_person = sqr_meter_office * office_emissions_sqr_meter_day
         super().__init__(office_co2_person)
@@ -287,8 +287,8 @@ class StorageImpact(ImpactFactor):
 
     SSD_WH = 1.52 * WATT_HOUR
 
-    DISK_LIFE = 4
-    DISK_FABRICATION_CO2 = 250 * KG_CO2E
+    LIFE_EXPECTANCY = 4
+    FABRICATION_CO2 = 250 * KG_CO2E
 
     def __init__(self) -> None:
         """
@@ -304,7 +304,7 @@ class StorageImpact(ImpactFactor):
         Compute the co2 of a 1tb disk for a day, using amortization and power consumption
         :return: KG_CO2E/disk(1tb)
         """
-        amortization_day = self.DISK_FABRICATION_CO2 / (self.DISK_LIFE * 365)
+        amortization_day = self.FABRICATION_CO2 / (self.LIFE_EXPECTANCY * 365)
         wh_pue = (
             self.SSD_WH * self.registry.pue
         )  # Pondering the consumption with the PUE
@@ -327,8 +327,8 @@ class ServerImpact(ImpactFactor):
     # https://github.com/Boavizta/environmental-footprint-data
     SERVER_POWER_IDLE = 234 * WATT_HOUR
     SERVER_POWER_RUN = 1100 * WATT_HOUR
-    SERVER_LIFE = 3.89
-    SERVER_FABRICATION_CO2 = 1613.25 * KG_CO2E
+    LIFE_EXPECTANCY = 3.89
+    FABRICATION_CO2 = 1613.25 * KG_CO2E
     SERVER_USAGE = 0.7
 
     def __init__(self) -> None:
@@ -346,7 +346,7 @@ class ServerImpact(ImpactFactor):
         :return: KG_CO2E / day
         """
 
-        amortization_day = self.SERVER_FABRICATION_CO2 / (self.SERVER_LIFE * 365)
+        amortization_day = self.FABRICATION_CO2 / (self.LIFE_EXPECTANCY * 365)
         kwh = (
             self.SERVER_POWER_RUN - self.SERVER_POWER_IDLE
         ) * self.SERVER_USAGE + self.SERVER_POWER_IDLE

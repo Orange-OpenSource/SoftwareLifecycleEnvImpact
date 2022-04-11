@@ -193,8 +193,8 @@ def test_laptop_impact() -> None:
     :return:
     """
     l = LaptopImpact()
-    amortization_day = l.LAPTOP_CO2.magnitude / (l.LAPTOP_LIFE.magnitude * 365)
-    amortization_hour = amortization_day / l.PC_DAILY_USE.magnitude
+    amortization_day = l.FABRICATION_CO2.magnitude / (l.LIFE_EXPECTANCY.magnitude * 365)
+    amortization_hour = amortization_day / l.DAILY_USE.magnitude
     assert round(l.co2, 2) == round(amortization_hour * KG_CO2E, 2)
 
 
@@ -209,8 +209,8 @@ def test_smartphone_impact() -> None:
     :return:
     """
     s = SmartphoneImpact()
-    amortization_day = s.SMARTPHONE_CO2.magnitude / (s.SMARTPHONE_LIFE.magnitude * 365)
-    amortization_hour = amortization_day / s.SMARTPHONE_DAILY_USE.magnitude
+    amortization_day = s.FABRICATION_CO2.magnitude / (s.LIFE_EXPECTANCY.magnitude * 365)
+    amortization_hour = amortization_day / s.DAILY_USE.magnitude
     assert round(s.co2, 2) == round(amortization_hour * KG_CO2E, 2)
 
 
@@ -225,8 +225,8 @@ def test_tablet_impact() -> None:
     :return:
     """
     t = TabletImpact()
-    amortization_day = t.TABLET_CO2.magnitude / (t.TABLET_LIFE.magnitude * 365)
-    amortization_hour = amortization_day / t.TABLET_DAILY_USE.magnitude
+    amortization_day = t.FABRICATION_CO2.magnitude / (t.LIFE_EXPECTANCY.magnitude * 365)
+    amortization_hour = amortization_day / t.DAILY_USE.magnitude
     assert round(t.co2, 2) == round(amortization_hour * KG_CO2E, 2)
 
 
@@ -241,8 +241,8 @@ def test_television_impact() -> None:
     :return:
     """
     t = TelevisionImpact()
-    amortization_day = t.TELEVISION_CO2.magnitude / (t.TELEVISION_LIFE.magnitude * 365)
-    amortization_hour = amortization_day / t.TELEVISION_DAILY_USE.magnitude
+    amortization_day = t.FABRICATION_CO2.magnitude / (t.LIFE_EXPECTANCY.magnitude * 365)
+    amortization_hour = amortization_day / t.DAILY_USE.magnitude
     assert round(t.co2, 2) == round(amortization_hour * KG_CO2E, 2)
 
 
@@ -259,7 +259,7 @@ def test_office_impact() -> None:
     o = OfficeImpact()
     one_person_office_size = o.OFFICE_SIZE / o.OFFICES_OCCUPANCY
     square_meter_co2_day = o.BUILDING_EMISSIONS.magnitude / (
-        o.BUILDING_LIFE_EXPECTANCY * 365
+            o.LIFE_EXPECTANCY * 365
     )
     assert o.co2 == (one_person_office_size * square_meter_co2_day) * KG_CO2E
 
