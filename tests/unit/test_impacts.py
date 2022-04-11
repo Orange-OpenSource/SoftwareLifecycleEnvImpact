@@ -9,6 +9,7 @@ from model.impacts.impact_factors import (
     PublicTransportImpact,
     ServerImpact,
     SmartphoneImpact,
+    StorageImpact,
     TabletImpact,
     TelevisionImpact,
     TransportImpact,
@@ -305,7 +306,6 @@ def test_storage_impact() -> None:
     :return: None
     """
 
-    """
     s = StorageImpact()
     registry = ImpactsFactorsRegistry()
     registry.pue = 1.5
@@ -323,7 +323,6 @@ def test_storage_impact() -> None:
     registry.electricity_mix = 0.7543 * ELECTRICITY_MIX
     registry.pue = 1.5
     assert s.co2 == first_co2
-    """
 
 
 ###################

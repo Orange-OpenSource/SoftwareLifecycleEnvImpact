@@ -279,61 +279,42 @@ class OfficeImpact(ImpactFactor):
         super().__init__(office_co2_person)
 
 
-class VdrVCPUImpact(ImpactFactor):
-    """
-    Impact factor for one vCPU for one month at Val de Reuil DC
-    """
-
-    def __init__(self) -> None:
-        super().__init__(
-            climate_change=4.506211 * KG_CO2E,
-            resource_depletion=0.000000878 * KG_SBE,
-            acidification=0.015592121 * MOL_HPOS,
-            fine_particles=0.000000111281 * DISEASE_INCIDENCE,
-            ionizing_radiations=0.15738558 * KG_BQ_U235E,
-            water_depletion=8.61050442 * CUBIC_METER,
-            electronic_waste=3.087493 * ELECTRONIC_WASTE,
-            primary_energy_consumption=498.310296 * PRIMARY_MJ,
-            raw_materials=10.2950296 * TONNE_MIPS,
-        )
-
-
-class RAMImpact(ImpactFactor):
-    """
-    Impact factor for one GB of RAM for one month at Val de Reuil DC
-    """
-
-    def __init__(self) -> None:
-        super().__init__(
-            climate_change=0.5186616 * KG_CO2E,
-            resource_depletion=0.00000001055 * KG_SBE,
-            acidification=0.002105015 * MOL_HPOS,
-            fine_particles=0.0000000115591 * DISEASE_INCIDENCE,
-            ionizing_radiations=0.00596069 * KG_BQ_U235E,
-            water_depletion=0.228200547 * CUBIC_METER,
-            electronic_waste=0.0243686 * ELECTRONIC_WASTE,
-            primary_energy_consumption=7.8400366 * PRIMARY_MJ,
-            raw_materials=0.12390367 * TONNE_MIPS,
-        )
-
-
 class StorageImpact(ImpactFactor):
     """
-    Impact factor for one GB of storage for one month at Val de Reuil DC
+    EnvironmentalImpact source for storage (disks)
+    Ratio / tb / day
     """
 
+    SSD_WH = 1.52 * WATT_HOUR
+
+    DISK_LIFE = 4
+    DISK_FABRICATION_CO2 = 250 * KG_CO2E
+
     def __init__(self) -> None:
-        super().__init__(
-            climate_change=1.1922143 * KG_CO2E,
-            resource_depletion=0.00000084877 * KG_SBE,
-            acidification=0.004756408 * MOL_HPOS,
-            fine_particles=0.00000002585 * DISEASE_INCIDENCE,
-            ionizing_radiations=0.041780379 * KG_BQ_U235E,
-            water_depletion=0.4456003 * CUBIC_METER,
-            electronic_waste=0.1535267 * ELECTRONIC_WASTE,
-            primary_energy_consumption=12.1600201 * PRIMARY_MJ,
-            raw_materials=0.53460201 * TONNE_MIPS,
-        )
+        """
+        Storage impact source, defined by the electricity mix used to make it run, and the pue of its datacenter
+        Uses the impactRegistry to get pue and electricity_mix
+        """
+        self.registry = ImpactsFactorsRegistry()
+        super().__init__(self.co2)
+
+    @property
+    def co2(self) -> KG_CO2E:
+        """
+        Compute the co2 of a 1tb disk for a day, using amortization and power consumption
+        :return: KG_CO2E/disk(1tb)
+        """
+        amortization_day = self.DISK_FABRICATION_CO2 / (self.DISK_LIFE * 365)
+        wh_pue = (
+            self.SSD_WH * self.registry.pue
+        )  # Pondering the consumption with the PUE
+        wh_day = wh_pue * 24  # wh consumed for a complete day
+        kwh_day = wh_day.to("kWh")
+        consumption_co2 = (
+            kwh_day * self.registry.electricity_mix
+        )  # consumption co2 emissions
+        co2_total: KG_CO2E = consumption_co2 + amortization_day
+        return co2_total
 
 
 class ServerImpact(ImpactFactor):
