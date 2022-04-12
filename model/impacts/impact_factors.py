@@ -24,19 +24,17 @@ class ImpactsFactorsRegistry:
     Singleton registry containing the model calculations base values
     """
 
-    __instance = None
+    _instance = None
 
-    def __init__(self) -> None:
-        self.pue: float = 1.5
-        # ADEME https://bilans-ges.ademe.fr/fr/accueil/documentation-gene/index/page/Electricite_reglementaire
-        self.electricity_mix: ELECTRICITY_MIX = 0.0599 * ELECTRICITY_MIX
+    def __new__(cls) -> ImpactsFactorsRegistry:
+        if cls._instance is None:
+            cls._instance = super(ImpactsFactorsRegistry, cls).__new__(cls)
 
-    def __new__(cls, *args: object, **kwargs: object) -> object:  # type: ignore
-        if ImpactsFactorsRegistry.__instance is None:
-            ImpactsFactorsRegistry.__instance = super(
-                ImpactsFactorsRegistry, cls
-            ).__new__(cls, *args, **kwargs)
-        return ImpactsFactorsRegistry.__instance
+            # Values
+            cls.pue: float = 1.5
+            # ADEME https://bilans-ges.ademe.fr/fr/accueil/documentation-gene/index/page/Electricite_reglementaire
+            cls.electricity_mix: ELECTRICITY_MIX = 0.0599 * ELECTRICITY_MIX
+        return cls._instance
 
 
 class ImpactFactor:
@@ -67,16 +65,32 @@ class ImpactFactor:
         :param primary_energy_consumption: Primary energy consumed as MJ
         :param raw_materials: Raw materials consumed as Ton
         """
-        self.impacts: ImpactsList = {
-            ImpactIndicator.CLIMATE_CHANGE: climate_change,
-            ImpactIndicator.RESOURCE_DEPLETION: resource_depletion,
-            ImpactIndicator.ACIDIFICATION: acidification,
-            ImpactIndicator.FINE_PARTICLES: fine_particles,
-            ImpactIndicator.IONIZING_RADIATIONS: ionizing_radiations,
-            ImpactIndicator.WATER_DEPLETION: water_depletion,
-            ImpactIndicator.ELECTRONIC_WASTE: electronic_waste,
-            ImpactIndicator.PRIMARY_ENERGY: primary_energy_consumption,
-            ImpactIndicator.RAW_MATERIALS: raw_materials,
+        self._co2 = climate_change
+        self.resource_depletion = resource_depletion
+        self.acidification = acidification
+        self.fine_particles = fine_particles
+        self.ionizing_radiations = ionizing_radiations
+        self.water_depletion = water_depletion
+        self.electronic_waste = electronic_waste
+        self.primary_energy_consumption = primary_energy_consumption
+        self.raw_materials = raw_materials
+
+    @property
+    def impacts_list(self) -> ImpactsList:
+        """
+        Return all impact factors value as an ImpactList of indicators
+        :return: ImpactList of indicators
+        """
+        return {
+            ImpactIndicator.CLIMATE_CHANGE: self.co2,
+            ImpactIndicator.RESOURCE_DEPLETION: self.resource_depletion,
+            ImpactIndicator.ACIDIFICATION: self.acidification,
+            ImpactIndicator.FINE_PARTICLES: self.fine_particles,
+            ImpactIndicator.IONIZING_RADIATIONS: self.ionizing_radiations,
+            ImpactIndicator.WATER_DEPLETION: self.water_depletion,
+            ImpactIndicator.ELECTRONIC_WASTE: self.electronic_waste,
+            ImpactIndicator.PRIMARY_ENERGY: self.primary_energy_consumption,
+            ImpactIndicator.RAW_MATERIALS: self.raw_materials,
         }
 
     @property
@@ -87,7 +101,7 @@ class ImpactFactor:
         Getter for co2 property
         :return: co2 as float
         """
-        return self.impacts[ImpactIndicator.CLIMATE_CHANGE]
+        return self._co2
 
 
 class UserDeviceImpact(ImpactFactor):
@@ -163,9 +177,7 @@ class SmartphoneImpact(ImpactFactor):
 
     FABRICATION_CO2 = 88.75 * KG_CO2E
     LIFE_EXPECTANCY = 2 * YEAR
-    DAILY_USE = (
-        3.12 * HOUR
-    )  # https://ieeexplore.ieee.org/abstract/document/6360448
+    DAILY_USE = 3.12 * HOUR  # https://ieeexplore.ieee.org/abstract/document/6360448
     DAY_AMORTIZATION = (FABRICATION_CO2 / LIFE_EXPECTANCY).to("amortization")
 
     def __init__(self) -> None:
@@ -273,7 +285,7 @@ class OfficeImpact(ImpactFactor):
             self.OFFICE_SIZE / self.OFFICES_OCCUPANCY
         )  # Adding corridors halls etc. to single offices
         office_emissions_sqr_meter_day = self.BUILDING_EMISSIONS / (
-                self.LIFE_EXPECTANCY * 365
+            self.LIFE_EXPECTANCY * 365
         )
         office_co2_person = sqr_meter_office * office_emissions_sqr_meter_day
         super().__init__(office_co2_person)

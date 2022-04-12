@@ -47,7 +47,7 @@ def test_get_co2_impact() -> None:
     subtask = Task("Test", resources=[r1])  # 1776
     task = Task("Task", subtasks=[subtask], resources=[r2])  # 1000 + 1776
 
-    assert task.get_co2_impact() == 2776 * KG_CO2E
+    assert task.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE) == 2776 * KG_CO2E
 
 
 def test_get_impacts() -> None:
@@ -133,17 +133,17 @@ def test_get_impact_by_resource() -> None:
     # Test one res
     task = Task("Task", resources=[r2])  # 1000
     res_dict = task.get_impact_by_resource()
-    assert res_dict[r2.name][ImpactIndicator.CLIMATE_CHANGE] == task.get_co2_impact()
+    assert res_dict[r2.name][ImpactIndicator.CLIMATE_CHANGE] == task.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE)
 
     # Test two resources
     task2 = Task("Task", resources=[r2, r2])  # 1000 + 1000
     res_dict = task2.get_impact_by_resource()
-    assert res_dict[r2.name][ImpactIndicator.CLIMATE_CHANGE] == task2.get_co2_impact()
+    assert res_dict[r2.name][ImpactIndicator.CLIMATE_CHANGE] == task2.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE)
 
     # Test subtasks
     task3 = Task("Task", subtasks=[task, task2])  # 2000 + 1000
     res_dict = task3.get_impact_by_resource()
-    assert res_dict[r2.name][ImpactIndicator.CLIMATE_CHANGE] == task3.get_co2_impact()
+    assert res_dict[r2.name][ImpactIndicator.CLIMATE_CHANGE] == task3.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE)
 
 
 def test_get_impact_by_resource_quantity() -> None:
@@ -159,7 +159,6 @@ def test_get_impact_by_resource_quantity() -> None:
         co2 += d[resource][ImpactIndicator.CLIMATE_CHANGE]
 
     assert round(p.get_co2_impact(), 5) == round(co2, 5)
-
 
 ###########
 # DevTask #

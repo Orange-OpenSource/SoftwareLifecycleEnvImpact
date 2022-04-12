@@ -1,4 +1,5 @@
 from model.impacts.impact_factors import ImpactFactor
+from model.impacts.impacts import ImpactIndicator
 from model.projects import Project, StandardProject
 from model.quantities import KG_CO2E
 from model.tasks import Task
@@ -22,7 +23,7 @@ project = Project(task)
 
 def test_get_global_impact() -> None:
     """Test consistency with the tasks individual _impacts"""
-    assert project.root_task.get_co2_impact() == project.get_co2_impact()
+    assert project.root_task.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE) == project.get_co2_impact()
 
 
 def test_get_impact_by_task() -> None:
@@ -35,6 +36,12 @@ def test_get_impact_by_resource() -> None:
     assert (
         project.root_task.get_impact_by_resource() == project.get_impact_by_resource()
     )
+
+
+def test_get_impact_by_indicator() -> None:
+    """Test that project level get_impact_by_indicator is same as root_task one"""
+    assert project.root_task.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE) == project.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE)
+    assert project.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE) == project.get_co2_impact()
 
 
 ###################

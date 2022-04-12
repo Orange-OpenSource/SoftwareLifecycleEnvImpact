@@ -3,8 +3,10 @@ from __future__ import annotations
 from abc import ABC
 from typing import Any, List, Union
 
-from model.impacts.impacts import ImpactsList, merge_impacts_lists
-from model.quantities import KG_CO2E
+from pint import Quantity
+
+from model.impacts.impacts import ImpactIndicator, ImpactsList, merge_impacts_lists
+from model.quantities import Q_
 from model.resources import (
     ComputeResource,
     merge_resource_list,
@@ -39,23 +41,9 @@ class Task(ABC):
         self._subtasks = subtasks
         self._resources = resources
 
-    def get_co2_impact(self) -> KG_CO2E:
-        """
-        Return the computed co2 of this task resources, and those of its subtasks
-        :return: complete co2 of task + its subtasks
-        """
-        total: KG_CO2E = 0 * KG_CO2E
-        for r in self._resources:
-            total += r.get_co2_impact()
-
-        for s in self._subtasks:
-            total += s.get_co2_impact()
-
-        return total
-
     def get_impacts(self) -> TaskImpact:
         """
-        Return a task impact for this one and its childrens
+        Return a task impact for this one and its children
         :return: TaskImpact with name, impact sources and subtasks
         """
         return {
@@ -66,9 +54,9 @@ class Task(ABC):
 
     def get_impacts_list(self) -> ImpactsList:
         """
-        Return the task impacts as an ImpactsList
+        Return the task impacts_list as an ImpactsList
 
-        :return: an ImpactsList for this task impacts
+        :return: an ImpactsList for this task impacts_list
         """
         impacts: ImpactsList = {}
 
@@ -102,6 +90,18 @@ class Task(ABC):
 
         return resource_list
 
+    def get_impact_by_indicator(self, indicator: ImpactIndicator) -> Quantity[Any]:
+        """
+        Return the computed impact passed as parameter of this task resources, and those of its subtasks
+        :param indicator: Impact indicator
+        :return: the quantity corresponding to the impact indicator
+        """
+
+        impacts_resources: List[Quantity[Any]] = [r.get_impact(indicator) for r in self._resources]
+        impacts_subtasks: List[Quantity[Any]] = [s.get_impact_by_indicator(indicator) for s in self._subtasks]
+
+        return Q_(sum(impacts_resources) + sum(impacts_subtasks))  # type: ignore
+
 
 class BuildTask(Task):
     """
@@ -109,10 +109,10 @@ class BuildTask(Task):
     """
 
     def __init__(
-        self,
-        implementation_task: ImplementationTask,
-        spec_task: SpecTask,
-        management_task: ManagementTask,
+            self,
+            implementation_task: ImplementationTask,
+            spec_task: SpecTask,
+            management_task: ManagementTask,
     ):
         """
         Initialize a BuildTask with implementation, specification and management as subtasks
@@ -289,10 +289,10 @@ class HostingTask(Task):
     """
 
     def __init__(
-        self,
-        servers_count: int,
-        storage_size: int,
-        duration: int,
+            self,
+            servers_count: int,
+            storage_size: int,
+            duration: int,
     ):
         """
         Hosting task with Compute, Storage resources as impacts_sources
@@ -427,10 +427,10 @@ class RunTask(Task):
     """
 
     def __init__(
-        self,
-        maintenance_task: MaintenanceTask,
-        hosting_task: HostingTask,
-        usage_task: UsageTask,
+            self,
+            maintenance_task: MaintenanceTask,
+            hosting_task: HostingTask,
+            usage_task: UsageTask,
     ):
         """
         Implement a RunTask with maintenance, hosting and usage subtasks
@@ -470,9 +470,9 @@ class StandardProjectTask(Task):
     """
 
     def __init__(
-        self,
-        build_task: BuildTask,
-        run_task: RunTask,
+            self,
+            build_task: BuildTask,
+            run_task: RunTask,
     ):
         self._build_task = build_task
         self._run_task = run_task

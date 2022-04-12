@@ -92,6 +92,12 @@ def test_impact_registry_singleton() -> None:
     ir2.electricity_mix = 2.1234 * ELECTRICITY_MIX
     assert ir1.electricity_mix == 2.1234 * ELECTRICITY_MIX
 
+    ir1.electricity_mix = 2.12312312 * ELECTRICITY_MIX
+    assert ir2.electricity_mix == 2.12312312 * ELECTRICITY_MIX
+
+    assert ImpactsFactorsRegistry().electricity_mix == 2.12312312 * ELECTRICITY_MIX
+    ImpactsFactorsRegistry().electricity_mix = 214234.31232 * ELECTRICITY_MIX
+    assert ImpactsFactorsRegistry().electricity_mix == 214234.31232 * ELECTRICITY_MIX
 
 ################
 # ImpactFactor #
@@ -121,21 +127,21 @@ def test_impact_source_parameters() -> None:
         raw_materials=124.123441 * TONNE_MIPS,
     )
     assert i.co2 == 103.72 * KG_CO2E
-    assert i.impacts[ImpactIndicator.RESOURCE_DEPLETION] == 312.23 * KG_SBE
-    assert i.impacts[ImpactIndicator.ACIDIFICATION] == 32443.2134 * MOL_HPOS
-    assert i.impacts[ImpactIndicator.FINE_PARTICLES] == 24324.234324 * DISEASE_INCIDENCE
-    assert i.impacts[ImpactIndicator.IONIZING_RADIATIONS] == 421312.123 * KG_BQ_U235E
-    assert i.impacts[ImpactIndicator.WATER_DEPLETION] == 124.123 * CUBIC_METER
+    assert i.resource_depletion == 312.23 * KG_SBE
+    assert i.acidification == 32443.2134 * MOL_HPOS
+    assert i.fine_particles == 24324.234324 * DISEASE_INCIDENCE
+    assert i.ionizing_radiations == 421312.123 * KG_BQ_U235E
+    assert i.water_depletion == 124.123 * CUBIC_METER
     assert (
-        i.impacts[ImpactIndicator.ELECTRONIC_WASTE] == 134242.12341 * ELECTRONIC_WASTE
+            i.electronic_waste == 134242.12341 * ELECTRONIC_WASTE
     )
-    assert i.impacts[ImpactIndicator.PRIMARY_ENERGY] == 1234.23123 * PRIMARY_MJ
-    assert i.impacts[ImpactIndicator.RAW_MATERIALS] == 124.123441 * TONNE_MIPS
+    assert i.primary_energy_consumption == 1234.23123 * PRIMARY_MJ
+    assert i.raw_materials == 124.123441 * TONNE_MIPS
 
 
 def test_get_impacts_quantities() -> None:
     """
-    Test .impacts property of ImpactFactor
+    Test .impacts_list property of ImpactFactor
     :return:
     """
     i = ImpactFactor(
@@ -150,7 +156,7 @@ def test_get_impacts_quantities() -> None:
         raw_materials=124.123441 * TONNE_MIPS,
     )
 
-    assert i.impacts == {
+    assert i.impacts_list == {
         ImpactIndicator.CLIMATE_CHANGE: 103.72 * KG_CO2E,
         ImpactIndicator.RESOURCE_DEPLETION: 312.23 * KG_SBE,
         ImpactIndicator.ACIDIFICATION: 32443.2134 * MOL_HPOS,
@@ -332,7 +338,7 @@ def test_storage_impact() -> None:
 
 def test_transport_impact() -> None:
     """
-    Test that transport impact correspond to a standard ratio of all impacts, multiplied by the average travel distance
+    Test that transport impact correspond to a standard ratio of all impacts_list, multiplied by the average travel distance
     :return:
     """
     u = TransportImpact()

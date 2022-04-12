@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
-from typing import List
+from typing import Any, List
+
+from pint import Quantity
 
 from model.impacts.impact_factors import (
     ImpactFactor,
@@ -10,8 +12,8 @@ from model.impacts.impact_factors import (
     TransportImpact,
     UserDeviceImpact,
 )
-from model.impacts.impacts import ImpactsList, merge_impacts_lists
-from model.quantities import KG_CO2E
+from model.impacts.impacts import ImpactIndicator, ImpactsList, merge_impacts_lists
+from model.quantities import Q_
 
 ResourceName = str
 
@@ -61,19 +63,18 @@ class Resource(ABC):
         :return: implementation quantity
         """
 
-    def get_co2_impact(self) -> KG_CO2E:
+    def get_impact(self, impact_indicator: ImpactIndicator) -> Quantity[Any]:
         """
-        Compute and return the co2-equivalent impact associated to the given quantity
+        Compute and return the corresponding indicator impact associated to the given quantity
         :return: the impact
         """
-        co2: KG_CO2E = 0 * KG_CO2E
-        for impact in self._impacts:
-            co2 += self.quantity * impact.co2
-        return co2
+        impacts: List[Quantity[Any]] = [i.impacts_list[impact_indicator] * self.quantity for i in self._impacts]
+
+        return Q_(sum(impacts))
 
     def get_impacts(self) -> ImpactsList:
         """
-        Return all impacts for the resource, with the format ImpactsList For each impact kind, it's multiplied by the
+        Return all impacts_list for the resource, with the format ImpactsList For each impact kind, it's multiplied by the
         resource quantity example:
         >>> self.get_impacts()
          {
@@ -94,9 +95,9 @@ class Resource(ABC):
         for impact_source in self._impacts:
             impact_source_quantities = {}
 
-            for impact_indicator in impact_source.impacts:
+            for impact_indicator in impact_source.impacts_list:
                 impact_source_quantities[impact_indicator] = (
-                    impact_source.impacts[impact_indicator] * self.quantity
+                        impact_source.impacts_list[impact_indicator] * self.quantity
                 )
 
             impacts = merge_impacts_lists(impacts, impact_source_quantities)

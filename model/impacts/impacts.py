@@ -29,7 +29,7 @@ def merge_impacts_lists(
     first_list: ImpactsList, second_list: ImpactsList
 ) -> ImpactsList:
     """
-    Merge two list of impacts, adding them if they are in each list or merge them
+    Merge two list of impacts_list, adding them if they are in each list or merge them
     :param first_list: first list to merge
     :param second_list: second list to merge with
     :return: a new list containing the parameters merged

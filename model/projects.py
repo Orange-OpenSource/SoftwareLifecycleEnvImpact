@@ -1,4 +1,9 @@
+from typing import Any
+
+from pint import Quantity
+
 from model.impacts.impact_factors import ImpactsFactorsRegistry
+from model.impacts.impacts import ImpactIndicator
 from model.quantities import ELECTRICITY_MIX, KG_CO2E
 from model.resources import ResourcesList
 from model.tasks import (
@@ -37,7 +42,7 @@ class Project:
         Compute and return the project global CO2e footprint
         :return: project global impact
         """
-        return self.root_task.get_co2_impact()
+        return self.root_task.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE)
 
     def get_impact_by_task(self) -> TaskImpact:
         """
@@ -77,6 +82,13 @@ class Project:
         """
         return self.root_task.get_impact_by_resource()
 
+    def get_impact_by_indicator(self, indicator: ImpactIndicator) -> Quantity[Any]:
+        """
+        Return all project impacts for one indicator, for example ImpactIndicator.CLIMATE_CHANGE
+        :param indicator: the ImpactIndicator to retrieve values for
+        :return: Quantity of impacts
+        """
+        return self.root_task.get_impact_by_indicator(indicator)
 
 class StandardProject(Project):
     """
