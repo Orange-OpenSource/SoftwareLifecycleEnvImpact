@@ -3,7 +3,7 @@ from typing import Any
 from pint import Quantity
 
 from model.impacts.impact_factors import ImpactsFactorsRegistry
-from model.impacts.impacts import ImpactIndicator
+from model.impacts.impacts import ImpactIndicator, ImpactsList
 from model.quantities import ELECTRICITY_MIX, KG_CO2E
 from model.resources import ResourcesList
 from model.tasks import (
@@ -43,6 +43,9 @@ class Project:
         :return: project global impact
         """
         return self.root_task.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE)
+
+    def get_impacts(self) -> ImpactsList:
+        return self.root_task.get_impacts_list()
 
     def get_impact_by_task(self) -> TaskImpact:
         """

@@ -1,7 +1,7 @@
 import ipywidgets as widgets  # type: ignore
 from matplotlib import pyplot as plt  # type: ignore
 
-from model.impacts.impacts import ImpactIndicator
+from model.impacts.impacts import ImpactIndicator, ImpactsList
 from model.projects import StandardProject
 from model.resources import ResourcesList
 from model.tasks import TaskImpact
@@ -48,6 +48,17 @@ def draw_resources(resources: ResourcesList) -> None:
     ax1.pie(co2, labels=names)
     ax1.set_title("Resources")
 
+def draw_impacts(impacts_list: ImpactsList) -> None:
+    names = []
+    impacts = []
+
+    for impact_name in impacts_list:
+        names.append(impact_name.value)
+        impacts.append(impacts_list[impact_name].magnitude)
+
+    _, ax1 = plt.subplots()
+    ax1.pie(impacts, labels=names)
+    ax1.set_title("Environmental impacts")
 
 class ModelPieChart:
     """
@@ -90,6 +101,7 @@ class ModelPieChart:
         self.p.avg_time = avg_user_minutes
         self.p.avg_data = avg_user_data
         draw_resources(self.p.get_impact_by_resource())
+        draw_impacts(self.p.get_impacts())
         draw_tasks(self.p.get_impact_by_task())
 
     def get_widget(self) -> widgets.interactive:
