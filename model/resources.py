@@ -68,7 +68,9 @@ class Resource(ABC):
         Compute and return the corresponding indicator impact associated to the given quantity
         :return: the impact
         """
-        impacts: List[Quantity[Any]] = [i.impacts_list[impact_indicator] * self.quantity for i in self._impacts]
+        impacts: List[Quantity[Any]] = [
+            i.impacts_list[impact_indicator] * self.quantity for i in self._impacts
+        ]
 
         return Q_(sum(impacts))
 
@@ -97,7 +99,7 @@ class Resource(ABC):
 
             for impact_indicator in impact_source.impacts_list:
                 impact_source_quantities[impact_indicator] = (
-                        impact_source.impacts_list[impact_indicator] * self.quantity
+                    impact_source.impacts_list[impact_indicator] * self.quantity
                 )
 
             impacts = merge_impacts_lists(impacts, impact_source_quantities)

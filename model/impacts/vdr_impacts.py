@@ -73,6 +73,7 @@ class VdrRAMImpact(ImpactFactor):
     """
     Impact factor for one GB of RAM for one month at Val de Reuil DC
     """
+
     def __init__(self) -> None:
         super().__init__(
             climate_change=0.267726 * KG_CO2E,
@@ -110,6 +111,7 @@ class VdrRamStorageImpact(ImpactFactor):
     """
     Impact factor for one GB of storage for one month at Val de Reuil DC
     """
+
     def __init__(self) -> None:
         super().__init__(
             climate_change=1.1922143 * KG_CO2E,

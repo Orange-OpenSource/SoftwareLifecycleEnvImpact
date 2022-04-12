@@ -90,6 +90,7 @@ class Project:
         """
         return self.root_task.get_impact_by_indicator(indicator)
 
+
 class StandardProject(Project):
     """
     Implementation of a standard base project

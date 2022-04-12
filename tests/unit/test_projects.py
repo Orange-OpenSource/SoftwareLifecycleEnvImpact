@@ -23,7 +23,10 @@ project = Project(task)
 
 def test_get_global_impact() -> None:
     """Test consistency with the tasks individual _impacts"""
-    assert project.root_task.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE) == project.get_co2_impact()
+    assert (
+        project.root_task.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE)
+        == project.get_co2_impact()
+    )
 
 
 def test_get_impact_by_task() -> None:
@@ -40,8 +43,13 @@ def test_get_impact_by_resource() -> None:
 
 def test_get_impact_by_indicator() -> None:
     """Test that project level get_impact_by_indicator is same as root_task one"""
-    assert project.root_task.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE) == project.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE)
-    assert project.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE) == project.get_co2_impact()
+    assert project.root_task.get_impact_by_indicator(
+        ImpactIndicator.CLIMATE_CHANGE
+    ) == project.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE)
+    assert (
+        project.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE)
+        == project.get_co2_impact()
+    )
 
 
 ###################

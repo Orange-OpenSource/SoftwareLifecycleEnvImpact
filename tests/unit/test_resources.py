@@ -138,16 +138,25 @@ def test_get_co2_impact() -> None:
     test_resource = TestResource(1, impacts=[is1, is2])  # Impacts =  1 * 1776
     test_resource.quantity = 1
     # Test ImpactFactor computation
-    assert test_resource.get_impact(ImpactIndicator.CLIMATE_CHANGE) == (9999 + 1.123) * KG_CO2E
+    assert (
+        test_resource.get_impact(ImpactIndicator.CLIMATE_CHANGE)
+        == (9999 + 1.123) * KG_CO2E
+    )
 
     # Test quantity change
     test_resource._quantity = 123
-    assert test_resource.get_impact(ImpactIndicator.CLIMATE_CHANGE) == ((9999 + 1.123) * 123) * KG_CO2E
+    assert (
+        test_resource.get_impact(ImpactIndicator.CLIMATE_CHANGE)
+        == ((9999 + 1.123) * 123) * KG_CO2E
+    )
 
     # Test add impact source
     is3 = ImpactFactor(432 * KG_CO2E)
     test_resource._impacts.append(is3)
-    assert test_resource.get_impact(ImpactIndicator.CLIMATE_CHANGE) == ((9999 + 1.123 + 432) * 123) * KG_CO2E
+    assert (
+        test_resource.get_impact(ImpactIndicator.CLIMATE_CHANGE)
+        == ((9999 + 1.123 + 432) * 123) * KG_CO2E
+    )
 
 
 def test_get_impacts() -> None:

@@ -99,6 +99,7 @@ def test_impact_registry_singleton() -> None:
     ImpactsFactorsRegistry().electricity_mix = 214234.31232 * ELECTRICITY_MIX
     assert ImpactsFactorsRegistry().electricity_mix == 214234.31232 * ELECTRICITY_MIX
 
+
 ################
 # ImpactFactor #
 ################
@@ -132,9 +133,7 @@ def test_impact_source_parameters() -> None:
     assert i.fine_particles == 24324.234324 * DISEASE_INCIDENCE
     assert i.ionizing_radiations == 421312.123 * KG_BQ_U235E
     assert i.water_depletion == 124.123 * CUBIC_METER
-    assert (
-            i.electronic_waste == 134242.12341 * ELECTRONIC_WASTE
-    )
+    assert i.electronic_waste == 134242.12341 * ELECTRONIC_WASTE
     assert i.primary_energy_consumption == 1234.23123 * PRIMARY_MJ
     assert i.raw_materials == 124.123441 * TONNE_MIPS
 
@@ -264,9 +263,7 @@ def test_office_impact() -> None:
     """
     o = OfficeImpact()
     one_person_office_size = o.OFFICE_SIZE / o.OFFICES_OCCUPANCY
-    square_meter_co2_day = o.BUILDING_EMISSIONS.magnitude / (
-            o.LIFE_EXPECTANCY * 365
-    )
+    square_meter_co2_day = o.BUILDING_EMISSIONS.magnitude / (o.LIFE_EXPECTANCY * 365)
     assert o.co2 == (one_person_office_size * square_meter_co2_day) * KG_CO2E
 
 

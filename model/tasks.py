@@ -48,7 +48,7 @@ class Task(ABC):
         """
         return {
             "name": self.name,
-            "impacts_sources": self.get_impacts_list(),
+            "impacts": self.get_impacts_list(),
             "subtasks": [r.get_impacts() for r in self._subtasks],
         }
 
@@ -97,8 +97,12 @@ class Task(ABC):
         :return: the quantity corresponding to the impact indicator
         """
 
-        impacts_resources: List[Quantity[Any]] = [r.get_impact(indicator) for r in self._resources]
-        impacts_subtasks: List[Quantity[Any]] = [s.get_impact_by_indicator(indicator) for s in self._subtasks]
+        impacts_resources: List[Quantity[Any]] = [
+            r.get_impact(indicator) for r in self._resources
+        ]
+        impacts_subtasks: List[Quantity[Any]] = [
+            s.get_impact_by_indicator(indicator) for s in self._subtasks
+        ]
 
         return Q_(sum(impacts_resources) + sum(impacts_subtasks))  # type: ignore
 
@@ -109,10 +113,10 @@ class BuildTask(Task):
     """
 
     def __init__(
-            self,
-            implementation_task: ImplementationTask,
-            spec_task: SpecTask,
-            management_task: ManagementTask,
+        self,
+        implementation_task: ImplementationTask,
+        spec_task: SpecTask,
+        management_task: ManagementTask,
     ):
         """
         Initialize a BuildTask with implementation, specification and management as subtasks
@@ -289,10 +293,10 @@ class HostingTask(Task):
     """
 
     def __init__(
-            self,
-            servers_count: int,
-            storage_size: int,
-            duration: int,
+        self,
+        servers_count: int,
+        storage_size: int,
+        duration: int,
     ):
         """
         Hosting task with Compute, Storage resources as impacts_sources
@@ -427,10 +431,10 @@ class RunTask(Task):
     """
 
     def __init__(
-            self,
-            maintenance_task: MaintenanceTask,
-            hosting_task: HostingTask,
-            usage_task: UsageTask,
+        self,
+        maintenance_task: MaintenanceTask,
+        hosting_task: HostingTask,
+        usage_task: UsageTask,
     ):
         """
         Implement a RunTask with maintenance, hosting and usage subtasks
@@ -470,9 +474,9 @@ class StandardProjectTask(Task):
     """
 
     def __init__(
-            self,
-            build_task: BuildTask,
-            run_task: RunTask,
+        self,
+        build_task: BuildTask,
+        run_task: RunTask,
     ):
         self._build_task = build_task
         self._run_task = run_task
