@@ -5,7 +5,7 @@ from pint import Quantity
 
 from model.impacts.impact_factors import (
     ImpactFactor,
-    NetworkImpact,
+    LaptopImpact, NetworkImpact,
     OfficeImpact,
     ServerImpact,
     StorageImpact,
@@ -171,7 +171,8 @@ class PeopleResource(Resource):
         self._quantity = man_days
         self.office_impact = OfficeImpact()
         self.transport_impact = TransportImpact()
-        super().__init__("People", [self.office_impact, self.transport_impact])
+        self.laptop_impact = LaptopImpact()
+        super().__init__("People", [self.office_impact, self.transport_impact, self.laptop_impact])
 
     @property
     def quantity(self) -> int:
