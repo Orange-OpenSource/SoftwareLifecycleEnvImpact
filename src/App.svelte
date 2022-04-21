@@ -1,11 +1,11 @@
-<script>
+<script lang="ts">
 	import { Router, Route, Link } from "svelte-navigator";
 
-	import SelectionProjet from "./SelectionProjet.svelte";
-	import ComparaisonModele from "./ComparaisonModele.svelte";
-	import Profil from "./Profil.svelte";
-	import VisualisationProjet from "./VisualisationProjet.svelte";
-	import ModificationModele from "./ModificationModele.svelte";
+	import SelectionProjet from "./views/SelectionProjet.svelte";
+	import ComparaisonModele from "./views/ComparaisonModele.svelte";
+	import Profil from "./views/Profil.svelte";
+	import VisualisationProjet from "./views/VisualisationProjet.svelte";
+	import ModificationModele from "./views/ModificationModele.svelte";
 	
 </script>
 
@@ -41,7 +41,7 @@
 				</div>
 			  </nav>
 		</header>
-
+ 
 
 		<Route path="/">
 			<SelectionProjet />
@@ -64,25 +64,3 @@
 		</Route>
 	</main>
 </Router>
-
-<style>
-
-	main {
-		text-align: center;
-		padding: 0;
-		max-width: 240px;
-		margin: 0 auto;
-		height: 100%;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
-
-	.indigo {
-		background-color: #8850e2;
-		color: white;
-	}
-</style>
