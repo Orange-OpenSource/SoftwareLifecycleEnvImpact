@@ -1,52 +1,22 @@
 <script>
 	import TreeView from '../components/TreeView.svelte';
-	let children = [
-		{
-			name: "Project",
-			type: "type",
-            parent : "",
-			children: [
-				{
-					name: "Build",
-					type: "type",
-                    parent : "Project",
-                    children: [
-						{
-							name: "Management",
-							type: "type",
-							parent: "Project/Build"
-						},
-						{
-							name: "Specifications",
-							type: "type",
-							parent: "Project/Build"
-						},
-                        {
-							name: "Implementation",
-							type: "type",
-							parent: "Project/Build"
-						}
-					]
-				},
-				{
-					name: "Run",
-					type: "type",
-					children: [
-						{
-							name: "Maintenance",
-							type: "type",
-							parent: "Project/Run"
-						},
-						{
-							name: "Hosting",
-							type: "type",
-							parent: "Project/Run"
-						}
-					]
-				}
-			]
-		}
-	]
+	import { onMount } from "svelte";
+    
+	export let idProject;
+
+	console.log(idProject);
+
+	let children = []
+
+	const endpoint = 'https://626131b3327d3896e2767e8e.mockapi.io/projects/';
+	let project = [];
+
+	onMount(async function () {
+		const response = await fetch(endpoint + idProject);
+		project = await response.json();
+		children = project.baseModel;
+		console.log(project);
+	});
 </script>
 
 <div class="container">

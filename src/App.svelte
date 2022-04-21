@@ -27,9 +27,6 @@
 						<a class="nav-link" href="#"><Link to="profile">Profil</Link></a>
 					  </li>
 					  <li class="nav-item">
-						<a class="nav-link" href="#"><Link to="visualisation">Visualisation projet</Link></a>
-					  </li>
-					  <li class="nav-item">
 						<a class="nav-link" href="#"><Link to="comparaison">Comparaison modèle</Link></a>
 					  </li>
 
@@ -59,8 +56,8 @@
 			<ModificationModele />
 		</Route>
 
-		<Route path="visualisation">
-			<VisualisationProjet />
+		<Route path="visualisation/:id" let:params>
+			<VisualisationProjet idProject={params.id}/>
 		</Route>
 	</main>
 </Router>

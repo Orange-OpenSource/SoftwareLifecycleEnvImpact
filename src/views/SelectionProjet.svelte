@@ -1,52 +1,33 @@
 <script>
-	import TreeView from '../components/TreeView.svelte'
-	let children = [
-		{
-			name: "Project",
-			type: "type",
-            parent : "",
-			children: [
-				{
-					name: "Build",
-					type: "type",
-                    parent : "Project",
-                    children: [
-						{
-							name: "Management",
-							type: "type",
-							parent: "Project/Build"
-						},
-						{
-							name: "Specifications",
-							type: "type",
-							parent: "Project/Build"
-						},
-                        {
-							name: "Implementation",
-							type: "type",
-							parent: "Project/Build"
-						}
-					]
-				},
-				{
-					name: "Run",
-					type: "type",
-					children: [
-						{
-							name: "Maintenance",
-							type: "type",
-							parent: "Project/Run"
-						},
-						{
-							name: "Hosting",
-							type: "type",
-							parent: "Project/Run"
-						}
-					]
-				}
-			]
-		}
-	]
+	import { Link, useNavigate } from "svelte-navigator";
+	import { onMount } from "svelte";
+	import TreeView from '../components/TreeView.svelte';
+
+	const endpoint = 'https://626131b3327d3896e2767e8e.mockapi.io/projects';
+	const navigate = useNavigate();
+
+	let children = [];
+	let projects = [];
+
+	onMount(async function () {
+		const response = await fetch(endpoint);
+		projects = await response.json();
+
+		const newresponse = await fetch(endpoint+"/1");
+		let res = await newresponse.json();
+		children = res.baseModel;
+	});
+
+	async function createProject () {
+		const res = await fetch(endpoint, {
+			method: 'POST'
+		})
+
+		const json = await res.json();
+
+		navigate("visualisation/"+json.id);
+	}
+
 </script>
 
 <div class="container">
@@ -55,10 +36,15 @@
         <strong>My projects :</strong>
 
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">Projet 1</li>
-            <li class="list-group-item">Projet 2</li>
-            <li class="list-group-item">Projet 3</li>
-          </ul>
+			{#each projects as project}
+				<li class="list-group-item"><Link to="visualisation/{project.id}" style="color:black;">{project.name}</Link></li>
+			{/each}
+        </ul>
+
+		<button type="button" on:click={createProject}>
+			New project
+		</button>
+
       </div>
       <div class="col">
         <strong>Preview</strong>
