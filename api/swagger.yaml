@@ -1,0 +1,75 @@
+swagger: "2.0"
+info:
+  description: "API to model a software lifecycle development and its environmental impacts."
+  version: "0.1.0"
+  title: "Software environmental impact"
+
+basePath: /api/v1
+
+paths:
+  /projects:
+    get:
+      operationId: project.get_projects
+      tags:
+        - Project
+      summary: Get all projects
+      responses:
+        200:
+          description: list of projects
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Project'
+
+    post:
+      operationId: project.create_project
+      tags:
+        - Project
+      description: Create a new project
+      parameters:
+        - name: project
+          in: body
+          description: project to create
+          required: True
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name of the project
+      responses:
+        201:
+          description: Successfully created project
+          schema:
+            $ref: '#/definitions/Project'
+
+  /projects/{project_id}:
+    get:
+      operationId: project.get_project
+      tags:
+        - Project
+      summary: Read one project
+      description: Read one project
+      parameters:
+        - name: project_id
+          in: path
+          description: Id of the person to get
+          type: integer
+          required: True
+      responses:
+        200:
+          description: Successfully read person from people data operation
+          schema:
+            $ref: '#/definitions/Project'
+
+definitions:
+    Project:
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          type: integer
+          description: Unique identifier
+        name:
+          type: string
