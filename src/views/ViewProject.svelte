@@ -1,21 +1,18 @@
 <script>
 	import TreeView from '../components/TreeView.svelte';
 	import { onMount } from "svelte";
+    import RequestManager from '../controllers/RequestManager.svelte';
     
 	export let idProject;
-
+    let requestManager;
 	let children = []
 
-	const endpoint = 'https://626131b3327d3896e2767e8e.mockapi.io/projects/';
-	let project = [];
-
 	onMount(async function () {
-		const response = await fetch(endpoint + idProject);
-		project = await response.json();
-		children = project.baseModel;
-		console.log(project);
+        children = await requestManager.loadPreview(idProject);
 	});
 </script>
+
+<RequestManager bind:this={requestManager} />
 
 <div class="container">
 

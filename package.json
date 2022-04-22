@@ -4,8 +4,8 @@
     "private": true,
     "scripts": {
         "build": "rollup -c",
-        "dev": "rollup -c -w",
-        "start": "sirv public --no-clear",
+        "dev": "rollup -c -w --single",
+        "start": "sirv public --no-clear --single",
         "check": "svelte-check --tsconfig ./tsconfig.json",
         "test": "jest",
         "test:watch": "npm test -- --watch"

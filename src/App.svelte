@@ -1,12 +1,11 @@
 <script lang="ts">
 	import { Router, Route, Link } from "svelte-navigator";
 
-	import SelectionProjet from "./views/SelectionProjet.svelte";
-	import ComparaisonModele from "./views/ComparaisonModele.svelte";
-	import Profil from "./views/Profil.svelte";
-	import VisualisationProjet from "./views/VisualisationProjet.svelte";
-	import ModificationModele from "./views/ModificationModele.svelte";
-	
+	import SelectProject from "./views/SelectProject.svelte";
+	import CompareModels from "./views/CompareModels.svelte";
+	import Login from "./views/Login.svelte";
+	import ViewProject from "./views/ViewProject.svelte";
+	import ModifyModel from "./views/ModifyModel.svelte";
 </script>
 
 <Router>
@@ -24,14 +23,13 @@
 						<a class="nav-link" href="#"><Link to="/">Home</Link></a>
 					  </li>
 					  <li class="nav-item">
-						<a class="nav-link" href="#"><Link to="profile">Profil</Link></a>
+						<a class="nav-link" href="#"><Link to="login">Profil</Link></a>
 					  </li>
 					  <li class="nav-item">
-						<a class="nav-link" href="#"><Link to="comparaison">Comparaison modèle</Link></a>
+						<a class="nav-link" href="#"><Link to="compare">Comparaison modèle</Link></a>
 					  </li>
-
 					  <li class="nav-item">
-						<a class="nav-link" href="#"><Link to="modification">Modification modèle</Link></a>
+						<a class="nav-link" href="#"><Link to="modify">Modification modèle</Link></a>
 					  </li>
 					</ul>
 				  </div>
@@ -39,25 +37,24 @@
 			  </nav>
 		</header>
  
-
 		<Route path="/">
-			<SelectionProjet />
+			<SelectProject />
 		</Route>
 
-		<Route path="profile">
-			<Profil />
+		<Route path="login">
+			<Login />
 		</Route>
 
-		<Route path="comparaison">
-			<ComparaisonModele />
+		<Route path="compare">
+			<CompareModels />
 		</Route>
 
-		<Route path="modification">
-			<ModificationModele />
+		<Route path="modify">
+			<ModifyModel />
 		</Route>
 
-		<Route path="visualisation/:id" let:params>
-			<VisualisationProjet idProject={params.id}/>
+		<Route path="view/:id" let:params>
+			<ViewProject idProject={params.id}/>
 		</Route>
 	</main>
 </Router>
