@@ -110,7 +110,7 @@ div.tree {
 div.tree:before {
     content: "";
     position: absolute;
-    top: 3px;
+    top: 10px;
     left: 15px;
     border-left: 2px dashed #a2a5b5;
     width: 1px;
@@ -121,21 +121,44 @@ div.tree:after {
     content: "";
     position: absolute;
     border-top: 2px dashed #a2a5b5;
-    top: 70px;
+    top: 80px;
     left: 20px;
     width: 60px;
 }
 
 div.tree:last-child:before {
-    top: -22px;
-    height: 90px;
+    top: 16px;
+    height: 63px;
 }
 
-span {
+.nochild {
+    position: relative;
+}
+
+.nochild:after {
+    content: "";
+    position: absolute;
+    border-top: 2px dashed #a2a5b5;
+    top: 31px;
+    left: 210px;
+    width: 50px;
+}
+
+span.info-name {
     background-color: #ececece1;
     border-radius: 3px;
     border: none;
     padding: 10px 20px 10px 20px;
     -webkit-box-shadow: 5px 5px 3px -6px #000000;
     box-shadow: 5px 5px 3px -6px #000000;
+    width: 200px;
+    display: inline-block;
+    text-align: center;
+}
+
+span.addtask {
+    content: "";
+    position: absolute;
+    left: 270px;
+    top: 8px;
 }

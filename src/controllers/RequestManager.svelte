@@ -11,7 +11,7 @@
 
         const json = await res.json();
 
-        navigate("visualisation/"+json.id);
+        navigate("view/"+json.id);
     }
 
     export async function getProjects () {

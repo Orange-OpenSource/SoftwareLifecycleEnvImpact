@@ -4,11 +4,21 @@
   
   {#each children as file}
       <div class="tree">
-          <span>{file.name}</span>
-          {#if file.children}
-              <svelte:self children={file.children} />
-          {/if}
- 
+            {#if file.children}
+
+                <div class="raw">
+                    <span class="info-name">{file.name}</span>
+                    <svelte:self children={file.children} />
+                </div>
+
+            {:else}
+
+                <div class="raw nochild">
+                    <span class="info-name">{file.name}</span>
+                    <span class="addtask"><button class="btn btn-primary">Add task</button></span>
+                </div>
+
+            {/if}
       </div>
    {/each}
    <div class="tree"><button class="btn btn-primary">Add task</button></div>
