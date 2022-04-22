@@ -4,8 +4,6 @@
     
 	export let idProject;
 
-	console.log(idProject);
-
 	let children = []
 
 	const endpoint = 'https://626131b3327d3896e2767e8e.mockapi.io/projects/';
