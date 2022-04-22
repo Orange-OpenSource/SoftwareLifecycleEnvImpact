@@ -1,7 +1,7 @@
 from flask import abort
 
-from api.config import db
-from api.model import Project, ProjectSchema
+from config import db
+from controller import ModelSchema, Project, ProjectSchema
 
 
 def get_projects():
@@ -49,4 +49,17 @@ def create_project(project):
         abort(
             409,
             "Project {name} exists already".format(name=name),
+        )
+
+
+def get_models(project_id):
+    project = Project.query.filter(Project.id == project_id).one_or_none()
+
+    if project is not None:
+        model_schema = ModelSchema(many=True)
+        return model_schema.dump(project.models)
+    else:
+        abort(
+            404,
+            "No project found for Id: {project_id}".format(project_id=project_id),
         )

@@ -25,7 +25,7 @@ paths:
       operationId: project.create_project
       tags:
         - Project
-      description: Create a new project
+      summary: Create a new project
       parameters:
         - name: project
           in: body
@@ -42,6 +42,8 @@ paths:
           description: Successfully created project
           schema:
             $ref: '#/definitions/Project'
+        409:
+          description: Project exists already
 
   /projects/{project_id}:
     get:
@@ -53,14 +55,101 @@ paths:
       parameters:
         - name: project_id
           in: path
-          description: Id of the person to get
+          description: Id of the project to get
           type: integer
-          required: True
+          required: true
       responses:
         200:
-          description: Successfully read person from people data operation
+          description: Successfully read project
           schema:
             $ref: '#/definitions/Project'
+        404:
+          description: No project found with this id
+
+  /projects/{project_id}/models:
+    get:
+      operationId: project.get_models
+      tags:
+        - Project
+        - Model
+      summary: Get all models for a project
+      parameters:
+        - name: project_id
+          in: path
+          description: Id of the project you want to get the models
+          type: integer
+          required: true
+      responses:
+        200:
+          description: Successfully read models for the project
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Model'
+        404:
+          description: No project found with this id
+
+  /models:
+    get:
+      operationId: model.get_models
+      tags:
+        - Model
+      summary: Get all models
+      responses:
+        200:
+          description: list of models
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Model'
+
+    post:
+      operationId: model.create_model
+      tags:
+        - Model
+      description: Create a new model
+      parameters:
+        - name: model
+          in: body
+          description: Model to create
+          required: True
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name of the model
+              project_id:
+                type: integer
+                description: Id of the related project
+      responses:
+        201:
+          description: Successfully created model
+          schema:
+            $ref: '#/definitions/Model'
+        409:
+          description: Model exists already
+
+  /models/{model_id}:
+    get:
+      operationId: model.get_model
+      tags:
+        - Model
+      summary: Read one model
+      description: Read one model
+      parameters:
+        - name: model_id
+          in: path
+          description: Id of the model to get
+          type: integer
+          required: true
+      responses:
+        200:
+          description: Successfully read model
+          schema:
+            $ref: '#/definitions/Model'
+        404:
+          description: No model found with this id
 
 definitions:
     Project:
@@ -73,3 +162,19 @@ definitions:
           description: Unique identifier
         name:
           type: string
+          description: Name of the project
+
+    Model:
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          type: integer
+          description: Unique identifier
+        name:
+          type: string
+          description: Name of the model
+        project_id:
+          type: integer
+          description: ID of the related project
