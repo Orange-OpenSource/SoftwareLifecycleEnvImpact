@@ -131,11 +131,11 @@ div.tree:last-child:before {
     height: 63px;
 }
 
-.nochild {
+.nochildmodify {
     position: relative;
 }
 
-.nochild:after {
+.nochildmodify:after {
     content: "";
     position: absolute;
     border-top: 2px dashed #a2a5b5;
@@ -152,6 +152,7 @@ span.info-name {
     -webkit-box-shadow: 5px 5px 3px -6px #000000;
     box-shadow: 5px 5px 3px -6px #000000;
     width: 200px;
+    height: 90px;
     display: inline-block;
     text-align: center;
 }
@@ -161,4 +162,23 @@ span.addtask {
     position: absolute;
     left: 270px;
     top: 8px;
+}
+
+.btnmodify {
+    content: "";
+    position: absolute;
+    top: 55px;
+    left: 130px;
+}
+
+.btnmodifyparent {
+    content: "";
+    position: absolute;
+    top: 105px;
+    left: 225px;
+}
+
+div.scroll {
+    overflow: auto;
+    white-space: nowrap;
 }

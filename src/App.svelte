@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Router, Route, Link } from "svelte-navigator";
+	import { Router, Route, Link, useParams } from "svelte-navigator";
 
 	import SelectProject from "./views/SelectProject.svelte";
 	import CompareModels from "./views/CompareModels.svelte";
@@ -49,8 +49,8 @@
 			<CompareModels />
 		</Route>
 
-		<Route path="modify">
-			<ModifyModel />
+		<Route path="modify/:id" let:params>
+			<ModifyModel idModels={params.id}/>
 		</Route>
 
 		<Route path="view/:id" let:params>

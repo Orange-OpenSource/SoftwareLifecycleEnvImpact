@@ -11,7 +11,7 @@
 
         const json = await res.json();
 
-        navigate("view/"+json.id);
+        navigate("modify/"+json.baseModel);
     }
 
     export async function getProjects () {
@@ -20,8 +20,25 @@
     }
 
     export async function loadPreview(idProject) {
+        const response = await fetch(endpoint+"/"+idProject);
+		let res = await response.json();
+
+		let newres = await getModel(res.baseModel);
+
+		return newres;
+    }
+
+    export async function getModels(idProject) {
         const newresponse = await fetch(endpoint+"/"+idProject);
-		let res = await newresponse.json();
-		return res.baseModel;
+        let res = await newresponse.json();
+        
+        return res.models;
+    }
+
+    export async function getModel(idModel) {
+        const newresponse = await fetch("https://626131b3327d3896e2767e8e.mockapi.io/models"+"/"+idModel);
+        let res = await newresponse.json();
+        
+        return res.content;
     }
 </script>

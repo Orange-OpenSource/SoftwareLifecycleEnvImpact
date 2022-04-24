@@ -1,8 +1,9 @@
 <script>
 	import { Link } from "svelte-navigator";
 	import { onMount } from "svelte";
-	import TreeView from '../components/TreeView.svelte';
+	import TreeViewModify from '../components/TreeViewModify.svelte';
 	import RequestManager from '../controllers/RequestManager.svelte';
+    import TreeView from '../components/TreeView.svelte';
 
 	let requestManager;
 	let children = [];
@@ -35,7 +36,7 @@
       <div class="col">
         <strong>Preview</strong>
         
-        <div class="col">
+        <div class="col scroll">
             <TreeView {children}></TreeView>
         </div>
 
