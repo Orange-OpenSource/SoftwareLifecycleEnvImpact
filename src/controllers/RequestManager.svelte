@@ -11,7 +11,7 @@
 
         const json = await res.json();
 
-        navigate("../modify/"+json.baseModel);
+        navigate("../modify/"+json.models[0]);
     }
 
     export async function updateModel(idModel) {
@@ -34,7 +34,7 @@
         const response = await fetch(endpoint+"projects/"+idProject);
 		let res = await response.json();
 
-		let newres = await getModel(res.baseModel);
+		let newres = await getModel(res.models[0]);
 
 		return newres;
     }

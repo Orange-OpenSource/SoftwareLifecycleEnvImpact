@@ -1,5 +1,4 @@
 <script>
-	import TreeViewModify from '../components/TreeViewModify.svelte';
 	import { onMount } from "svelte";
     import RequestManager from '../controllers/RequestManager.svelte';
     import TreeView from '../components/TreeView.svelte';
@@ -9,6 +8,10 @@
     let requestManager;
 	let children = []
     let models = []
+
+	async function updatePreviewModel(idModel) {
+		children = await requestManager.getModel(idModel);
+	}
 
 	onMount(async function () {
         children = await requestManager.loadPreview(idProject);
@@ -27,7 +30,10 @@
 
             <ul class="list-group list-group-flush">
                 {#each models as model}
-                    <li class="list-group-item"><Link to="../../modify/{model}" style="color:black;">{model}</Link></li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <Link to="../../modify/{model}" style="color:black;">{model}</Link>
+                        <button type="button" on:click={updatePreviewModel(model)}>Preview</button>
+                    </li>
                 {/each}
             </ul>
 

@@ -1,13 +1,16 @@
 <script>
 	import { Link } from "svelte-navigator";
 	import { onMount } from "svelte";
-	import TreeViewModify from '../components/TreeViewModify.svelte';
 	import RequestManager from '../controllers/RequestManager.svelte';
     import TreeView from '../components/TreeView.svelte';
 
 	let requestManager;
 	let children = [];
 	let projects = [];
+
+	async function updatePreview(idProject) {
+		children = await requestManager.loadPreview(idProject);
+	}
 
 	onMount(async function () {
 		projects = await requestManager.getProjects();
@@ -22,9 +25,12 @@
       <div class="col-3 border-right h-100">
         <strong>My projects :</strong>
 
-        <ul class="list-group list-group-flush">
+        <ul class="list-group list-group-flush ">
 			{#each projects as project}
-				<li class="list-group-item"><Link to="view/{project.id}" style="color:black;">{project.name}</Link></li>
+				<li class="list-group-item d-flex justify-content-between">
+					<Link to="view/{project.id}" style="color:black;">{project.name}</Link>
+					<button type="button" on:click={updatePreview(project.id)}>Preview</button>
+				</li>
 			{/each}
         </ul>
 
