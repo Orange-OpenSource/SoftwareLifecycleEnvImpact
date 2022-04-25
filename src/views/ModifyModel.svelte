@@ -5,11 +5,23 @@
 
     export let idModels;
     let requestManager;
+    let isNew = false;
 
     let children = [];
 
+    function saveProject() {
+        if (isNew) {
+            requestManager.createProject();
+        } else {
+            requestManager.updateModel(idModels);
+        }
+    }
+
     onMount(async function () {
-        children = await requestManager.getModel(idModels);
+        if (idModels != -1)
+            children = await requestManager.getModel(idModels);
+        else
+            isNew = true;
 	});
 </script>
 
@@ -22,11 +34,12 @@
         <div class="col">
 
             <div class="row" style="padding-top : 20px;">
-                <span class="col-4">
+                <span class="col-3">
                     <input type="email" class="form-control" id="nameproject" placeholder="Name project">
                 </span>
-                <button type="button" class="col-3 btn btn-light" style="margin-right: 20px;">Compare</button>
-                <button type="button" class="col-3 btn btn-light">Project</button>
+                <button type="button" class="col-2 btn btn-light" style="margin-right: 20px;">Compare</button>
+                <button type="button" class="col-2 btn btn-light" style="margin-right: 20px;">Projects</button>
+                <button type="button" class="col-2 btn btn-secondary" on:click={saveProject}>Save</button>
             </div>
 
             <strong>Preview</strong>

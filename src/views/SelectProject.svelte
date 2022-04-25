@@ -28,8 +28,8 @@
 			{/each}
         </ul>
 
-		<button type="button" on:click={requestManager.createProject}>
-			New project
+		<button type="button">
+			<Link to="../modify" style="color:black; text-decoration: none; ">New project</Link>
 		</button>
 
       </div>

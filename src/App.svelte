@@ -53,6 +53,10 @@
 			<ModifyModel idModels={params.id}/>
 		</Route>
 
+		<Route path="modify">
+			<ModifyModel idModels={-1}/>
+		</Route>
+
 		<Route path="view/:id" let:params>
 			<ViewProject idProject={params.id}/>
 		</Route>
