@@ -3,3 +3,5 @@ matplotlib~=3.5.1
 Pint~=0.18
 Flask~=2.1.1
 connexion~=2.13.0
+flask-marshmallow~=0.14.0
+Flask-SQLAlchemy~=2.5.1
