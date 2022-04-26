@@ -1,7 +1,4 @@
 <script>
-    import { useNavigate } from "svelte-navigator";
-
-    const navigate = useNavigate();
     const endpoint = 'https://626131b3327d3896e2767e8e.mockapi.io/';
 
     export async function createProject () {
@@ -10,8 +7,7 @@
         })
 
         const json = await res.json();
-
-        navigate("../modify/"+json.models[0]);
+        return json.models[0];
     }
 
     export async function updateModel(idModel) {
@@ -22,7 +18,7 @@
 
         const json = await res.json();
         */
-        navigate("../../modify/"+idModel);
+        return idModel;
     }
 
     export async function getProjects () {

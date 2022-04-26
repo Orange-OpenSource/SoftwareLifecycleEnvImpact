@@ -2,7 +2,9 @@
     import TreeView from "../components/TreeView.svelte";
     import RequestManager from "../controllers/RequestManager.svelte";
     import { onMount } from "svelte";
+    import { useNavigate } from "svelte-navigator";
 
+    const navigate = useNavigate();
     export let idModels;
     let requestManager;
     let isNew = false;
@@ -10,11 +12,13 @@
 
     let children = [];
 
-    function saveProject() {
+    async function saveProject() {
         if (isNew) {
-            requestManager.createProject();
+            let newIdModel = await requestManager.createProject();
+            navigate("../modify/" + newIdModel);
         } else {
-            requestManager.updateModel(idModels);
+            let newIdModel = await requestManager.updateModel(idModels);
+            navigate("../../modify/"+newIdModel);
         }
     }
 
