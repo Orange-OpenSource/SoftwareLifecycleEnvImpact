@@ -36,6 +36,7 @@
     },
     "dependencies": {
         "sirv-cli": "^2.0.0",
+        "svelte-local-storage-store": "^0.2.6",
         "svelte-navigator": "^3.1.5"
     },
     "jest": {
