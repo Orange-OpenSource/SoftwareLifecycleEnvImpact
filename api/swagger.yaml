@@ -9,7 +9,7 @@ basePath: /api/v1
 paths:
   /projects:
     get:
-      operationId: project.get_projects
+      operationId: routes.project.get_projects
       tags:
         - Project
       summary: Get all projects
@@ -22,7 +22,7 @@ paths:
               $ref: '#/definitions/Project'
 
     post:
-      operationId: project.create_project
+      operationId: routes.project.create_project
       tags:
         - Project
       summary: Create a new project
@@ -47,7 +47,7 @@ paths:
 
   /projects/{project_id}:
     get:
-      operationId: project.get_project
+      operationId: routes.project.get_project
       tags:
         - Project
       summary: Read one project
@@ -68,7 +68,7 @@ paths:
 
   /projects/{project_id}/models:
     get:
-      operationId: project.get_models
+      operationId: routes.project.get_models
       tags:
         - Project
         - Model
@@ -91,7 +91,7 @@ paths:
 
   /models:
     get:
-      operationId: model.get_models
+      operationId: routes.model.get_models
       tags:
         - Model
       summary: Get all models
@@ -104,7 +104,7 @@ paths:
               $ref: '#/definitions/Model'
 
     post:
-      operationId: model.create_model
+      operationId: routes.model.create_model
       tags:
         - Model
       description: Create a new model
@@ -132,7 +132,7 @@ paths:
 
   /models/{model_id}:
     get:
-      operationId: model.get_model
+      operationId: routes.model.get_model
       tags:
         - Model
       summary: Read one model
@@ -151,6 +151,152 @@ paths:
         404:
           description: No model found with this id
 
+  /tasks:
+    get:
+      operationId: routes.task.get_tasks
+      tags:
+        - Task
+      summary: Get all tasks
+      responses:
+        200:
+          description: List of tasks
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Task'
+
+    post:
+      operationId: routes.task.create_task
+      tags:
+        - Task
+      description: Create a new task
+      parameters:
+        - name: task
+          in: body
+          description: Task to create
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name of the task
+              parent_task_id:
+                type: integer
+                description: Optional parent task id
+              task_type_id:
+                type: integer
+                description: Id of the TaskType
+              model_id:
+                type: integer
+                description: Id of the related model
+      responses:
+        201:
+          description: Sucessfully created Task
+          schema:
+            $ref: '#/definitions/Task'
+        409:
+          description: Task exists already
+
+  /tasks/{task_id}:
+    get:
+      operationId: routes.task.get_task
+      tags:
+        - Task
+      summary: Read one task
+      description: Read one task
+      parameters:
+        - name: task_id
+          in: path
+          description: Id of the task to get
+          type: integer
+          required: true
+      responses:
+        200:
+          description: Sucessfully read task
+          schema:
+            $ref: '#/definitions/Task'
+        404:
+          description: No task found with this id
+
+  /tasktypes:
+    get:
+      operationId: routes.task_type.get_task_types
+      tags:
+        - TaskType
+      summary: Get all task types
+      responses:
+        200:
+          description: List of task types
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/TaskType'
+
+  /tasktypes/{task_type_id}:
+    get:
+      operationId: routes.task_type.get_task_type
+      tags:
+        - TaskType
+      summary: Read one task type
+      description: Read one task type
+      parameters:
+        - name: task_type_id
+          in: path
+          description: Id of the task type to get
+          type: integer
+          required: true
+      responses:
+        200:
+          description: Sucessfully read task type
+          schema:
+            $ref: '#/definitions/TaskType'
+        404:
+          description: No task type found with this id
+
+  /taskinputs:
+    get:
+      operationId: routes.task_input.get_task_inputs
+      tags:
+        - TaskInput
+      summary: Get all task inputs
+      responses:
+        200:
+          description: List of task inputs
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/TaskInput'
+
+  /taskinputs/{task_input_id}:
+    get:
+      operationId: routes.task_input.get_task_input
+      tags:
+        - TaskInput
+      summary: Read one task input
+      description: Read one task input
+      parameters:
+        - name: task_input_id
+          in: path
+          description: Id of the task input to get
+          type: integer
+          required: true
+      responses:
+        200:
+          description: Sucessfully read task input
+          schema:
+            $ref: '#/definitions/TaskInput'
+        404:
+          description: No task input found with this id
+
+  /debug/reset:
+    get:
+      summary: Debug function to reset the database
+      operationId: utils.build_database.reset_db
+      responses:
+        200:
+          description: Database reset status
+
 definitions:
     Project:
       type: object
@@ -168,6 +314,7 @@ definitions:
       type: object
       required:
         - name
+        - project_id
       properties:
         id:
           type: integer
@@ -178,3 +325,60 @@ definitions:
         project_id:
           type: integer
           description: ID of the related project
+
+    Task:
+      type: object
+      required:
+        - name
+        - type
+      properties:
+        id:
+          type: integer
+          description: Unique identifier
+        name:
+          type: string
+          description: Name of the task
+        parent_task_id:
+          type: integer
+          description: Id of the parent task
+        task_type_id:
+          type: integer
+          description: id of the TaskType
+        model_id:
+          type: integer
+          description: id of the related Model
+
+    TaskType:
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          type: integer
+          description: Unique identifier
+        name:
+          type: string
+          description: Type of a task
+
+    TaskInput:
+      type: object
+      required:
+        - name
+        - kind
+        - task_id
+      properties:
+        id:
+          type: integer
+          description: Unique identifier
+        name:
+          type: string
+          description: Name of the task
+        kind:
+          type: string
+          description: Kind of input
+        value:
+          type: integer
+          description: TaskInput value
+        task_id:
+          type: integer
+          description: id of the corresponding task

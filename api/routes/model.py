@@ -1,7 +1,7 @@
 from flask import abort
 
-from config import db
-from controller import ModelSchema, Model
+from api.config import db
+from api.data_model import Model, ModelSchema
 
 
 def get_models():
@@ -28,7 +28,11 @@ def create_model(model):
     name = model.get("name")
     project_id = model.get("project_id")
 
-    existing_model = Model.query.filter(Model.name == name).filter(Model.project_id == project_id).one_or_none()
+    existing_model = (
+        Model.query.filter(Model.name == name)
+        .filter(Model.project_id == project_id)
+        .one_or_none()
+    )
 
     if existing_model is None:
         schema = ModelSchema()
