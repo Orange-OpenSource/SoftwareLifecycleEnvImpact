@@ -26,13 +26,11 @@ export async function getProjects() {
     return await response.json();
 }
 
-export async function loadPreview(idProject) {
+export async function getOriginalModelId(idProject) {
     const response = await fetch(endpoint + "projects/" + idProject);
     let res = await response.json();
 
-    let newres = await getModel(res.models[0]);
-
-    return newres;
+    return res.models[0];
 }
 
 export async function getModels(idProject) {

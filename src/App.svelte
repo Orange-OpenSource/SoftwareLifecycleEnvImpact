@@ -27,10 +27,10 @@
 				  <div class="collapse navbar-collapse" id="navbarNav">
 					<ul class="navbar-nav">
 					  <li class="nav-item">
-						<a class="nav-link" href="#"><Link to="/">Home</Link></a>
+						<Link class="nav-link" style="color:white;" to="/">Home</Link>
 					  </li>
 					  <li class="nav-item">
-						<a class="nav-link" href="#"><Link to="compare">Comparaison modèle</Link></a>
+						<Link class="nav-link" style="color:white;" to="compare">Comparaison modèle</Link>
 					  </li>
 					  <li class="nav-item">
 						

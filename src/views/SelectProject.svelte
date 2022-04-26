@@ -1,20 +1,23 @@
 <script>
 	import { Link } from "svelte-navigator";
 	import { onMount } from "svelte";
-	import {loadPreview, getProjects} from '../controllers/RequestController';
-    import TreeView from '../components/TreeView.svelte';
+	import {getOriginalModelId, getProjects} from '../controllers/RequestController';
+    import RootTreeView from '../components/RootTreeView.svelte';
 
-	let children = [];
 	let projects = [];
 	let modify = false;
+	let model_id, rootTreeView;
 
 	async function updatePreview(idProject) {
-		children = await loadPreview(idProject);
+		model_id = await getOriginalModelId(idProject);
+		
+        rootTreeView.updateTree();
 	}
 
 	onMount(async function () {
 		projects = await getProjects();
-		children = await loadPreview(1);
+		model_id = await getOriginalModelId(1);
+		rootTreeView.updateTree();
 	});
 </script>
 
@@ -41,7 +44,7 @@
         <strong>Preview</strong>
         
         <div class="col scroll">
-            <TreeView {children} {modify}></TreeView>
+			<RootTreeView bind:this={rootTreeView} {modify} {model_id}></RootTreeView>
         </div>
 
       </div>

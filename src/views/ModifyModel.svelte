@@ -1,5 +1,5 @@
 <script>
-    import TreeView from "../components/TreeView.svelte";
+    import RootTreeView from "../components/RootTreeView.svelte";
     import {createProject, updateModel, getModel} from "../controllers/RequestController";
     import { onMount } from "svelte";
     import { useNavigate } from "svelte-navigator";
@@ -8,8 +8,7 @@
     export let idModels;
     let isNew = false;
     let modify = true;
-
-    let children = [];
+    let model_id, rootTreeView;
 
     async function saveProject() {
         if (isNew) {
@@ -22,8 +21,10 @@
     }
 
     onMount(async function () {
-        if (idModels != -1)
-            children = await getModel(idModels);
+        if (idModels != -1){
+            model_id = idModels;
+            rootTreeView.updateTree();
+        }
         else
             isNew = true;
 	});
@@ -47,7 +48,7 @@
             <strong>Preview</strong>
             
             <div class="col scroll">
-                <TreeView {children} {modify}></TreeView>
+                <RootTreeView bind:this={rootTreeView} {modify} {model_id}></RootTreeView>
             </div>
 
         </div>
