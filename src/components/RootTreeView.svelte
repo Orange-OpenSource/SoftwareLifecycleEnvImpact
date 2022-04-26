@@ -14,4 +14,6 @@
     }
 </script>
 
-<TreeView children={children} modify={modify}></TreeView>
+<div class="col scroll">
+    <TreeView children={children} modify={modify}></TreeView>
+</div>

@@ -3,6 +3,7 @@
     import {createProject, updateModel, getModel} from "../controllers/RequestController";
     import { onMount } from "svelte";
     import { useNavigate } from "svelte-navigator";
+    import HeaderButtonsModel from "../components/HeaderButtonsModel.svelte";
 
     const navigate = useNavigate();
     export let idModels;
@@ -23,7 +24,7 @@
     onMount(async function () {
         if (idModels != -1){
             model_id = idModels;
-            rootTreeView.updateTree();
+            await rootTreeView.updateTree();
         }
         else
             isNew = true;
@@ -31,26 +32,13 @@
 </script>
 
 <div class="container">
-
     <div class="row h-100">
-
         <div class="col">
-
-            <div class="row" style="padding-top : 20px;">
-                <span class="col-3">
-                    <input type="email" class="form-control" id="nameproject" placeholder="Name project">
-                </span>
-                <button type="button" class="col-2 btn btn-light" style="margin-right: 20px;">Compare</button>
-                <button type="button" class="col-2 btn btn-light" style="margin-right: 20px;">Projects</button>
+            <HeaderButtonsModel>
                 <button type="button" class="col-2 btn btn-secondary" on:click={saveProject}>Save</button>
-            </div>
-
-            <strong>Preview</strong>
+            </HeaderButtonsModel>
             
-            <div class="col scroll">
-                <RootTreeView bind:this={rootTreeView} {modify} {model_id}></RootTreeView>
-            </div>
-
+            <RootTreeView bind:this={rootTreeView} {modify} {model_id}></RootTreeView>
         </div>
     </div>
 </div>

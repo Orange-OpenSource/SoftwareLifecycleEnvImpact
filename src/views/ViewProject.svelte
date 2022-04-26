@@ -3,6 +3,7 @@
     import { getModels } from '../controllers/RequestController';
     import RootTreeView from '../components/RootTreeView.svelte';
     import { Link } from "svelte-navigator";
+    import HeaderButtonsModel from "../components/HeaderButtonsModel.svelte";
     
     export let idProject;
     let models = []
@@ -11,22 +12,29 @@
 
     async function updatePreviewModel(newIdModel) {
         model_id = newIdModel;
-        rootTreeView.updateTree();
+        await rootTreeView.updateTree();
+    }
+
+    function enableModifications() {
+        modify = true;
+    }
+
+    function saveProject() {
+        // todo : gestion sauvegarde projet
+        modify = false;
     }
 
     onMount(async function () {
         models = await getModels(idProject);
         model_id = models[0];
-        rootTreeView.updateTree();
+        await rootTreeView.updateTree();
 	});
 </script>
 
 <div class="container">
-
-    <div class="row h-100">
-
-        <div class="col col-3 border-right h-100">
-            <strong>My models :</strong>
+    <div class="row">
+        <div class="col col-3 border-right">
+            <h2 class="title">My models :</h2>
 
             <ul class="list-group list-group-flush">
                 {#each models as model}
@@ -42,26 +50,22 @@
             </button>
         </div>
 
-        <div class="col">
-
-            <div class="row" style="padding-top : 20px;">
-                <span class="col-4">
-                    <input type="email" class="form-control" id="nameproject" placeholder="Name project">
-                </span>
-                <button type="button" class="col-3 btn btn-light" style="margin-right: 20px;">Compare</button>
-                <button type="button" class="col-3 btn btn-light">Project</button>
-            </div>
-
-            <strong>Preview</strong>
+        <div class="col border-right">
+            {#if modify}
+                <HeaderButtonsModel>
+                    <button on:click={saveProject} type="button" class="col-2 btn btn-secondary">Save</button>
+                </HeaderButtonsModel>
+            {:else}
+                <HeaderButtonsModel>
+                    <button on:click={enableModifications} type="button" class="col-2 btn btn-primary" style="margin-right: 10px;">Modify</button>
+                </HeaderButtonsModel>
+            {/if}
             
-            <div class="col scroll">
-                <RootTreeView bind:this={rootTreeView} {modify} {model_id}></RootTreeView>
-            </div>
-
+            <RootTreeView bind:this={rootTreeView} {modify} {model_id}></RootTreeView>
         </div>
 
-        <div class="col-3 border-left h-100">
-          Impact by resource
+        <div class="col-3">
+          <h2 class="title">Impact by resource</h2>
         </div>
     </div>
 </div>

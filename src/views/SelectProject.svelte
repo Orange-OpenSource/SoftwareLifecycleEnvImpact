@@ -11,42 +11,38 @@
 	async function updatePreview(idProject) {
 		model_id = await getOriginalModelId(idProject);
 		
-        rootTreeView.updateTree();
+        await rootTreeView.updateTree();
 	}
 
 	onMount(async function () {
 		projects = await getProjects();
 		model_id = await getOriginalModelId(1);
-		rootTreeView.updateTree();
+		await rootTreeView.updateTree();
 	});
 </script>
 
 <div class="container">
-    <div class="row h-100">
-      <div class="col-3 border-right h-100">
-        <strong>My projects :</strong>
+    <div class="row">
+		<div class="col-3 border-right">
+			<h2 class="title">My projects</h2>
 
-        <ul class="list-group list-group-flush ">
-			{#each projects as project}
-				<li class="list-group-item d-flex justify-content-between">
-					<Link to="view/{project.id}" style="color:black;">{project.name}</Link>
-					<button type="button" on:click={updatePreview(project.id)}>Preview</button>
-				</li>
-			{/each}
-        </ul>
+			<ul class="list-group list-group-flush ">
+				{#each projects as project}
+					<li class="list-group-item d-flex justify-content-between">
+						<Link to="view/{project.id}" style="color:black;">{project.name}</Link>
+						<button type="button" on:click={updatePreview(project.id)}>Preview</button>
+					</li>
+				{/each}
+			</ul>
 
-		<button type="button">
-			<Link to="../modify" style="color:black; text-decoration: none; ">New project</Link>
-		</button>
-
-      </div>
+			<button type="button">
+				<Link to="../modify" style="color:black; text-decoration: none; ">New project</Link>
+			</button>
+      	</div>
       <div class="col">
-        <strong>Preview</strong>
-        
-        <div class="col scroll">
-			<RootTreeView bind:this={rootTreeView} {modify} {model_id}></RootTreeView>
-        </div>
+        <h2 class="title">Preview</h2>
 
+		<RootTreeView bind:this={rootTreeView} {modify} {model_id}></RootTreeView>
       </div>
     </div>
 </div>

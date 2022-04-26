@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row h-100">
       <div class="col-3 border-right h-100">
-        <strong>Models :</strong>
+        <h2 class="title">Models :</h2>
 
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
@@ -29,7 +29,7 @@
           </ul>
       </div>
       <div class="col">
-        <strong>Preview</strong>
+        <h2 class="title">Preview</h2>
         
         <div class="col">
             

@@ -182,3 +182,8 @@ div.scroll {
     overflow: auto;
     white-space: nowrap;
 }
+
+h2.title {
+    margin: 20px 0px 20px 0px;
+    font-weight: normal;
+}
