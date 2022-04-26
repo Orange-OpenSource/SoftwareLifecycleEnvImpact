@@ -31,11 +31,14 @@ class TaskTypeSchema(ma.SQLAlchemyAutoSchema):
 
 
 class Task(db.Model):
+    __tablename__ = "task"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
-    parent_task_id = db.Column(db.Integer)
+    parent_task_id = db.Column(db.Integer, db.ForeignKey("task.id"))
     task_type_id = db.Column(db.Integer, db.ForeignKey("task_type.id"), nullable=False)
     model_id = db.Column(db.Integer, db.ForeignKey("model.id"), nullable=False)
+    children = db.relationship("Task", lazy=True)
+    inputs = db.relationship("TaskInput", backref="task_input", lazy=True)
 
 
 class TaskSchema(ma.SQLAlchemyAutoSchema):
