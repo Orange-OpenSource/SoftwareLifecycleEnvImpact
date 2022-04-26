@@ -1,12 +1,11 @@
 <script>
     import TreeView from "../components/TreeView.svelte";
-    import RequestManager from "../controllers/RequestManager.svelte";
+    import {createProject, updateModel, getModel} from "../controllers/RequestController";
     import { onMount } from "svelte";
     import { useNavigate } from "svelte-navigator";
 
     const navigate = useNavigate();
     export let idModels;
-    let requestManager;
     let isNew = false;
     let modify = true;
 
@@ -14,23 +13,21 @@
 
     async function saveProject() {
         if (isNew) {
-            let newIdModel = await requestManager.createProject();
+            let newIdModel = await createProject();
             navigate("../modify/" + newIdModel);
         } else {
-            let newIdModel = await requestManager.updateModel(idModels);
+            let newIdModel = await updateModel(idModels);
             navigate("../../modify/"+newIdModel);
         }
     }
 
     onMount(async function () {
         if (idModels != -1)
-            children = await requestManager.getModel(idModels);
+            children = await getModel(idModels);
         else
             isNew = true;
 	});
 </script>
-
-<RequestManager bind:this={requestManager} />
 
 <div class="container">
 

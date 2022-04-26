@@ -1,25 +1,22 @@
 <script>
 	import { Link } from "svelte-navigator";
 	import { onMount } from "svelte";
-	import RequestManager from '../controllers/RequestManager.svelte';
+	import {loadPreview, getProjects} from '../controllers/RequestController';
     import TreeView from '../components/TreeView.svelte';
 
-	let requestManager;
 	let children = [];
 	let projects = [];
 	let modify = false;
 
 	async function updatePreview(idProject) {
-		children = await requestManager.loadPreview(idProject);
+		children = await loadPreview(idProject);
 	}
 
 	onMount(async function () {
-		projects = await requestManager.getProjects();
-		children = await requestManager.loadPreview(1);
+		projects = await getProjects();
+		children = await loadPreview(1);
 	});
 </script>
-
-<RequestManager bind:this={requestManager} />
 
 <div class="container">
     <div class="row h-100">
