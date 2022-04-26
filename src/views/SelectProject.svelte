@@ -7,6 +7,7 @@
 	let requestManager;
 	let children = [];
 	let projects = [];
+	let modify = false;
 
 	async function updatePreview(idProject) {
 		children = await requestManager.loadPreview(idProject);
@@ -43,7 +44,7 @@
         <strong>Preview</strong>
         
         <div class="col scroll">
-            <TreeView {children}></TreeView>
+            <TreeView {children} {modify}></TreeView>
         </div>
 
       </div>

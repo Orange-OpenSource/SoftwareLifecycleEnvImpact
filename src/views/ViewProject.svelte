@@ -8,6 +8,7 @@
     let requestManager;
 	let children = []
     let models = []
+    let modify = false;
 
 	async function updatePreviewModel(idModel) {
 		children = await requestManager.getModel(idModel);
@@ -55,7 +56,7 @@
             <strong>Preview</strong>
             
             <div class="col scroll">
-                <TreeView {children}></TreeView>
+                <TreeView {children} {modify}></TreeView>
             </div>
 
         </div>

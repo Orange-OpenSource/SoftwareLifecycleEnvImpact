@@ -1,11 +1,12 @@
 <script>
-    import TreeViewModify from "../components/TreeViewModify.svelte";
+    import TreeView from "../components/TreeView.svelte";
     import RequestManager from "../controllers/RequestManager.svelte";
     import { onMount } from "svelte";
 
     export let idModels;
     let requestManager;
     let isNew = false;
+    let modify = true;
 
     let children = [];
 
@@ -45,7 +46,7 @@
             <strong>Preview</strong>
             
             <div class="col scroll">
-                <TreeViewModify {children}></TreeViewModify>
+                <TreeView {children} {modify}></TreeView>
             </div>
 
         </div>
