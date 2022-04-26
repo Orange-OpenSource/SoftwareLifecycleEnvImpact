@@ -1,7 +1,7 @@
 from flask import abort
 
-from api.config import db
-from api.data_model import Task, TaskSchema
+from config import db
+from data_model import Task, TaskSchema
 
 
 def get_tasks():

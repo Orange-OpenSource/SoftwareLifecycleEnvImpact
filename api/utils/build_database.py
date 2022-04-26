@@ -1,7 +1,7 @@
 import os
 
-from api.config import db
-from api.data_model import Model, Project, Task, TaskInput, TaskType
+from config import db
+from data_model import Model, Project, Task, TaskInput, TaskType
 
 projects = [
     {"id": 0, "name": "Project 0"},
@@ -35,7 +35,11 @@ task_inputs = [
 ]
 
 
-def reset_db():
+def reset_db() -> None:
+    '''
+    Reset the database with standard values
+    :return: None
+    '''
     # Delete database file if it exists currently
     if os.path.exists("database.db"):
         os.remove("database.db")

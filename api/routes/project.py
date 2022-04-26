@@ -1,7 +1,7 @@
 from flask import abort
 
-from api.config import db
-from api.data_model import ModelSchema, Project, ProjectSchema
+from config import db
+from data_model import Project, ProjectSchema
 
 
 def get_projects():

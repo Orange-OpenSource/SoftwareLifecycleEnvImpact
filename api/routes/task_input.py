@@ -1,6 +1,6 @@
 from flask import abort
 
-from api.data_model import TaskInput, TaskInputSchema
+from data_model import TaskInput, TaskInputSchema
 
 
 def get_task_inputs():

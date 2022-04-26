@@ -1,4 +1,4 @@
-from api.config import db, ma
+from config import db, ma
 
 
 class TaskInput(db.Model):

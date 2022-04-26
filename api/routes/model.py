@@ -1,7 +1,7 @@
 from flask import abort
 
-from api.config import db
-from api.data_model import Model, ModelSchema
+from config import db
+from data_model import Model, ModelSchema
 
 
 def get_models():

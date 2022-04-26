@@ -1,6 +1,6 @@
 from flask import abort
 
-from api.data_model import TaskType, TaskTypeSchema
+from data_model import TaskType, TaskTypeSchema
 
 
 def get_task_types():
