@@ -1,6 +1,7 @@
 import os
 
 import connexion
+from flask_cors import CORS
 from flask_marshmallow import Marshmallow
 from flask_sqlalchemy import SQLAlchemy
 
@@ -19,6 +20,9 @@ sqlite_url = "sqlite:///" + os.path.join(basedir, "database.db")
 app.config["SQLALCHEMY_ECHO"] = True
 app.config["SQLALCHEMY_DATABASE_URI"] = sqlite_url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+# Allow CORS
+CORS(app)
 
 # Create the SqlAlchemy db instance
 db = SQLAlchemy(app)
