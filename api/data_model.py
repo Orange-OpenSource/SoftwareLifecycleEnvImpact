@@ -37,7 +37,7 @@ class Task(db.Model):
     parent_task_id = db.Column(db.Integer, db.ForeignKey("task.id"))
     task_type_id = db.Column(db.Integer, db.ForeignKey("task_type.id"), nullable=False)
     model_id = db.Column(db.Integer, db.ForeignKey("model.id"), nullable=False)
-    children = db.relationship("Task", lazy=True)
+    subtasks = db.relationship("Task", lazy=True)
     inputs = db.relationship("TaskInput", backref="task_input", lazy=True)
 
 
@@ -47,11 +47,14 @@ class TaskSchema(ma.SQLAlchemyAutoSchema):
         include_relationships = True
         load_instance = True
 
+    subtasks = ma.Nested("TaskSchema", many=True)
+    inputs = ma.Nested("TaskInputSchema", many=True)
+
 
 class Model(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
-    tasks = db.relationship("Task", backref="task", lazy=True)
+    root_task_id = db.Column(db.Integer, db.ForeignKey("task.id"), nullable=False)
     project_id = db.Column(db.Integer, db.ForeignKey("project.id"), nullable=False)
 
 
@@ -60,6 +63,8 @@ class ModelSchema(ma.SQLAlchemyAutoSchema):
         model = Model
         include_relationships = True
         load_instance = True
+
+    tasks = ma.Nested("TaskSchema", many=True)
 
 
 class Project(db.Model):
@@ -73,3 +78,5 @@ class ProjectSchema(ma.SQLAlchemyAutoSchema):
         model = Project
         include_relationships = True
         load_instance = True
+
+    models = ma.Nested("ModelSchema", many=True)

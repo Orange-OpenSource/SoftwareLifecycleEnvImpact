@@ -151,6 +151,29 @@ paths:
         404:
           description: No model found with this id
 
+  /models/{model_id}/tasks:
+    get:
+      operationId: routes.model.get_tasks
+      tags:
+        - Model
+        - Task
+      summary: Get all tasks for a model
+      parameters:
+        - name: model_id
+          in: path
+          description: Id of the model to get the tasks from
+          type: integer
+          required: true
+      responses:
+        200:
+          description: List of tasks
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Task'
+        404:
+          description: No model found with this id
+
   /tasks:
     get:
       operationId: routes.task.get_tasks
@@ -309,6 +332,11 @@ definitions:
         name:
           type: string
           description: Name of the project
+        models:
+          type: array
+          items:
+            $ref: '#/definitions/Model'
+          description: List of the project models
 
     Model:
       type: object
@@ -322,9 +350,6 @@ definitions:
         name:
           type: string
           description: Name of the model
-        project_id:
-          type: integer
-          description: ID of the related project
 
     Task:
       type: object
@@ -338,15 +363,17 @@ definitions:
         name:
           type: string
           description: Name of the task
-        parent_task_id:
-          type: integer
-          description: Id of the parent task
-        task_type_id:
-          type: integer
-          description: id of the TaskType
-        model_id:
-          type: integer
-          description: id of the related Model
+        inputs:
+          type: array
+          items:
+            $ref: '#/definitions/TaskInput'
+          description: Inputs associated to the task
+        subtasks:
+          type: array
+          items:
+            $ref: '#/definitions/Task'
+          description: Subtasks
+
 
     TaskType:
       type: object

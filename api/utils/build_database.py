@@ -9,10 +9,10 @@ projects = [
 ]
 
 models = [
-    {"id": 0, "name": "Model 0", "project_id": 0},
-    {"id": 1, "name": "Model 1", "project_id": 0},
-    {"id": 2, "name": "Model 2", "project_id": 1},
-    {"id": 3, "name": "Model 3", "project_id": 1},
+    {"id": 0, "name": "Model 0", "project_id": 0, "root_task_id": 0},
+    {"id": 1, "name": "Model 1", "project_id": 0, "root_task_id": 0},
+    {"id": 2, "name": "Model 2", "project_id": 1, "root_task_id": 0},
+    {"id": 3, "name": "Model 3", "project_id": 1, "root_task_id": 0},
 ]
 
 tasks_types = [
@@ -54,7 +54,7 @@ def reset_db() -> None:
 
     for model in models:
         p = Model(
-            id=model.get("id"), name=model.get("name"), project_id=model.get("project_id")
+            id=model.get("id"), name=model.get("name"), project_id=model.get("project_id"), root_task_id=model.get("root_task_id")
         )
         db.session.add(p)
 
