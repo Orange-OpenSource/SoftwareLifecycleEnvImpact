@@ -13,7 +13,27 @@ export async function createProject(nameProject) {
         })
     })
 
+
     const json = await res.json();
+
+    /* Création d'un modèle directement après la création du projet
+    const newres = await fetch(endpoint + "models", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+            "name" : "First model",
+            "id" : json.id
+        })
+    })
+
+    const newjson = await newres.json();
+
+    return newjson.id;
+    */
+
     return json.models[0];
 }
 
@@ -70,6 +90,13 @@ export async function getTask(idTask) {
 
 export async function getTaskInput(idTaskInput) {
     const response = await fetch(endpoint + "taskinputs/" + idTaskInput);
+    let res = await response.json();
+
+    return res;
+}
+
+export async function getTasksFromModel(idModel) {
+    const response = await fetch(endpoint + "models/" + idModel + "/tasks");
     let res = await response.json();
 
     return res;

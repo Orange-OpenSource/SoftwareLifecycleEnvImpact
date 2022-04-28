@@ -181,6 +181,7 @@ span.addtask {
 div.scroll {
     overflow: auto;
     white-space: nowrap;
+    padding-bottom: 2px;
 }
 
 h2.title {

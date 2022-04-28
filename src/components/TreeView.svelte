@@ -1,30 +1,39 @@
 <script>
-import ModalComponent from "./ModalComponent.svelte";
+    import ModalComponent from "./ModalComponent.svelte";
 
-    export let children;
+    export let subtasks;
     export let modify;
 </script>
   
-  {#each children as file}
+  {#each subtasks as task}
       <div class="tree">
-            {#if file.children}
+            {#if task.subtasks}
 
                 <div class="raw">
                     <span class="info-name">
-                        {file.name}
+                        {task.name}
                         {#if modify}
-                        <button data-bs-toggle="modal" data-bs-target="#modal{file.name}" type="button" class="btn btn-outline-primary btn-sm btnmodifyparent">Modify</button>
+                        <button data-bs-toggle="modal" data-bs-target="#modal{task.id}" type="button" class="btn btn-outline-primary btn-sm btnmodifyparent">Modify</button>
 
-                        <ModalComponent task_name={file.name}>
-                            <span slot="taskName">{file.name}</span>
-                            <span slot="body">
-                                To do
+                        <ModalComponent task_id={task.id}>
+                            <span slot="taskName">{task.name}</span>
+                            <span id="task_id{task.id}" slot="body">
+                                {#each task.inputs as input}
+                                <label for="taskinput">{input.name}</label>
+                                    {#if input.kind == "string"}
+                                    <input class="input-group" type="text" id="taskinput" name="taskinput{input.id}" required>
+                                    {:else if input.kind == "float"}
+                                    <input class="input-group" type="number" id="taskinput" name="taskinput{input.id}" required>
+                                    {:else}
+                                        Not implemented
+                                    {/if}
+                                {/each}
                             </span>
                         </ModalComponent>
                         {/if}
                     </span>
                     
-                    <svelte:self children={file.children} modify={modify}/>
+                    <svelte:self subtasks={task.subtasks} modify={modify}/>
                 </div>
 
             {:else}
@@ -32,11 +41,11 @@ import ModalComponent from "./ModalComponent.svelte";
                 {#if modify}
                     <div class="raw nochildmodify">
                         <span class="info-name">
-                            {file.name}
-                            <button data-bs-toggle="modal" data-bs-target="#modal{file.name}" type="button" class="btn btn-outline-primary btn-sm btnmodify">Modify</button>
+                            {task.name}
+                            <button data-bs-toggle="modal" data-bs-target="#modal{task.id}" type="button" class="btn btn-outline-primary btn-sm btnmodify">Modify</button>
 
-                            <ModalComponent task_name={file.name}>
-                                <span slot="taskName">{file.name}</span>
+                            <ModalComponent task_id={task.id}>
+                                <span slot="taskName">{task.name}</span>
                                 <span slot="body">
                                     To do
                                 </span>
@@ -47,7 +56,7 @@ import ModalComponent from "./ModalComponent.svelte";
                 {:else}
                     <div class="raw nochild">
                         <span class="info-name">
-                            {file.name}
+                            {task.name}
                         </span>
                     </div>
                 {/if}

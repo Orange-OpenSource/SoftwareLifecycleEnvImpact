@@ -1,17 +1,15 @@
 <script lang="ts">
-	import { Router, Route, Link } from "svelte-navigator";
-
+	import { Router, Route } from "svelte-navigator";
+    import { store } from './stores';
 	import SelectProject from "./views/SelectProject.svelte";
 	import CompareModels from "./views/CompareModels.svelte";
 	import Login from "./views/Login.svelte";
 	import ViewProject from "./views/ViewProject.svelte";
 	import ModifyModel from "./views/ModifyModel.svelte";
-	import { store } from './stores';
+	import TopBarComponent from "./components/TopBarComponent.svelte";
 
-
-	function logOut(){
-		$store = null;
-	}
+	let modelsContent = [];
+	let model_id;
 </script>
 
 <Router>
@@ -20,26 +18,7 @@
 			<nav class="navbar navbar-expand-lg navbar-light indigo">
 				<div class="container-fluid">
 				  Software Lifecycle Environmental Impact
-				  {#if $store != null }
-				  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				  </button>
-				  <div class="collapse navbar-collapse" id="navbarNav">
-					<ul class="navbar-nav">
-					  <li class="nav-item">
-						<Link class="nav-link" style="color:white;" to="/">Home</Link>
-					  </li>
-					  <li class="nav-item">
-						<Link class="nav-link" style="color:white;" to="compare">Comparaison modèle</Link>
-					  </li>
-					  <li class="nav-item">
-						
-						<button type="button" on:click={logOut}>Log out</button>
-						
-					  </li>
-					</ul>
-				  </div>
-				  {/if}
+				  <TopBarComponent bind:model_id={model_id} bind:modelsContent={modelsContent}></TopBarComponent>
 				</div>
 			</nav>
 		</header>
@@ -62,7 +41,7 @@
 			</Route>
 
 			<Route path="view/:id" let:params>
-				<ViewProject idProject={params.id}/>
+				<ViewProject bind:model_id={model_id} idProject={params.id} bind:modelsContent={modelsContent}/>
 			</Route>
 		{:else }
 			<Login />

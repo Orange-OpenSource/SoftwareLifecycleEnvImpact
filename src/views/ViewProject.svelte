@@ -2,13 +2,15 @@
     import { onMount } from "svelte";
     import { getModels, getModelInformations } from '../controllers/RequestController';
     import RootTreeView from '../components/RootTreeView.svelte';
-    import { Link } from "svelte-navigator";
     import HeaderButtonsModel from "../components/HeaderButtonsModel.svelte";
     
     export let idProject;
-    let models = [], modelsContent = [];
+    let models = [];
+    export let modelsContent;
+
     let modify = false;
-    let model_id, rootTreeView;
+    export let model_id;
+    let rootTreeView;
 
     async function updatePreviewModel(newIdModel) {
         model_id = newIdModel;
@@ -26,35 +28,19 @@
 
     onMount(async function () {
         models = await getModels(idProject);
+        modelsContent = [];
         for (var i = 0; i < models.length; i++) {
-  			let content = await getModelInformations(models[i]);
+  			let content = await getModelInformations(models[i].id);
 			modelsContent.push(content);
 		}
         modelsContent = modelsContent;
-        model_id = models[0];
+        model_id = models[0].id;
         await rootTreeView.updateTree();
 	});
 </script>
 
 <div class="container">
     <div class="row">
-        <div class="col col-3 border-right">
-            <h2 class="title">My models :</h2>
-
-            <ul class="list-group list-group-flush">
-                {#each modelsContent as model}
-                    <li class="list-group-item d-flex justify-content-between">
-                        <Link to="../../modify/{model.id}" style="color:black;">{model.name}</Link>
-                        <button type="button" on:click={updatePreviewModel(model.id)}>Preview</button>
-                    </li>
-                {/each}
-            </ul>
-
-            <button type="button">
-                New model
-            </button>
-        </div>
-
         <div class="col border-right">
             {#if modify}
                 <HeaderButtonsModel>

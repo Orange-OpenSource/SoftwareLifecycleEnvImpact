@@ -1,19 +1,21 @@
 <script lang="ts">
-    import { getModel } from "../controllers/RequestController";
+    import { getTasksFromModel } from "../controllers/RequestController";
     import TreeView from "./TreeView.svelte";
     import {tick} from 'svelte';
 
     export let modify;
     export let model_id;
 
-    let children = [];
+    let rootTask;
+    let subtasks = [];
 
     export async function updateTree() {
         await tick();
-        children = await getModel(model_id);
+        rootTask = await getTasksFromModel(model_id);
+        subtasks = rootTask.subtasks;
     }
 </script>
 
 <div class="col scroll">
-    <TreeView children={children} modify={modify}></TreeView>
+    <TreeView subtasks={subtasks} modify={modify}></TreeView>
 </div>
