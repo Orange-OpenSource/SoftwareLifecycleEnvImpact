@@ -1,12 +1,12 @@
 <script>
     import { onMount } from "svelte";
-    import { getModels } from '../controllers/RequestController';
+    import { getModels, getModelInformations } from '../controllers/RequestController';
     import RootTreeView from '../components/RootTreeView.svelte';
     import { Link } from "svelte-navigator";
     import HeaderButtonsModel from "../components/HeaderButtonsModel.svelte";
     
     export let idProject;
-    let models = []
+    let models = [], modelsContent = [];
     let modify = false;
     let model_id, rootTreeView;
 
@@ -26,6 +26,11 @@
 
     onMount(async function () {
         models = await getModels(idProject);
+        for (var i = 0; i < models.length; i++) {
+  			let content = await getModelInformations(models[i]);
+			modelsContent.push(content);
+		}
+        modelsContent = modelsContent;
         model_id = models[0];
         await rootTreeView.updateTree();
 	});
@@ -37,10 +42,10 @@
             <h2 class="title">My models :</h2>
 
             <ul class="list-group list-group-flush">
-                {#each models as model}
+                {#each modelsContent as model}
                     <li class="list-group-item d-flex justify-content-between">
-                        <Link to="../../modify/{model}" style="color:black;">{model}</Link>
-                        <button type="button" on:click={updatePreviewModel(model)}>Preview</button>
+                        <Link to="../../modify/{model.id}" style="color:black;">{model.name}</Link>
+                        <button type="button" on:click={updatePreviewModel(model.id)}>Preview</button>
                     </li>
                 {/each}
             </ul>

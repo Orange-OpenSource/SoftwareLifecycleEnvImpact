@@ -1,4 +1,6 @@
 <script>
+import ModalComponent from "./ModalComponent.svelte";
+
     export let children;
     export let modify;
 </script>
@@ -11,7 +13,14 @@
                     <span class="info-name">
                         {file.name}
                         {#if modify}
-                        <button type="button" class="btn btn-outline-primary btn-sm btnmodifyparent">Modify</button>
+                        <button data-bs-toggle="modal" data-bs-target="#modal{file.name}" type="button" class="btn btn-outline-primary btn-sm btnmodifyparent">Modify</button>
+
+                        <ModalComponent task_name={file.name}>
+                            <span slot="taskName">{file.name}</span>
+                            <span slot="body">
+                                To do
+                            </span>
+                        </ModalComponent>
                         {/if}
                     </span>
                     
@@ -24,7 +33,14 @@
                     <div class="raw nochildmodify">
                         <span class="info-name">
                             {file.name}
-                            <button type="button" class="btn btn-outline-primary btn-sm btnmodify">Modify</button>
+                            <button data-bs-toggle="modal" data-bs-target="#modal{file.name}" type="button" class="btn btn-outline-primary btn-sm btnmodify">Modify</button>
+
+                            <ModalComponent task_name={file.name}>
+                                <span slot="taskName">{file.name}</span>
+                                <span slot="body">
+                                    To do
+                                </span>
+                            </ModalComponent>
                         </span>
                         <span class="addtask"><button class="btn btn-primary">Add task</button></span>
                     </div>

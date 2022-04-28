@@ -12,14 +12,16 @@
     let model_id, rootTreeView;
 
     async function saveProject() {
+        let nameproject = document.getElementById("nameproject").value;
         if (isNew) {
-            let newIdModel = await createProject();
+            let newIdModel = await createProject(nameproject);
             navigate("../modify/" + newIdModel);
         } else {
             let newIdModel = await updateModel(idModels);
             navigate("../../modify/"+newIdModel);
         }
     }
+
 
     onMount(async function () {
         if (idModels != -1){
