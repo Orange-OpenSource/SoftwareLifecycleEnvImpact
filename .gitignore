@@ -1,6 +1,11 @@
 /node_modules/
 /public/build/
-
 .DS_Store
 package-lock.json
 .vscode
+/build
+/.svelte-kit
+/package
+.env
+.env.*
+!.env.example
