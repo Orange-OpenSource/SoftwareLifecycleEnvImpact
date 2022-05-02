@@ -100,7 +100,6 @@ class Model(db.Model):  # type: ignore
     """
     Table Model representing one possibility for a project with a tree of tasks
     """
-
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
 

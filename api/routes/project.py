@@ -1,6 +1,7 @@
 from typing import Any
 
-from flask import abort
+import jsonpatch
+from flask import abort, request
 
 from api.data_model import db, Model, ModelSchema, Project, ProjectSchema, Task
 
@@ -29,6 +30,30 @@ def get_project(project_id: int) -> Any:
     if project is not None:
         project_schema = ProjectSchema()
         return project_schema.dump(project)
+    else:
+        return abort(
+            404,
+            "No project found for Id: {project_id}".format(project_id=project_id),
+        )
+
+
+def update_project(project_id: int):
+    project = Project.query.filter(Project.id == project_id).one_or_none()
+
+    if project is not None:
+        try:
+            project_schema = ProjectSchema()
+            data = project_schema.dump(project)
+
+            patch = jsonpatch.JsonPatch(request.json)
+            data = patch.apply(data)
+
+            model = project_schema.load(data)
+            db.session.commit()
+
+            return project_schema.dump(model)
+        except jsonpatch.JsonPatchConflict:
+            return abort(403, "Patch format is incorrect")
     else:
         return abort(
             404,

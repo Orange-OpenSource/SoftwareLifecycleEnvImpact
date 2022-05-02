@@ -1,6 +1,7 @@
 from typing import Any
 
-from flask import abort
+import jsonpatch
+from flask import abort, request
 
 from api.data_model import db, Task, TaskSchema
 
@@ -33,6 +34,30 @@ def get_task(task_id: int) -> Any:
         )
 
 
+def update_task(task_id: int):
+    project = Task.query.filter(Task.id == task_id).one_or_none()
+
+    if project is not None:
+        try:
+            task_schema = TaskSchema()
+            data = task_schema.dump(project)
+
+            patch = jsonpatch.JsonPatch(request.json)
+            data = patch.apply(data)
+
+            model = task_schema.load(data)
+            db.session.commit()
+
+            return task_schema.dump(model)
+        except jsonpatch.JsonPatchConflict:
+            return abort(403, "Patch format is incorrect")
+    else:
+        return abort(
+            404,
+            "No task found for Id: {task_id}".format(task_id=task_id),
+        )
+
+
 def create_task(task: dict[str, Any]) -> Any:
     """
     POST /tasks/
@@ -47,10 +72,10 @@ def create_task(task: dict[str, Any]) -> Any:
 
     existing_task = (
         Task.query.filter(Task.name == name)
-        .filter(Task.task_type_id == task_type_id)
-        .filter(Task.parent_task_id == parent_task_id)
-        .filter(Task.model_id == model_id)
-        .one_or_none()
+            .filter(Task.task_type_id == task_type_id)
+            .filter(Task.parent_task_id == parent_task_id)
+            .filter(Task.model_id == model_id)
+            .one_or_none()
     )
 
     if existing_task is None:

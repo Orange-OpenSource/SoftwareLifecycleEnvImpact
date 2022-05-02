@@ -65,6 +65,31 @@ paths:
             $ref: '#/definitions/Project'
         404:
           description: No project found with this id
+    patch:
+      operationId: api.routes.project.update_project
+      tags:
+        - Project
+      summary: Update a project
+      description: Update a project
+      parameters:
+        - name: project_id
+          in: path
+          description: Id of the project to update
+          type: integer
+          required: true
+        - name: JsonPatch
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/PatchRequest"
+      responses:
+        200:
+          description: Successfully updated project
+          schema:
+            $ref: '#/definitions/Project'
+        404:
+          description: No project project with this id
+
 
   /projects/{project_id}/models:
     get:
@@ -267,6 +292,30 @@ paths:
             $ref: '#/definitions/Task'
         404:
           description: No task found with this id
+    patch:
+      operationId: api.routes.task.update_task
+      tags:
+        - Task
+      summary: Update a task
+      description: Update a task
+      parameters:
+        - name: task_id
+          in: path
+          description: Id of the task to update
+          type: integer
+          required: true
+        - name: JsonPatch
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/PatchRequest"
+      responses:
+        200:
+          description: Successfully updated task
+          schema:
+            $ref: '#/definitions/Task'
+        404:
+          description: No task with this id
 
   /tasktypes:
     get:

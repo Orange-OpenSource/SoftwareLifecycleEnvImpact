@@ -40,16 +40,23 @@ def update_model(model_id: int):
     model = Model.query.filter(Model.id == model_id).one_or_none()
 
     if model is not None:
-        model_schema = ModelSchema()
+        try:
+            model_schema = ModelSchema()
+            data = model_schema.dump(model)
 
-        patch = jsonpatch.JsonPatch(request.json)
-        data = model_schema.dump(model)
-        data = patch.apply(data)
+            patch = jsonpatch.JsonPatch(request.json)
+            data = patch.apply(data)
 
-        model = model_schema.load(data)
-        db.session.commit()
+            model = model_schema.load(data)
+            db.session.commit()
 
-        return model_schema.dump(model)
+            return model_schema.dump(model)
+        except jsonpatch.JsonPatchConflict:
+            return abort(
+                403,
+                'Patch format is incorrect'
+            )
+
     else:
         return abort(
             404,
