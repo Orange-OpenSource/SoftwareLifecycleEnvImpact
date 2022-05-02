@@ -104,6 +104,21 @@ class ImpactFactor:
         return self._co2
 
 
+class ElectricityImpact(ImpactFactor):
+    def __init__(self):
+        super().__init__(
+            climate_change=0.136 * KG_CO2E,
+            resource_depletion=0.000000017 * KG_SBE,
+            acidification=0.000468 * MOL_HPOS,
+            fine_particles=0.00000000337 * DISEASE_INCIDENCE,
+            ionizing_radiations=0.00478 * KG_BQ_U235E,
+            water_depletion=0.267 * CUBIC_METER,
+            electronic_waste=0.0952 * ELECTRONIC_WASTE,
+            primary_energy_consumption=15.5 * PRIMARY_MJ,
+            raw_materials=0.298 * TONNE_MIPS,
+        )
+
+
 class UserDeviceImpact(ImpactFactor):
     """
     ImpactFactor for devices (smartphone, pc) usage/amortization induced by application transferred

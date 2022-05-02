@@ -3,7 +3,7 @@ from model.impacts.impacts import ImpactIndicator
 from model.projects import Project, StandardProject
 from model.quantities import KG_CO2E
 from model.tasks import Task
-from tests.unit.test_resources import TestResource  # type: ignore
+from tests.model.unit.test_resources import TestResource
 
 ###########
 # Project #

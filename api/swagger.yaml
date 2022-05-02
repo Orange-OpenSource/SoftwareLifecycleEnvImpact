@@ -212,7 +212,7 @@ paths:
                 description: Id of the TaskType
               model_id:
                 type: integer
-                description: Id of the related model
+                description: Id of the related Model
       responses:
         201:
           description: Sucessfully created Task

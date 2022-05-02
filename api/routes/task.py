@@ -33,8 +33,8 @@ def create_task(task):
     existing_task = (
         Task.query.filter(Task.name == name)
         .filter(Task.task_type_id == task_type_id)
-        .filter(Task.model_id == model_id)
         .filter(Task.parent_task_id == parent_task_id)
+        .filter(Task.model_id == model_id)
         .one_or_none()
     )
 

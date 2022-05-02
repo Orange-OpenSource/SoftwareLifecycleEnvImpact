@@ -16,7 +16,7 @@ models = [
 ]
 
 tasks_types = [
-    {"id": 0, "name": "Type 0"},
+    {"id": 0, "name": "Root task"},
     {"id": 1, "name": "Type 1"},
     {"id": 2, "name": "Type 2"},
 ]
@@ -36,10 +36,10 @@ task_inputs = [
 
 
 def reset_db() -> None:
-    '''
+    """
     Reset the database with standard values
     :return: None
-    '''
+    """
     # Delete database file if it exists currently
     if os.path.exists("database.db"):
         os.remove("database.db")
@@ -54,7 +54,10 @@ def reset_db() -> None:
 
     for model in models:
         p = Model(
-            id=model.get("id"), name=model.get("name"), project_id=model.get("project_id"), root_task_id=model.get("root_task_id")
+            id=model.get("id"),
+            name=model.get("name"),
+            project_id=model.get("project_id"),
+            root_task_id=model.get("root_task_id"),
         )
         db.session.add(p)
 

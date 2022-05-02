@@ -1,7 +1,7 @@
 from flask import abort
 
 from config import db
-from data_model import ModelSchema, Project, ProjectSchema
+from data_model import Model, ModelSchema, Project, ProjectSchema, Task
 
 
 def get_projects():
@@ -32,16 +32,27 @@ def create_project(project):
     existing_project = Project.query.filter(Project.name == name).one_or_none()
 
     if existing_project is None:
-        # Create a person instance using the schema and the passed in person
-
         schema = ProjectSchema()
         new_project = schema.load(project, session=db.session)
 
-        # Add the person to the database
-        db.session.add(new_project)
+        root_task = Task(
+            name=name,
+            task_type_id=0,  # Root task type, # TODO replace by new api architecture
+        )
+
+        model = Model(
+            name=name,
+        )
+
+        model.root_task = root_task
+        model.tasks = [root_task]
+        new_project.base_model = model
+        new_project.models = [model]
+
+        db.session.add_all([new_project, model])
+
         db.session.commit()
 
-        # Serialize and return the newly created person in the response
         data = schema.dump(new_project)
 
         return data, 201
