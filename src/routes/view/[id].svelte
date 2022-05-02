@@ -49,6 +49,10 @@
 	});
 </script>
 
+<svelte:head>
+	<title>Models</title>
+</svelte:head>
+
 <div class="container">
 	<div class="row" style="margin-top: 5px; border-bottom: solid 1px #ddd;">
 		<div class="col">
@@ -72,6 +76,7 @@
 			{:else}
 				<HeaderButtonsModel bind:model_name>
 					<button
+						id="modifybtn"
 						on:click={enableModifications}
 						type="button"
 						class="col-2 btn btn-primary"

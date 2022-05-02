@@ -34,20 +34,20 @@
 </script>
 
 <svelte:head>
-	<title>Local Storage Stores Login</title>
+	<title>Login</title>
 </svelte:head>
 
 {#if !user_value}
 	<div class="mb-3">
 		<label for="username" class="form-label">Username</label>
-		<input type="email" bind:value={email} placeholder="enter email" />
+		<input id="email" type="email" bind:value={email} placeholder="enter email" />
 	</div>
 	<div class="mb-3">
 		<label for="password" class="form-label">Password</label>
-		<input type="password" bind:value={password} placeholder="enter password" />
+		<input id="password" type="password" bind:value={password} placeholder="enter password" />
 	</div>
 
-	<button type="submit" class="btn btn-primary" on:click={handleLogin}>Login</button>
+	<button id="login" type="submit" class="btn btn-primary" on:click={handleLogin}>Login</button>
 
 	{#if error}
 		<div id="error_message" class="text-danger">
@@ -56,5 +56,5 @@
 	{/if}
 {:else if user_value}
 	<h2 class="title">You are logged in as: {JSON.parse(user_value).email}</h2>
-	<button type="submit" class="btn btn-primary" on:click={handleLogout}>Logout</button>
+	<button id="logout" type="submit" class="btn btn-primary" on:click={handleLogout}>Logout</button>
 {/if}

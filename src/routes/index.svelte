@@ -12,6 +12,10 @@
 	});
 </script>
 
+<svelte:head>
+	<title>Projects</title>
+</svelte:head>
+
 <div class="container">
 	<div class="row">
 		<div class="col">
@@ -21,7 +25,9 @@
 				{#each projects as project}
 					<li class="list-group-item d-flex justify-content-between">
 						<div class="card-body">
-							<a sveltekit:prefetch href="/view/{project.id}">{project.name}</a>
+							<a id="redirect{project.id}" sveltekit:prefetch href="/view/{project.id}"
+								>{project.name}</a
+							>
 						</div>
 					</li>
 				{/each}
