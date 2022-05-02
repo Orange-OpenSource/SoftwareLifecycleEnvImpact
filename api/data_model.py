@@ -23,13 +23,14 @@ class TaskInputSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
     Schema for TaskInput to serialize/deserialize
     """
 
-    class Meta:
+    class Meta(ma.SQLAlchemyAutoSchema.Meta):  # type: ignore
         """Schema meta class"""
 
         model = TaskInput
         include_relationships = True
         load_instance = True
         include_fk = True
+        sqla_session = db.session
 
 
 class TaskType(db.Model):  # type: ignore
@@ -47,13 +48,14 @@ class TaskTypeSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
     Schema for TaskType to serialize/deserialize
     """
 
-    class Meta:
+    class Meta(ma.SQLAlchemyAutoSchema.Meta):  # type: ignore
         """Schema meta class"""
 
         model = TaskType
         include_relationships = True
         load_instance = True
         include_fk = True
+        sqla_session = db.session
 
 
 class Task(db.Model):  # type: ignore
@@ -81,13 +83,14 @@ class TaskSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
     Specify nested elements to show theme completely when deserializing, ot only their id
     """
 
-    class Meta:
+    class Meta(ma.SQLAlchemyAutoSchema.Meta):  # type: ignore
         """Schema meta class"""
 
         model = Task
         include_relationships = True
         load_instance = True
         include_fk = True
+        sqla_session = db.session
 
     subtasks = ma.Nested("TaskSchema", many=True)
     inputs = ma.Nested(TaskInputSchema, many=True)
@@ -119,13 +122,14 @@ class ModelSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
     Nested tasks to show them when deserializing
     """
 
-    class Meta:
+    class Meta(ma.SQLAlchemyAutoSchema.Meta):  # type: ignore
         """Schema meta class"""
 
         model = Model
         include_relationships = True
         load_instance = True
         include_fk = True
+        sqla_session = db.session
 
     tasks = ma.Nested("TaskSchema", many=True)
 
@@ -152,12 +156,13 @@ class ProjectSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
     Nested models to show them when deserializing
     """
 
-    class Meta:
+    class Meta(ma.SQLAlchemyAutoSchema.Meta):  # type: ignore
         """Schema meta class"""
 
         model = Project
         include_relationships = True
         load_instance = True
         include_fk = True
+        sqla_session = db.session
 
     models = ma.Nested("ModelSchema", many=True)

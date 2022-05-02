@@ -55,7 +55,7 @@ def create_task(task: dict[str, Any]) -> Any:
 
     if existing_task is None:
         schema = TaskSchema()
-        new_task = schema.load(task, session=db.session)
+        new_task = schema.load(task)
 
         db.session.add(new_task)
         db.session.commit()

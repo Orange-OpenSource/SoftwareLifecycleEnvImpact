@@ -130,6 +130,7 @@ paths:
         409:
           description: Model exists already
 
+
   /models/{model_id}:
     get:
       operationId: api.routes.model.get_model
@@ -150,6 +151,31 @@ paths:
             $ref: '#/definitions/Model'
         404:
           description: No model found with this id
+    patch:
+      operationId: api.routes.model.update_model
+      tags:
+        - Model
+      summary: Update a model
+      description: Update a model
+      parameters:
+      - name: model_id
+        in: path
+        description: Id of the model to update
+        type: integer
+        required: true
+      - name: JsonPatch
+        in: body
+        required: true
+        schema:
+          $ref: "#/definitions/PatchRequest"
+      responses:
+        200:
+          description: Successfully updated model
+          schema:
+            $ref: '#/definitions/Model'
+        404:
+          description: No model found with this id
+
 
   /models/{model_id}/tasks:
     get:
@@ -321,6 +347,33 @@ paths:
           description: Database reset status
 
 definitions:
+    PatchRequest:
+      type: array
+      items:
+        $ref: "#/definitions/PatchDocument"
+    PatchDocument:
+      description: A JSONPatch document as defined by RFC 6902
+      required:
+        - "op"
+        - "path"
+      properties:
+        op:
+          type: string
+          description: The operation to be performed
+          enum:
+            - "add"
+            - "remove"
+            - "replace"
+            - "move"
+            - "copy"
+            - "test"
+        path:
+          type: string
+          description: A JSON-Pointer
+        value:
+          type: string
+          description: The value to be used within the operations.
+
     Project:
       type: object
       required:

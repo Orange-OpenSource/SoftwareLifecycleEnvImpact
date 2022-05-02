@@ -9,3 +9,4 @@ flask-marshmallow~=0.14.0
 Flask-SQLAlchemy~=2.5.1
 connexion[swagger-ui]~=2.13.0
 Flask-Cors~=3.0.10
+jsonpatch~=1.32

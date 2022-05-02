@@ -49,7 +49,7 @@ def create_project(project: dict[str, Any]) -> Any:
 
     if existing_project is None:
         schema = ProjectSchema()
-        new_project = schema.load(project, session=db.session)
+        new_project = schema.load(project)
 
         root_task = Task(
             name=name,
