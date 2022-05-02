@@ -1,8 +1,25 @@
 <script lang="ts">
 	import ModalComponent from './ModalComponent.svelte';
+	import ModalCreationTaskComponent from './ModalCreationTaskComponent.svelte';
+	import { createEventDispatcher } from 'svelte';
+	import { createTask } from '$lib/controllers/RequestController';
 
+	const dispatch = createEventDispatcher();
 	export let subtasks: any;
 	export let modify: any;
+	export let model_id: any;
+	export let parent_task_id: any;
+
+	async function createNewTask(parentId: any) {
+		// @ts-ignore
+		let taskname = document.getElementById('createTaskInput' + parentId).value;
+
+		await createTask(model_id, taskname, parent_task_id, 0);
+
+		dispatch('message', {
+			text: 'updateTree'
+		});
+	}
 </script>
 
 {#each subtasks as task}
@@ -49,7 +66,13 @@
 					{/if}
 				</span>
 
-				<svelte:self subtasks={task.subtasks} {modify} />
+				<svelte:self
+					on:message
+					subtasks={task.subtasks}
+					{modify}
+					parent_task_id={task.id}
+					{model_id}
+				/>
 			</div>
 		{:else if modify}
 			<div class="raw nochildmodify">
@@ -64,10 +87,51 @@
 
 					<ModalComponent task_id={task.id}>
 						<span slot="taskName">{task.name}</span>
-						<span slot="body"> To do </span>
+						<span id="task_id{task.id}" slot="body">
+							{#each task.inputs as input}
+								<label for="taskinput">{input.name}</label>
+								{#if input.kind == 'string'}
+									<input
+										class="input-group"
+										type="text"
+										id="taskinput"
+										name="taskinput{input.id}"
+										required
+									/>
+								{:else if input.kind == 'float'}
+									<input
+										class="input-group"
+										type="number"
+										id="taskinput"
+										name="taskinput{input.id}"
+										required
+									/>
+								{:else}
+									Not implemented
+								{/if}
+							{/each}
+						</span>
 					</ModalComponent>
 				</span>
-				<span class="addtask"><button class="btn btn-primary">Add task</button></span>
+				<span class="addtask"
+					><button
+						data-bs-toggle="modal"
+						data-bs-target="#modalCreateTask{task.id}"
+						class="btn btn-primary">Add task</button
+					></span
+				>
+
+				<ModalCreationTaskComponent task_id={task.id}>
+					<span slot="taskName">Create new task :</span>
+					<input slot="body" id="createTaskInput{task.id}" placeholder="Task name" required />
+					<button
+						on:click={() => createNewTask(task.id)}
+						slot="btnsave"
+						type="button"
+						data-bs-dismiss="modal"
+						class="btn btn-primary">Create task</button
+					>
+				</ModalCreationTaskComponent>
 			</div>
 		{:else}
 			<div class="raw nochild">
@@ -79,5 +143,22 @@
 	</div>
 {/each}
 {#if modify}
-	<div class="tree"><button class="btn btn-primary">Add task</button></div>
+	<div class="tree">
+		<button
+			data-bs-toggle="modal"
+			data-bs-target="#modalCreateTask{parent_task_id}"
+			class="btn btn-primary">Add task</button
+		>
+		<ModalCreationTaskComponent task_id={parent_task_id}>
+			<span slot="taskName">Create new task :</span>
+			<input slot="body" id="createTaskInput{parent_task_id}" placeholder="Task name" required />
+			<button
+				on:click={() => createNewTask(parent_task_id)}
+				slot="btnsave"
+				type="button"
+				data-bs-dismiss="modal"
+				class="btn btn-primary">Create task</button
+			>
+		</ModalCreationTaskComponent>
+	</div>
 {/if}

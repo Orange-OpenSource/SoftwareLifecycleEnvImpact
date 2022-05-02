@@ -102,7 +102,7 @@ export async function getTasksFromModel(idModel: any) {
 }
 
 export async function createTask(idModel: any, taskName: any, parentTaskId: any, taskTypeId: any) {
-	const res = await fetch(endpoint + 'models', {
+	const res = await fetch(endpoint + 'tasks', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
