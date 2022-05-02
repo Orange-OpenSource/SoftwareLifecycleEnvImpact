@@ -5,11 +5,12 @@
 	import RootTreeView from '../../lib/components/RootTreeView.svelte';
 	import HeaderButtonsModel from '../../lib/components/HeaderButtonsModel.svelte';
 	import { checkIfLogged } from '../../lib/controllers/LoginController';
+	import ModalCreationModelComponent from '$lib/components/ModalCreationModelComponent.svelte';
 
 	checkIfLogged();
 
 	let idProject = $page.params.id;
-	let models = [];
+	let models: string | any[] = [];
 	let modelsContent: any = [];
 	let modify = false;
 	let model_id: any;
@@ -29,10 +30,6 @@
 		model_id = id;
 		model_name = name;
 		await rootTreeView.updateTree();
-	}
-
-	function addModel() {
-		// todo
 	}
 
 	onMount(async function () {
@@ -63,7 +60,14 @@
 			</select>
 		</div>
 		<div class="col d-flex justify-content-end">
-			<button type="button" class="btn btn-primary" on:click={addModel}>Add model</button>
+			<button
+				data-bs-toggle="modal"
+				data-bs-target="#modalCreateModel"
+				type="button"
+				class="btn btn-primary">Add model</button
+			>
+
+			<ModalCreationModelComponent {idProject} bind:models bind:modelsContent />
 		</div>
 	</div>
 

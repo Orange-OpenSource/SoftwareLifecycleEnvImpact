@@ -15,25 +15,25 @@ export async function createProject(nameProject: any) {
 
 	const json = await res.json();
 
-	/* Création d'un modèle directement après la création du projet
-    const newres = await fetch(endpoint + "models", {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-            "name" : "First model",
-            "id" : json.id
-        })
-    })
+	return json.id;
+}
 
-    const newjson = await newres.json();
+export async function createModel(nameModel: string, idProject: any) {
+	const res = await fetch(endpoint + 'models', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			Accept: 'application/json'
+		},
+		body: JSON.stringify({
+			name: nameModel,
+			project_id: +idProject
+		})
+	});
 
-    return newjson.id;
-    */
+	const json = await res.json();
 
-	return json.models[0];
+	return json;
 }
 
 export async function updateModel(idModel: any) {
@@ -99,4 +99,24 @@ export async function getTasksFromModel(idModel: any) {
 	let res = await response.json();
 
 	return res;
+}
+
+export async function createTask(idModel: any, taskName: any, parentTaskId: any, taskTypeId: any) {
+	const res = await fetch(endpoint + 'models', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			Accept: 'application/json'
+		},
+		body: JSON.stringify({
+			model_id: idModel,
+			name: taskName,
+			parent_task_id: parentTaskId,
+			task_type_id: taskTypeId
+		})
+	});
+
+	const json = await res.json();
+
+	return json;
 }

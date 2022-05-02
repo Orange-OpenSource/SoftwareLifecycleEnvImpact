@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { getProjects } from '../lib/controllers/RequestController';
 	import { checkIfLogged } from '../lib/controllers/LoginController';
+	import ModalCreationProjectComponent from '$lib/components/ModalCreationProjectComponent.svelte';
 
 	checkIfLogged();
 
@@ -33,7 +34,14 @@
 				{/each}
 			</ul>
 
-			<button type="button" class="btn btn-light">New project</button>
+			<button
+				data-bs-toggle="modal"
+				data-bs-target="#modalCreate"
+				type="button"
+				class="btn btn-light">New project</button
+			>
+
+			<ModalCreationProjectComponent />
 		</div>
 	</div>
 </div>

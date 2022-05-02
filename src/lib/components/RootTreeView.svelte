@@ -7,7 +7,7 @@
 	export let model_id: any;
 
 	let rootTask;
-	let subtasks = [];
+	let subtasks: never[] = [];
 
 	export async function updateTree() {
 		await tick();
