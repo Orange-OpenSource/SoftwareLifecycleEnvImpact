@@ -1,7 +1,8 @@
 # local modules
-import config
 
 # Get the application instance
+import config
+
 connex_app = config.connex_app
 
 # Read the swagger.yml file to configure the endpoints

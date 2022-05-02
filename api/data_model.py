@@ -1,7 +1,11 @@
-from config import db, ma
+from api.config import db, ma
 
 
-class TaskInput(db.Model):
+class TaskInput(db.Model):  # type: ignore
+    """
+    Table task_input, containing one input for a task
+    """
+
     __tablename__ = "task_input"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
@@ -10,29 +14,49 @@ class TaskInput(db.Model):
     task_id = db.Column(db.Integer, db.ForeignKey("task.id"), nullable=False)
 
 
-class TaskInputSchema(ma.SQLAlchemyAutoSchema):
+class TaskInputSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
+    """
+    Schema for TaskInput to serialize/deserialize
+    """
+
     class Meta:
+        """Schema meta class"""
+
         model = TaskInput
         include_relationships = True
         load_instance = True
         include_fk = True
 
 
-class TaskType(db.Model):
+class TaskType(db.Model):  # type: ignore
+    """
+    Table task_type, representing a task type, ie.build, design, development...
+    """
+
     __tablename__ = "task_type"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
 
 
-class TaskTypeSchema(ma.SQLAlchemyAutoSchema):
+class TaskTypeSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
+    """
+    Schema for TaskType to serialize/deserialize
+    """
+
     class Meta:
+        """Schema meta class"""
+
         model = TaskType
         include_relationships = True
         load_instance = True
         include_fk = True
 
 
-class Task(db.Model):
+class Task(db.Model):  # type: ignore
+    """
+    Table task representing one project phase
+    """
+
     __tablename__ = "task"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
@@ -47,8 +71,15 @@ class Task(db.Model):
     inputs = db.relationship(TaskInput, backref="task_input", lazy=True)
 
 
-class TaskSchema(ma.SQLAlchemyAutoSchema):
+class TaskSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
+    """
+    Schema for Task to serialize/deserialize
+    Specify nested elements to show theme completely when deserializing, ot only their id
+    """
+
     class Meta:
+        """Schema meta class"""
+
         model = Task
         include_relationships = True
         load_instance = True
@@ -58,7 +89,11 @@ class TaskSchema(ma.SQLAlchemyAutoSchema):
     inputs = ma.Nested(TaskInputSchema, many=True)
 
 
-class Model(db.Model):
+class Model(db.Model):  # type: ignore
+    """
+    Table Model representing one possibility for a project with a tree of tasks
+    """
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
 
@@ -74,8 +109,15 @@ class Model(db.Model):
     project_id = db.Column(db.Integer, db.ForeignKey("project.id"), nullable=False)
 
 
-class ModelSchema(ma.SQLAlchemyAutoSchema):
+class ModelSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
+    """
+    Schema for Model to serialize/deserialize
+    Nested tasks to show them when deserializing
+    """
+
     class Meta:
+        """Schema meta class"""
+
         model = Model
         include_relationships = True
         load_instance = True
@@ -84,7 +126,11 @@ class ModelSchema(ma.SQLAlchemyAutoSchema):
     tasks = ma.Nested("TaskSchema", many=True)
 
 
-class Project(db.Model):
+class Project(db.Model):  # type: ignore
+    """
+    Table project which contains multiple models
+    """
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     models = db.relationship(
@@ -96,8 +142,15 @@ class Project(db.Model):
     )
 
 
-class ProjectSchema(ma.SQLAlchemyAutoSchema):
+class ProjectSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
+    """
+    Schema for Project to serialize/deserialize
+    Nested models to show them when deserializing
+    """
+
     class Meta:
+        """Schema meta class"""
+
         model = Project
         include_relationships = True
         load_instance = True

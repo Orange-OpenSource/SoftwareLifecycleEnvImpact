@@ -1,10 +1,16 @@
+from typing import Any
+
 from flask import abort
 
-from config import db
-from data_model import Model, ModelSchema, Project, ProjectSchema, Task
+from api.config import db
+from api.data_model import Model, ModelSchema, Project, ProjectSchema, Task
 
 
-def get_projects():
+def get_projects() -> Any:
+    """
+    GET /projects/
+    :return: all Project in the database
+    """
     # Create the list from data
     projects = Project.query.all()
 
@@ -13,20 +19,31 @@ def get_projects():
     return project_schema.dump(projects)
 
 
-def get_project(project_id):
+def get_project(project_id: int) -> Any:
+    """
+    GET /project/<project_id>
+    :param project_id: id of the project to get
+    :return: Project if it exists with id, 404 else
+    """
     project = Project.query.filter(Project.id == project_id).one_or_none()
 
     if project is not None:
         project_schema = ProjectSchema()
         return project_schema.dump(project)
     else:
-        abort(
+        return abort(
             404,
             "No project found for Id: {project_id}".format(project_id=project_id),
         )
 
 
-def create_project(project):
+def create_project(project: dict[str, Any]) -> Any:
+    """
+    POST /projects/
+
+    :param project: project to add
+    :return: the project inserted with its id
+    """
     name = project.get("name")
 
     existing_project = Project.query.filter(Project.name == name).one_or_none()
@@ -57,20 +74,25 @@ def create_project(project):
 
         return data, 201
     else:
-        abort(
+        return abort(
             409,
             "Project {name} exists already".format(name=name),
         )
 
 
-def get_models(project_id):
+def get_models(project_id: int) -> Any:
+    """
+    /projects/{project_id}/models
+    :param project_id: id of the project to get the models
+    :return: All the models for the project id
+    """
     project = Project.query.filter(Project.id == project_id).one_or_none()
 
     if project is not None:
         model_schema = ModelSchema(many=True)
         return model_schema.dump(project.models)
     else:
-        abort(
+        return abort(
             404,
             "No project found for Id: {project_id}".format(project_id=project_id),
         )

@@ -105,7 +105,12 @@ class ImpactFactor:
 
 
 class ElectricityImpact(ImpactFactor):
-    def __init__(self):
+    """
+    ImpactFactor for electricity in France
+    Ratio /kWh
+    """
+
+    def __init__(self) -> None:
         super().__init__(
             climate_change=0.136 * KG_CO2E,
             resource_depletion=0.000000017 * KG_SBE,

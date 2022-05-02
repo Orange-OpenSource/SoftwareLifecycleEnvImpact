@@ -45,6 +45,10 @@ class Project:
         return self.root_task.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE)
 
     def get_impacts(self) -> ImpactsList:
+        """
+        Get the list of impact for the complete project
+        :return:
+        """
         return self.root_task.get_impacts_list()
 
     def get_impact_by_task(self) -> TaskImpact:

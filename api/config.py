@@ -28,4 +28,4 @@ CORS(app)
 db = SQLAlchemy(app)
 
 # Initialize Marshmallow
-ma = Marshmallow(app)
+ma: Marshmallow = Marshmallow(app)

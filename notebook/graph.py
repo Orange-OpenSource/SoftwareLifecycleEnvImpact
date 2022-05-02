@@ -50,6 +50,10 @@ def draw_resources(resources: ResourcesList) -> None:
 
 
 def draw_impacts(impacts_list: ImpactsList) -> None:
+    """
+    Draw an impact list
+    :param impacts_list: the impacts list to draw
+    """
     names = []
     impacts = []
 
@@ -63,12 +67,20 @@ def draw_impacts(impacts_list: ImpactsList) -> None:
 
 
 class ModelDisplay:
+    """
+    Class to dislay a Model on a notebook, both inputs and outputs
+    """
+
     def __init__(self, project: StandardProject) -> None:
         self.inputs = ModelInputs(project)
         self.output = ModelOutput(project, self.inputs)
 
 
 class ModelInputs:
+    """
+    Class to display Model inputs
+    """
+
     def __init__(self, p: StandardProject) -> None:
         self.p = p
         self.dev_days_widget = widgets.IntSlider(
@@ -177,6 +189,10 @@ class ModelInputs:
         )
 
     def get_widget(self) -> widgets.HBox:
+        """
+        Return the hbox containing all the project inputs as sliders
+        :return: an HBox with all inputs widgets
+        """
         vbox_build = widgets.VBox(
             [
                 widgets.Text("Build"),

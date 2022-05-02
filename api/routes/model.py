@@ -1,43 +1,64 @@
+from typing import Any
+
 from flask import abort
 
-from config import db
-from data_model import Model, ModelSchema, Task
-from routes.task import get_task
+from api.config import db
+from api.data_model import Model, ModelSchema, Task
+from api.routes.task import get_task
 
 
-def get_models():
+def get_models() -> Any:
+    """
+    GET /models/
+    :return: return all models in the database
+    """
     models = Model.query.all()
 
     model_schema = ModelSchema(many=True)
     return model_schema.dump(models)
 
 
-def get_model(model_id):
+def get_model(model_id: int) -> Any:
+    """
+    GET /models/<model_id>
+    :param model_id: the id of the model to retrieve
+    :return: Model it it exists with id, 404 else
+    """
     model = Model.query.filter(Model.id == model_id).one_or_none()
 
     if model is not None:
         model_schema = ModelSchema()
         return model_schema.dump(model)
     else:
-        abort(
+        return abort(
             404,
             "No model found for Id: {model_id}".format(model_id=model_id),
         )
 
 
-def get_tasks(model_id):
+def get_tasks(model_id: int) -> Any:
+    """
+    GET /models/{model_id}/tasks
+    :param model_id: id of the model to get the tasks
+    :return: a list of tasks corresponding to a model id
+    """
     model = Model.query.filter(Model.id == model_id).one_or_none()
 
     if model is not None:
         return get_task(model.root_task_id)
     else:
-        abort(
+        return abort(
             404,
             "No model found for Id: {model_id}".format(model_id=model_id),
         )
 
 
-def create_model(model):
+def create_model(model: dict[str, Any]) -> Any:
+    """
+    POST /models/
+    :param model: model to create
+    :return: inserted model populated with its id
+    """
     name = model.get("name")
     project_id = model.get("project_id")
 
@@ -64,7 +85,7 @@ def create_model(model):
 
         return data, 201
     else:
-        abort(
+        return abort(
             409,
             "Model {name} exists already".format(name=name),
         )
