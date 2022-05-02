@@ -1,12 +1,17 @@
-# local modules
+import connexion
+from flask_cors import CORS
 
-# Get the application instance
-import config
+from api import config, data_model
 
-connex_app = config.connex_app
 
-# Read the swagger.yml file to configure the endpoints
-connex_app.add_api("swagger.yaml")
+def create_app():
+    connex_app = connexion.App(__name__, specification_dir=config.basedir)
+    connex_app.add_api("swagger.yaml")
 
-if __name__ == "__main__":
-    connex_app.run(debug=True, host="0.0.0.0", port=5001)
+    app = connex_app.app
+    app.config.from_pyfile("config.py")
+    CORS(app)
+    data_model.db.init_app(app)
+    data_model.ma.init_app(app)
+
+    return app

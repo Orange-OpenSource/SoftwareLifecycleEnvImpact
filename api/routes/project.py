@@ -2,8 +2,7 @@ from typing import Any
 
 from flask import abort
 
-from api.config import db
-from api.data_model import Model, ModelSchema, Project, ProjectSchema, Task
+from api.data_model import db, Model, ModelSchema, Project, ProjectSchema, Task
 
 
 def get_projects() -> Any:

@@ -9,7 +9,7 @@ basePath: /api/v1
 paths:
   /projects:
     get:
-      operationId: routes.project.get_projects
+      operationId: api.routes.project.get_projects
       tags:
         - Project
       summary: Get all projects
@@ -22,7 +22,7 @@ paths:
               $ref: '#/definitions/Project'
 
     post:
-      operationId: routes.project.create_project
+      operationId: api.routes.project.create_project
       tags:
         - Project
       summary: Create a new project
@@ -47,7 +47,7 @@ paths:
 
   /projects/{project_id}:
     get:
-      operationId: routes.project.get_project
+      operationId: api.routes.project.get_project
       tags:
         - Project
       summary: Read one project
@@ -68,7 +68,7 @@ paths:
 
   /projects/{project_id}/models:
     get:
-      operationId: routes.project.get_models
+      operationId: api.routes.project.get_models
       tags:
         - Project
         - Model
@@ -91,7 +91,7 @@ paths:
 
   /models:
     get:
-      operationId: routes.model.get_models
+      operationId: api.routes.model.get_models
       tags:
         - Model
       summary: Get all models
@@ -104,7 +104,7 @@ paths:
               $ref: '#/definitions/Model'
 
     post:
-      operationId: routes.model.create_model
+      operationId: api.routes.model.create_model
       tags:
         - Model
       description: Create a new model
@@ -132,7 +132,7 @@ paths:
 
   /models/{model_id}:
     get:
-      operationId: routes.model.get_model
+      operationId: api.routes.model.get_model
       tags:
         - Model
       summary: Read one model
@@ -153,7 +153,7 @@ paths:
 
   /models/{model_id}/tasks:
     get:
-      operationId: routes.model.get_tasks
+      operationId: api.routes.model.get_tasks
       tags:
         - Model
         - Task
@@ -176,7 +176,7 @@ paths:
 
   /tasks:
     get:
-      operationId: routes.task.get_tasks
+      operationId: api.routes.task.get_tasks
       tags:
         - Task
       summary: Get all tasks
@@ -189,7 +189,7 @@ paths:
               $ref: '#/definitions/Task'
 
     post:
-      operationId: routes.task.create_task
+      operationId: api.routes.task.create_task
       tags:
         - Task
       description: Create a new task
@@ -223,7 +223,7 @@ paths:
 
   /tasks/{task_id}:
     get:
-      operationId: routes.task.get_task
+      operationId: api.routes.task.get_task
       tags:
         - Task
       summary: Read one task
@@ -244,7 +244,7 @@ paths:
 
   /tasktypes:
     get:
-      operationId: routes.task_type.get_task_types
+      operationId: api.routes.task_type.get_task_types
       tags:
         - TaskType
       summary: Get all task types
@@ -258,7 +258,7 @@ paths:
 
   /tasktypes/{task_type_id}:
     get:
-      operationId: routes.task_type.get_task_type
+      operationId: api.routes.task_type.get_task_type
       tags:
         - TaskType
       summary: Read one task type
@@ -279,7 +279,7 @@ paths:
 
   /taskinputs:
     get:
-      operationId: routes.task_input.get_task_inputs
+      operationId: api.routes.task_input.get_task_inputs
       tags:
         - TaskInput
       summary: Get all task inputs
@@ -293,7 +293,7 @@ paths:
 
   /taskinputs/{task_input_id}:
     get:
-      operationId: routes.task_input.get_task_input
+      operationId: api.routes.task_input.get_task_input
       tags:
         - TaskInput
       summary: Read one task input
@@ -315,7 +315,7 @@ paths:
   /debug/reset:
     get:
       summary: Debug function to reset the database
-      operationId: utils.build_database.reset_db
+      operationId: api.utils.build_database.reset_db
       responses:
         200:
           description: Database reset status

@@ -2,8 +2,7 @@ from typing import Any
 
 from flask import abort
 
-from api.config import db
-from api.data_model import Task, TaskSchema
+from api.data_model import db, Task, TaskSchema
 
 
 def get_tasks() -> Any:

@@ -1,4 +1,8 @@
-from api.config import db, ma
+from flask_marshmallow import Marshmallow
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
+ma = Marshmallow()
 
 
 class TaskInput(db.Model):  # type: ignore

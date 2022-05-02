@@ -1,7 +1,6 @@
 import os
 
-from api.config import db
-from api.data_model import Model, Project, Task, TaskInput, TaskType
+from api.data_model import db, Model, Project, Task, TaskInput, TaskType
 
 projects = [
     {"id": 0, "name": "Project 0"},
