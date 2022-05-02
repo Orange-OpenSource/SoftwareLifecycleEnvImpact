@@ -46,18 +46,18 @@ paths:
           description: Project exists already
 
   /projects/{project_id}:
+    parameters:
+      - name: project_id
+        in: path
+        description: Id of the project to get
+        type: integer
+        required: true
     get:
       operationId: api.routes.project.get_project
       tags:
         - Project
       summary: Read one project
       description: Read one project
-      parameters:
-        - name: project_id
-          in: path
-          description: Id of the project to get
-          type: integer
-          required: true
       responses:
         200:
           description: Successfully read project
@@ -72,11 +72,6 @@ paths:
       summary: Update a project
       description: Update a project
       parameters:
-        - name: project_id
-          in: path
-          description: Id of the project to update
-          type: integer
-          required: true
         - name: JsonPatch
           in: body
           required: true
@@ -92,18 +87,18 @@ paths:
 
 
   /projects/{project_id}/models:
+    parameters:
+      - name: project_id
+        in: path
+        description: Id of the project you want to get the models
+        type: integer
+        required: true
     get:
       operationId: api.routes.project.get_models
       tags:
         - Project
         - Model
       summary: Get all models for a project
-      parameters:
-        - name: project_id
-          in: path
-          description: Id of the project you want to get the models
-          type: integer
-          required: true
       responses:
         200:
           description: Successfully read models for the project
@@ -157,18 +152,18 @@ paths:
 
 
   /models/{model_id}:
+    parameters:
+      - name: model_id
+        in: path
+        description: Id of the model to get
+        type: integer
+        required: true
     get:
       operationId: api.routes.model.get_model
       tags:
         - Model
       summary: Read one model
       description: Read one model
-      parameters:
-        - name: model_id
-          in: path
-          description: Id of the model to get
-          type: integer
-          required: true
       responses:
         200:
           description: Successfully read model
@@ -183,11 +178,6 @@ paths:
       summary: Update a model
       description: Update a model
       parameters:
-      - name: model_id
-        in: path
-        description: Id of the model to update
-        type: integer
-        required: true
       - name: JsonPatch
         in: body
         required: true
@@ -203,18 +193,18 @@ paths:
 
 
   /models/{model_id}/tasks:
+    parameters:
+      - name: model_id
+        in: path
+        description: Id of the model to get the tasks from
+        type: integer
+        required: true
     get:
       operationId: api.routes.model.get_tasks
       tags:
         - Model
         - Task
       summary: Get all tasks for a model
-      parameters:
-        - name: model_id
-          in: path
-          description: Id of the model to get the tasks from
-          type: integer
-          required: true
       responses:
         200:
           description: List of tasks
@@ -273,18 +263,18 @@ paths:
           description: Task exists already
 
   /tasks/{task_id}:
+    parameters:
+      - name: task_id
+        in: path
+        description: Id of the task to get
+        type: integer
+        required: true
     get:
       operationId: api.routes.task.get_task
       tags:
         - Task
       summary: Read one task
       description: Read one task
-      parameters:
-        - name: task_id
-          in: path
-          description: Id of the task to get
-          type: integer
-          required: true
       responses:
         200:
           description: Sucessfully read task
@@ -299,11 +289,6 @@ paths:
       summary: Update a task
       description: Update a task
       parameters:
-        - name: task_id
-          in: path
-          description: Id of the task to update
-          type: integer
-          required: true
         - name: JsonPatch
           in: body
           required: true
@@ -332,18 +317,18 @@ paths:
               $ref: '#/definitions/TaskType'
 
   /tasktypes/{task_type_id}:
+    parameters:
+      - name: task_type_id
+        in: path
+        description: Id of the task type to get
+        type: integer
+        required: true
     get:
       operationId: api.routes.task_type.get_task_type
       tags:
         - TaskType
       summary: Read one task type
       description: Read one task type
-      parameters:
-        - name: task_type_id
-          in: path
-          description: Id of the task type to get
-          type: integer
-          required: true
       responses:
         200:
           description: Sucessfully read task type
@@ -367,18 +352,19 @@ paths:
               $ref: '#/definitions/TaskInput'
 
   /taskinputs/{task_input_id}:
+    parameters:
+      - name: task_input_id
+        in: path
+        description: Id of the task input to get
+        type: integer
+        required: true
     get:
       operationId: api.routes.task_input.get_task_input
       tags:
         - TaskInput
       summary: Read one task input
       description: Read one task input
-      parameters:
-        - name: task_input_id
-          in: path
-          description: Id of the task input to get
-          type: integer
-          required: true
+
       responses:
         200:
           description: Sucessfully read task input
