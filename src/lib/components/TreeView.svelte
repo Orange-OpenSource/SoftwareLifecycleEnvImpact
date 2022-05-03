@@ -24,7 +24,7 @@
 
 {#each subtasks as task}
 	<div class="tree">
-		{#if task.subtasks}
+		{#if task.subtasks.length !== 0}
 			<div class="raw">
 				<span class="info-name">
 					{task.name}
