@@ -35,14 +35,45 @@ export async function createModel(nameModel: string, idProject: any) {
 	return json;
 }
 
-export async function updateModel(idModel: any) {
-	/*
-    const res = await fetch(endpoint+"models/"+idModel, {
-        method: 'PUT'
-    })
+export async function updateProject(idProject: any, newName: string) {
+	const res = await fetch(endpoint + 'projects/' + idProject, {
+		method: 'PATCH',
+		headers: {
+			'Content-Type': 'application/json',
+			Accept: 'application/json'
+		},
+		body: JSON.stringify([
+			{
+				op: 'replace',
+				path: '/name',
+				value: newName
+			}
+		])
+	});
 
-    const json = await res.json();
-    */
+	const json = await res.json();
+
+	return json;
+}
+
+export async function updateModel(idModel: any, newName: string) {
+	const res = await fetch(endpoint + 'models/' + idModel, {
+		method: 'PATCH',
+		headers: {
+			'Content-Type': 'application/json',
+			Accept: 'application/json'
+		},
+		body: JSON.stringify([
+			{
+				op: 'replace',
+				path: '/name',
+				value: newName
+			}
+		])
+	});
+
+	const json = await res.json();
+
 	return idModel;
 }
 

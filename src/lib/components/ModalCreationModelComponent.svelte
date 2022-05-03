@@ -4,12 +4,16 @@
 	export let idProject: string;
 	export let models: string | any[] = [];
 	export let modelsContent: any = [];
+	export let modify: boolean;
+	export let model_id: any;
+	export let model_name: any;
+	export let rootTreeView: any;
 
 	async function createNewModel() {
 		// @ts-ignore
 		let name = document.getElementById('createModelInput').value;
 
-		await createModel(name, idProject);
+		let res = await createModel(name, idProject);
 
 		models = await getModels(idProject);
 		modelsContent = [];
@@ -18,6 +22,11 @@
 			modelsContent.push(content);
 		}
 		modelsContent = modelsContent;
+
+		modify = true;
+		model_id = res.id;
+		model_name = res.name;
+		rootTreeView.updateTree();
 	}
 </script>
 

@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { deleteProject, getProjects } from '../lib/controllers/RequestController';
+	import { deleteProject, getProjects, updateProject } from '../lib/controllers/RequestController';
 	import { checkIfLogged } from '../lib/controllers/LoginController';
 	import ModalCreationProjectComponent from '$lib/components/ModalCreationProjectComponent.svelte';
+	import ModalRenameProject from '$lib/components/ModalRenameProject.svelte';
 
 	checkIfLogged();
 
@@ -35,11 +36,20 @@
 								<a id="redirect{project.id}" sveltekit:prefetch href="/view/{project.id}"
 									>{project.name}</a
 								>
-								<button
-									on:click={() => deleteProjectInAPI(project.id)}
-									type="button"
-									class="btn btn-secondary btn-sm">Delete</button
-								>
+								<div>
+									<button
+										data-bs-toggle="modal"
+										data-bs-target="#modalRenameProject{project.id}"
+										type="button"
+										class="btn btn-outline-secondary btn-sm">Rename</button
+									>
+									<ModalRenameProject bind:projects project_id={project.id} />
+									<button
+										on:click={() => deleteProjectInAPI(project.id)}
+										type="button"
+										class="btn btn-outline-danger btn-sm">Delete</button
+									>
+								</div>
 							</div>
 						</div>
 					</li>

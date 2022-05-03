@@ -21,13 +21,17 @@
 	let rootTreeView: any;
 	let model_name: string;
 
-	function enableModifications() {
-		modify = true;
-	}
-
-	function saveProject() {
-		// todo : gestion sauvegarde projet
-		modify = false;
+	async function updateElements() {
+		models = await getModels(idProject);
+		modelsContent = [];
+		for (var i = 0; i < models.length; i++) {
+			let content = await getModelInformations(models[i].id);
+			modelsContent.push(content);
+		}
+		modelsContent = modelsContent;
+		model_id = models[0].id;
+		model_name = models[0].name;
+		await rootTreeView.updateTree();
 	}
 
 	async function updateModelId(id: any, name: string) {
@@ -36,33 +40,29 @@
 		await rootTreeView.updateTree();
 	}
 
+	async function handleMessage(event: { detail: { text: any } }) {
+		models = await getModels(idProject);
+		modelsContent = [];
+		for (var i = 0; i < models.length; i++) {
+			let content = await getModelInformations(models[i].id);
+			modelsContent.push(content);
+		}
+		modelsContent = modelsContent;
+	}
+
 	async function deleteModelInAPI() {
 		await deleteModel(model_id);
 
-		models = await getModels(idProject);
-		modelsContent = [];
-		for (var i = 0; i < models.length; i++) {
-			let content = await getModelInformations(models[i].id);
-			modelsContent.push(content);
-		}
-		modelsContent = modelsContent;
-		model_id = models[0].id;
-		model_name = models[0].name;
-		await rootTreeView.updateTree();
+		updateElements();
 	}
 
 	onMount(async function () {
-		models = await getModels(idProject);
-		modelsContent = [];
-		for (var i = 0; i < models.length; i++) {
-			let content = await getModelInformations(models[i].id);
-			modelsContent.push(content);
-		}
-		modelsContent = modelsContent;
-		model_id = models[0].id;
-		model_name = models[0].name;
-		await rootTreeView.updateTree();
+		await updateElements();
 	});
+
+	function isSelected(id: any) {
+		return id === model_id;
+	}
 </script>
 
 <svelte:head>
@@ -74,7 +74,10 @@
 		<div class="col">
 			<select class="form-select" aria-label="Default select example">
 				{#each modelsContent as model, i}
-					<option on:click={() => updateModelId(model.id, model.name)}>{model.name}</option>
+					<option
+						selected={isSelected(model.id)}
+						on:click={() => updateModelId(model.id, model.name)}>{model.name}</option
+					>
 				{/each}
 			</select>
 		</div>
@@ -92,27 +95,21 @@
 				class="btn btn-primary">Add model</button
 			>
 
-			<ModalCreationModelComponent {idProject} bind:models bind:modelsContent />
+			<ModalCreationModelComponent
+				bind:model_id
+				bind:model_name
+				bind:rootTreeView
+				bind:modify
+				{idProject}
+				bind:models
+				bind:modelsContent
+			/>
 		</div>
 	</div>
 
 	<div class="row">
 		<div class="col border-right">
-			{#if modify}
-				<HeaderButtonsModel bind:model_name>
-					<button on:click={saveProject} type="button" class="col-3 btn btn-secondary">Save</button>
-				</HeaderButtonsModel>
-			{:else}
-				<HeaderButtonsModel bind:model_name>
-					<button
-						id="modifybtn"
-						on:click={enableModifications}
-						type="button"
-						class="col-3 btn btn-primary"
-						style="margin-right: 10px;">Modify</button
-					>
-				</HeaderButtonsModel>
-			{/if}
+			<HeaderButtonsModel on:message={handleMessage} bind:model_id bind:model_name bind:modify />
 
 			<RootTreeView bind:this={rootTreeView} {modify} bind:model_id />
 		</div>
