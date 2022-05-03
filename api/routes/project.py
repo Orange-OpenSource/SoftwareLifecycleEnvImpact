@@ -37,7 +37,13 @@ def get_project(project_id: int) -> Any:
         )
 
 
-def update_project(project_id: int):
+def update_project(project_id: int) -> Any:
+    """
+    PATCH /projects/<project_id>
+    Update the project with the A JSONPatch as defined by RFC 6902 in the body
+    :param project_id: the id of the project to update
+    :return: The updated project if it exists with id, 403 if the JSONPatch format is incorrect, 404 else
+    """
     project = Project.query.filter(Project.id == project_id).one_or_none()
 
     if project is not None:
@@ -54,6 +60,25 @@ def update_project(project_id: int):
             return project_schema.dump(model)
         except jsonpatch.JsonPatchConflict:
             return abort(403, "Patch format is incorrect")
+    else:
+        return abort(
+            404,
+            "No project found for Id: {project_id}".format(project_id=project_id),
+        )
+
+
+def delete_project(project_id: int) -> Any:
+    """
+    DELETE /projects/<project_id>
+    :param project_id: the id of the project to delete
+    :return: 200 if the project exists and is deleted, 404 else
+    """
+    project = Project.query.filter(Project.id == project_id).one_or_none()
+
+    if project is not None:
+        db.session.delete(project)
+        db.session.commit()
+        return 200
     else:
         return abort(
             404,

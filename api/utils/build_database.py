@@ -1,5 +1,3 @@
-import os
-
 from api.data_model import db, Model, Project, Task, TaskInput, TaskType
 
 projects = [
@@ -39,9 +37,8 @@ def reset_db() -> None:
     Reset the database with standard values
     :return: None
     """
-    # Delete database file if it exists currently
-    if os.path.exists("database.db"):
-        os.remove("database.db")
+    db.reflect()
+    db.drop_all()
 
     # Create the database
     db.create_all()

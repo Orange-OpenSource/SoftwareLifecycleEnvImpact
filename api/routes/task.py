@@ -34,13 +34,19 @@ def get_task(task_id: int) -> Any:
         )
 
 
-def update_task(task_id: int):
-    project = Task.query.filter(Task.id == task_id).one_or_none()
+def update_task(task_id: int) -> Any:
+    """
+    PATCH /tasks/<task_id>
+    Update the task with the A JSONPatch as defined by RFC 6902 in the body
+    :param task_id: the id of the task to update
+    :return: The updated task if it exists with id, 403 if the JSONPatch format is incorrect, 404 else
+    """
+    task = Task.query.filter(Task.id == task_id).one_or_none()
 
-    if project is not None:
+    if task is not None:
         try:
             task_schema = TaskSchema()
-            data = task_schema.dump(project)
+            data = task_schema.dump(task)
 
             patch = jsonpatch.JsonPatch(request.json)
             data = patch.apply(data)
@@ -51,6 +57,25 @@ def update_task(task_id: int):
             return task_schema.dump(model)
         except jsonpatch.JsonPatchConflict:
             return abort(403, "Patch format is incorrect")
+    else:
+        return abort(
+            404,
+            "No task found for Id: {task_id}".format(task_id=task_id),
+        )
+
+
+def delete_task(task_id: int) -> Any:
+    """
+    DELETE /tasks/<task_id>
+    :param task_id: the id of the task to delete
+    :return: 200 if the task exists and is deleted, 404 else
+    """
+    task = Task.query.filter(Task.id == task_id).one_or_none()
+
+    if task is not None:
+        db.session.delete(task)
+        db.session.commit()
+        return 200
     else:
         return abort(
             404,
@@ -72,10 +97,10 @@ def create_task(task: dict[str, Any]) -> Any:
 
     existing_task = (
         Task.query.filter(Task.name == name)
-            .filter(Task.task_type_id == task_type_id)
-            .filter(Task.parent_task_id == parent_task_id)
-            .filter(Task.model_id == model_id)
-            .one_or_none()
+        .filter(Task.task_type_id == task_type_id)
+        .filter(Task.parent_task_id == parent_task_id)
+        .filter(Task.model_id == model_id)
+        .one_or_none()
     )
 
     if existing_task is None:

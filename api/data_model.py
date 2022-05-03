@@ -74,7 +74,7 @@ class Task(db.Model):  # type: ignore
     task_type_id = db.Column(db.Integer, db.ForeignKey("task_type.id"), nullable=False)
     task_type = db.relationship(TaskType, lazy=True, foreign_keys="Task.task_type_id")
 
-    inputs = db.relationship(TaskInput, backref="task_input", lazy=True)
+    inputs = db.relationship(TaskInput, backref="task_input", lazy=True, cascade="all")
 
 
 class TaskSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
@@ -100,16 +100,17 @@ class Model(db.Model):  # type: ignore
     """
     Table Model representing one possibility for a project with a tree of tasks
     """
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
 
     tasks = db.relationship(
-        Task, backref="task", lazy=True, primaryjoin=id == Task.model_id
+        Task, backref="task", lazy=True, primaryjoin=id == Task.model_id, cascade="all"
     )
 
     root_task_id = db.Column(db.Integer, db.ForeignKey("task.id"))
     root_task = db.relationship(
-        Task, primaryjoin=root_task_id == Task.id, post_update=True
+        Task, primaryjoin=root_task_id == Task.id, post_update=True, cascade="all"
     )
 
     project_id = db.Column(db.Integer, db.ForeignKey("project.id"), nullable=False)
@@ -141,11 +142,15 @@ class Project(db.Model):  # type: ignore
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     models = db.relationship(
-        Model, backref="model", lazy=True, primaryjoin=id == Model.project_id
+        Model,
+        backref="model",
+        lazy=True,
+        primaryjoin=id == Model.project_id,
+        cascade="all",
     )
     base_model_id = db.Column(db.Integer, db.ForeignKey("model.id"))
     base_model = db.relationship(
-        Model, primaryjoin=base_model_id == Model.id, post_update=True
+        Model, primaryjoin=base_model_id == Model.id, post_update=True, cascade="all"
     )
 
 

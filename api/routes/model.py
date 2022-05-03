@@ -36,7 +36,13 @@ def get_model(model_id: int) -> Any:
         )
 
 
-def update_model(model_id: int):
+def update_model(model_id: int) -> Any:
+    """
+    PATCH /models/<model_id>
+    Update the model with the A JSONPatch as defined by RFC 6902 in the body
+    :param model_id: the id of the model to update
+    :return: The updated model if it exists with id, 403 if the JSONPatch format is incorrect, 404 else
+    """
     model = Model.query.filter(Model.id == model_id).one_or_none()
 
     if model is not None:
@@ -52,11 +58,27 @@ def update_model(model_id: int):
 
             return model_schema.dump(model)
         except jsonpatch.JsonPatchConflict:
-            return abort(
-                403,
-                'Patch format is incorrect'
-            )
+            return abort(403, "Patch format is incorrect")
 
+    else:
+        return abort(
+            404,
+            "No model found for Id: {model_id}".format(model_id=model_id),
+        )
+
+
+def delete_model(model_id: int) -> Any:
+    """
+    DELETE /models/<model_id>
+    :param model_id: the id of the model to delete
+    :return: 200 if the model exists and is deleted, 404 else
+    """
+    model = Model.query.filter(Model.id == model_id).one_or_none()
+
+    if model is not None:
+        db.session.delete(model)
+        db.session.commit()
+        return 200
     else:
         return abort(
             404,
@@ -92,8 +114,8 @@ def create_model(model: dict[str, Any]) -> Any:
 
     existing_model = (
         Model.query.filter(Model.name == name)
-            .filter(Model.project_id == project_id)
-            .one_or_none()
+        .filter(Model.project_id == project_id)
+        .one_or_none()
     )
 
     if existing_model is None:

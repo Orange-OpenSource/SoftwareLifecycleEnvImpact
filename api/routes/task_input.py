@@ -2,7 +2,7 @@ from typing import Any
 
 from flask import abort
 
-from api.data_model import TaskInput, TaskInputSchema
+from api.data_model import db, TaskInput, TaskInputSchema
 
 
 def get_task_inputs() -> Any:
@@ -26,6 +26,27 @@ def get_task_input(task_input_id: int) -> Any:
     if task_input is not None:
         task_schema = TaskInputSchema()
         return task_schema.dump(task_input)
+    else:
+        return abort(
+            404,
+            "No task input found for Id: {task_input_id}".format(
+                task_input_id=task_input_id
+            ),
+        )
+
+
+def delete_task_input(task_input_id: int) -> Any:
+    """
+    DELETE /taskinputs/<task_input_id>
+    :param task_input_id: the id of the task input to delete
+    :return: 200 if the task input exists and is deleted, 404 else
+    """
+    task_input = TaskInput.query.filter(TaskInput.id == task_input_id).one_or_none()
+
+    if task_input is not None:
+        db.session.delete(task_input)
+        db.session.commit()
+        return 200
     else:
         return abort(
             404,

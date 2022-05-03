@@ -84,7 +84,19 @@ paths:
             $ref: '#/definitions/Project'
         404:
           description: No project project with this id
-
+    delete:
+      operationId: api.routes.project.delete_project
+      tags:
+        - Project
+      summary: Delete a project
+      description: Delete a project
+      responses:
+        200:
+          description: Successfully deleted project
+          schema:
+            $ref: '#/definitions/Project'
+        404:
+          description: No project project with this id
 
   /projects/{project_id}/models:
     parameters:
@@ -190,6 +202,19 @@ paths:
             $ref: '#/definitions/Model'
         404:
           description: No model found with this id
+    delete:
+      operationId: api.routes.model.delete_model
+      tags:
+        - Model
+      summary: Delete a model
+      description: Delete a model
+      responses:
+        200:
+          description: Successfully deleted model
+          schema:
+            $ref: '#/definitions/Model'
+        404:
+          description: No model project with this id
 
 
   /models/{model_id}/tasks:
@@ -301,6 +326,19 @@ paths:
             $ref: '#/definitions/Task'
         404:
           description: No task with this id
+    delete:
+      operationId: api.routes.task.delete_task
+      tags:
+        - Task
+      summary: Delete a task
+      description: Delete a task
+      responses:
+        200:
+          description: Successfully deleted task
+          schema:
+            $ref: '#/definitions/Task'
+        404:
+          description: No task with this id
 
   /tasktypes:
     get:
@@ -372,6 +410,19 @@ paths:
             $ref: '#/definitions/TaskInput'
         404:
           description: No task input found with this id
+    delete:
+      operationId: api.routes.task_input.delete_task_input
+      tags:
+        - TaskInput
+      summary: Delete a task input
+      description: Delete a task input
+      responses:
+        200:
+          description: Successfully deleted task input
+          schema:
+            $ref: '#/definitions/TaskInput'
+        404:
+          description: No task input with this id
 
   /debug/reset:
     get:
