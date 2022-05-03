@@ -14,7 +14,7 @@
 		// @ts-ignore
 		let taskname = document.getElementById('createTaskInput' + parentId).value;
 
-		await createTask(model_id, taskname, parent_task_id, 0);
+		await createTask(model_id, taskname, parentId, 0);
 
 		dispatch('message', {
 			text: 'updateTree'
@@ -36,7 +36,7 @@
 							class="btn btn-outline-primary btn-sm btnmodifyparent">Modify</button
 						>
 
-						<ModalComponent task_id={task.id}>
+						<ModalComponent on:message task_id={task.id}>
 							<span slot="taskName">{task.name}</span>
 							<span id="task_id{task.id}" slot="body">
 								{#each task.inputs as input}
@@ -85,7 +85,7 @@
 						class="btn btn-outline-primary btn-sm btnmodify">Modify</button
 					>
 
-					<ModalComponent task_id={task.id}>
+					<ModalComponent on:message task_id={task.id}>
 						<span slot="taskName">{task.name}</span>
 						<span id="task_id{task.id}" slot="body">
 							{#each task.inputs as input}

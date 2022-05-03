@@ -1,5 +1,4 @@
 const endpoint = 'http://90.84.244.180:5001/api/v1/';
-const mockendpoint = 'https://626131b3327d3896e2767e8e.mockapi.io/';
 
 export async function createProject(nameProject: any) {
 	const res = await fetch(endpoint + 'projects', {
@@ -66,13 +65,6 @@ export async function getModels(idProject: any) {
 	return res.models;
 }
 
-export async function getModel(idModel: any) {
-	const newresponse = await fetch(mockendpoint + 'models/' + idModel);
-	let res = await newresponse.json();
-
-	return res.content;
-}
-
 export async function getModelInformations(idModel: any) {
 	const newresponse = await fetch(endpoint + 'models/' + idModel);
 	let res = await newresponse.json();
@@ -114,6 +106,36 @@ export async function createTask(idModel: any, taskName: any, parentTaskId: any,
 			parent_task_id: parentTaskId,
 			task_type_id: taskTypeId
 		})
+	});
+
+	const json = await res.json();
+
+	return json;
+}
+
+export async function deleteProject(project_id: any) {
+	const res = await fetch(endpoint + 'projects/' + project_id, {
+		method: 'DELETE'
+	});
+
+	const json = await res.json();
+
+	return json;
+}
+
+export async function deleteModel(model_id: any) {
+	const res = await fetch(endpoint + 'models/' + model_id, {
+		method: 'DELETE'
+	});
+
+	const json = await res.json();
+
+	return json;
+}
+
+export async function deleteTask(task_id: any) {
+	const res = await fetch(endpoint + 'tasks/' + task_id, {
+		method: 'DELETE'
 	});
 
 	const json = await res.json();

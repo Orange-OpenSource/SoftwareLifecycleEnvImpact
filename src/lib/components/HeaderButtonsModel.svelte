@@ -1,5 +1,5 @@
-<script>
-	export let model_name;
+<script lang="ts">
+	export let model_name: string;
 </script>
 
 <div class="row" style="padding-top : 20px; margin-bottom: 20px;">
@@ -13,6 +13,5 @@
 		/>
 	</span>
 	<button type="button" class="col-3 btn btn-light" style="margin-right: 10px;">Compare</button>
-	<button type="button" class="col-3 btn btn-light" style="margin-right: 10px;">Projects</button>
 	<slot />
 </div>

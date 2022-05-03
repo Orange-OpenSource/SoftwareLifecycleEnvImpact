@@ -18,7 +18,7 @@ test('index page has expected projects', async ({ page }) => {
 	expect(await page.textContent('h2')).toBe('My projects');
 
 	let listItems = page.locator('ul > li');
-	await listItems.nth(2).waitFor();
+	await listItems.nth(1).waitFor();
 
 	for (let i = 0; i < 2; i++)
 		expect(await listItems.nth(i).textContent()).toBe('Project ' + i + ' ');

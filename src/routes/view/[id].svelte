@@ -1,7 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
-	import { getModels, getModelInformations } from '../../lib/controllers/RequestController';
+	import {
+		getModels,
+		getModelInformations,
+		deleteModel
+	} from '../../lib/controllers/RequestController';
 	import RootTreeView from '../../lib/components/RootTreeView.svelte';
 	import HeaderButtonsModel from '../../lib/components/HeaderButtonsModel.svelte';
 	import { checkIfLogged } from '../../lib/controllers/LoginController';
@@ -29,6 +33,21 @@
 	async function updateModelId(id: any, name: string) {
 		model_id = id;
 		model_name = name;
+		await rootTreeView.updateTree();
+	}
+
+	async function deleteModelInAPI() {
+		await deleteModel(model_id);
+
+		models = await getModels(idProject);
+		modelsContent = [];
+		for (var i = 0; i < models.length; i++) {
+			let content = await getModelInformations(models[i].id);
+			modelsContent.push(content);
+		}
+		modelsContent = modelsContent;
+		model_id = models[0].id;
+		model_name = models[0].name;
 		await rootTreeView.updateTree();
 	}
 
@@ -61,6 +80,12 @@
 		</div>
 		<div class="col d-flex justify-content-end">
 			<button
+				on:click={deleteModelInAPI}
+				type="button"
+				class="btn btn-secondary"
+				style="margin-right:5px;">Delete current model</button
+			>
+			<button
 				data-bs-toggle="modal"
 				data-bs-target="#modalCreateModel"
 				type="button"
@@ -75,7 +100,7 @@
 		<div class="col border-right">
 			{#if modify}
 				<HeaderButtonsModel bind:model_name>
-					<button on:click={saveProject} type="button" class="col-2 btn btn-secondary">Save</button>
+					<button on:click={saveProject} type="button" class="col-3 btn btn-secondary">Save</button>
 				</HeaderButtonsModel>
 			{:else}
 				<HeaderButtonsModel bind:model_name>
@@ -83,7 +108,7 @@
 						id="modifybtn"
 						on:click={enableModifications}
 						type="button"
-						class="col-2 btn btn-primary"
+						class="col-3 btn btn-primary"
 						style="margin-right: 10px;">Modify</button
 					>
 				</HeaderButtonsModel>
