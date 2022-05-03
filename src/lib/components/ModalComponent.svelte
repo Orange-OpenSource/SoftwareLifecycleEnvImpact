@@ -3,13 +3,25 @@
 	import { createEventDispatcher } from 'svelte';
 
 	export let task_id: any;
+	export let task_parent_id: any;
+	export let tasks: any[];
+
 	const dispatch = createEventDispatcher();
+
 	async function deleteTaskInAPI() {
 		await deleteTask(task_id);
 
 		dispatch('message', {
 			text: 'updateTree'
 		});
+	}
+
+	async function updateParent(idParent: any){
+		console.log(idParent);
+	}
+
+	function isParent(task: { parent_task_id: any; }, parentTask: { id: any; }){
+		return task_parent_id === parentTask.id;
 	}
 </script>
 
@@ -41,11 +53,22 @@
 				/>
 			</div>
 			<div class="modal-body">
+				Parent :
+				<select class="form-select" aria-label="Default select example">
+					{#each tasks as task}
+						{#if task.id !== task_id}
+						<option on:click={() => updateParent(task.id)}
+							selected={isParent(task_id, task)}
+							>{task.name}</option
+						>
+						{/if}
+					{/each}
+				</select>
+
 				<slot name="body" />
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Save changes</button>
 			</div>
 		</div>
 	</div>

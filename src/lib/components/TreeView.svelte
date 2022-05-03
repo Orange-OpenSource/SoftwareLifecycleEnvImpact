@@ -9,6 +9,7 @@
 	export let modify: any;
 	export let model_id: any;
 	export let parent_task_id: any;
+	export let tasks: any[];
 
 	async function createNewTask(parentId: any) {
 		// @ts-ignore
@@ -36,7 +37,7 @@
 							class="btn btn-outline-primary btn-sm btnmodifyparent">Modify</button
 						>
 
-						<ModalComponent on:message task_id={task.id}>
+						<ModalComponent on:message bind:tasks={tasks} task_id={task.id} task_parent_id={task.parent_task_id}>
 							<span slot="taskName">{task.name}</span>
 							<span id="task_id{task.id}" slot="body">
 								{#each task.inputs as input}
@@ -72,6 +73,7 @@
 					{modify}
 					parent_task_id={task.id}
 					{model_id}
+					{tasks}
 				/>
 			</div>
 		{:else if modify}
@@ -85,7 +87,7 @@
 						class="btn btn-outline-primary btn-sm btnmodify">Modify</button
 					>
 
-					<ModalComponent on:message task_id={task.id}>
+					<ModalComponent bind:tasks={tasks} on:message task_id={task.id} task_parent_id={task.parent_task_id}>
 						<span slot="taskName">{task.name}</span>
 						<span id="task_id{task.id}" slot="body">
 							{#each task.inputs as input}
