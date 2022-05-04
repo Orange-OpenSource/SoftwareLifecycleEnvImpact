@@ -1,18 +1,21 @@
 <script lang="ts">
-	export let task_id: any;
+	export let details: any;
 </script>
 
 <div
 	class="modal fade"
-	id="modalCreateTask{task_id}"
+	id="modal{details}"
 	tabindex="-1"
-	aria-labelledby="modalLabelCreate{task_id}"
+	aria-labelledby="modalLabel{details}"
 	aria-hidden="true"
 >
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="modalLabelCreate{task_id}"><slot name="taskName" /></h5>
+				<div class="w-100 d-flex justify-content-between">
+					<h5 class="modal-title" id="modalLabel{details}"><slot name="title" /></h5>
+					<slot name="btndelete" />
+				</div>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" />
 			</div>
 			<div class="modal-body">

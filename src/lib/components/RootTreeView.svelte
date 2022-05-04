@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getTasksFromModel } from '../controllers/RequestController';
+	import { getTasksFromModel } from '$lib/controllers/RequestController';
 	import TreeView from './TreeView.svelte';
 	import { tick } from 'svelte';
 
@@ -17,7 +17,7 @@
 		for (let i = 0; i < array.length; i++) {
 			tasks.push(array[i]);
 			tasks = tasks;
-			if (array[i].subtasks.length){
+			if (array[i].subtasks.length) {
 				pushEachTaskFromModelInArray(array[i].subtasks);
 			}
 		}
@@ -38,5 +38,5 @@
 </script>
 
 <div class="col scroll">
-	<TreeView on:message={handleMessage} bind:model_id {parent_task_id} {subtasks} {modify} {tasks}/>
+	<TreeView on:message={handleMessage} bind:model_id {parent_task_id} {subtasks} {modify} {tasks} />
 </div>

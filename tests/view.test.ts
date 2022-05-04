@@ -22,6 +22,6 @@ test('view/0 has expected tasks', async ({ page }) => {
 	let listItems = page.locator('span.info-name');
 	await listItems.nth(1).waitFor();
 
-	expect(await listItems.nth(0).textContent()).toBe('Task 2 ');
-	expect(await listItems.nth(1).textContent()).toBe('Task 3 ');
+	expect(await listItems.nth(0).textContent()).toBe('Task 2');
+	expect(await listItems.nth(1).textContent()).toBe('Task 3');
 });

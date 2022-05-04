@@ -1,15 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
-	import {
-		getModels,
-		getModelInformations,
-		deleteModel
-	} from '../../lib/controllers/RequestController';
-	import RootTreeView from '../../lib/components/RootTreeView.svelte';
-	import HeaderButtonsModel from '../../lib/components/HeaderButtonsModel.svelte';
-	import { checkIfLogged } from '../../lib/controllers/LoginController';
-	import ModalCreationModelComponent from '$lib/components/ModalCreationModelComponent.svelte';
+	import { getModels, getModelInformations, deleteModel } from '$lib/controllers/RequestController';
+	import RootTreeView from '$lib/components/RootTreeView.svelte';
+	import HeaderButtonsModel from '$lib/components/HeaderButtonsModel.svelte';
+	import { checkIfLogged } from '$lib/controllers/LoginController';
+	import ModalCreationModel from '$lib/components/modals/ModalCreationModel.svelte';
 
 	checkIfLogged();
 
@@ -88,19 +84,13 @@
 				class="btn btn-secondary"
 				style="margin-right:5px;">Delete current model</button
 			>
-			<button
-				data-bs-toggle="modal"
-				data-bs-target="#modalCreateModel"
-				type="button"
-				class="btn btn-primary">Add model</button
-			>
 
-			<ModalCreationModelComponent
+			<ModalCreationModel
 				bind:model_id
 				bind:model_name
 				bind:rootTreeView
 				bind:modify
-				{idProject}
+				bind:idProject
 				bind:models
 				bind:modelsContent
 			/>
