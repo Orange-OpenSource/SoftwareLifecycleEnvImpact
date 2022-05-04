@@ -1,5 +1,6 @@
 from flask_marshmallow import Marshmallow
 from flask_sqlalchemy import SQLAlchemy
+from marshmallow_sqlalchemy.fields import Nested
 
 db = SQLAlchemy()
 ma = Marshmallow()
@@ -92,8 +93,8 @@ class TaskSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
         include_fk = True
         sqla_session = db.session
 
-    subtasks = ma.Nested("TaskSchema", many=True)
-    inputs = ma.Nested(TaskInputSchema, many=True)
+    subtasks = Nested("TaskSchema", many=True)
+    inputs = Nested(TaskInputSchema, many=True)
 
 
 class Model(db.Model):  # type: ignore
@@ -131,7 +132,7 @@ class ModelSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
         include_fk = True
         sqla_session = db.session
 
-    tasks = ma.Nested("TaskSchema", many=True)
+    tasks = Nested("TaskSchema", many=True)
 
 
 class Project(db.Model):  # type: ignore
@@ -169,4 +170,4 @@ class ProjectSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
         include_fk = True
         sqla_session = db.session
 
-    models = ma.Nested("ModelSchema", many=True)
+    models = Nested("ModelSchema", many=True)
