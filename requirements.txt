@@ -10,3 +10,4 @@ Flask-SQLAlchemy~=2.5.1
 connexion[swagger-ui]~=2.13.0
 Flask-Cors~=3.0.10
 jsonpatch~=1.32
+pytest-flask~=1.2.0
