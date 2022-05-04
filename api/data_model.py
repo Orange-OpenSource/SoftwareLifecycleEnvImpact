@@ -1,6 +1,7 @@
 from flask_marshmallow import Marshmallow
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow_sqlalchemy.fields import Nested
+from sqlalchemy import func
 
 db = SQLAlchemy()
 ma = Marshmallow()
@@ -77,6 +78,9 @@ class Task(db.Model):  # type: ignore
 
     inputs = db.relationship(TaskInput, backref="task_input", lazy=True, cascade="all")
 
+    created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
+
 
 class TaskSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
     """
@@ -116,6 +120,9 @@ class Model(db.Model):  # type: ignore
 
     project_id = db.Column(db.Integer, db.ForeignKey("project.id"), nullable=False)
 
+    created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
+
 
 class ModelSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
     """
@@ -153,6 +160,9 @@ class Project(db.Model):  # type: ignore
     base_model = db.relationship(
         Model, primaryjoin=base_model_id == Model.id, post_update=True, cascade="all"
     )
+
+    created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
 
 class ProjectSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
