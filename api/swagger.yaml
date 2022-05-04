@@ -410,6 +410,25 @@ paths:
             $ref: '#/definitions/TaskInput'
         404:
           description: No task input found with this id
+    patch:
+      operationId: api.routes.task_input.update_task_input
+      tags:
+        - TaskInput
+      summary: Update a task input
+      description: Update a task input
+      parameters:
+        - name: JsonPatch
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/PatchRequest"
+      responses:
+        200:
+          description: Successfully updated task input
+          schema:
+            $ref: '#/definitions/Task'
+        404:
+          description: No task input with this id
     delete:
       operationId: api.routes.task_input.delete_task_input
       tags:

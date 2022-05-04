@@ -1,6 +1,7 @@
 from typing import Any
 
-from flask import abort
+import jsonpatch
+from flask import abort, request
 
 from api.data_model import db, TaskInput, TaskInputSchema
 
@@ -34,6 +35,34 @@ def get_task_input(task_input_id: int) -> Any:
             ),
         )
 
+def update_task_input(task_input_id: int) -> Any:
+    """
+    PATCH /taskinputs/<task_input_id>
+    Update the task_input with the A JSONPatch as defined by RFC 6902 in the body
+    :param task_input_id: the id of the task input to update
+    :return: The updated task input if it exists with id, 403 if the JSONPatch format is incorrect, 404 else
+    """
+    task_input = TaskInput.query.filter(TaskInput.id == task_input_id).one_or_none()
+
+    if task_input is not None:
+        try:
+            task_schema = TaskInputSchema()
+            data = task_schema.dump(task_input)
+
+            patch = jsonpatch.JsonPatch(request.json)
+            data = patch.apply(data)
+
+            model = task_schema.load(data)
+            db.session.commit()
+
+            return task_schema.dump(model)
+        except jsonpatch.JsonPatchConflict:
+            return abort(403, "Patch format is incorrect")
+    else:
+        return abort(
+            404,
+            "No task input found for Id: {task_input_id}".format(task_input_id=task_input_id),
+        )
 
 def delete_task_input(task_input_id: int) -> Any:
     """
