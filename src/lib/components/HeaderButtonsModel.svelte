@@ -33,7 +33,7 @@
 	}
 </script>
 
-<div class="row" style="padding-top : 20px; margin-bottom: 20px;">
+<div class="row" style="padding : 20px 0px 0px 10px; margin-bottom: 20px;">
 	<span class="col-3">
 		<input type="email" class="form-control" id="nameproject" placeholder="Name project" value={model_name} readonly={!modify} />
 	</span>

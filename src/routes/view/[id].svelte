@@ -6,6 +6,7 @@
 	import HeaderButtonsModel from '$lib/components/HeaderButtonsModel.svelte';
 	import { checkIfLogged } from '$lib/controllers/LoginController';
 	import ModalCreationModel from '$lib/components/modals/ModalCreationModel.svelte';
+	import Split from 'split.js'
 
 	checkIfLogged();
 
@@ -56,6 +57,22 @@
 
 	onMount(async function () {
 		await updateElements();
+
+		Split(['#split-0', '#split-1', '#split-2'], {
+			sizes : [25, 50, 25],
+			minSize: 0,
+			snapOffset: 150,
+			onDrag : function() {
+				for (let i = 0; i < 3; i++) {
+					let element = document.getElementById('split-' + i);
+					if (element!.offsetWidth === 0){
+						element!.style.visibility = "hidden";
+					} else {
+						element!.style.visibility = "visible";
+					}
+				}
+			}
+		})
 	});
 </script>
 
@@ -63,9 +80,8 @@
 	<title>Models</title>
 </svelte:head>
 
-<div class="container">
-	<div class="row">
-		<div class="col-3 border-right">
+	<div class="split">
+		<div id="split-0">
 			<h2 class="title">My models</h2>
 
 			<ul class="list-group list-group-flush" style="margin-bottom : 5px;">
@@ -84,14 +100,17 @@
 			<ModalCreationModel bind:model_id bind:model_name bind:rootTreeView bind:modify bind:idProject bind:models bind:modelsContent />
 		</div>
 
-		<div class="col border-right">
+		<div id="split-1">
 			<HeaderButtonsModel bind:model_id bind:model_name bind:modify bind:modelsContent bind:models bind:idProject />
 
 			<RootTreeView bind:this={rootTreeView} bind:modify bind:model_id />
 		</div>
 
-		<div class="col-2">
+		<div id="split-2">
 			<h2 class="title">Impact by resource</h2>
 		</div>
 	</div>
-</div>
+
+<style>
+
+</style>
