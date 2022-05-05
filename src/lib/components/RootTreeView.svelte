@@ -43,7 +43,7 @@
 		parent_task_id = rootTask.id;
 		subtasks = rootTask.subtasks;
 
-		if (subtasks.length === 0){
+		if (subtasks.length === 0) {
 			modify = true;
 		}
 	}

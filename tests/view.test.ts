@@ -13,7 +13,7 @@ test('view/0 has expected 2 models', async ({ page }) => {
 
 	let listItems = page.locator('li');
 
-	for (let i = 0; i < 2; i++) expect(await listItems.nth(i).textContent()).toBe('Model ' + i+ ' Delete ');
+	for (let i = 0; i < 2; i++) expect(await listItems.nth(i).textContent()).toBe('Model ' + i + ' Delete ');
 });
 
 test('view/0 has expected tasks', async ({ page }) => {

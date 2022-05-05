@@ -29,7 +29,7 @@
 
 	/**
 	 * Set the "<select>" tag on the current parent by default.
-	 * 
+	 *
 	 * @param parentTask
 	 */
 	function isParent(parentTask: { id: any }) {

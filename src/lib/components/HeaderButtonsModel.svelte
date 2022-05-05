@@ -34,13 +34,12 @@
 </script>
 
 <div class="row" style="padding : 20px 0px 0px 10px; margin-bottom: 20px;">
-	<span class="col-3">
-		<input type="email" class="form-control" id="nameproject" placeholder="Name project" value={model_name} readonly={!modify} />
+	<span class="col-4">
+		<input class="form-control" id="nameproject" placeholder="Name project" value={model_name} readonly={!modify} />
 	</span>
-	<button type="button" class="col-3 btn btn-light" style="margin-right: 10px;">Compare</button>
 	{#if modify}
-		<button on:click={renameModel} type="button" class="col-3 btn btn-secondary">Preview mode</button>
+		<button on:click={renameModel} type="button" class="col-4 btn btn-secondary">Preview mode</button>
 	{:else}
-		<button id="modifybtn" on:click={enableModifications} type="button" class="col-3 btn btn-primary" style="margin-right: 10px;">Editing mode</button>
+		<button id="modifybtn" on:click={enableModifications} type="button" class="col-4 btn btn-primary" style="margin-right: 10px;">Editing mode</button>
 	{/if}
 </div>

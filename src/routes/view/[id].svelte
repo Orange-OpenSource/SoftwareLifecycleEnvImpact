@@ -6,7 +6,9 @@
 	import HeaderButtonsModel from '$lib/components/HeaderButtonsModel.svelte';
 	import { checkIfLogged } from '$lib/controllers/LoginController';
 	import ModalCreationModel from '$lib/components/modals/ModalCreationModel.svelte';
-	import Split from 'split.js'
+	import Split from 'split.js';
+	import { browser } from '$app/env';
+	import { goto } from '$app/navigation';
 
 	checkIfLogged();
 
@@ -49,30 +51,36 @@
 	/**
 	 * Delete the current model and update the page without it.
 	 */
-	async function deleteModelInAPI(idModel : any) {
+	async function deleteModelInAPI(idModel: any) {
 		await deleteModel(idModel);
 
 		updateElements();
+	}
+
+	function comparePage() {
+		if (browser) {
+			goto('/compare/' + idProject);
+		}
 	}
 
 	onMount(async function () {
 		await updateElements();
 
 		Split(['#split-0', '#split-1', '#split-2'], {
-			sizes : [25, 50, 25],
+			sizes: [25, 50, 25],
 			minSize: 0,
 			snapOffset: 150,
-			onDrag : function() {
+			onDrag: function () {
 				for (let i = 0; i < 3; i++) {
 					let element = document.getElementById('split-' + i);
-					if (element!.offsetWidth === 0){
-						element!.style.visibility = "hidden";
+					if (element!.offsetWidth === 0) {
+						element!.style.visibility = 'hidden';
 					} else {
-						element!.style.visibility = "visible";
+						element!.style.visibility = 'visible';
 					}
 				}
 			}
-		})
+		});
 	});
 </script>
 
@@ -80,37 +88,35 @@
 	<title>Models</title>
 </svelte:head>
 
-	<div class="split">
-		<div id="split-0">
-			<h2 class="title">My models</h2>
+<div class="split">
+	<div id="split-0">
+		<button on:click={comparePage} type="button" class="col btn btn-outline-primary" style="margin-top: 20px;">Compare models</button>
 
-			<ul class="list-group list-group-flush" style="margin-bottom : 5px;">
-				{#each modelsContent as model}
-					<li class="list-group-item">
-						<div class="card-body d-flex justify-content-between">
-								<span on:click={() => updateModelId(model.id, model.name)} class="underline-on-hover" style="cursor:pointer;">{model.name}</span>
-								<div>
-									<button on:click={() => deleteModelInAPI(model.id)} type="button" class="btn btn-outline-danger btn-sm">Delete</button>
-								</div>
+		<h2 class="title">My models</h2>
+
+		<ul class="list-group list-group-flush" style="margin-bottom : 5px;">
+			{#each modelsContent as model}
+				<li class="list-group-item">
+					<div class="card-body d-flex justify-content-between">
+						<span on:click={() => updateModelId(model.id, model.name)} class="underline-on-hover" style="cursor:pointer;">{model.name}</span>
+						<div>
+							<button on:click={() => deleteModelInAPI(model.id)} type="button" class="btn btn-outline-danger btn-sm">Delete</button>
 						</div>
-					</li>
-				{/each}
-			</ul>
+					</div>
+				</li>
+			{/each}
+		</ul>
 
-			<ModalCreationModel bind:model_id bind:model_name bind:rootTreeView bind:modify bind:idProject bind:models bind:modelsContent />
-		</div>
-
-		<div id="split-1">
-			<HeaderButtonsModel bind:model_id bind:model_name bind:modify bind:modelsContent bind:models bind:idProject />
-
-			<RootTreeView bind:this={rootTreeView} bind:modify bind:model_id />
-		</div>
-
-		<div id="split-2">
-			<h2 class="title">Impact by resource</h2>
-		</div>
+		<ModalCreationModel bind:model_id bind:model_name bind:rootTreeView bind:modify bind:idProject bind:models bind:modelsContent />
 	</div>
 
-<style>
+	<div id="split-1">
+		<HeaderButtonsModel bind:model_id bind:model_name bind:modify bind:modelsContent bind:models bind:idProject />
 
-</style>
+		<RootTreeView bind:this={rootTreeView} bind:modify bind:model_id />
+	</div>
+
+	<div id="split-2">
+		<h2 class="title">Impact by resource</h2>
+	</div>
+</div>

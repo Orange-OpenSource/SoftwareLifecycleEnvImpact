@@ -2,24 +2,24 @@
 	import { getProjects, updateProject } from '$lib/controllers/RequestController';
 	import Modal from './Modal.svelte';
 
-	export let project_id: any;
+	export let project: any;
 	export let projects: any[] = [];
 
 	/**
-	 * Rename project within the id "project_id".
+	 * Rename project within the id "project.id".
 	 */
 	async function renameProject() {
 		// @ts-ignore
-		let newName = document.getElementById('createProjectInput' + project_id).value;
-		await updateProject(project_id, newName);
+		let newName = document.getElementById('createProjectInput' + project.id).value;
+		await updateProject(project.id, newName);
 		projects = await getProjects();
 	}
 </script>
 
-<button data-bs-toggle="modal" data-bs-target="#modalRenameProject{project_id}" type="button" class="btn btn-outline-secondary btn-sm">Rename</button>
+<button data-bs-toggle="modal" data-bs-target="#modalRenameProject{project.id}" type="button" class="btn btn-outline-secondary btn-sm">Rename</button>
 
-<Modal details={'RenameProject' + project_id}>
+<Modal details={'RenameProject' + project.id}>
 	<span slot="title">Rename project :</span>
-	<input slot="body" id="createProjectInput{project_id}" placeholder="Project new name" required />
+	<input slot="body" id="createProjectInput{project.id}" placeholder="Project new name" value={project.name} required />
 	<button slot="btnsave" on:click={renameProject} type="button" data-bs-dismiss="modal" class="btn btn-primary">Rename project</button>
 </Modal>

@@ -11,7 +11,7 @@
 
 	/**
 	 * Delete the project in API and update page without it.
-	 * 
+	 *
 	 * @param project_id
 	 */
 	async function deleteProjectInAPI(project_id: any) {
@@ -40,7 +40,7 @@
 							<div class="d-flex justify-content-between" style="width: 40%;">
 								<a id="redirect{project.id}" sveltekit:prefetch href="/view/{project.id}">{project.name}</a>
 								<div>
-									<ModalRenameProject bind:projects project_id={project.id} />
+									<ModalRenameProject bind:projects {project} />
 									<button on:click={() => deleteProjectInAPI(project.id)} type="button" class="btn btn-outline-danger btn-sm">Delete</button>
 								</div>
 							</div>
