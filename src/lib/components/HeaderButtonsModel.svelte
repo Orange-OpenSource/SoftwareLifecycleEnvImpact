@@ -8,6 +8,17 @@
 	export let models: string | any[];
 	export let modelsContent: any;
 
+	async function changeState() {
+		// @ts-ignore
+		let state = document.getElementById('editmodeSwitch').checked;
+
+		if (state) {
+			enableModifications();
+		} else {
+			await renameModel();
+		}
+	}
+
 	function enableModifications() {
 		modify = true;
 	}
@@ -37,9 +48,9 @@
 	<span class="col-4">
 		<input class="form-control" id="nameproject" placeholder="Name project" value={model_name} readonly={!modify} />
 	</span>
-	{#if modify}
-		<button on:click={renameModel} type="button" class="col-4 btn btn-secondary">Preview mode</button>
-	{:else}
-		<button id="modifybtn" on:click={enableModifications} type="button" class="col-4 btn btn-primary" style="margin-right: 10px;">Editing mode</button>
-	{/if}
+
+	<div class="col-4 form-check form-switch" style="margin-top:5px;">
+		<input on:click={changeState} class="form-check-input" type="checkbox" id="editmodeSwitch" checked={modify} />
+		<label class="form-check-label" for="editmodeSwitch">Editing mode</label>
+	</div>
 </div>
