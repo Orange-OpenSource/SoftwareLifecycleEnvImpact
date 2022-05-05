@@ -20,14 +20,7 @@
 					{/if}
 				</span>
 
-				<svelte:self
-					on:message
-					subtasks={task.subtasks}
-					{modify}
-					parent_task_id={task.id}
-					{model_id}
-					{tasks}
-				/>
+				<svelte:self on:message subtasks={task.subtasks} bind:modify parent_task_id={task.id} {model_id} {tasks} />
 			</div>
 		{:else if modify}
 			<div class="raw nochildmodify">

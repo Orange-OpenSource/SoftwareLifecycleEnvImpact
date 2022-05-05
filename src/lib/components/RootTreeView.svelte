@@ -13,6 +13,11 @@
 		await updateTree();
 	}
 
+	/**
+	 * Put each task from one model into an array.
+	 *
+	 * @param array the array to put the tasks into.
+	 */
 	function pushEachTaskFromModelInArray(array: any) {
 		for (let i = 0; i < array.length; i++) {
 			tasks.push(array[i]);
@@ -23,6 +28,9 @@
 		}
 	}
 
+	/**
+	 * Update the treeview with the global "model_id" variable.
+	 */
 	export async function updateTree() {
 		await tick();
 		rootTask = await getTasksFromModel(model_id);
@@ -34,9 +42,13 @@
 
 		parent_task_id = rootTask.id;
 		subtasks = rootTask.subtasks;
+
+		if (subtasks.length === 0){
+			modify = true;
+		}
 	}
 </script>
 
 <div class="col scroll">
-	<TreeView on:message={handleMessage} bind:model_id {parent_task_id} {subtasks} {modify} {tasks} />
+	<TreeView on:message={handleMessage} bind:model_id {parent_task_id} {subtasks} bind:modify {tasks} />
 </div>

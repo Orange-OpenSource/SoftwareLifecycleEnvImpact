@@ -3,12 +3,18 @@
 	import { onDestroy } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/env';
+
 	let user_value: any;
 	user.subscribe((u) => (user_value = u));
 	let unsubscribe = user.subscribe((u) => (user_value = u));
 	let email: any;
 	let password: any;
 	let error: string;
+
+	/**
+	 * Check if credentials are correct to log user in.
+	 *
+	 */
 	async function handleLogin() {
 		if (!email || !password) {
 			error = 'please enter your credentials';
@@ -26,10 +32,16 @@
 			return;
 		}
 	}
+
+	/**
+	 * Log out user.
+	 */
 	function handleLogout() {
 		user.update((u) => (u = ''));
 	}
+
 	//$: console.log(user_value)
+
 	onDestroy(unsubscribe);
 </script>
 

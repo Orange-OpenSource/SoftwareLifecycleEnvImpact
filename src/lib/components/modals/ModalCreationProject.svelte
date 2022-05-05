@@ -14,18 +14,10 @@
 	}
 </script>
 
-<button data-bs-toggle="modal" data-bs-target="#modalCreate" type="button" class="btn btn-light"
-	>New project</button
->
+<button data-bs-toggle="modal" data-bs-target="#modalCreate" type="button" class="btn btn-light">New project</button>
 
 <Modal details={'Create'}>
 	<span slot="title">Create new project</span>
 	<input slot="body" id="createProjectInput" placeholder="Project name" required />
-	<button
-		slot="btnsave"
-		on:click={createNewProject}
-		type="button"
-		data-bs-dismiss="modal"
-		class="btn btn-primary">Create project</button
-	>
+	<button slot="btnsave" on:click={createNewProject} type="button" data-bs-dismiss="modal" class="btn btn-primary">Create project</button>
 </Modal>

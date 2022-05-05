@@ -19,18 +19,10 @@
 	}
 </script>
 
-<button data-bs-toggle="modal" data-bs-target="#modalCreateTask{task_id}" class="btn btn-primary"
-	>Add task</button
->
+<button data-bs-toggle="modal" data-bs-target="#modalCreateTask{task_id}" class="btn btn-primary">Add task</button>
 
 <Modal details={'CreateTask' + task_id}>
 	<span slot="title">Create new task :</span>
 	<input slot="body" id="createTaskInput{task_id}" placeholder="Task name" required />
-	<button
-		on:click={() => createNewTask(task_id)}
-		slot="btnsave"
-		type="button"
-		data-bs-dismiss="modal"
-		class="btn btn-primary">Create task</button
-	>
+	<button on:click={() => createNewTask(task_id)} slot="btnsave" type="button" data-bs-dismiss="modal" class="btn btn-primary">Create task</button>
 </Modal>

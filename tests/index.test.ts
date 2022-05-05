@@ -9,9 +9,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('index page has expected header', async ({ page }) => {
-	expect(await page.textContent('div#header')).toBe(
-		'Software Lifecycle Environmental Impact Profile Home'
-	);
+	expect(await page.textContent('div#header')).toBe('Software Lifecycle Environmental Impact Profile Home');
 });
 
 test('index page has expected projects', async ({ page }) => {
@@ -20,10 +18,7 @@ test('index page has expected projects', async ({ page }) => {
 	let listItems = page.locator('ul > li');
 	await listItems.nth(1).waitFor();
 
-	for (let i = 0; i < 2; i++)
-		expect(await listItems.nth(i).textContent()).toBe(
-			'Project ' + i + ' Rename Rename project :    Close Rename project Delete '
-		);
+	for (let i = 0; i < 2; i++) expect(await listItems.nth(i).textContent()).toBe('Project ' + i + ' Rename Rename project :    Close Rename project Delete ');
 });
 
 test('index page has expected "New project" button', async ({ page }) => {

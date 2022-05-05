@@ -17,6 +17,9 @@
 	let rootTreeView: any;
 	let model_name: string;
 
+	/**
+	 * Reload all the models and tasks informations.
+	 */
 	async function updateElements() {
 		models = await getModels(idProject);
 		modelsContent = [];
@@ -30,24 +33,23 @@
 		await rootTreeView.updateTree();
 	}
 
+	/**
+	 * Update the model for which we want to see the treeview.
+	 *
+	 * @param id	The id of the model (linked to the tree).
+	 * @param name 	The name of the model (linked to the input).
+	 */
 	async function updateModelId(id: any, name: string) {
 		model_id = id;
 		model_name = name;
 		await rootTreeView.updateTree();
 	}
 
-	async function handleMessage(event: { detail: { text: any } }) {
-		models = await getModels(idProject);
-		modelsContent = [];
-		for (var i = 0; i < models.length; i++) {
-			let content = await getModelInformations(models[i].id);
-			modelsContent.push(content);
-		}
-		modelsContent = modelsContent;
-	}
-
-	async function deleteModelInAPI() {
-		await deleteModel(model_id);
+	/**
+	 * Delete the current model and update the page without it.
+	 */
+	async function deleteModelInAPI(idModel : any) {
+		await deleteModel(idModel);
 
 		updateElements();
 	}
@@ -55,10 +57,6 @@
 	onMount(async function () {
 		await updateElements();
 	});
-
-	function isSelected(id: any) {
-		return id === model_id;
-	}
 </script>
 
 <svelte:head>
@@ -66,45 +64,33 @@
 </svelte:head>
 
 <div class="container">
-	<div class="row" style="margin-top: 5px; border-bottom: solid 1px #ddd;">
-		<div class="col">
-			<select class="form-select" aria-label="Default select example">
-				{#each modelsContent as model, i}
-					<option
-						selected={isSelected(model.id)}
-						on:click={() => updateModelId(model.id, model.name)}>{model.name}</option
-					>
-				{/each}
-			</select>
-		</div>
-		<div class="col d-flex justify-content-end">
-			<button
-				on:click={deleteModelInAPI}
-				type="button"
-				class="btn btn-secondary"
-				style="margin-right:5px;">Delete current model</button
-			>
-
-			<ModalCreationModel
-				bind:model_id
-				bind:model_name
-				bind:rootTreeView
-				bind:modify
-				bind:idProject
-				bind:models
-				bind:modelsContent
-			/>
-		</div>
-	</div>
-
 	<div class="row">
-		<div class="col border-right">
-			<HeaderButtonsModel on:message={handleMessage} bind:model_id bind:model_name bind:modify />
+		<div class="col-3 border-right">
+			<h2 class="title">My models</h2>
 
-			<RootTreeView bind:this={rootTreeView} {modify} bind:model_id />
+			<ul class="list-group list-group-flush" style="margin-bottom : 5px;">
+				{#each modelsContent as model}
+					<li class="list-group-item">
+						<div class="card-body d-flex justify-content-between">
+								<span on:click={() => updateModelId(model.id, model.name)} class="underline-on-hover" style="cursor:pointer;">{model.name}</span>
+								<div>
+									<button on:click={() => deleteModelInAPI(model.id)} type="button" class="btn btn-outline-danger btn-sm">Delete</button>
+								</div>
+						</div>
+					</li>
+				{/each}
+			</ul>
+
+			<ModalCreationModel bind:model_id bind:model_name bind:rootTreeView bind:modify bind:idProject bind:models bind:modelsContent />
 		</div>
 
-		<div class="col-3">
+		<div class="col border-right">
+			<HeaderButtonsModel bind:model_id bind:model_name bind:modify bind:modelsContent bind:models bind:idProject />
+
+			<RootTreeView bind:this={rootTreeView} bind:modify bind:model_id />
+		</div>
+
+		<div class="col-2">
 			<h2 class="title">Impact by resource</h2>
 		</div>
 	</div>
