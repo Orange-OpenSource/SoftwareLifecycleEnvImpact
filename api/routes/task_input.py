@@ -35,6 +35,7 @@ def get_task_input(task_input_id: int) -> Any:
             ),
         )
 
+
 def update_task_input(task_input_id: int) -> Any:
     """
     PATCH /taskinputs/<task_input_id>
@@ -61,8 +62,11 @@ def update_task_input(task_input_id: int) -> Any:
     else:
         return abort(
             404,
-            "No task input found for Id: {task_input_id}".format(task_input_id=task_input_id),
+            "No task input found for Id: {task_input_id}".format(
+                task_input_id=task_input_id
+            ),
         )
+
 
 def delete_task_input(task_input_id: int) -> Any:
     """

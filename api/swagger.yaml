@@ -82,6 +82,8 @@ paths:
           description: Successfully updated project
           schema:
             $ref: '#/definitions/Project'
+        403:
+          description: Patch format is incorrect
         404:
           description: No project project with this id
     delete:
@@ -200,6 +202,8 @@ paths:
           description: Successfully updated model
           schema:
             $ref: '#/definitions/Model'
+        403:
+          description: Patch format is incorrect
         404:
           description: No model found with this id
     delete:
@@ -324,6 +328,8 @@ paths:
           description: Successfully updated task
           schema:
             $ref: '#/definitions/Task'
+        403:
+          description: Patch format is incorrect
         404:
           description: No task with this id
     delete:
@@ -427,6 +433,8 @@ paths:
           description: Successfully updated task input
           schema:
             $ref: '#/definitions/Task'
+        403:
+          description: Patch format is incorrect
         404:
           description: No task input with this id
     delete:

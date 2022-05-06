@@ -16,12 +16,12 @@ def app() -> Flask:
     return create_app()
 
 
-def test_get_models(client: FlaskClient) -> None:
+def test_get_models(app: FlaskClient) -> None:
     """
     Test response of GET /models
     :param client: flask client fixture
     """
-    response = client.get(models_root)
+    response = app.get(models_root)
     assert response.status_code == 200
 
 
