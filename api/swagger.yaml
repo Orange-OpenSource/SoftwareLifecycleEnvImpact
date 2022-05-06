@@ -394,6 +394,38 @@ paths:
             type: array
             items:
               $ref: '#/definitions/TaskInput'
+    post:
+      operationId: api.routes.task_input.create_task_input
+      tags:
+        - TaskInput
+      description: Create a new task input
+      parameters:
+        - name: task_input
+          in: body
+          description: Task input to create
+          required: True
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name of the task input
+              kind:
+                type: string
+                description: Kind of input
+              value:
+                type: string
+                description: TaskInput value
+              task_id:
+                type: integer
+                description: id of the corresponding task
+      responses:
+        201:
+          description: Successfully created task input
+          schema:
+            $ref: '#/definitions/TaskInput'
+        409:
+          description: Task input exists already
 
   /taskinputs/{task_input_id}:
     parameters:

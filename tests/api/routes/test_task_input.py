@@ -56,6 +56,39 @@ def test_get_one_task_input(
     assert response.status_code == 404
 
 
+def test_post_task_input(client: FlaskClient, task_input_fixture: TaskInput) -> None:
+    """
+    Test response of POST /tasksinputs
+    :param client: flask client fixture
+    :param task_input_fixture: Task input fixture
+    """
+    response = client.post(
+        tasks_inputs_root,
+        json={
+            "name": "Test taskinput POST",
+            "kind": "Test kind",
+            "value": "Test value",
+            "task_id": task_input_fixture.task_id,
+        },
+    )
+
+    assert response.status_code == 201
+    assert response.json["name"] == "Test taskinput POST"
+    assert response.json["id"] is not None
+
+    # Test 409 project exists already
+    response = client.post(
+        tasks_inputs_root,
+        json={
+            "name": "Test taskinput POST",
+            "kind": "Test kind",
+            "value": "Test value",
+            "task_id": task_input_fixture.task_id,
+        },
+    )
+    assert response.status_code == 409
+
+
 def test_patch_task_input(
     client: FlaskClient, db: SQLAlchemy, task_input_fixture: TaskInput
 ) -> None:

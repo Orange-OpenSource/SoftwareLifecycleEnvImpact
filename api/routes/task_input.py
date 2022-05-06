@@ -87,3 +87,40 @@ def delete_task_input(task_input_id: int) -> Any:
                 task_input_id=task_input_id
             ),
         )
+
+
+def create_task_input(task_input: dict[str, Any]) -> Any:
+    """
+    POST /taskinputs/
+
+    :param task_input: task input to add
+    :return: the task input inserted with its id
+    """
+    name = task_input.get("name")
+    kind = task_input.get("kind")
+    value = task_input.get("value")
+    task_id = task_input.get("task_id")
+
+    existing_task_input = (
+        TaskInput.query.filter(TaskInput.name == name)
+        .filter(TaskInput.kind == kind)
+        .filter(TaskInput.value == value)
+        .filter(TaskInput.task_id == task_id)
+        .one_or_none()
+    )
+
+    if existing_task_input is None:
+        schema = TaskInputSchema()
+        new_task_input = schema.load(task_input)
+
+        db.session.add(new_task_input)
+        db.session.commit()
+
+        data = schema.dump(new_task_input)
+
+        return data, 201
+    else:
+        return abort(
+            409,
+            "Task task input {task_input} exists already".format(task_input=task_input),
+        )
