@@ -68,6 +68,7 @@ class Task(db.Model):  # type: ignore
     __tablename__ = "task"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
+
     model_id = db.Column(db.Integer, db.ForeignKey("model.id"), nullable=False)
 
     parent_task_id = db.Column(db.Integer, db.ForeignKey("task.id"))

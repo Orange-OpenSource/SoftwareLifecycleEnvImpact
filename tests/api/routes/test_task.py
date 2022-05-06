@@ -118,12 +118,23 @@ def test_patch_task(client: FlaskClient, db: SQLAlchemy, task_fixture: Task) -> 
     assert response.status_code == 404
 
 
-def test_delete_task(client: FlaskClient, task_fixture: Task) -> None:
+def test_delete_task(client: FlaskClient, db: SQLAlchemy, task_fixture: Task) -> None:
     """
     Test response of DELETE /tasks/<id>
     :param client: flask client fixture
+    :param db: SQLAlchemy database fixture
     :param task_fixture: Task fixture
     """
+
+    # Test to delete root task
+    model = Model.query.filter(Model.id == task_fixture.model_id).one_or_none()
+    model.root_task = task_fixture
+    response = client.delete(tasks_root_path + "/" + str(task_fixture.id))
+    assert response.status_code == 403
+    model.root_task = None
+
+    # Test nominal
+
     response = client.delete(tasks_root_path + "/" + str(task_fixture.id))
     assert response.status_code == 200
 

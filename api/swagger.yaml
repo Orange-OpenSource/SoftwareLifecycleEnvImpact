@@ -343,6 +343,8 @@ paths:
           description: Successfully deleted task
           schema:
             $ref: '#/definitions/Task'
+        403:
+          description: Cannot delete the root task of a model
         404:
           description: No task with this id
 

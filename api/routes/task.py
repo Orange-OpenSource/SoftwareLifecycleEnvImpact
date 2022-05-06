@@ -3,7 +3,7 @@ from typing import Any
 import jsonpatch
 from flask import abort, request
 
-from api.data_model import db, Task, TaskSchema
+from api.data_model import db, Model, Task, TaskSchema
 
 
 def get_tasks() -> Any:
@@ -73,6 +73,12 @@ def delete_task(task_id: int) -> Any:
     task = Task.query.filter(Task.id == task_id).one_or_none()
 
     if task is not None:
+        model = Model.query.filter(Model.id == task.model_id).one_or_none()
+        if task.id == model.root_task_id:
+            return abort(
+                403,
+                "Cannot delete task {task_id} as it is the root of model {model}".format(task_id=task_id, model=model.root_task_id),
+            )
         db.session.delete(task)
         db.session.commit()
         return 200
