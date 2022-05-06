@@ -115,7 +115,7 @@ def create_project(project: dict[str, Any]) -> Any:
         new_project.base_model = model
         new_project.models = [model]
 
-        db.session.add_all([new_project, model])
+        db.session.add_all([new_project, model, root_task])
 
         db.session.commit()
 

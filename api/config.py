@@ -12,12 +12,14 @@ class Config:
 
 class ProdConfig(Config):
     """Production flask config"""
+
     FLASK_ENV = "production"
     SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "database.db")
 
 
 class DevelopmentConfig(Config):
     """Development flask config"""
+
     FLASK_ENV = "development"
     SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "dev.db")
     DEBUG = True
@@ -25,8 +27,9 @@ class DevelopmentConfig(Config):
 
 class TestConfig(Config):
     """Testing flask config"""
+
     FLASK_ENV = "testing"
     DEBUG = True
     TESTING = True
     DATABASE_URI = "sqlite:///:memory:"
-    SQLALCHEMY_ECHO = True
+    # SQLALCHEMY_ECHO = True
