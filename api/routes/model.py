@@ -3,7 +3,7 @@ from typing import Any
 import jsonpatch
 from flask import abort, request
 
-from api.data_model import db, Model, ModelSchema, Task
+from api.data_model import db, Model, ModelSchema, Project, Task
 from api.routes.task import get_task
 
 
@@ -76,6 +76,13 @@ def delete_model(model_id: int) -> Any:
     model = Model.query.filter(Model.id == model_id).one_or_none()
 
     if model is not None:
+        project = Project.query.filter(Project.id == model.project_id).one_or_none()
+        if project.base_model_id == model.id:
+            return abort(
+                403,
+                "Cannot delete model {model_id} as it is the base model of project {project}".format(model_id=model.id,
+                                                                                         project=project.id),
+            )
         db.session.delete(model)
         db.session.commit()
         return 200

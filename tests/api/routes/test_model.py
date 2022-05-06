@@ -102,12 +102,23 @@ def test_patch_model(client: FlaskClient, db: SQLAlchemy, model_fixture: Model) 
     assert response.status_code == 404
 
 
-def test_delete_model(client: FlaskClient, model_fixture: Model) -> None:
+def test_delete_model(client: FlaskClient, db: SQLAlchemy, model_fixture: Model) -> None:
     """
     Test response of DELETE /models/<id>
     :param client: flask client fixture
+    :param db: SQLAlchemy database fixture
     :param model_fixture: Model fixture
     """
+    # Test to delete root model
+    project = Project.query.filter(Project.id == model_fixture.project_id).one_or_none()
+    project.base_model = model_fixture
+    db.session.commit()
+    response = client.delete(models_root + "/" + str(model_fixture.id))
+    assert response.status_code == 403
+    project.base_model = None
+    db.session.commit()
+
+    # Test nominal
     response = client.delete(models_root + "/" + str(model_fixture.id))
     assert response.status_code == 200
 
