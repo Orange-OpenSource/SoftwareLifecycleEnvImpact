@@ -15,10 +15,10 @@ test('index page has expected header', async ({ page }) => {
 test('index page has expected projects', async ({ page }) => {
 	expect(await page.textContent('h2')).toBe('My projects');
 
-	let listItems = page.locator('ul > li');
+	let listItems = page.locator('ul > li > div');
 	await listItems.nth(1).waitFor();
 
-	for (let i = 0; i < 2; i++) expect(await listItems.nth(i).textContent()).toBe('Project ' + i + ' Rename Rename project :    Close Rename project Delete ');
+	for (let i = 0; i < 2; i++) expect(await listItems.nth(i).textContent()).toBe('Project ' + i + ' Rename Rename project :    Close Rename project Delete');
 });
 
 test('index page has expected "New project" button', async ({ page }) => {

@@ -63,6 +63,31 @@
 		}
 	}
 
+	function getDate(model: any) {
+		let date;
+
+		if (model.updated_at) {
+			date = new Date(model.updated_at);
+		} else {
+			date = new Date(model.created_at);
+		}
+
+		return (
+			(date.getDate() < 10 ? '0' : '') +
+			date.getDate() +
+			'/' +
+			(date.getMonth() + 1 < 10 ? '0' : '') +
+			(date.getMonth() + 1) +
+			'/' +
+			date.getFullYear() +
+			' ' +
+			date.getHours() +
+			':' +
+			(date.getMinutes() < 10 ? '0' : '') +
+			date.getMinutes()
+		);
+	}
+
 	onMount(async function () {
 		await updateElements();
 
@@ -95,14 +120,21 @@
 		<h2 class="title">My models</h2>
 
 		<div class="list-group list-group-flush" style="margin-bottom : 5px;">
-			{#each modelsContent as model}
-				<button type="button" class="list-group-item list-group-item-action model-content" on:click|stopPropagation={() => updateModelId(model.id, model.name)}>
-					<div class="card-body d-flex justify-content-between">
-						<span class="underline-on-hover">{model.name}</span>
+			{#each modelsContent as model, i}
+				<button type="button" class="list-group-item list-group-item-action model-content" on:click|stopPropagation={() => updateModelId(model.id, model.name)} style="padding-bottom: 20px">
+					<div class="card-body d-flex justify-content-between" style="padding-bottom:0px">
+						<span class="underline-on-hover">
+							{model.name}
+						</span>
 						<div>
-							<button on:click|stopPropagation={() => deleteModelInAPI(model.id)} type="button" class="btn btn-outline-danger btn-sm">Delete</button>
+							{#if i == 0}
+								<strong>(default)</strong>
+							{:else}
+								<button on:click|stopPropagation={() => deleteModelInAPI(model.id)} type="button" class="btn btn-outline-danger btn-sm">Delete</button>
+							{/if}
 						</div>
 					</div>
+					<span class="d-flex align-items-start" style="color:grey; font-size : 12px">Last modified : {getDate(model)}</span>
 				</button>
 			{/each}
 		</div>

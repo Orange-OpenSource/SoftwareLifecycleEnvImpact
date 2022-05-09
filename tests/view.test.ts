@@ -11,9 +11,10 @@ test.beforeEach(async ({ page }) => {
 test('view/0 has expected 2 models', async ({ page }) => {
 	await page.goto('/view/0');
 
-	let listItems = page.locator('li');
+	let listItems = page.locator('button.list-group-item > div');
 
-	for (let i = 0; i < 2; i++) expect(await listItems.nth(i).textContent()).toBe('Model ' + i + ' Delete ');
+	expect(await listItems.nth(0).textContent()).toBe('Model 0 (default)');
+	expect(await listItems.nth(1).textContent()).toBe('Model 1 Delete');
 });
 
 test('view/0 has expected tasks', async ({ page }) => {
