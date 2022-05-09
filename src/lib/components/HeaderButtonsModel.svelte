@@ -49,8 +49,8 @@
 		<input class="form-control" id="nameproject" placeholder="Name project" value={model_name} readonly={!modify} />
 	</span>
 
-	<div class="col-4 form-check form-switch" style="margin-top:5px;">
+	<div class="col-4 form-check form-switch" style="margin:5px 0px 0px 10px;">
 		<input on:click={changeState} class="form-check-input" type="checkbox" id="editmodeSwitch" checked={modify} />
-		<label class="form-check-label" for="editmodeSwitch">Editing mode</label>
+		<label class="form-check-label" style="width:100px;" for="editmodeSwitch">Editing mode</label>
 	</div>
 </div>

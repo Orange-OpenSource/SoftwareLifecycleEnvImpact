@@ -94,18 +94,18 @@
 
 		<h2 class="title">My models</h2>
 
-		<ul class="list-group list-group-flush" style="margin-bottom : 5px;">
+		<div class="list-group list-group-flush" style="margin-bottom : 5px;">
 			{#each modelsContent as model}
-				<li class="list-group-item">
+				<button type="button" class="list-group-item list-group-item-action model-content" on:click|stopPropagation={() => updateModelId(model.id, model.name)}>
 					<div class="card-body d-flex justify-content-between">
-						<span on:click={() => updateModelId(model.id, model.name)} class="underline-on-hover" style="cursor:pointer;">{model.name}</span>
+						<span class="underline-on-hover">{model.name}</span>
 						<div>
-							<button on:click={() => deleteModelInAPI(model.id)} type="button" class="btn btn-outline-danger btn-sm">Delete</button>
+							<button on:click|stopPropagation={() => deleteModelInAPI(model.id)} type="button" class="btn btn-outline-danger btn-sm">Delete</button>
 						</div>
 					</div>
-				</li>
+				</button>
 			{/each}
-		</ul>
+		</div>
 
 		<ModalCreationModel bind:model_id bind:model_name bind:rootTreeView bind:modify bind:idProject bind:models bind:modelsContent />
 	</div>
