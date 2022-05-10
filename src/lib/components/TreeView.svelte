@@ -1,12 +1,18 @@
 <script lang="ts">
 	import ModalModifyTask from './modals/ModalModifyTask.svelte';
-	import ModalCreationTask from './modals/ModalCreationTask.svelte';
+	import { onMount } from 'svelte';
 
 	export let subtasks: any;
 	export let modify: any;
 	export let model_id: any;
 	export let parent_task_id: any;
 	export let tasks: any[];
+	let ModalCreationTask: any;
+
+	onMount(async function () {
+		const module = await import('./modals/ModalCreationTask.svelte');
+		ModalCreationTask = module.default;
+	});
 </script>
 
 {#each subtasks as task}
@@ -29,7 +35,7 @@
 					<ModalModifyTask on:message bind:tasks {task} classAttribute={'btnmodify'} />
 				</span>
 				<span class="addtask">
-					<ModalCreationTask on:message bind:model_id bind:task_id={task.id} />
+					<svelte:component this={ModalCreationTask} on:message bind:model_id bind:task_id={task.id} />
 				</span>
 			</div>
 		{:else}
@@ -43,6 +49,6 @@
 {/each}
 {#if modify}
 	<div class="tree">
-		<ModalCreationTask on:message bind:model_id bind:task_id={parent_task_id} />
+		<svelte:component this={ModalCreationTask} on:message bind:model_id bind:task_id={parent_task_id} />
 	</div>
 {/if}

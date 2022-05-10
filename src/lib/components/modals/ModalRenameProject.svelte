@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getProjects, updateProject } from '$lib/controllers/RequestController';
-	import Modal from './Modal.svelte';
+	import ModalComponent from './ModalComponent.svelte';
 
 	export let project: any;
 	export let projects: any[] = [];
@@ -18,8 +18,8 @@
 
 <button data-bs-toggle="modal" data-bs-target="#modalRenameProject{project.id}" type="button" class="btn btn-outline-secondary btn-sm">Rename</button>
 
-<Modal details={'RenameProject' + project.id}>
+<ModalComponent details={'RenameProject' + project.id}>
 	<span slot="title">Rename project :</span>
 	<input slot="body" id="createProjectInput{project.id}" placeholder="Project new name" value={project.name} required />
 	<button slot="btnsave" on:click={renameProject} type="button" data-bs-dismiss="modal" class="btn btn-primary">Rename project</button>
-</Modal>
+</ModalComponent>

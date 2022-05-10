@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { deleteTask } from '$lib/controllers/RequestController';
 	import { createEventDispatcher } from 'svelte';
-	import Modal from './Modal.svelte';
+	import ModalComponent from './ModalComponent.svelte';
 
 	export let task: any;
 	export let tasks: any[];
@@ -39,7 +39,7 @@
 
 <button data-bs-toggle="modal" data-bs-target="#modalModifyTask{task.id}" type="button" class="btn btn-outline-primary btn-sm {classAttribute}">Modify</button>
 
-<Modal details={'ModifyTask' + task.id}>
+<ModalComponent details={'ModifyTask' + task.id}>
 	<span slot="title">{task.name}</span>
 	<button slot="btndelete" on:click={deleteTaskInAPI} type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Delete</button>
 	<div slot="body">
@@ -65,4 +65,4 @@
 			{/each}
 		</span>
 	</div>
-</Modal>
+</ModalComponent>

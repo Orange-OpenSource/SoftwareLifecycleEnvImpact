@@ -5,7 +5,6 @@
 	import RootTreeView from '$lib/components/RootTreeView.svelte';
 	import HeaderButtonsModel from '$lib/components/HeaderButtonsModel.svelte';
 	import { checkIfLogged } from '$lib/controllers/LoginController';
-	import ModalCreationModel from '$lib/components/modals/ModalCreationModel.svelte';
 	import Split from 'split.js';
 	import { browser } from '$app/env';
 	import { goto } from '$app/navigation';
@@ -19,6 +18,7 @@
 	let model_id: any;
 	let rootTreeView: any;
 	let model_name: string;
+	let ModalCreationModel: any;
 
 	/**
 	 * Reload all the models and tasks informations.
@@ -91,6 +91,9 @@
 	onMount(async function () {
 		await updateElements();
 
+		const module = await import('$lib/components/modals/ModalCreationModel.svelte');
+		ModalCreationModel = module.default;
+
 		Split(['#split-0', '#split-1', '#split-2'], {
 			sizes: [25, 50, 25],
 			minSize: 0,
@@ -139,7 +142,7 @@
 			{/each}
 		</div>
 
-		<ModalCreationModel bind:model_id bind:model_name bind:rootTreeView bind:modify bind:idProject bind:models bind:modelsContent />
+		<svelte:component this={ModalCreationModel} bind:model_id bind:model_name bind:rootTreeView bind:modify bind:idProject bind:models bind:modelsContent />
 	</div>
 
 	<div id="split-1">
