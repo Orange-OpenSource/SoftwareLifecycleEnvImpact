@@ -2,9 +2,9 @@ from typing import Any, List
 
 from pint import Quantity
 
-from model.impacts.impact_factors import ImpactFactor
-from model.impacts.impacts import ImpactIndicator, ImpactsList, merge_impacts_lists
-from model.quantities import Q_
+from impacts_model.impacts.impact_factors import ImpactFactor
+from impacts_model.impacts.impacts import ImpactIndicator, ImpactsList, merge_impacts_lists
+from impacts_model.quantities import Q_
 
 ResourceName = str
 

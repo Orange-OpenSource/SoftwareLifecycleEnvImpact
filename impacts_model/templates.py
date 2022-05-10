@@ -3,13 +3,13 @@ import os
 
 import yaml
 
-from model.impacts.impact_factors import ImpactFactor
-from model.resources import Resource
-from model.tasks import TaskTemplate
+from impacts_model.impacts.impact_factors import ImpactFactor
+from impacts_model.resources import Resource
+from impacts_model.tasks import TaskTemplate
 
 
 def impact_factory(name: str) -> ImpactFactor:
-    module = importlib.import_module("model.impacts.impact_factors")
+    module = importlib.import_module("impacts_model.impacts.impact_factors")
     class_ = getattr(module, name)
     instance = class_()
     return instance
@@ -17,7 +17,7 @@ def impact_factory(name: str) -> ImpactFactor:
 
 def resource_factory(name: str) -> Resource:
     name = name.replace(".yaml", "")
-    with open("model/res/resources/" + name + ".yaml", "r") as stream:
+    with open("impacts_model/res/resources/" + name + ".yaml", "r") as stream:
         data_loaded = yaml.safe_load(stream)
         impacts_list = []
         for impact_name in data_loaded["impact_factors"]:
@@ -27,7 +27,7 @@ def resource_factory(name: str) -> Resource:
 
 def task_template_factory(name: str) -> TaskTemplate:
     name = name.replace(".yaml", "")
-    with open("model/res/tasks/" + name + ".yaml", "r") as stream:
+    with open("impacts_model/res/tasks/" + name + ".yaml", "r") as stream:
         data_loaded = yaml.safe_load(stream)
 
         resources_list = []
@@ -47,6 +47,6 @@ def task_template_factory(name: str) -> TaskTemplate:
 
 def get_tasks_templates() -> [TaskTemplate]:
     tasks_template = []
-    for filename in os.listdir("model/res/tasks"):
+    for filename in os.listdir("impacts_model/res/tasks"):
         tasks_template.append(task_template_factory(filename))
     return tasks_template

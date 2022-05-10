@@ -1,8 +1,8 @@
 from typing import List
 
-from model.impacts.impact_factors import ImpactFactor
-from model.impacts.impacts import ImpactIndicator
-from model.quantities import (
+from impacts_model.impacts.impact_factors import ImpactFactor
+from impacts_model.impacts.impacts import ImpactIndicator
+from impacts_model.quantities import (
     CUBIC_METER,
     DISEASE_INCIDENCE,
     ELECTRONIC_WASTE,
@@ -13,7 +13,7 @@ from model.quantities import (
     PRIMARY_MJ,
     TONNE_MIPS,
 )
-from model.resources import (
+from impacts_model.resources import (
     merge_resource_list,
     Resource,
     ResourcesList,

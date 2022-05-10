@@ -5,6 +5,8 @@ from flask import abort, request
 
 from api.data_model import db, Model, ModelSchema, Project, Task
 from api.routes.task import get_task
+from impacts_model.impact_model import get_impact_by_indicator
+from impacts_model.impacts.impacts import ImpactIndicator
 
 
 def get_models() -> Any:
@@ -81,7 +83,7 @@ def delete_model(model_id: int) -> Any:
             return abort(
                 403,
                 "Cannot delete model {model_id} as it is the base model of project {project}".format(model_id=model.id,
-                                                                                         project=project.id),
+                                                                                                     project=project.id),
             )
         db.session.delete(model)
         db.session.commit()
@@ -110,6 +112,19 @@ def get_tasks(model_id: int) -> Any:
         )
 
 
+def get_impacts(model_id: int) -> Any:
+    model = Model.query.filter(Model.id == model_id).one_or_none()
+
+    if model is not None:
+        impact = get_impact_by_indicator(model.root_task, ImpactIndicator.CLIMATE_CHANGE)
+        return str(impact)
+    else:
+        return abort(
+            404,
+            "No model found for Id: {model_id}".format(model_id=model_id),
+        )
+
+
 def create_model(model: dict[str, Any]) -> Any:
     """
     POST /models/
@@ -121,8 +136,8 @@ def create_model(model: dict[str, Any]) -> Any:
 
     existing_model = (
         Model.query.filter(Model.name == name)
-        .filter(Model.project_id == project_id)
-        .one_or_none()
+            .filter(Model.project_id == project_id)
+            .one_or_none()
     )
 
     if existing_model is None:

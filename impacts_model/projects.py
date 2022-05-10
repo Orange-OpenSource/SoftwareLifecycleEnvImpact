@@ -2,10 +2,10 @@ from typing import Any
 
 from pint import Quantity
 
-from model.impacts.impacts import ImpactIndicator, ImpactsList
-from model.quantities import KG_CO2E
-from model.resources import ResourcesList
-from model.tasks import TaskImpact, TaskTemplate
+from impacts_model.impacts.impacts import ImpactIndicator, ImpactsList
+from impacts_model.quantities import KG_CO2E
+from impacts_model.resources import ResourcesList
+from impacts_model.tasks import TaskImpact, TaskTemplate
 
 
 class Project:

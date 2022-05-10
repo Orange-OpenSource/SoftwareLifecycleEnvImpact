@@ -1,7 +1,7 @@
 from typing import Any
 
-from model import templates
-from model.tasks import TaskTemplate
+from impacts_model import templates
+from impacts_model.tasks import TaskTemplate
 
 
 def json_task_template(task_template: TaskTemplate):

@@ -1,8 +1,8 @@
-from model.impacts.impact_factors import ImpactFactor
-from model.impacts.impacts import ImpactIndicator
-from model.projects import Project
-from model.quantities import KG_CO2E
-from model.tasks import TaskTemplate
+from impacts_model.impacts.impact_factors import ImpactFactor
+from impacts_model.impacts.impacts import ImpactIndicator
+from impacts_model.projects import Project
+from impacts_model.quantities import KG_CO2E
+from impacts_model.tasks import TaskTemplate
 from tests.model.unit.test_resources import TestResource
 
 ###########

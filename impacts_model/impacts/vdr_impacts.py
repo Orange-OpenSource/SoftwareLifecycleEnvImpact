@@ -1,5 +1,5 @@
-from model.impacts.impact_factors import ImpactFactor
-from model.quantities import (
+from impacts_model.impacts.impact_factors import ImpactFactor
+from impacts_model.quantities import (
     CUBIC_METER,
     DISEASE_INCIDENCE,
     ELECTRONIC_WASTE,

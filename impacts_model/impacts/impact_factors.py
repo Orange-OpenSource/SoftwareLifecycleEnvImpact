@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from model.impacts.impacts import ImpactIndicator, ImpactsList
-from model.quantities import (
+from impacts_model.impacts.impacts import ImpactIndicator, ImpactsList
+from impacts_model.quantities import (
     CUBIC_METER,
     DAY,
     DISEASE_INCIDENCE,

@@ -4,9 +4,9 @@ from typing import Any, List, Union
 
 from pint import Quantity
 
-from model.impacts.impacts import ImpactIndicator, ImpactsList, merge_impacts_lists
-from model.quantities import Q_
-from model.resources import merge_resource_list, Resource, ResourcesList
+from impacts_model.impacts.impacts import ImpactIndicator, ImpactsList, merge_impacts_lists
+from impacts_model.quantities import Q_
+from impacts_model.resources import merge_resource_list, Resource, ResourcesList
 
 TaskImpact = dict[str, Union[str, float, Any]]
 
@@ -91,3 +91,4 @@ class TaskTemplate:
         ]
 
         return Q_(sum(impacts_resources) + sum(impacts_subtasks))  # type: ignore
+        # TODO why Q_ here ?
