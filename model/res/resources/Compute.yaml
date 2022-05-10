@@ -1,0 +1,4 @@
+name: Compute
+unit: server_hours
+impact_factors:
+- ServerImpact

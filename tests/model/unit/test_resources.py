@@ -14,14 +14,9 @@ from model.quantities import (
     TONNE_MIPS,
 )
 from model.resources import (
-    ComputeResource,
     merge_resource_list,
-    NetworkResource,
-    PeopleResource,
     Resource,
     ResourcesList,
-    StorageResource,
-    UserDeviceResource,
 )
 
 
@@ -194,80 +189,3 @@ def test_get_impacts() -> None:
         ImpactIndicator.PRIMARY_ENERGY: 0 * PRIMARY_MJ,
         ImpactIndicator.RAW_MATERIALS: (10 * 213.3) * TONNE_MIPS,
     }
-
-
-###################
-# ComputeResource #
-###################
-
-
-def test_compute_res_quantity() -> None:
-    """Test quantity properties of ComputeResource and the update of its components"""
-    c = ComputeResource(13, 365)
-    assert c.quantity == 13 * 365  # check init/getter
-    c.servers_count = 432
-    assert c.quantity == 432 * 365  # check servers_count update
-    c.duration = 723
-    assert c.quantity == 432 * 723  # check duration update
-
-
-###################
-# StorageResource #
-###################
-
-
-def test_storage_res_quantity() -> None:
-    """Test quantity properties of StorageResource and the update of its components"""
-    c = StorageResource(250, 365)
-    assert c.quantity == 250 * 365  # check init/getter
-    c.storage_size = 34
-    assert c.quantity == 34 * 365  # check storage size update
-    c.duration = 2321
-    assert c.quantity == 34 * 2321  # check duration update
-
-
-###################
-# PeopleResource #
-###################
-
-
-def test_man_days() -> None:
-    """Test quantity properties of PeopleResource"""
-    p = PeopleResource(2343)
-    assert p.quantity == 2343  # check init/getter
-    p.quantity = 23
-    assert p.quantity == 23  # check setter
-
-
-######################
-# UserDeviceResource #
-######################
-
-
-def test_user_device_res_quantity() -> None:
-    """Test quantity properties of UserDeviceResource and the update of its components"""
-    u = UserDeviceResource(123, 32, 365)
-    assert u.quantity == (32 / 60) * 123 * 365  # check init/getter
-    u.avg_user = 532
-    assert u.quantity == (32 / 60) * 532 * 365  # check avg_user change
-    u.avg_time = 60
-    assert u.quantity == (60 / 60) * 532 * 365  # check avg_time change
-    u.duration = 700
-    assert u.quantity == (60 / 60) * 532 * 700  # check duration change
-
-
-###################
-# NetworkResource #
-###################
-
-
-def test_network_res_quantity() -> None:
-    """Test quantity properties of NetworkResource and the update of its components"""
-    n = NetworkResource(233, 1.723, 364)
-    assert n.quantity == 233 * 1.723 * 364  # check init/getter
-    n.avg_user = 4322
-    assert n.quantity == 4322 * 1.723 * 364  # check avg_user change
-    n.avg_data = 123.2332423
-    assert n.quantity == 4322 * 123.2332423 * 364  # check avg_data change
-    n.duration = 7654
-    assert n.quantity == 4322 * 123.2332423 * 7654  # check duration change

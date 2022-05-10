@@ -1,18 +1,8 @@
-from abc import ABC, abstractmethod
 from typing import Any, List
 
 from pint import Quantity
 
-from model.impacts.impact_factors import (
-    ImpactFactor,
-    LaptopImpact,
-    NetworkImpact,
-    OfficeImpact,
-    ServerImpact,
-    StorageImpact,
-    TransportImpact,
-    UserDeviceImpact,
-)
+from model.impacts.impact_factors import ImpactFactor
 from model.impacts.impacts import ImpactIndicator, ImpactsList, merge_impacts_lists
 from model.quantities import Q_
 
@@ -40,14 +30,14 @@ def merge_resource_list(
     return result
 
 
-class Resource(ABC):
+class Resource:
 
     """
     Abstract definition of a resource, with a quantity and one or multiple ImpactFactor
     Should not be directly instantiated
     """
 
-    def __init__(self, name: ResourceName, impacts: List[ImpactFactor]):
+    def __init__(self, name: ResourceName, impacts: List[ImpactFactor], quantity: float = 1.0):
         """
         Should only be used by implementations, define the name and impacts_sources of the resource
         :param name: name of the resource
@@ -55,14 +45,15 @@ class Resource(ABC):
         """
         self.name = name
         self._impacts = impacts
+        self._quantity = quantity
 
     @property
-    @abstractmethod
     def quantity(self) -> float:
         """
         Quantity consumed by the resource, define by implementations
         :return: implementation quantity
         """
+        return self._quantity
 
     def get_impact(self, impact_indicator: ImpactIndicator) -> Quantity[Any]:
         """
@@ -106,141 +97,3 @@ class Resource(ABC):
             impacts = merge_impacts_lists(impacts, impact_source_quantities)
 
         return impacts
-
-
-class ComputeResource(Resource):
-    """
-    Computing resource, server days as quantity and servers as impact
-    """
-
-    def __init__(self, servers_count: int, duration: int):
-        """
-        Instantiate a ComputeResource with a ServerImpact
-        :param servers_count: number of server used
-        :param duration: duration of the resource as days
-        """
-        self.servers_count = servers_count
-        self.duration = duration
-        self.server_impact = ServerImpact()
-        super().__init__("Compute", impacts=[self.server_impact])
-
-    @property
-    def quantity(self) -> int:
-        """
-        Server days reserved by the application as number reserved * duration in days
-        :return: server days reserved
-        """
-
-        return self.servers_count * self.duration
-
-
-class StorageResource(Resource):
-    """
-    Storage _resources, tb * duration as input, disks lifecycle as impact
-    """
-
-    def __init__(self, storage_size: int, duration: int):
-        """
-        Instantiate a storage resource with a storage impact
-        :param storage_size: terabytes reserved
-        :param duration: duration of the resource as days
-        """
-        self.storage_size = storage_size
-        self.duration = duration
-        self.storage_impact = StorageImpact()
-        super().__init__("Storage", impacts=[self.storage_impact])
-
-    @property
-    def quantity(self) -> int:
-        """
-        Storage days reserved by the application as tb reserved * duration in days
-        :return: storage days reserved
-        """
-        return self.storage_size * self.duration
-
-
-class PeopleResource(Resource):
-    """
-    People _resources, man days as inputs, commuting and offices as _impacts
-    """
-
-    def __init__(self, man_days: int) -> None:
-        """
-        Instantiate a PeopleResource with offices and transports impacts_sources
-        :param man_days: man days as quantity
-        """
-        self._quantity = man_days
-        self.office_impact = OfficeImpact()
-        self.transport_impact = TransportImpact()
-        self.laptop_impact = LaptopImpact()
-        super().__init__(
-            "People", [self.office_impact, self.transport_impact, self.laptop_impact]
-        )
-
-    @property
-    def quantity(self) -> int:
-        """
-        Resource quantity as man days
-        :return: man days
-        """
-        return self._quantity
-
-    @quantity.setter
-    def quantity(self, man_days: int) -> None:
-        self._quantity = man_days
-
-
-class UserDeviceResource(Resource):
-    """
-    User devices _resources, hours as inputs and devices lifecycle as _impacts
-    """
-
-    def __init__(self, avg_user: int, avg_time: int, duration: int) -> None:
-        """
-        Instantiate a UserDeviceResource with device as impact
-        :param avg_user: average user per day
-        :param avg_time: average time spent by user on the app per day
-        :param duration: number of day
-        """
-        self.avg_user = avg_user
-        self.avg_time = avg_time
-        self.duration = duration
-
-        self.device_source = UserDeviceImpact()
-        super().__init__("UserDevice", [self.device_source])
-
-    @property
-    def quantity(self) -> float:
-        """
-        Hours-equivalent users spend on the app during the entire phase
-        :return: total hours spent by users on app
-        """
-        return (self.avg_time / 60) * self.avg_user * self.duration
-
-
-class NetworkResource(Resource):
-    """
-    Network resource, gb transferred as quantity and network as impact
-    """
-
-    def __init__(self, avg_user: int, avg_data: float, duration: int) -> None:
-        """
-        Instantiate a NetworkResource with network as impact
-        :param avg_user: average user per day
-        :param avg_data: average data transferred by user on the app per day
-        :param duration: number of day
-        """
-        self.avg_user = avg_user
-        self.avg_data = avg_data
-        self.duration = duration
-
-        self._network_impact = NetworkImpact()
-        super().__init__("Network", [self._network_impact])
-
-    @property
-    def quantity(self) -> float:
-        """
-        Total gigabytes transferred by all users during the duration
-        :return: total gigabytes transferred
-        """
-        return self.avg_data * self.avg_user * self.duration

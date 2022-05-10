@@ -1,0 +1,4 @@
+name: Network
+unit: gb
+impact_factors:
+- NetworkImpact

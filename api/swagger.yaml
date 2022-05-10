@@ -487,6 +487,20 @@ paths:
         404:
           description: No task input with this id
 
+  /tasktemplates:
+    get:
+      operationId: api.routes.task_template.get_task_templates
+      tags:
+        - TaskTemplate
+      summary: Get all task templates
+      responses:
+        200:
+          description: List of task templates
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/TaskTemplate'
+
   /debug/reset:
     get:
       summary: Debug function to reset the database
@@ -635,3 +649,40 @@ definitions:
         task_id:
           type: integer
           description: id of the corresponding task
+
+    TaskTemplate:
+      type: object
+      required:
+        - id
+        - name
+        - unit
+        - resources
+      properties:
+        id:
+          type: integer
+          description: Unique identifier
+        name:
+          type: string
+          description: Name of the task template
+        unit:
+          type: string
+          description: Unit of the task
+        resources:
+          type: array
+          items:
+            $ref: '#/definitions/Resource'
+          description: Resources
+
+    Resource:
+      type: object
+      required:
+        - id
+        - name
+        - unit
+      properties:
+        id:
+          type: integer
+          description: Unique identifier
+        name:
+          type: string
+          description: Name of the resource
