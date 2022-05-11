@@ -7,53 +7,23 @@ db = SQLAlchemy()
 ma = Marshmallow()
 
 
-class TaskInput(db.Model):  # type: ignore
-    """
-    Table task_input, containing one input for a task
-    """
-
-    __tablename__ = "task_input"
+class Resource(db.Model):  # type: ignore
+    __tablename__ = "resource"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
-    kind = db.Column(db.String, nullable=False)
-    value = db.Column(db.String)
+
     task_id = db.Column(db.Integer, db.ForeignKey("task.id"), nullable=False)
 
+    type = db.Column(db.String, nullable=False)
+    value = db.Column(db.Integer)
 
-class TaskInputSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
-    """
-    Schema for TaskInput to serialize/deserialize
-    """
+    created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
+
+class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
     class Meta(ma.SQLAlchemyAutoSchema.Meta):  # type: ignore
-        """Schema meta class"""
-
-        model = TaskInput
-        include_relationships = True
-        load_instance = True
-        include_fk = True
-        sqla_session = db.session
-
-
-class TaskType(db.Model):  # type: ignore
-    """
-    Table task_type, representing a task type, ie.build, design, development...
-    """
-
-    __tablename__ = "task_type"
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, nullable=False)
-
-
-class TaskTypeSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
-    """
-    Schema for TaskType to serialize/deserialize
-    """
-
-    class Meta(ma.SQLAlchemyAutoSchema.Meta):  # type: ignore
-        """Schema meta class"""
-
-        model = TaskType
+        model = Resource
         include_relationships = True
         load_instance = True
         include_fk = True
@@ -74,10 +44,7 @@ class Task(db.Model):  # type: ignore
     parent_task_id = db.Column(db.Integer, db.ForeignKey("task.id"))
     subtasks = db.relationship("Task", lazy=True)
 
-    task_type_id = db.Column(db.Integer, db.ForeignKey("task_type.id"), nullable=False)
-    task_type = db.relationship(TaskType, lazy=True, foreign_keys="Task.task_type_id")
-
-    inputs = db.relationship(TaskInput, backref="task_input", lazy=True, cascade="all")
+    resources = db.relationship(Resource, backref="task_input", lazy=True, cascade="all")
 
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
@@ -99,7 +66,7 @@ class TaskSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
         sqla_session = db.session
 
     subtasks = Nested("TaskSchema", many=True)
-    inputs = Nested(TaskInputSchema, many=True)
+    resources = Nested(ResourceSchema, many=True)
 
 
 class Model(db.Model):  # type: ignore

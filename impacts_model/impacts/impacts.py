@@ -6,7 +6,7 @@ from typing import Any
 from pint import Quantity
 
 
-class ImpactIndicator(Enum):
+class ImpactIndicator(str, Enum):
     """
     Enum defining all the environmental impact indicators, as used in LCAs
     """

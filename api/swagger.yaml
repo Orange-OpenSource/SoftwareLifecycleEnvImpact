@@ -246,6 +246,23 @@ paths:
         404:
           description: No model found with this id
 
+  /models/{model_id}/impact:
+    parameters:
+      - name: model_id
+        in: path
+        description: Id of the model to get the impacts from
+        type: integer
+        required: true
+    get:
+      operationId: api.routes.model.get_impacts
+      tags:
+        - Task
+        - Impact
+      summary: Get model impact
+      responses:
+        200:
+          description: Impacts
+
   /tasks:
     get:
       operationId: api.routes.task.get_tasks
@@ -350,142 +367,19 @@ paths:
         404:
           description: No task with this id
 
-  /tasktypes:
+  /tasktemplates:
     get:
-      operationId: api.routes.task_type.get_task_types
+      operationId: api.routes.task_template.get_task_templates
       tags:
-        - TaskType
-      summary: Get all task types
+        - TaskTemplate
+      summary: Get all task templates
       responses:
         200:
-          description: List of task types
+          description: List of task templates
           schema:
             type: array
             items:
-              $ref: '#/definitions/TaskType'
-
-  /tasktypes/{task_type_id}:
-    parameters:
-      - name: task_type_id
-        in: path
-        description: Id of the task type to get
-        type: integer
-        required: true
-    get:
-      operationId: api.routes.task_type.get_task_type
-      tags:
-        - TaskType
-      summary: Read one task type
-      description: Read one task type
-      responses:
-        200:
-          description: Sucessfully read task type
-          schema:
-            $ref: '#/definitions/TaskType'
-        404:
-          description: No task type found with this id
-
-  /taskinputs:
-    get:
-      operationId: api.routes.task_input.get_task_inputs
-      tags:
-        - TaskInput
-      summary: Get all task inputs
-      responses:
-        200:
-          description: List of task inputs
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/TaskInput'
-    post:
-      operationId: api.routes.task_input.create_task_input
-      tags:
-        - TaskInput
-      description: Create a new task input
-      parameters:
-        - name: task_input
-          in: body
-          description: Task input to create
-          required: True
-          schema:
-            type: object
-            properties:
-              name:
-                type: string
-                description: Name of the task input
-              kind:
-                type: string
-                description: Kind of input
-              value:
-                type: string
-                description: TaskInput value
-              task_id:
-                type: integer
-                description: id of the corresponding task
-      responses:
-        201:
-          description: Successfully created task input
-          schema:
-            $ref: '#/definitions/TaskInput'
-        409:
-          description: Task input exists already
-
-  /taskinputs/{task_input_id}:
-    parameters:
-      - name: task_input_id
-        in: path
-        description: Id of the task input to get
-        type: integer
-        required: true
-    get:
-      operationId: api.routes.task_input.get_task_input
-      tags:
-        - TaskInput
-      summary: Read one task input
-      description: Read one task input
-
-      responses:
-        200:
-          description: Sucessfully read task input
-          schema:
-            $ref: '#/definitions/TaskInput'
-        404:
-          description: No task input found with this id
-    patch:
-      operationId: api.routes.task_input.update_task_input
-      tags:
-        - TaskInput
-      summary: Update a task input
-      description: Update a task input
-      parameters:
-        - name: JsonPatch
-          in: body
-          required: true
-          schema:
-            $ref: "#/definitions/PatchRequest"
-      responses:
-        200:
-          description: Successfully updated task input
-          schema:
-            $ref: '#/definitions/Task'
-        403:
-          description: Patch format is incorrect
-        404:
-          description: No task input with this id
-    delete:
-      operationId: api.routes.task_input.delete_task_input
-      tags:
-        - TaskInput
-      summary: Delete a task input
-      description: Delete a task input
-      responses:
-        200:
-          description: Successfully deleted task input
-          schema:
-            $ref: '#/definitions/TaskInput'
-        404:
-          description: No task input with this id
+              $ref: '#/definitions/TaskTemplate'
 
   /debug/reset:
     get:
@@ -581,6 +475,16 @@ definitions:
         name:
           type: string
           description: Name of the task
+        resources:
+          type: array
+          items:
+            $ref: '#/definitions/Resource'
+          description: Resources associated to the task
+        subtasks:
+          type: array
+          items:
+            $ref: '#/definitions/Task'
+          description: Subtasks
         created_at:
           type: string
           format: date
@@ -589,49 +493,54 @@ definitions:
           type: string
           format: date
           description: Last update date of the task
-        inputs:
-          type: array
-          items:
-            $ref: '#/definitions/TaskInput'
-          description: Inputs associated to the task
-        subtasks:
-          type: array
-          items:
-            $ref: '#/definitions/Task'
-          description: Subtasks
 
-
-    TaskType:
+    TaskTemplate:
       type: object
       required:
+        - id
         - name
+        - unit
+        - resources
       properties:
         id:
           type: integer
           description: Unique identifier
         name:
           type: string
-          description: Type of a task
+          description: Name of the task template
+        unit:
+          type: string
+          description: Unit of the task
+        resources:
+          type: array
+          items:
+            $ref: '#/definitions/Resource'
+          description: Resources
 
-    TaskInput:
+    Resource:
       type: object
       required:
+        - id
         - name
-        - kind
-        - task_id
+        - unit
       properties:
         id:
           type: integer
           description: Unique identifier
         name:
           type: string
-          description: Name of the task
-        kind:
+          description: Name of the resource
+        type:
           type: string
-          description: Kind of input
+          description: Type of the resource
         value:
           type: integer
-          description: TaskInput value
-        task_id:
-          type: integer
-          description: id of the corresponding task
+          description: Value of the resource
+        created_at:
+          type: string
+          format: date
+          description: Creation date of the resource
+        updated_at:
+          type: string
+          format: date
+          description: Last update date of the resource

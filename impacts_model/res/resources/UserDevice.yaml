@@ -1,0 +1,4 @@
+name: UserDevice
+unit: hours
+impact_factors:
+- UserDeviceImpact

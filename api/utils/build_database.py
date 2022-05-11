@@ -1,4 +1,4 @@
-from api.data_model import db, Model, Project, Task, TaskInput, TaskType
+from api.data_model import db, Model, Project, Resource, Task
 
 projects = [
     {"id": 0, "name": "Project 0"},
@@ -12,25 +12,18 @@ models = [
     {"id": 3, "name": "Model 3", "project_id": 1, "root_task_id": 0},
 ]
 
-tasks_types = [
-    {"id": 0, "name": "Root task"},
-    {"id": 1, "name": "Type 1"},
-    {"id": 2, "name": "Type 2"},
-]
 
 tasks = [
     {"id": 0, "name": "Task 1", "task_type_id": 0, "model_id": 0},
-    {"id": 1, "name": "Task 2", "parent_task_id": 0, "task_type_id": 1, "model_id": 0},
-    {"id": 2, "name": "Task 3", "parent_task_id": 0, "task_type_id": 2, "model_id": 0},
+    {"id": 1, "name": "Task 2", "parent_task_id": 0, "model_id": 0},
+    {"id": 2, "name": "Task 3", "parent_task_id": 0, "model_id": 0},
 ]
 
-task_inputs = [
-    {"id": 0, "name": "Input 1", "kind": "float", "value": "0.0", "task_id": 0},
-    {"id": 1, "name": "Input 2", "kind": "string", "value": "string", "task_id": 1},
-    {"id": 2, "name": "Input 3", "kind": "float", "value": "0.0", "task_id": 1},
-    {"id": 3, "name": "Input 4", "kind": "string", "value": "string", "task_id": 2},
+resources = [
+    {"id": 0, "name": "Resource 1", "task_id": 0, "type": "Compute", "value": 100},
+    {"id": 1, "name": "Resource 2", "task_id": 1, "type": "People", "value": 100},
+    {"id": 2, "name": "Resource 3", "task_id": 2, "type": "Storage", "value": 100},
 ]
-
 
 def reset_db() -> None:
     """
@@ -44,6 +37,16 @@ def reset_db() -> None:
     db.create_all()
 
     # Populate the database
+    for resource in resources:
+        r = Resource(
+            id=resource.get("id"),
+            name=resource.get("name"),
+            task_id=resource.get("task_id"),
+            type=resource.get("type"),
+            value=resource.get("value"),
+        )
+        db.session.add(r)
+
     for project in projects:
         p = Project(id=project.get("id"), name=project.get("name"))
         db.session.add(p)
@@ -57,27 +60,12 @@ def reset_db() -> None:
         )
         db.session.add(p)
 
-    for task_type in tasks_types:
-        t = TaskType(id=task_type.get("id"), name=task_type.get("name"))
-        db.session.add(t)
-
     for task in tasks:
         t = Task(
             id=task.get("id"),
             name=task.get("name"),
             parent_task_id=task.get("parent_task_id"),
-            task_type_id=task.get("task_type_id"),
             model_id=task.get("model_id"),
-        )
-        db.session.add(t)
-
-    for task_input in task_inputs:
-        t = TaskInput(
-            id=task_input.get("id"),
-            name=task_input.get("name"),
-            kind=task_input.get("kind"),
-            value=task_input.get("value"),
-            task_id=task_input.get("task_id"),
         )
         db.session.add(t)
 

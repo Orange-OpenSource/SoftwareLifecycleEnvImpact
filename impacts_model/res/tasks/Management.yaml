@@ -1,0 +1,5 @@
+name: Management
+unit: man_days
+resources:
+  - People
+subtasks:

@@ -8,7 +8,7 @@ tasks_inputs_root = "/api/v1/taskinputs"
 
 
 @pytest.fixture(scope="function")
-def task_input_fixture(db: SQLAlchemy):
+def task_input_fixture(db: SQLAlchemy) -> TaskInput:
     project = Project(name="Project test_task")
     model = Model(name="Model test_task")
     project.models = [model]
@@ -46,6 +46,7 @@ def test_get_one_task_input(
     """
     response = client.get(tasks_inputs_root + "/" + str(task_input_fixture.id))
     assert response.status_code == 200
+    assert response.json["id"] is not None
     assert response.json["id"] is task_input_fixture.id
     assert response.json["name"] == task_input_fixture.name
 

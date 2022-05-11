@@ -10,23 +10,23 @@ TESTDB = "test.db"
 # TEST_DATABASE_URI = 'sqlite:///' + TESTDB_PATH
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(name="app", scope="session")
 def app(request) -> Flask:
     """Session-wide test `Flask` application."""
-    app = create_app("TEST")
+    app_fixture = create_app("TEST")
 
     # Establish an application context before running the tests.
-    ctx = app.app_context()
+    ctx = app_fixture.app_context()
     ctx.push()
 
     def teardown():
         ctx.pop()
 
     request.addfinalizer(teardown)
-    return app
+    return app_fixture
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(name="db",scope="session")
 def db(app, request) -> SQLAlchemy:
     """Session-wide test database."""
 
@@ -40,7 +40,7 @@ def db(app, request) -> SQLAlchemy:
     return _db
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(name="session", scope="function")
 def session(db, request):
     """Creates a new database session for a test."""
     connection = db.engine.connect()

@@ -1,0 +1,5 @@
+name: UserDevice
+unit: users_number
+resources:
+  - UserDevice
+subtasks:

@@ -1,15 +1,9 @@
-from model.impacts.impact_factors import ImpactsFactorsRegistry
-from model.impacts.impacts import ImpactIndicator
-from model.projects import StandardProject
-
-
 #
 # Acceptation tests on _impacts to assess that changing the inputs on a projects results in the right tasks _impacts
 # updates (check propagation and computation)
 #
-from model.quantities import ELECTRICITY_MIX
 
-
+'''
 def test_build_task_impacts() -> None:
     """Test co2 consequence of updating all project's inputs for build task"""
     s = StandardProject()
@@ -248,3 +242,4 @@ def test_usage_task_impacts() -> None:
     assert (
         s.usage_task.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE) != old_co2
     )
+''' # TODO

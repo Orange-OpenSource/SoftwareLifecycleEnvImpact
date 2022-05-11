@@ -1,4 +1,4 @@
-from model.impacts.impact_factors import (
+from impacts_model.impacts.impact_factors import (
     BikeImpact,
     CarImpact,
     ImpactFactor,
@@ -15,8 +15,8 @@ from model.impacts.impact_factors import (
     TransportImpact,
     UserDeviceImpact,
 )
-from model.impacts.impacts import ImpactIndicator, ImpactsList, merge_impacts_lists
-from model.quantities import (
+from impacts_model.impacts.impacts import ImpactIndicator, ImpactsList, merge_impacts_lists
+from impacts_model.quantities import (
     CUBIC_METER,
     DISEASE_INCIDENCE,
     ELECTRICITY_MIX,
