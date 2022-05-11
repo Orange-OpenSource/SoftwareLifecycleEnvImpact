@@ -5,7 +5,7 @@ from flask import abort, request
 
 from api.data_model import db, Model, ModelSchema, Project, Task
 from api.routes.task import get_task
-from impacts_model.impact_model import get_impact_by_indicator
+from impacts_model.impact_model import get_impact_by_indicator, get_project_impact_by_task
 from impacts_model.impacts.impacts import ImpactIndicator
 
 
@@ -111,13 +111,16 @@ def get_tasks(model_id: int) -> Any:
             "No model found for Id: {model_id}".format(model_id=model_id),
         )
 
-
 def get_impacts(model_id: int) -> Any:
     model = Model.query.filter(Model.id == model_id).one_or_none()
 
     if model is not None:
-        impact = get_impact_by_indicator(model.root_task, ImpactIndicator.CLIMATE_CHANGE)
-        return str(impact)
+        total_impact = get_impact_by_indicator(model.root_task, ImpactIndicator.CLIMATE_CHANGE)
+        impact_by_task = get_project_impact_by_task(model.root_task)
+        return {
+            "Total CO2": str(total_impact),
+            "Impact by task": impact_by_task,
+        }
     else:
         return abort(
             404,
