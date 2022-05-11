@@ -103,7 +103,6 @@ def create_project(project: dict[str, Any]) -> Any:
 
         root_task = Task(
             name=name,
-            task_type_id=0,  # Root task type, # TODO replace by new api architecture
         )
 
         model = Model(

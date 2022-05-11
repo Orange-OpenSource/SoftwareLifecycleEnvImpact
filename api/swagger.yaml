@@ -293,15 +293,12 @@ paths:
               name:
                 type: string
                 description: Name of the task
-              parent_task_id:
-                type: integer
-                description: Optional parent task id
-              task_type_id:
-                type: integer
-                description: Id of the TaskType
               model_id:
                 type: integer
                 description: Id of the related Model
+              parent_task_id:
+                type: integer
+                description: Optional parent task id
       responses:
         201:
           description: Sucessfully created Task
