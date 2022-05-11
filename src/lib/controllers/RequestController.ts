@@ -199,3 +199,31 @@ export async function deleteTask(task_id: any) {
 
 	return json;
 }
+
+export async function getTemplates() {
+	return ['Build', 'Run', 'Implementation', 'Test', 'Deployment', 'Other'];
+}
+
+export async function updateTask(idTask: any, newName: string) {
+	const res = await fetch(endpoint + 'tasks/' + idTask, {
+		method: 'PATCH',
+		headers: {
+			'Content-Type': 'application/json',
+			Accept: 'application/json'
+		},
+		body: JSON.stringify([
+			{
+				op: 'replace',
+				path: '/name',
+				value: newName
+			}
+		])
+	});
+
+	const json = await res.json();
+
+	if (json.status === 403) alert('Patch format is incorrect');
+	else if (json.status === 404) alert('No model found with this id');
+
+	return json;
+}

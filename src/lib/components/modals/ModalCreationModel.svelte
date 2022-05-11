@@ -43,7 +43,7 @@
 	}
 </script>
 
-<button data-bs-toggle="modal" data-bs-target="#modalCreateModel" type="button" class="btn btn-light" style="width:50%;">Add model</button>
+<button data-bs-toggle="modal" data-bs-target="#modalCreateModel" type="button" class="col-5 btn btn-light">Add model</button>
 
 <ModalComponent details={'CreateModel'}>
 	<span slot="title">Create new model</span>

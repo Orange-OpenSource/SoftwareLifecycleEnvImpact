@@ -5,6 +5,7 @@
 
 	export let modify: any;
 	export let model_id: any;
+	export let templates: any;
 	let tasks: any[] = [];
 	let rootTask, parent_task_id: any;
 	let subtasks: never[] = [];
@@ -50,5 +51,5 @@
 </script>
 
 <div class="col scroll">
-	<TreeView on:message={handleMessage} bind:model_id {parent_task_id} {subtasks} bind:modify {tasks} />
+	<TreeView on:message={handleMessage} bind:templates bind:model_id {parent_task_id} {subtasks} bind:modify {tasks} />
 </div>

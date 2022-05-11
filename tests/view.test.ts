@@ -13,8 +13,8 @@ test('view/0 has expected 2 models', async ({ page }) => {
 
 	let listItems = page.locator('button.list-group-item > div');
 
-	expect(await listItems.nth(0).textContent()).toBe('Model 0 (default)');
-	expect(await listItems.nth(1).textContent()).toBe('Model 1 Delete');
+	expect(await listItems.nth(0).textContent()).toBe(' Model 0 (default)  ');
+	expect(await listItems.nth(1).textContent()).toBe(' Model 1   ');
 });
 
 test('view/0 has expected tasks', async ({ page }) => {

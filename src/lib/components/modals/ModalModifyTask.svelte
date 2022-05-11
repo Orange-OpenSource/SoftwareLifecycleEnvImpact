@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { deleteTask } from '$lib/controllers/RequestController';
-	import { createEventDispatcher } from 'svelte';
+	import { deleteTask, getTemplates, updateTask } from '$lib/controllers/RequestController';
+	import { createEventDispatcher, onMount } from 'svelte';
 	import ModalComponent from './ModalComponent.svelte';
 
 	export let task: any;
 	export let tasks: any[];
 	export let classAttribute: string;
+	export let templates: any;
 
 	const dispatch = createEventDispatcher();
 
@@ -27,6 +28,14 @@
 		console.log(idParent);
 	}
 
+	async function updateTaskInAPI(template: string) {
+		await updateTask(task.id, template);
+
+		dispatch('message', {
+			text: 'updateTree'
+		});
+	}
+
 	/**
 	 * Set the "<select>" tag on the current parent by default.
 	 *
@@ -40,7 +49,16 @@
 <button data-bs-toggle="modal" data-bs-target="#modalModifyTask{task.id}" type="button" class="btn btn-outline-primary btn-sm {classAttribute}">Modify</button>
 
 <ModalComponent details={'ModifyTask' + task.id}>
-	<span slot="title">{task.name}</span>
+	<select slot="title" class="form-select">
+		{#each templates as template}
+			<option
+				on:click={() => {
+					updateTaskInAPI(template);
+				}}
+				value={template}>{template}</option
+			>
+		{/each}
+	</select>
 	<button slot="btndelete" on:click={deleteTaskInAPI} type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Delete</button>
 	<div slot="body">
 		Parent :

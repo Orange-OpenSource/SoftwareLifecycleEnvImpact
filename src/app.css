@@ -223,3 +223,15 @@ h2.title {
 .model-content:last-child {
 	border-bottom: none !important;
 }
+
+.icon-grey {
+	color: grey;
+	width: 28px;
+	height: 28px;
+}
+
+.icon-red {
+	color: #dc3545;
+	width: 28px;
+	height: 28px;
+}

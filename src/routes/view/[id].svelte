@@ -1,13 +1,16 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
-	import { getModels, getModelInformations, deleteModel } from '$lib/controllers/RequestController';
+	import { getModels, getModelInformations, deleteModel, getTemplates } from '$lib/controllers/RequestController';
 	import RootTreeView from '$lib/components/RootTreeView.svelte';
 	import HeaderButtonsModel from '$lib/components/HeaderButtonsModel.svelte';
 	import { checkIfLogged } from '$lib/controllers/LoginController';
 	import Split from 'split.js';
 	import { browser } from '$app/env';
 	import { goto } from '$app/navigation';
+	import TiDelete from 'svelte-icons/ti/TiDelete.svelte';
+	import TiPencil from 'svelte-icons/ti/TiPencil.svelte';
+	import ModalConfirmDelete from '$lib/components/modals/ModalConfirmDelete.svelte';
 
 	checkIfLogged();
 
@@ -19,6 +22,8 @@
 	let rootTreeView: any;
 	let model_name: string;
 	let ModalCreationModel: any;
+	let ModalRenameModel: any;
+	let templates: any;
 
 	/**
 	 * Reload all the models and tasks informations.
@@ -46,15 +51,6 @@
 		model_id = id;
 		model_name = name;
 		await rootTreeView.updateTree();
-	}
-
-	/**
-	 * Delete the current model and update the page without it.
-	 */
-	async function deleteModelInAPI(idModel: any) {
-		await deleteModel(idModel);
-
-		updateElements();
 	}
 
 	function comparePage() {
@@ -89,10 +85,16 @@
 	}
 
 	onMount(async function () {
+		if (document.querySelector('div.modal-backdrop.fade.show')) document.querySelector('div.modal-backdrop.fade.show')!.remove();
+
 		await updateElements();
+		templates = await getTemplates();
 
 		const module = await import('$lib/components/modals/ModalCreationModel.svelte');
 		ModalCreationModel = module.default;
+
+		const moduleRename = await import('$lib/components/modals/ModalRenameModel.svelte');
+		ModalRenameModel = moduleRename.default;
 
 		Split(['#split-0', '#split-1', '#split-2'], {
 			sizes: [25, 50, 25],
@@ -118,37 +120,52 @@
 
 <div class="split">
 	<div id="split-0">
-		<button on:click={comparePage} type="button" class="col btn btn-outline-primary" style="margin-top: 20px;">Compare models</button>
-
 		<h2 class="title">My models</h2>
 
 		<div class="list-group list-group-flush" style="margin-bottom : 5px;">
 			{#each modelsContent as model, i}
 				<button type="button" class="list-group-item list-group-item-action model-content" on:click|stopPropagation={() => updateModelId(model.id, model.name)} style="padding-bottom: 20px">
 					<div class="card-body d-flex justify-content-between" style="padding-bottom:0px">
-						<span class="underline-on-hover">
-							{model.name}
-						</span>
 						<div>
-							{#if i == 0}
-								<strong>(default)</strong>
-							{:else}
-								<button on:click|stopPropagation={() => deleteModelInAPI(model.id)} type="button" class="btn btn-outline-danger btn-sm">Delete</button>
+							<input type="checkbox" class="modelsInput" name={model.id} />
+							<span class="underline-on-hover">
+								{model.name}
+								{#if i == 0}
+									<strong>(default)</strong>
+								{/if}
+							</span>
+						</div>
+						<div class="d-flex justify-content-center">
+							<div on:click|stopPropagation={() => {}} type="button" data-bs-toggle="modal" data-bs-target="#modalRenameModel{model.id}" class="icon-grey">
+								<TiPencil />
+							</div>
+
+							{#if i != 0}
+								<div on:click|stopPropagation={() => {}} data-bs-toggle="modal" data-bs-target="#modalDeleteModel{model.id}" class="icon-red">
+									<TiDelete />
+								</div>
 							{/if}
 						</div>
 					</div>
 					<span class="d-flex align-items-start" style="color:grey; font-size : 12px">Last modified : {getDate(model)}</span>
 				</button>
+
+				<svelte:component this={ModalRenameModel} bind:modelsContent bind:models bind:idProject bind:model />
+
+				<ModalConfirmDelete bind:model_id bind:model_name bind:modelsContent bind:models bind:idProject bind:model bind:rootTreeView />
 			{/each}
 		</div>
 
-		<svelte:component this={ModalCreationModel} bind:model_id bind:model_name bind:rootTreeView bind:modify bind:idProject bind:models bind:modelsContent />
+		<div class="row d-flex justify-content-evenly">
+			<svelte:component this={ModalCreationModel} bind:model_id bind:model_name bind:rootTreeView bind:modify bind:idProject bind:models bind:modelsContent />
+			<button on:click={comparePage} type="button" class="col-5 btn btn-outline-primary">Compare models</button>
+		</div>
 	</div>
 
 	<div id="split-1">
 		<HeaderButtonsModel bind:model_id bind:model_name bind:modify bind:modelsContent bind:models bind:idProject />
 
-		<RootTreeView bind:this={rootTreeView} bind:modify bind:model_id />
+		<RootTreeView bind:this={rootTreeView} bind:modify bind:model_id bind:templates />
 	</div>
 
 	<div id="split-2">

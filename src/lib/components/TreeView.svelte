@@ -7,6 +7,8 @@
 	export let model_id: any;
 	export let parent_task_id: any;
 	export let tasks: any[];
+	export let templates: any;
+
 	let ModalCreationTask: any;
 
 	onMount(async function () {
@@ -22,7 +24,7 @@
 				<span class="info-name">
 					{task.name}
 					{#if modify}
-						<ModalModifyTask on:message bind:tasks {task} classAttribute={'btnmodifyparent'} />
+						<ModalModifyTask on:message bind:tasks bind:templates {task} classAttribute={'btnmodifyparent'} />
 					{/if}
 				</span>
 
@@ -32,7 +34,7 @@
 			<div class="raw nochildmodify">
 				<span class="info-name">
 					{task.name}
-					<ModalModifyTask on:message bind:tasks {task} classAttribute={'btnmodify'} />
+					<ModalModifyTask on:message bind:tasks bind:templates {task} classAttribute={'btnmodify'} />
 				</span>
 				<span class="addtask">
 					<svelte:component this={ModalCreationTask} on:message bind:model_id bind:task_id={task.id} />

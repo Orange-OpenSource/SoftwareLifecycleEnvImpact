@@ -34,6 +34,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"split.js": "^1.6.5"
+		"split.js": "^1.6.5",
+		"svelte-icons": "^2.1.0"
 	}
 }
