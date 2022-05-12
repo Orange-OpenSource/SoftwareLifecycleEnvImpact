@@ -5,12 +5,15 @@ from typing import List
 
 import yaml
 
-from impacts_model.resources import resource_template_factory
+from api.data_model import Resource
+from impacts_model.impact_sources import impact_source_factory, ImpactSource
 
 
 ################
 # TaskTemplate #
 ################
+
+
 class TaskTemplate:
     """
     Define a Task/Phase as a node containing an ImpactFactor and/or Subtask(s)
@@ -26,6 +29,7 @@ class TaskTemplate:
         self.name = name
         self.resources = resources if (resources is not None) else []
         self.subtasks = subtasks if (subtasks is not None) else []
+
 
 def get_tasks_templates() -> [TaskTemplate]:
     tasks_template = []
@@ -51,4 +55,27 @@ def task_template_factory(name: str) -> TaskTemplate:
 
         return TaskTemplate(
             name=data_loaded["name"], resources=resources_list, subtasks=subtasks_list
+        )
+
+
+################
+# ResourceTemplate #
+################
+class ResourceTemplate:
+    def __init__(self, name: str, impacts: List[ImpactSource]):
+        self.name = name
+        self.impacts = impacts
+
+def resource_template_factory(name: str) -> ResourceTemplate:
+    name = name.replace(".yaml", "")
+    with open("impacts_model/data/resources/" + name + ".yaml", "r") as stream:
+        data_loaded = yaml.safe_load(stream)
+
+        impacts_list = []
+        for impact_name in data_loaded["impact_factors"]:
+            impacts_list.append(impact_source_factory(impact_name))
+
+        return ResourceTemplate(
+            name=data_loaded["name"],
+            impacts=impacts_list
         )
