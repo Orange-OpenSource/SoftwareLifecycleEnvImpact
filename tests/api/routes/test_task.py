@@ -2,7 +2,7 @@ import pytest
 from flask.testing import FlaskClient
 from flask_sqlalchemy import SQLAlchemy
 
-from api.data_model import Model, Project, Task, TaskType
+from api.data_model import Model, Project, Task
 
 tasks_root_path = "/api/v1/tasks"
 
@@ -13,11 +13,9 @@ def task_fixture(db: SQLAlchemy) -> Task:
     project = Project(name="Project test_task")
     model = Model(name="Model test_task")
     project.models = [model]
-    task_type = TaskType(name="Tasktype test_task ")
     task = Task(name="Test task")
     model.tasks = [task]
-    task.task_type = task_type
-    db.session.add_all([project, model, task_type, task])
+    db.session.add_all([project, model, task])
     db.session.commit()
     return task
 
@@ -46,7 +44,6 @@ def test_post_task(client: FlaskClient, task_fixture: Task) -> None:
             "model_id": task_fixture.model_id,
             "name": "Task test post",
             "parent_task_id": task_fixture.id,
-            "task_type_id": task_fixture.task_type_id,
         },
     )
 
@@ -61,7 +58,6 @@ def test_post_task(client: FlaskClient, task_fixture: Task) -> None:
             "model_id": task_fixture.model_id,
             "name": "Task test post",
             "parent_task_id": task_fixture.id,
-            "task_type_id": task_fixture.task_type_id,
         },
     )
     assert response.status_code == 409

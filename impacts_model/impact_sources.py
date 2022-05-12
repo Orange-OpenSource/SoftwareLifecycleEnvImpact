@@ -1,6 +1,11 @@
 from __future__ import annotations
 
-from impacts_model.impacts.impacts import ImpactIndicator, ImpactsList
+import importlib
+from enum import Enum
+from typing import Any
+
+from pint import Quantity
+
 from impacts_model.quantities import (
     CUBIC_METER,
     DAY,
@@ -19,25 +24,51 @@ from impacts_model.quantities import (
 )
 
 
-class ImpactsFactorsRegistry:
+class ImpactIndicator(str, Enum):
     """
-    Singleton registry containing the model calculations base values
+    Enum defining all the environmental impact indicators, as used in LCAs
     """
 
-    _instance = None
-
-    def __new__(cls) -> ImpactsFactorsRegistry:
-        if cls._instance is None:
-            cls._instance = super(ImpactsFactorsRegistry, cls).__new__(cls)
-
-            # Values
-            cls.pue: float = 1.5
-            # ADEME https://bilans-ges.ademe.fr/fr/accueil/documentation-gene/index/page/Electricite_reglementaire
-            cls.electricity_mix: ELECTRICITY_MIX = 0.0599 * ELECTRICITY_MIX
-        return cls._instance
+    CLIMATE_CHANGE = "Climate change"
+    RESOURCE_DEPLETION = "Natural resources depletion"
+    ACIDIFICATION = "Acidification"
+    FINE_PARTICLES = "Fine particles"
+    IONIZING_RADIATIONS = "Ionizing radiations"
+    WATER_DEPLETION = "Water depletion"
+    ELECTRONIC_WASTE = "Electronic waste"
+    PRIMARY_ENERGY = "Primary energy consumption"
+    RAW_MATERIALS = "Raw materials"
 
 
-class ImpactFactor:
+ImpactsList = dict[ImpactIndicator, Quantity[Any]]  # TODO weird
+
+
+def merge_impacts_lists(  # TODO weird as well
+    first_list: ImpactsList, second_list: ImpactsList
+) -> ImpactsList:
+    """
+    Merge two list of impacts_list, adding them if they are in each list or merge them
+    :param first_list: first list to merge
+    :param second_list: second list to merge with
+    :return: a new list containing the parameters merged
+    """
+    result = {**first_list, **second_list}
+    for impact_indicator, _ in result.items():
+        if impact_indicator in first_list and impact_indicator in second_list:
+            result[impact_indicator] = (
+                first_list[impact_indicator] + second_list[impact_indicator]
+            )
+    return result
+
+
+def impact_source_factory(name: str) -> ImpactSource:
+    module = importlib.import_module("impacts_model.impact_sources")
+    class_ = getattr(module, name)
+    instance = class_()
+    return instance
+
+
+class ImpactSource:
     """
     Abstract class to define a source of impact emission(s)
     """
@@ -104,7 +135,25 @@ class ImpactFactor:
         return self._co2
 
 
-class ElectricityImpact(ImpactFactor):
+class ImpactsFactorsRegistry:
+    """
+    Singleton registry containing the model calculations base values
+    """
+
+    _instance = None
+
+    def __new__(cls) -> ImpactsFactorsRegistry:
+        if cls._instance is None:
+            cls._instance = super(ImpactsFactorsRegistry, cls).__new__(cls)
+
+            # Values
+            cls.pue: float = 1.5
+            # ADEME https://bilans-ges.ademe.fr/fr/accueil/documentation-gene/index/page/Electricite_reglementaire
+            cls.electricity_mix: ELECTRICITY_MIX = 0.0599 * ELECTRICITY_MIX
+        return cls._instance
+
+
+class ElectricityImpact(ImpactSource):
     """
     ImpactFactor for electricity in France
     Ratio /kWh
@@ -124,7 +173,7 @@ class ElectricityImpact(ImpactFactor):
         )
 
 
-class UserDeviceImpact(ImpactFactor):
+class UserDeviceImpact(ImpactSource):
     """
     ImpactFactor for devices (smartphone, pc) usage/amortization induced by application transferred
     Ratio for 1h/user
@@ -160,7 +209,7 @@ class UserDeviceImpact(ImpactFactor):
         return co2
 
 
-class LaptopImpact(ImpactFactor):
+class LaptopImpact(ImpactSource):
     """
     ImpactFactor for a laptop usage/amortization induced by application transferred
     Ratio for 1h/laptop
@@ -189,7 +238,7 @@ class LaptopImpact(ImpactFactor):
         super().__init__(hour_amortization.to("kg_co2e"))
 
 
-class SmartphoneImpact(ImpactFactor):
+class SmartphoneImpact(ImpactSource):
     """
     ImpactFactor for a smartphone usage/amortization induced by application transferred
     Ratio for 1h/smartphone
@@ -215,7 +264,7 @@ class SmartphoneImpact(ImpactFactor):
         super().__init__(hour_amortization.to("kg_co2e"))
 
 
-class TabletImpact(ImpactFactor):
+class TabletImpact(ImpactSource):
     """
     ImpactFactor for a Tablet usage/amortization induced by application
     Ratio for 1h/smartphone
@@ -240,7 +289,7 @@ class TabletImpact(ImpactFactor):
         super().__init__(hour_amortization.to("kg_co2e"))
 
 
-class TelevisionImpact(ImpactFactor):
+class TelevisionImpact(ImpactSource):
     """
     ImpactFactor for a 49-inch tv usage/amortization induced by application
     Ratio for 1h watched
@@ -268,7 +317,7 @@ class TelevisionImpact(ImpactFactor):
         super().__init__(hour_amortization.to("kg_co2e"))
 
 
-class NetworkImpact(ImpactFactor):
+class NetworkImpact(ImpactSource):
     """
     ImpactFactor for network usage caused by software induced data transferred
     Ratio/gb transferred
@@ -278,7 +327,7 @@ class NetworkImpact(ImpactFactor):
         super().__init__(0.0015 * KG_CO2E)
 
 
-class OfficeImpact(ImpactFactor):
+class OfficeImpact(ImpactSource):
     """
     ImpactFactor for offices buildings construction and amortization
     Ratio / day / person
@@ -311,7 +360,7 @@ class OfficeImpact(ImpactFactor):
         super().__init__(office_co2_person)
 
 
-class StorageImpact(ImpactFactor):
+class StorageImpact(ImpactSource):
     """
     EnvironmentalImpact source for storage (disks)
     Ratio / tb / day
@@ -349,7 +398,7 @@ class StorageImpact(ImpactFactor):
         return co2_total
 
 
-class ServerImpact(ImpactFactor):
+class ServerImpact(ImpactSource):
     """
     ImpactFactor for servers
     Ratio/day
@@ -393,7 +442,7 @@ class ServerImpact(ImpactFactor):
         return co2_total.to("kg_co2e")
 
 
-class TransportImpact(ImpactFactor):
+class TransportImpact(ImpactSource):
     """
     ImpactFactor for all transports
     Ratio/person/day
@@ -429,7 +478,7 @@ class TransportImpact(ImpactFactor):
         super().__init__(co2_day)
 
 
-class CarImpact(ImpactFactor):
+class CarImpact(ImpactSource):
     """
     ImpactFactor for car
     Ratio /km
@@ -442,7 +491,7 @@ class CarImpact(ImpactFactor):
         super().__init__(0.218 * KG_CO2E)
 
 
-class BikeImpact(ImpactFactor):
+class BikeImpact(ImpactSource):
     """
     ImpactFactor for bike
     Ratio /km
@@ -455,7 +504,7 @@ class BikeImpact(ImpactFactor):
         super().__init__(0.00348 * KG_CO2E)
 
 
-class PublicTransportImpact(ImpactFactor):
+class PublicTransportImpact(ImpactSource):
     """
     ImpactFactor for public transport
     Ratio / km / person
@@ -467,7 +516,7 @@ class PublicTransportImpact(ImpactFactor):
         super().__init__(0.00503 * KG_CO2E)
 
 
-class MotorbikeImpact(ImpactFactor):
+class MotorbikeImpact(ImpactSource):
     """
     ImpactFactor for motorbike
     Ratio / km / personq
@@ -477,3 +526,117 @@ class MotorbikeImpact(ImpactFactor):
     # https://bilans-ges.ademe.fr/fr/accueil/documentation-gene/index/page/Routier2
     def __init__(self) -> None:
         super().__init__(0.191 * KG_CO2E)
+
+
+class RmVCPUImpact(ImpactSource):
+    """
+    Impact factor for one vCPU for one month at Rueil-Malmaison DC
+    """
+
+    def __init__(self) -> None:
+        super().__init__(
+            climate_change=4.506211 * KG_CO2E,
+            resource_depletion=0.000000878 * KG_SBE,
+            acidification=0.015592121 * MOL_HPOS,
+            fine_particles=0.000000111281 * DISEASE_INCIDENCE,
+            ionizing_radiations=0.15738558 * KG_BQ_U235E,
+            water_depletion=8.61050442 * CUBIC_METER,
+            electronic_waste=3.087493 * ELECTRONIC_WASTE,
+            primary_energy_consumption=498.310296 * PRIMARY_MJ,
+            raw_materials=10.2950296 * TONNE_MIPS,
+        )
+
+
+class VdrCPUImpact(ImpactSource):
+    """
+    Impact factor for one vCPU for one month at Val de reuil DC
+    """
+
+    def __init__(self) -> None:
+        super().__init__(
+            climate_change=0.2206123 * KG_CO2E,
+            resource_depletion=0.000766107 * KG_SBE,
+            acidification=4.85e-08 * MOL_HPOS,
+            fine_particles=5.44803e-09 * DISEASE_INCIDENCE,
+            ionizing_radiations=0.007705325 * KG_BQ_U235E,
+            water_depletion=0.416680258 * CUBIC_METER,
+            electronic_waste=0.51490173 * ELECTRONIC_WASTE,
+            primary_energy_consumption=0.1496829 * PRIMARY_MJ,
+            raw_materials=24.0944172 * TONNE_MIPS,
+        )
+
+
+class RmRAMImpact(ImpactSource):
+    """
+    Impact factor for one GB of RAM for one month at Rueil-Malmaison DC
+    """
+
+    def __init__(self) -> None:
+        super().__init__(
+            climate_change=0.5186616 * KG_CO2E,
+            resource_depletion=0.00000001055 * KG_SBE,
+            acidification=0.002105015 * MOL_HPOS,
+            fine_particles=0.0000000115591 * DISEASE_INCIDENCE,
+            ionizing_radiations=0.00596069 * KG_BQ_U235E,
+            water_depletion=0.228200547 * CUBIC_METER,
+            electronic_waste=0.0243686 * ELECTRONIC_WASTE,
+            primary_energy_consumption=7.8400366 * PRIMARY_MJ,
+            raw_materials=0.12390367 * TONNE_MIPS,
+        )
+
+
+class VdrRAMImpact(ImpactSource):
+    """
+    Impact factor for one GB of RAM for one month at Val de Reuil DC
+    """
+
+    def __init__(self) -> None:
+        super().__init__(
+            climate_change=0.267726 * KG_CO2E,
+            resource_depletion=0.001086803 * KG_SBE,
+            acidification=4.58e-09 * MOL_HPOS,
+            fine_particles=5.97501e-09 * DISEASE_INCIDENCE,
+            ionizing_radiations=0.002916121 * KG_BQ_U235E,
+            water_depletion=0.109300096 * CUBIC_METER,
+            electronic_waste=0.053100643 * ELECTRONIC_WASTE,
+            primary_energy_consumption=0.00895852 * PRIMARY_MJ,
+            raw_materials=3.49000642 * TONNE_MIPS,
+        )
+
+
+class RmStorageImpact(ImpactSource):
+    """
+    Impact factor for one GB of storage for one month at Rueil-Malmaison DC
+    """
+
+    def __init__(self) -> None:
+        super().__init__(
+            climate_change=1.1922143 * KG_CO2E,
+            resource_depletion=0.00000084877 * KG_SBE,
+            acidification=0.004756408 * MOL_HPOS,
+            fine_particles=0.00000002585 * DISEASE_INCIDENCE,
+            ionizing_radiations=0.041780379 * KG_BQ_U235E,
+            water_depletion=0.4456003 * CUBIC_METER,
+            electronic_waste=0.1535267 * ELECTRONIC_WASTE,
+            primary_energy_consumption=12.1600201 * PRIMARY_MJ,
+            raw_materials=0.53460201 * TONNE_MIPS,
+        )
+
+
+class VdrRamStorageImpact(ImpactSource):
+    """
+    Impact factor for one GB of storage for one month at Val de Reuil DC
+    """
+
+    def __init__(self) -> None:
+        super().__init__(
+            climate_change=1.1922143 * KG_CO2E,
+            resource_depletion=0.004756408 * KG_SBE,
+            acidification=8.4877e-07 * MOL_HPOS,
+            fine_particles=2.585e-08 * DISEASE_INCIDENCE,
+            ionizing_radiations=0.041780379 * KG_BQ_U235E,
+            water_depletion=0.4456003 * CUBIC_METER,
+            electronic_waste=0.53460201 * ELECTRONIC_WASTE,
+            primary_energy_consumption=0.1535267 * PRIMARY_MJ,
+            raw_materials=12.1600201 * TONNE_MIPS,
+        )

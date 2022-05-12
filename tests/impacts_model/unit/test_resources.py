@@ -1,7 +1,5 @@
-from typing import List
-
-from impacts_model.impacts.impact_factors import ImpactFactor
-from impacts_model.impacts.impacts import ImpactIndicator
+from api.data_model import Resource
+from impacts_model.impact_sources import ImpactIndicator, ImpactSource
 from impacts_model.quantities import (
     CUBIC_METER,
     DISEASE_INCIDENCE,
@@ -15,32 +13,8 @@ from impacts_model.quantities import (
 )
 from impacts_model.resources import (
     merge_resource_list,
-    Resource,
-    ResourcesList,
+    ResourcesList, ResourceTemplate,
 )
-
-
-class TestResource(Resource):
-    """
-    Test resource implementation to fully control its quantity and ImpactSources
-    """
-
-    def __init__(self, quantity: float, impacts: List[ImpactFactor]):
-        self._quantity = quantity
-        super().__init__("TestResource", impacts)
-
-    @property
-    def quantity(self) -> float:
-        """
-        For testing purpose, give direct access to quantity property
-        :return: quantity as float
-        """
-        return self._quantity
-
-    @quantity.setter
-    def quantity(self, quantity: float) -> None:
-        self._quantity = quantity
-
 
 ##########
 # STATIC #
@@ -108,49 +82,35 @@ def test_merge_resource_list() -> None:
 ############
 
 
-def test_quantity_setter() -> None:
-    """
-    Test quantity property of Resource setter and getter
-    :return:
-    """
-    is1 = ImpactFactor(9999 * KG_CO2E)
-    is2 = ImpactFactor(1.123 * KG_CO2E)
-
-    test_resource = TestResource(1, impacts=[is1, is2])  # Impacts =  1 * 1776
-    assert test_resource.quantity == 1
-    test_resource.quantity = 342423.2134234
-    assert test_resource.quantity == 342423.2134234
-
-
 def test_get_co2_impact() -> None:
     """
     For Resource.get_co2_impact test computation, quantity change and resource adding
     :return: None
     """
-    is1 = ImpactFactor(9999 * KG_CO2E)
-    is2 = ImpactFactor(1.123 * KG_CO2E)
+    is1 = ImpactSource(9999 * KG_CO2E)
+    is2 = ImpactSource(1.123 * KG_CO2E)
 
-    test_resource = TestResource(1, impacts=[is1, is2])  # Impacts =  1 * 1776
+    test_resource = Resource("Resource", impacts=[is1, is2])  # Impacts =  1 * 1776
     test_resource.quantity = 1
     # Test ImpactFactor computation
     assert (
-        test_resource.get_impact(ImpactIndicator.CLIMATE_CHANGE)
-        == (9999 + 1.123) * KG_CO2E
+            test_resource.get_impact(ImpactIndicator.CLIMATE_CHANGE)
+            == (9999 + 1.123) * KG_CO2E
     )
 
     # Test quantity change
     test_resource._quantity = 123
     assert (
-        test_resource.get_impact(ImpactIndicator.CLIMATE_CHANGE)
-        == ((9999 + 1.123) * 123) * KG_CO2E
+            test_resource.get_impact(ImpactIndicator.CLIMATE_CHANGE)
+            == ((9999 + 1.123) * 123) * KG_CO2E
     )
 
     # Test add impact source
-    is3 = ImpactFactor(432 * KG_CO2E)
-    test_resource._impacts.append(is3)
+    is3 = ImpactSource(432 * KG_CO2E)
+    test_resource.impacts.append(is3)
     assert (
-        test_resource.get_impact(ImpactIndicator.CLIMATE_CHANGE)
-        == ((9999 + 1.123 + 432) * 123) * KG_CO2E
+            test_resource.get_impact(ImpactIndicator.CLIMATE_CHANGE)
+            == ((9999 + 1.123 + 432) * 123) * KG_CO2E
     )
 
 
@@ -159,10 +119,10 @@ def test_get_impacts() -> None:
     Test get_impacts computation by changing quantity and impacts_list
     :return:
     """
-    is1 = ImpactFactor(9999 * KG_CO2E)
-    is2 = ImpactFactor(1.123 * KG_CO2E)
+    is1 = ImpactSource(9999 * KG_CO2E)
+    is2 = ImpactSource(1.123 * KG_CO2E)
 
-    test_resource = TestResource(1, impacts=[is1, is2])  # Impacts =  1 * 1776
+    test_resource = ResourceTemplate(1, impacts=[is1, is2])  # Impacts =  1 * 1776
     is2.raw_materials = 213.3 * TONNE_MIPS
     assert test_resource.get_impacts() == {
         ImpactIndicator.CLIMATE_CHANGE: 10000.123 * KG_CO2E,

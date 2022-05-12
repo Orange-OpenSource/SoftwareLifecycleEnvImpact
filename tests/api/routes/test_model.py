@@ -2,7 +2,7 @@ import pytest
 from flask.testing import FlaskClient
 from flask_sqlalchemy import SQLAlchemy
 
-from api.data_model import Model, Project, Task, TaskType
+from api.data_model import Model, Project, Task
 
 models_root = "/api/v1/models"
 
@@ -139,12 +139,9 @@ def test_get_model_tasks(client: FlaskClient, db: SQLAlchemy) -> None:
     :param client: flask client fixture
     :param db: SQLAlchemy database fixture
     """
-    task_type = TaskType(name="Task type")
     task1 = Task(name="Task 1")
     task2 = Task(name="Task 2")
     model = Model(name="Model 1")
-    task1.task_type = task_type
-    task2.task_type = task_type
     project = Project(name="Project 1")
     project.models = [model]
     project.base_model_id = model.id

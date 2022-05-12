@@ -25,6 +25,7 @@ resources = [
     {"id": 2, "name": "Resource 3", "task_id": 2, "type": "Storage", "value": 100},
 ]
 
+
 def reset_db() -> None:
     """
     Reset the database with standard values

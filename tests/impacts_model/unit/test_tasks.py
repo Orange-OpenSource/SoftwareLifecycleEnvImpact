@@ -1,10 +1,15 @@
 #########
 # Utils #
 #########
-import pytest
+from unittest import mock
+from unittest.mock import Mock
 
-from impacts_model.impacts.impact_factors import ImpactFactor
-from impacts_model.impacts.impacts import ImpactIndicator
+import pytest
+from flask_sqlalchemy import SQLAlchemy
+
+from api.data_model import Model, Project, Task
+from impacts_model import impact_sources
+from impacts_model.impact_sources import ImpactIndicator, ImpactSource
 from impacts_model.quantities import (
     CUBIC_METER,
     DISEASE_INCIDENCE,
@@ -17,7 +22,7 @@ from impacts_model.quantities import (
     TONNE_MIPS,
 )
 from impacts_model.resources import Resource
-from impacts_model.tasks import TaskTemplate
+from impacts_model.tasks import get_task_impact_by_indicator, TaskTemplate
 
 
 ########
@@ -26,22 +31,53 @@ from impacts_model.tasks import TaskTemplate
 
 
 @pytest.fixture(scope="function")
-def task_fixture() -> TaskTemplate:
-    is1 = ImpactFactor(1000 * KG_CO2E)
-    is2 = ImpactFactor(776 * KG_CO2E)
+def task_fixture(db: SQLAlchemy) -> Task:
+    project = Project(name="Project test_task")
+    model = Model(name="Model test_task")
+    project.models = [model]
+    task = Task(name="Test task")
 
-    r1 = Resource(name="Test resource", impacts=[is1, is2], quantity=1)  # 1776
-    r2 = Resource(name="Test resource 2", impacts=[is1], quantity=1)  # 1000
+    resource1 = Resource(
+        name="Resource 1 test task",
+        type="TestResource",
+        value=1,
+    )
+    resource2 = Resource(
+        name="Resource 2 test task",
+        type="TestResource",
+        value=1,
+    )
+    task.resources = [resource1, resource2]
+    model.tasks = [task]
+    db.session.add_all([project, model, task, resource1, resource2])
+    db.session.commit()
+    return task
 
-    subtask = TaskTemplate("Subtask", resources=[r1])  # 1776
-    return TaskTemplate("Task", subtasks=[subtask], resources=[r2])  # 1000 + 1776
+class MockOpen:
+    builtin_open = open
+
+    def open(self, *args, **kwargs):
+        if args[0] == "impacts_model/res/resources/TestResource.yaml":
+            impact_sources.impact_source_factory = Mock(return_value=ImpactSource(
+                climate_change=0.136 * KG_CO2E,
+                resource_depletion=0.000000017 * KG_SBE,
+                acidification=0.000468 * MOL_HPOS,
+                fine_particles=0.00000000337 * DISEASE_INCIDENCE,
+                ionizing_radiations=0.00478 * KG_BQ_U235E,
+                water_depletion=0.267 * CUBIC_METER,
+                electronic_waste=0.0952 * ELECTRONIC_WASTE,
+                primary_energy_consumption=15.5 * PRIMARY_MJ,
+                raw_materials=0.298 * TONNE_MIPS,
+            ))
+            return mock.mock_open(read_data="name: Network\nunit: gb\nimpact_factors:\n- TestImpact")(*args, **kwargs)
+        return self.builtin_open(*args, **kwargs)
 
 
-def test_get_co2_impact(task_fixture: TaskTemplate) -> None:
+@mock.patch("builtins.open", MockOpen().open)
+def test_get_co2_impact(task_fixture: Task) -> None:
     """Test that task co2 impact is those of all _resources from itself and its children"""
-
     assert (
-        task_fixture.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE)
+        get_task_impact_by_indicator(task_fixture, ImpactIndicator.CLIMATE_CHANGE)
         == 2776 * KG_CO2E
     )
 
@@ -50,6 +86,7 @@ def test_get_impacts(task_fixture: TaskTemplate) -> None:
     """
     Test return value of get_impact_quantity is in form of TaskImpact
     """
+    impact = get_task_template(task)
     impact = task_fixture.get_impacts()
     assert isinstance(task_fixture.get_impacts(), dict)
     assert impact["name"] == "Task"
@@ -103,29 +140,29 @@ def test_get_impact_by_resource(task_fixture: TaskTemplate) -> None:
     Test Task.get_impact_by_resource() method, by adding a new resource, an existing one, and adding a subtask
     :return:
     """
-    is1 = ImpactFactor(1000 * KG_CO2E)
+    is1 = ImpactSource(1000 * KG_CO2E)
     resource = Resource(name="Test resource", impacts=[is1], quantity=1)  # 1000
 
     # Test one res
     task = TaskTemplate("Task", resources=[resource])  # 1000
     res_dict = task.get_impact_by_resource()
     assert res_dict[resource.name][
-        ImpactIndicator.CLIMATE_CHANGE
-    ] == task.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE)
+               ImpactIndicator.CLIMATE_CHANGE
+           ] == task.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE)
 
     # Test two res
     task2 = TaskTemplate("Task", resources=[resource, resource])  # 1000 + 1000
     res_dict = task2.get_impact_by_resource()
     assert res_dict[resource.name][
-        ImpactIndicator.CLIMATE_CHANGE
-    ] == task2.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE)
+               ImpactIndicator.CLIMATE_CHANGE
+           ] == task2.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE)
 
     # Test subtasks
     task3 = TaskTemplate("Task", subtasks=[task, task2])  # 2000 + 1000
     res_dict = task3.get_impact_by_resource()
     assert res_dict[resource.name][
-        ImpactIndicator.CLIMATE_CHANGE
-    ] == task3.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE)
+               ImpactIndicator.CLIMATE_CHANGE
+           ] == task3.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE)
 
 
 def test_get_impact_by_resource_quantity() -> None:
@@ -142,4 +179,3 @@ def test_get_impact_by_resource_quantity() -> None:
     #
     # assert round(p.get_co2_impact(), 5) == round(co2, 5)
     # TODO
-

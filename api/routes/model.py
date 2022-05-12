@@ -5,8 +5,8 @@ from flask import abort, request
 
 from api.data_model import db, Model, ModelSchema, Project, Task
 from api.routes.task import get_task
-from impacts_model.impact_model import get_impact_by_indicator, get_project_impact_by_task
-from impacts_model.impacts.impacts import ImpactIndicator
+from impacts_model.impact_sources import ImpactIndicator
+from impacts_model.tasks import get_task_impact_by_indicator, get_task_impacts
 
 
 def get_models() -> Any:
@@ -82,8 +82,9 @@ def delete_model(model_id: int) -> Any:
         if project.base_model_id == model.id:
             return abort(
                 403,
-                "Cannot delete model {model_id} as it is the base model of project {project}".format(model_id=model.id,
-                                                                                                     project=project.id),
+                "Cannot delete model {model_id} as it is the base model of project {project}".format(
+                    model_id=model.id, project=project.id
+                ),
             )
         db.session.delete(model)
         db.session.commit()
@@ -111,12 +112,20 @@ def get_tasks(model_id: int) -> Any:
             "No model found for Id: {model_id}".format(model_id=model_id),
         )
 
+
 def get_impacts(model_id: int) -> Any:
+    """
+    GET /models/{model_id}/impacts
+    :param model_id: id of the model to get the impacts
+    :return: All impacts computed for a model
+    """
     model = Model.query.filter(Model.id == model_id).one_or_none()
 
     if model is not None:
-        total_impact = get_impact_by_indicator(model.root_task, ImpactIndicator.CLIMATE_CHANGE)
-        impact_by_task = get_project_impact_by_task(model.root_task)
+        total_impact = get_task_impact_by_indicator(
+            model.root_task, ImpactIndicator.CLIMATE_CHANGE
+        )
+        impact_by_task = get_task_impacts(model.root_task)
         return {
             "Total CO2": str(total_impact),
             "Impact by task": impact_by_task,
@@ -139,14 +148,13 @@ def create_model(model: dict[str, Any]) -> Any:
 
     existing_model = (
         Model.query.filter(Model.name == name)
-            .filter(Model.project_id == project_id)
-            .one_or_none()
+        .filter(Model.project_id == project_id)
+        .one_or_none()
     )
 
     if existing_model is None:
         root_task = Task(
             name=name,
-            task_type_id=0,  # Root task type, # TODO replace by new api architecture
         )
         schema = ModelSchema()
         new_model = schema.load(model)

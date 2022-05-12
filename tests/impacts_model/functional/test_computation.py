@@ -242,4 +242,4 @@ def test_usage_task_impacts() -> None:
     assert (
         s.usage_task.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE) != old_co2
     )
-''' # TODO
+'''  # TODO

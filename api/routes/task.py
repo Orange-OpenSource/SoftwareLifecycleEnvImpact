@@ -77,7 +77,9 @@ def delete_task(task_id: int) -> Any:
         if task.id == model.root_task_id:
             return abort(
                 403,
-                "Cannot delete task {task_id} as it is the root of model {model}".format(task_id=task_id, model=model.root_task_id),
+                "Cannot delete task {task_id} as it is the root of model {model}".format(
+                    task_id=task_id, model=model.root_task_id
+                ),
             )
         db.session.delete(task)
         db.session.commit()
@@ -98,7 +100,6 @@ def create_task(task: dict[str, Any]) -> Any:
     """
     name = task.get("name")
     parent_task_id = task.get("parent_task_id")
-    task_type_id = task.get("task_type_id")
     model_id = task.get("model_id")
 
     existing_task = (

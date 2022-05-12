@@ -44,7 +44,9 @@ class Task(db.Model):  # type: ignore
     parent_task_id = db.Column(db.Integer, db.ForeignKey("task.id"))
     subtasks = db.relationship("Task", lazy=True)
 
-    resources = db.relationship(Resource, backref="task_input", lazy=True, cascade="all")
+    resources = db.relationship(
+        Resource, backref="task_input", lazy=True, cascade="all"
+    )
 
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())

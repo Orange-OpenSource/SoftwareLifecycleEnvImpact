@@ -26,7 +26,7 @@ def app(request) -> Flask:
     return app_fixture
 
 
-@pytest.fixture(name="db",scope="session")
+@pytest.fixture(name="db", scope="session")
 def db(app, request) -> SQLAlchemy:
     """Session-wide test database."""
 

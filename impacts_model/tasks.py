@@ -1,14 +1,108 @@
 from __future__ import annotations
 
+import os
 from typing import Any, List, Union
 
+import yaml
 from pint import Quantity
 
-from impacts_model.impacts.impacts import ImpactIndicator, ImpactsList, merge_impacts_lists
+from api.data_model import Task
+from impacts_model.impact_sources import ImpactIndicator, ImpactsList, merge_impacts_lists
 from impacts_model.quantities import Q_
-from impacts_model.resources import merge_resource_list, Resource, ResourcesList
+from impacts_model.resources import (get_resource_impact, get_resource_impact_list, load_resource_impacts,
+                                     merge_resource_list, Resource, ResourcesList)
 
 TaskImpact = dict[str, Union[str, float, Any]]
+
+
+def get_tasks_templates() -> [TaskTemplate]:
+    tasks_template = []
+    for filename in os.listdir("impacts_model/res/tasks"):
+        tasks_template.append(task_template_factory(filename))
+    return tasks_template
+
+
+def task_template_factory(name: str) -> TaskTemplate:
+    name = name.replace(".yaml", "")
+    with open("impacts_model/res/tasks/" + name + ".yaml", "r") as stream:
+        data_loaded = yaml.safe_load(stream)
+
+        resources_list = []
+        if data_loaded["resources"] is not None:
+            for resource_name in data_loaded["resources"]:
+                resources_list.append(load_resource_impacts(resource_name))
+
+        subtasks_list = []
+        if data_loaded["subtasks"] is not None:
+            for resource_name in data_loaded["subtasks"]:
+                subtasks_list.append(task_template_factory(resource_name))
+
+        return TaskTemplate(
+            name=data_loaded["name"], resources=resources_list, subtasks=subtasks_list
+        )
+
+
+def get_task_impact_by_indicator(
+    task: Task, indicator: ImpactIndicator
+) -> Quantity[Any]:
+    impacts_resources: List[Quantity[Any]] = [
+        get_resource_impact(r, indicator) for r in task.resources
+    ]
+    impacts_subtasks: List[Quantity[Any]] = [
+        get_task_impact_by_indicator(s, indicator) for s in task.subtasks
+    ]
+
+    return Q_(sum(impacts_resources) + sum(impacts_subtasks))  # type: ignore
+    # TODO why Q_ here ?
+
+
+def get_task_impact_list(
+    task: Task,
+) -> ImpactsList:  # TODO clarify the difference with get_task_impacts()
+    impacts: ImpactsList = {}
+
+    for r in task.resources:
+        impacts = merge_impacts_lists(impacts, get_resource_impact_list(r))
+
+    for s in task.subtasks:
+        impacts = merge_impacts_lists(impacts, get_task_impact_list(s))
+
+    return impacts
+
+
+def get_task_impacts(task: Task) -> TaskImpact:
+    """
+    Return a task impact for this one and its children
+    :param: The Task to get the impacts from
+    :return: TaskImpact with name, impact sources and subtasks
+    """
+    return {
+        "id": task.id,
+        "name": task.name,
+        "impacts": [
+            {key.value: str(value)} for key, value in get_task_impact_list(task).items()
+        ],
+        "subtasks": [get_task_impacts(r) for r in task.subtasks],
+    }
+
+
+def get_task_impact_by_resource(task: Task) -> ResourcesList:
+    """
+    Return all _impacts grouped by resource type, int the format of ResourcesList:
+
+     {'People': {'CO2': 2000.0}}
+     {'Build': {'CO2': 234325.0}}
+    :return: ResourceList containing resources for this task
+    """
+    resource_list: ResourcesList = {}
+
+    for r in task.resources:
+        resource_list = merge_resource_list(resource_list, {r.name: r.get_impacts()})
+
+    for s in task.subtasks:
+        resource_list = merge_resource_list(resource_list, s.get_impact_by_resource())
+
+    return resource_list
 
 
 class TaskTemplate:
@@ -26,33 +120,6 @@ class TaskTemplate:
         self.name = name
         self.resources = resources if (resources is not None) else []
         self.subtasks = subtasks if (subtasks is not None) else []
-
-    def get_impacts(self) -> TaskImpact:
-        """
-        Return a task impact for this one and its children
-        :return: TaskImpact with name, impact sources and subtasks
-        """
-        return {
-            "name": self.name,
-            "impacts": self.get_impacts_list(),
-            "subtasks": [r.get_impacts() for r in self.subtasks],
-        }
-
-    def get_impacts_list(self) -> ImpactsList:
-        """
-        Return the task impacts_list as an ImpactsList
-
-        :return: an ImpactsList for this task impacts_list
-        """
-        impacts: ImpactsList = {}
-
-        for r in self.resources:
-            impacts = merge_impacts_lists(impacts, r.get_impacts())
-
-        for s in self.subtasks:
-            impacts = merge_impacts_lists(impacts, s.get_impacts_list())
-
-        return impacts
 
     def get_impact_by_resource(self) -> ResourcesList:
         """

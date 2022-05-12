@@ -1,10 +1,9 @@
-from impacts_model.impacts.impact_factors import (
+from impacts_model.impact_sources import (
     BikeImpact,
     CarImpact,
-    ImpactFactor,
-    ImpactsFactorsRegistry,
-    LaptopImpact,
-    MotorbikeImpact,
+    ImpactIndicator, ImpactsFactorsRegistry,
+    ImpactsList, ImpactSource, LaptopImpact,
+    merge_impacts_lists, MotorbikeImpact,
     OfficeImpact,
     PublicTransportImpact,
     ServerImpact,
@@ -15,7 +14,6 @@ from impacts_model.impacts.impact_factors import (
     TransportImpact,
     UserDeviceImpact,
 )
-from impacts_model.impacts.impacts import ImpactIndicator, ImpactsList, merge_impacts_lists
 from impacts_model.quantities import (
     CUBIC_METER,
     DISEASE_INCIDENCE,
@@ -107,7 +105,7 @@ def test_impact_registry_singleton() -> None:
 
 def test_co2() -> None:
     """Test ImpactFactor co2 property getter"""
-    i = ImpactFactor(103.72 * KG_CO2E)
+    i = ImpactSource(103.72 * KG_CO2E)
     assert i.co2 == 103.72 * KG_CO2E
 
 
@@ -116,7 +114,7 @@ def test_impact_source_parameters() -> None:
     Test setter/getter of all kind of environmental impact
     :return:
     """
-    i = ImpactFactor(
+    i = ImpactSource(
         climate_change=103.72 * KG_CO2E,
         resource_depletion=312.23 * KG_SBE,
         acidification=32443.2134 * MOL_HPOS,
@@ -143,7 +141,7 @@ def test_get_impacts_quantities() -> None:
     Test .impacts_list property of ImpactFactor
     :return:
     """
-    i = ImpactFactor(
+    i = ImpactSource(
         climate_change=103.72 * KG_CO2E,
         resource_depletion=312.23 * KG_SBE,
         acidification=32443.2134 * MOL_HPOS,
