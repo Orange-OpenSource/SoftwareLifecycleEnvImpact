@@ -66,6 +66,7 @@ class ResourceTemplate:
         self.name = name
         self.impacts = impacts
 
+
 def resource_template_factory(name: str) -> ResourceTemplate:
     name = name.replace(".yaml", "")
     with open("impacts_model/data/resources/" + name + ".yaml", "r") as stream:

@@ -7,16 +7,12 @@ from unittest.mock import MagicMock, patch
 import pytest
 from flask_sqlalchemy import SQLAlchemy
 
-from api.data_model import Model, Project, Task
+from api.data_model import Model, Project, Resource, Task
 from impacts_model.impact_sources import ImpactIndicator, ImpactSource
+from impacts_model.impacts import get_task_impact_by_indicator, get_task_impact_by_resource_type, get_task_impact_list, \
+    get_task_impacts
 from impacts_model.quantities.quantities import CUBIC_METER, DISEASE_INCIDENCE, ELECTRONIC_WASTE, KG_BQ_U235E, KG_CO2E, \
     KG_SBE, MOL_HPOS, PRIMARY_MJ, TONNE_MIPS
-from impacts_model.resources import Resource
-from impacts_model.tasks import (
-    get_task_impact_by_indicator,
-    get_task_impact_by_resource_type, get_task_impact_list,
-    get_task_impacts,
-)
 
 
 ########

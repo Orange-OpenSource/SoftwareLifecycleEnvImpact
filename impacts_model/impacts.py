@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from typing import Any, List, Union
 
 from pint import Quantity
@@ -9,13 +7,14 @@ from impacts_model.impact_sources import ImpactIndicator, ImpactsList, merge_imp
 from impacts_model.quantities.quantities import Q_
 from impacts_model.resources import (get_resource_impact, get_resource_impact_list, merge_resource_list, ResourcesList)
 
-TaskImpact = dict[str, Union[str, float, Any]]
 
-
+########
+# Task #
+########
 
 
 def get_task_impact_by_indicator(
-    task: Task, indicator: ImpactIndicator
+        task: Task, indicator: ImpactIndicator
 ) -> Quantity[Any]:
     impacts_resources: List[Quantity[Any]] = [
         get_resource_impact(r, indicator) for r in task.resources
@@ -29,7 +28,7 @@ def get_task_impact_by_indicator(
 
 
 def get_task_impact_list(
-    task: Task,
+        task: Task,
 ) -> ImpactsList:  # TODO clarify the difference with get_task_impacts()
     impacts: ImpactsList = {}
 
@@ -42,7 +41,7 @@ def get_task_impact_list(
     return impacts
 
 
-def get_task_impacts(task: Task) -> TaskImpact:
+def get_task_impacts(task: Task) -> dict[str, Union[str, float, Any]]:  # TODO bad return value
     """
     Return a task impact for this one and its children
     :param: The Task to get the impacts from
@@ -75,5 +74,3 @@ def get_task_impact_by_resource_type(task: Task) -> ResourcesList:
         resource_list = merge_resource_list(resource_list, get_task_impact_by_resource_type(s))
 
     return resource_list
-
-

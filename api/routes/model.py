@@ -6,7 +6,7 @@ from flask import abort, request
 from api.data_model import db, Model, ModelSchema, Project, Task
 from api.routes.task import get_task
 from impacts_model.impact_sources import ImpactIndicator
-from impacts_model.tasks import get_task_impact_by_indicator, get_task_impacts
+from impacts_model.impacts import get_task_impact_by_indicator, get_task_impacts
 
 
 def get_models() -> Any:
