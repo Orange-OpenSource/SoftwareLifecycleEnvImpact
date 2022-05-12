@@ -1,6 +1,6 @@
 from typing import Any
 
-from impacts_model.tasks import get_tasks_templates, TaskTemplate
+from impacts_model.templates import get_tasks_templates, TaskTemplate
 
 
 def json_task_template(task_template: TaskTemplate) -> dict[str, Any]:
