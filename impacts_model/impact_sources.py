@@ -6,22 +6,11 @@ from typing import Any
 
 from pint import Quantity
 
-from impacts_model.quantities import (
-    CUBIC_METER,
-    DAY,
-    DISEASE_INCIDENCE,
-    ELECTRICITY_MIX,
-    ELECTRONIC_WASTE,
-    HOUR,
-    KG_BQ_U235E,
-    KG_CO2E,
-    KG_SBE,
-    MOL_HPOS,
-    PRIMARY_MJ,
-    TONNE_MIPS,
-    WATT_HOUR,
-    YEAR,
-)
+from impacts_model.quantities.quantities import CUBIC_METER, DAY, DISEASE_INCIDENCE, ELECTRICITY_MIX, ELECTRONIC_WASTE, \
+    HOUR, \
+    KG_BQ_U235E, \
+    KG_CO2E, \
+    KG_SBE, MOL_HPOS, PRIMARY_MJ, TONNE_MIPS, WATT_HOUR, YEAR
 
 
 class ImpactIndicator(str, Enum):
@@ -44,7 +33,7 @@ ImpactsList = dict[ImpactIndicator, Quantity[Any]]  # TODO weird
 
 
 def merge_impacts_lists(  # TODO weird as well
-    first_list: ImpactsList, second_list: ImpactsList
+        first_list: ImpactsList, second_list: ImpactsList
 ) -> ImpactsList:
     """
     Merge two list of impacts_list, adding them if they are in each list or merge them
@@ -56,7 +45,7 @@ def merge_impacts_lists(  # TODO weird as well
     for impact_indicator, _ in result.items():
         if impact_indicator in first_list and impact_indicator in second_list:
             result[impact_indicator] = (
-                first_list[impact_indicator] + second_list[impact_indicator]
+                    first_list[impact_indicator] + second_list[impact_indicator]
             )
     return result
 
@@ -74,16 +63,16 @@ class ImpactSource:
     """
 
     def __init__(
-        self,
-        climate_change: KG_CO2E,
-        resource_depletion: KG_SBE = 0 * KG_SBE,
-        acidification: MOL_HPOS = 0 * MOL_HPOS,
-        fine_particles: DISEASE_INCIDENCE = 0 * DISEASE_INCIDENCE,
-        ionizing_radiations: KG_BQ_U235E = 0 * KG_BQ_U235E,
-        water_depletion: CUBIC_METER = 0 * CUBIC_METER,
-        electronic_waste: ELECTRONIC_WASTE = 0 * ELECTRONIC_WASTE,
-        primary_energy_consumption: PRIMARY_MJ = 0 * PRIMARY_MJ,
-        raw_materials: TONNE_MIPS = 0 * TONNE_MIPS,
+            self,
+            climate_change: KG_CO2E,
+            resource_depletion: KG_SBE = 0 * KG_SBE,
+            acidification: MOL_HPOS = 0 * MOL_HPOS,
+            fine_particles: DISEASE_INCIDENCE = 0 * DISEASE_INCIDENCE,
+            ionizing_radiations: KG_BQ_U235E = 0 * KG_BQ_U235E,
+            water_depletion: CUBIC_METER = 0 * CUBIC_METER,
+            electronic_waste: ELECTRONIC_WASTE = 0 * ELECTRONIC_WASTE,
+            primary_energy_consumption: PRIMARY_MJ = 0 * PRIMARY_MJ,
+            raw_materials: TONNE_MIPS = 0 * TONNE_MIPS,
     ):
         """
         Should be used by implementations, define the different impacts_sources sources
@@ -126,7 +115,7 @@ class ImpactSource:
 
     @property
     def co2(
-        self,
+            self,
     ) -> KG_CO2E:
         """
         Getter for co2 property
@@ -201,10 +190,10 @@ class UserDeviceImpact(ImpactSource):
         :return: KG_CO2E impact for 1h of UserDevice
         """
         co2: KG_CO2E = (
-            self.RATIO_TABLET * self.tablet_impact.co2
-            + self.RATIO_PC * self.laptop_impact.co2
-            + self.RATIO_TV * self.tv_impact.co2
-            + self.RATIO_SMARTPHONE * self.smartphone_impact.co2
+                self.RATIO_TABLET * self.tablet_impact.co2
+                + self.RATIO_PC * self.laptop_impact.co2
+                + self.RATIO_TV * self.tv_impact.co2
+                + self.RATIO_SMARTPHONE * self.smartphone_impact.co2
         )
         return co2
 
@@ -229,10 +218,10 @@ class LaptopImpact(ImpactSource):
         """
 
         one_day_amortization = self.DAY_AMORTIZATION * (
-            1 * DAY
+                1 * DAY
         )  # compute the co2 for 1 day
         hour_amortization = (one_day_amortization / self.DAILY_USE) * (
-            1 * HOUR
+                1 * HOUR
         )  # Cannot directly compute as laptop isn't used 24h/24h. Take 1 hour
 
         super().__init__(hour_amortization.to("kg_co2e"))
@@ -255,10 +244,10 @@ class SmartphoneImpact(ImpactSource):
         co2 for 1h of usage
         """
         one_day_amortization = self.DAY_AMORTIZATION * (
-            1 * DAY
+                1 * DAY
         )  # compute the co2 for 1 day
         hour_amortization = (one_day_amortization / self.DAILY_USE) * (
-            1 * HOUR
+                1 * HOUR
         )  # Cannot directly compute as smartphone isn't used 24h/24h. Take 1 hour
 
         super().__init__(hour_amortization.to("kg_co2e"))
@@ -271,7 +260,7 @@ class TabletImpact(ImpactSource):
     """
 
     FABRICATION_CO2 = (
-        63.2 * KG_CO2E
+            63.2 * KG_CO2E
     )  # Source: https://bilans-ges.ademe.fr/fr/basecarbone/donnees-consulter/liste-element?recherche=tablette
     LIFE_EXPECTANCY = 5 * YEAR
     DAILY_USE = 1 * HOUR
@@ -280,10 +269,10 @@ class TabletImpact(ImpactSource):
 
     def __init__(self) -> None:
         one_day_amortization = self.DAY_AMORTIZATION * (
-            1 * DAY
+                1 * DAY
         )  # compute the co2 for 1 day
         hour_amortization = (one_day_amortization / self.DAILY_USE) * (
-            1 * HOUR
+                1 * HOUR
         )  # Cannot directly compute as tablet isn't used 24h/24h. Take 1 hour
 
         super().__init__(hour_amortization.to("kg_co2e"))
@@ -308,10 +297,10 @@ class TelevisionImpact(ImpactSource):
         co2 for 1h of usage
         """
         one_day_amortization = self.DAY_AMORTIZATION * (
-            1 * DAY
+                1 * DAY
         )  # compute the co2 for 1 day
         hour_amortization = (one_day_amortization / self.DAILY_USE) * (
-            1 * HOUR
+                1 * HOUR
         )  # Cannot directly compute as television isn't used 24h/24h. Take 1 hour
 
         super().__init__(hour_amortization.to("kg_co2e"))
@@ -351,10 +340,10 @@ class OfficeImpact(ImpactSource):
         LCA / building expectancy
         """
         sqr_meter_office = (
-            self.OFFICE_SIZE / self.OFFICES_OCCUPANCY
+                self.OFFICE_SIZE / self.OFFICES_OCCUPANCY
         )  # Adding corridors halls etc. to single offices
         office_emissions_sqr_meter_day = self.BUILDING_EMISSIONS / (
-            self.LIFE_EXPECTANCY * 365
+                self.LIFE_EXPECTANCY * 365
         )
         office_co2_person = sqr_meter_office * office_emissions_sqr_meter_day
         super().__init__(office_co2_person)
@@ -387,12 +376,12 @@ class StorageImpact(ImpactSource):
         """
         amortization_day = self.FABRICATION_CO2 / (self.LIFE_EXPECTANCY * 365)
         wh_pue = (
-            self.SSD_WH * self.registry.pue
+                self.SSD_WH * self.registry.pue
         )  # Pondering the consumption with the PUE
         wh_day = wh_pue * 24  # wh consumed for a complete day
         kwh_day = wh_day.to("kWh")
         consumption_co2 = (
-            kwh_day * self.registry.electricity_mix
+                kwh_day * self.registry.electricity_mix
         )  # consumption co2 emissions
         co2_total: KG_CO2E = consumption_co2 + amortization_day
         return co2_total
@@ -429,14 +418,14 @@ class ServerImpact(ImpactSource):
 
         amortization_day = self.FABRICATION_CO2 / (self.LIFE_EXPECTANCY * 365)
         kwh = (
-            self.SERVER_POWER_RUN - self.SERVER_POWER_IDLE
-        ) * self.SERVER_USAGE + self.SERVER_POWER_IDLE
+                      self.SERVER_POWER_RUN - self.SERVER_POWER_IDLE
+              ) * self.SERVER_USAGE + self.SERVER_POWER_IDLE
         # using SERVER_USAGE to avoid having the server at full power
         # all the time
         kwh_pue = kwh * self.registry.pue  # Pondering the consumption with the PUE
         kwh_day = kwh_pue * 24  # wh consumed for a complete day
         consumption_co2 = (
-            kwh_day * self.registry.electricity_mix
+                kwh_day * self.registry.electricity_mix
         )  # consumption co2 emissions
         co2_total: KG_CO2E = consumption_co2 + amortization_day
         return co2_total.to("kg_co2e")
@@ -454,7 +443,7 @@ class TransportImpact(ImpactSource):
     BIKE_PERCENTAGE = 1.44675
     PUBLIC_TRANSPORT_PERCENTAGE = 17.77558  # 10% uncertainty
     CAR_PERCENTAGE = (
-        76.32407 + 0.15459
+            76.32407 + 0.15459
     )  # other categories (tractors...) # 10% uncertainty
     MOTORBIKE_PERCENTAGE = 2.91722
 
@@ -468,12 +457,12 @@ class TransportImpact(ImpactSource):
         Then multiply by the mean distance per day per person
         """
         co2_km = (
-            self.FOOT_PERCENTAGE * 0
-            + self.BIKE_PERCENTAGE * BikeImpact().co2
-            + self.PUBLIC_TRANSPORT_PERCENTAGE * PublicTransportImpact().co2
-            + self.CAR_PERCENTAGE * CarImpact().co2
-            + self.MOTORBIKE_PERCENTAGE * MotorbikeImpact().co2
-        ) / 100
+                         self.FOOT_PERCENTAGE * 0
+                         + self.BIKE_PERCENTAGE * BikeImpact().co2
+                         + self.PUBLIC_TRANSPORT_PERCENTAGE * PublicTransportImpact().co2
+                         + self.CAR_PERCENTAGE * CarImpact().co2
+                         + self.MOTORBIKE_PERCENTAGE * MotorbikeImpact().co2
+                 ) / 100
         co2_day = co2_km * self.MEAN_DISTANCE
         super().__init__(co2_day)
 

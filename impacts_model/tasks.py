@@ -8,7 +8,7 @@ from pint import Quantity
 
 from api.data_model import Task
 from impacts_model.impact_sources import ImpactIndicator, ImpactsList, merge_impacts_lists
-from impacts_model.quantities import Q_
+from impacts_model.quantities.quantities import Q_
 from impacts_model.resources import (get_resource_impact, get_resource_impact_list, merge_resource_list, Resource,
                                      resource_template_factory, ResourcesList)
 
@@ -17,14 +17,14 @@ TaskImpact = dict[str, Union[str, float, Any]]
 
 def get_tasks_templates() -> [TaskTemplate]:
     tasks_template = []
-    for filename in os.listdir("impacts_model/res/tasks"):
+    for filename in os.listdir("impacts_model/data/tasks"):
         tasks_template.append(task_template_factory(filename))
     return tasks_template
 
 
 def task_template_factory(name: str) -> TaskTemplate:
     name = name.replace(".yaml", "")
-    with open("impacts_model/res/tasks/" + name + ".yaml", "r") as stream:
+    with open("impacts_model/data/tasks/" + name + ".yaml", "r") as stream:
         data_loaded = yaml.safe_load(stream)
 
         resources_list = []
@@ -52,7 +52,7 @@ def get_task_impact_by_indicator(
         get_task_impact_by_indicator(s, indicator) for s in task.subtasks
     ]
 
-    return Q_(sum(impacts_resources) + sum(impacts_subtasks))  # type: ignore
+    return Q_(sum(impacts_resources) + sum(impacts_subtasks))
     # TODO why Q_ here ?
 
 

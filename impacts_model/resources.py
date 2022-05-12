@@ -11,7 +11,7 @@ from impacts_model.impact_sources import (
     ImpactSource,
     merge_impacts_lists,
 )
-from impacts_model.quantities import Q_
+from impacts_model.quantities.quantities import Q_
 
 
 class ResourceTemplate:
@@ -21,7 +21,7 @@ class ResourceTemplate:
 
 def resource_template_factory(name: str) -> ResourceTemplate:
     name = name.replace(".yaml", "")
-    with open("impacts_model/res/resources/" + name + ".yaml", "r") as stream:
+    with open("impacts_model/data/resources/" + name + ".yaml", "r") as stream:
         data_loaded = yaml.safe_load(stream)
 
         impacts_list = []
@@ -35,7 +35,7 @@ def resource_template_factory(name: str) -> ResourceTemplate:
 
 def load_resource_impacts(name: str) -> List[ImpactSource]:
     name = name.replace(".yaml", "")
-    with open("impacts_model/res/resources/" + name + ".yaml", "r") as stream:
+    with open("impacts_model/data/resources/" + name + ".yaml", "r") as stream:
         data_loaded = yaml.safe_load(stream)
         impacts_list = []
         for impact_name in data_loaded["impact_factors"]:

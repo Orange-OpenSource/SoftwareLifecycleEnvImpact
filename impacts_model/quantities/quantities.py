@@ -9,6 +9,10 @@ ureg.add_context(Context("test"))
 
 Q_ = ureg.Quantity
 
+############
+# ALISASES #
+############
+
 ELECTRICITY_MIX = ureg.electricity_mix
 
 YEAR = ureg.year
