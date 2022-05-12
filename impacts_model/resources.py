@@ -19,6 +19,20 @@ class ResourceTemplate:
         self.name = name
         self.impacts = impacts
 
+def resource_template_factory(name: str) -> ResourceTemplate:
+    name = name.replace(".yaml", "")
+    with open("impacts_model/res/resources/" + name + ".yaml", "r") as stream:
+        data_loaded = yaml.safe_load(stream)
+
+        impacts_list = []
+        for impact_name in data_loaded["impact_factors"]:
+            impacts_list.append(impact_source_factory(impact_name))
+
+        return ResourceTemplate(
+            name=data_loaded["name"],
+            impacts=impacts_list
+        )
+
 def load_resource_impacts(name: str) -> List[ImpactSource]:
     name = name.replace(".yaml", "")
     with open("impacts_model/res/resources/" + name + ".yaml", "r") as stream:

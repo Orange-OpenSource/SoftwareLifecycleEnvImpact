@@ -1,6 +1,6 @@
 from typing import Any
 
-from impacts_model.tasks import TaskTemplate
+from impacts_model.tasks import get_tasks_templates, TaskTemplate
 
 
 def json_task_template(task_template: TaskTemplate) -> dict[str, Any]:
@@ -20,7 +20,7 @@ def get_task_templates() -> Any:
     # TODO implement a chache mecanism
     return_json = []
 
-    for template in templates.get_tasks_templates():
+    for template in get_tasks_templates():
         return_json.append(json_task_template(template))
 
     return return_json

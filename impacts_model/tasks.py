@@ -9,8 +9,8 @@ from pint import Quantity
 from api.data_model import Task
 from impacts_model.impact_sources import ImpactIndicator, ImpactsList, merge_impacts_lists
 from impacts_model.quantities import Q_
-from impacts_model.resources import (get_resource_impact, get_resource_impact_list, load_resource_impacts,
-                                     merge_resource_list, Resource, ResourcesList)
+from impacts_model.resources import (get_resource_impact, get_resource_impact_list, merge_resource_list, Resource,
+                                     resource_template_factory, ResourcesList)
 
 TaskImpact = dict[str, Union[str, float, Any]]
 
@@ -30,7 +30,7 @@ def task_template_factory(name: str) -> TaskTemplate:
         resources_list = []
         if data_loaded["resources"] is not None:
             for resource_name in data_loaded["resources"]:
-                resources_list.append(load_resource_impacts(resource_name))
+                resources_list.append(resource_template_factory(resource_name))
 
         subtasks_list = []
         if data_loaded["subtasks"] is not None:
@@ -110,7 +110,7 @@ class TaskTemplate:
     Define a Task/Phase as a node containing an ImpactFactor and/or Subtask(s)
     """
 
-    def __init__(self, name: str, resources: List[Resource] = None, subtasks: List[TaskTemplate] = None):  # type: ignore
+    def __init__(self, name: str, resources: List[Resource] = None, subtasks: List[TaskTemplate] = None):
         """
         Define a task with a name, resources and subtasks
         :param name: the name of the resource
