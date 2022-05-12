@@ -34,6 +34,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"chart.js": "^3.7.1",
 		"split.js": "^1.6.5",
 		"svelte-icons": "^2.1.0"
 	}

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
-	import { getModels, getModelInformations, deleteModel, getTemplates } from '$lib/controllers/RequestController';
+	import { getModels, getModelInformations, deleteModel, getTemplates, getImpactByResource } from '$lib/controllers/RequestController';
 	import RootTreeView from '$lib/components/RootTreeView.svelte';
 	import HeaderButtonsModel from '$lib/components/HeaderButtonsModel.svelte';
 	import { checkIfLogged } from '$lib/controllers/LoginController';
@@ -11,6 +11,7 @@
 	import TiDelete from 'svelte-icons/ti/TiDelete.svelte';
 	import TiPencil from 'svelte-icons/ti/TiPencil.svelte';
 	import ModalConfirmDelete from '$lib/components/modals/ModalConfirmDelete.svelte';
+	import { Chart, registerables } from 'chart.js';
 
 	checkIfLogged();
 
@@ -24,6 +25,10 @@
 	let ModalCreationModel: any;
 	let ModalRenameModel: any;
 	let templates: any;
+	let labels: any[] = [];
+	let data: any[] = [];
+	let ctx: any;
+	let myChart: any;
 
 	/**
 	 * Reload all the models and tasks informations.
@@ -84,6 +89,15 @@
 		);
 	}
 
+	/**
+	 * Update the chart with the new data.
+	 */
+	function updateChart() {
+		myChart.data.labels = labels;
+		myChart.data.datasets[0].data = data;
+		myChart.update();
+	}
+
 	onMount(async function () {
 		if (document.querySelector('div.modal-backdrop.fade.show')) document.querySelector('div.modal-backdrop.fade.show')!.remove();
 
@@ -109,6 +123,36 @@
 						element!.style.visibility = 'visible';
 					}
 				}
+			}
+		});
+
+		Chart.register(...registerables);
+
+		labels = [];
+		data = [];
+		let res: any = await getImpactByResource(1);
+
+		for (var item in res) {
+			labels.push(item);
+			data.push(res[item]);
+		}
+		labels = labels;
+		data = data;
+
+		// @ts-ignore
+		ctx = document.getElementById('myChart').getContext('2d');
+		myChart = new Chart(ctx, {
+			type: 'pie',
+			data: {
+				labels: labels,
+				datasets: [
+					{
+						label: 'My First Dataset',
+						data: data,
+						backgroundColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(255, 205, 86)', 'rgb(153, 102, 255)', 'rgb(75, 192, 192)'],
+						hoverOffset: 4
+					}
+				]
 			}
 		});
 	});
@@ -150,7 +194,7 @@
 					<span class="d-flex align-items-start" style="color:grey; font-size : 12px">Last modified : {getDate(model)}</span>
 				</button>
 
-				<svelte:component this={ModalRenameModel} bind:modelsContent bind:models bind:idProject bind:model />
+				<svelte:component this={ModalRenameModel} bind:modelsContent bind:models bind:idProject bind:model bind:model_name />
 
 				<ModalConfirmDelete bind:model_id bind:model_name bind:modelsContent bind:models bind:idProject bind:model bind:rootTreeView />
 			{/each}
@@ -165,10 +209,12 @@
 	<div id="split-1">
 		<HeaderButtonsModel bind:model_id bind:model_name bind:modify bind:modelsContent bind:models bind:idProject />
 
-		<RootTreeView bind:this={rootTreeView} bind:modify bind:model_id bind:templates />
+		<RootTreeView bind:this={rootTreeView} bind:modify bind:model_id bind:templates bind:myChart />
 	</div>
 
 	<div id="split-2">
 		<h2 class="title">Impact by resource</h2>
+
+		<canvas id="myChart" width="400" height="400" />
 	</div>
 </div>

@@ -9,11 +9,16 @@
 	const dispatch = createEventDispatcher();
 	let error: string = '';
 
+	/**
+	 * Create a new task with the given parent.
+	 *
+	 * @param parentId The parent id of the new task.
+	 */
 	async function createNewTask(parentId: any) {
 		// @ts-ignore
 		let taskname = document.getElementById('createTaskInput' + parentId).value;
 
-		let newTask = await createTask(model_id, taskname, parentId, 0);
+		let newTask = await createTask(model_id, taskname, parentId);
 
 		if (newTask.status === 409) {
 			error = 'Task already exists';

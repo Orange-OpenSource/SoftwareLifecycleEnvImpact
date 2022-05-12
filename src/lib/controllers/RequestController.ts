@@ -142,7 +142,7 @@ export async function getTasksFromModel(idModel: any) {
 	return res;
 }
 
-export async function createTask(idModel: any, taskName: any, parentTaskId: any, taskTypeId: any) {
+export async function createTask(idModel: any, taskName: any, parentTaskId: any) {
 	const res = await fetch(endpoint + 'tasks', {
 		method: 'POST',
 		headers: {
@@ -152,8 +152,7 @@ export async function createTask(idModel: any, taskName: any, parentTaskId: any,
 		body: JSON.stringify({
 			model_id: idModel,
 			name: taskName,
-			parent_task_id: parentTaskId,
-			task_type_id: taskTypeId
+			parent_task_id: parentTaskId
 		})
 	});
 
@@ -223,7 +222,35 @@ export async function updateTask(idTask: any, newName: string) {
 	const json = await res.json();
 
 	if (json.status === 403) alert('Patch format is incorrect');
-	else if (json.status === 404) alert('No model found with this id');
+	else if (json.status === 404) alert('No task found with this id');
 
 	return json;
+}
+
+export async function updateParentTask(idTask: any, parent_task_id: string) {
+	const res = await fetch(endpoint + 'tasks/' + idTask, {
+		method: 'PATCH',
+		headers: {
+			'Content-Type': 'application/json',
+			Accept: 'application/json'
+		},
+		body: JSON.stringify([
+			{
+				op: 'replace',
+				path: '/parent_task_id',
+				value: parent_task_id.toString()
+			}
+		])
+	});
+
+	const json = await res.json();
+
+	if (json.status === 403) alert('Patch format is incorrect');
+	else if (json.status === 404) alert('No task found with this id');
+
+	return json;
+}
+
+export async function getImpactByResource(idModel: any) {
+	return { People: 50, Compute: 30, 'User devices': 10, Network: 5, Storage: 5 };
 }

@@ -6,6 +6,7 @@
 	export let modify: any;
 	export let model_id: any;
 	export let templates: any;
+	export let myChart: any;
 	let tasks: any[] = [];
 	let rootTask, parent_task_id: any;
 	let subtasks: never[] = [];
@@ -35,7 +36,6 @@
 	export async function updateTree() {
 		await tick();
 		rootTask = await getTasksFromModel(model_id);
-
 		tasks = [];
 		tasks.push(rootTask);
 		pushEachTaskFromModelInArray(rootTask.subtasks);
@@ -51,5 +51,5 @@
 </script>
 
 <div class="col scroll">
-	<TreeView on:message={handleMessage} bind:templates bind:model_id {parent_task_id} {subtasks} bind:modify {tasks} />
+	<TreeView on:message={handleMessage} bind:templates bind:myChart bind:model_id {parent_task_id} {subtasks} bind:modify {tasks} />
 </div>

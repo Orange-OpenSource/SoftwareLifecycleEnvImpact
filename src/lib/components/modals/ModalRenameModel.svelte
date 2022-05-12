@@ -7,6 +7,7 @@
 	export let idProject: any;
 	export let models: any;
 	export let modelsContent: any;
+	export let model_name: string;
 	let error: string = '';
 
 	/**
@@ -15,6 +16,7 @@
 	async function renameModel() {
 		// @ts-ignore
 		let newName = document.getElementById('renameModelInput' + model.id).value;
+		let oldname = model.name;
 
 		let res = await updateModel(model.id, newName);
 
@@ -34,6 +36,8 @@
 				modelsContent.push(content);
 			}
 			modelsContent = modelsContent;
+
+			if (oldname == model_name) model_name = newName;
 		}
 	}
 </script>

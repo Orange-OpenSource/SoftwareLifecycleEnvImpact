@@ -1,5 +1,4 @@
 <script lang="ts">
-	import ModalModifyTask from './modals/ModalModifyTask.svelte';
 	import { onMount } from 'svelte';
 
 	export let subtasks: any;
@@ -8,12 +7,28 @@
 	export let parent_task_id: any;
 	export let tasks: any[];
 	export let templates: any;
+	export let myChart: any;
 
 	let ModalCreationTask: any;
+	let ModalModifyTask: any;
+
+	/**
+	 * Update the chart with the new data.
+	 */
+	function updateChart(task_id: any) {
+		// todo : routes impact
+		//myChart.data.labels = labels;
+		//myChart.data.datasets[0].data = data;
+		myChart.update();
+		console.log('update ' + task_id);
+	}
 
 	onMount(async function () {
 		const module = await import('./modals/ModalCreationTask.svelte');
 		ModalCreationTask = module.default;
+
+		const modulemodify = await import('./modals/ModalModifyTask.svelte');
+		ModalModifyTask = modulemodify.default;
 	});
 </script>
 
@@ -21,20 +36,20 @@
 	<div class="tree">
 		{#if task.subtasks.length !== 0}
 			<div class="raw">
-				<span class="info-name">
+				<span on:click|stopPropagation={() => updateChart(task.id)} class="info-name">
 					{task.name}
 					{#if modify}
-						<ModalModifyTask on:message bind:tasks bind:templates {task} classAttribute={'btnmodifyparent'} />
+						<svelte:component this={ModalModifyTask} on:message bind:tasks bind:templates {task} classAttribute={'btnmodifyparent'} />
 					{/if}
 				</span>
 
-				<svelte:self on:message subtasks={task.subtasks} bind:modify parent_task_id={task.id} {model_id} {tasks} />
+				<svelte:self on:message subtasks={task.subtasks} bind:templates bind:myChart bind:modify parent_task_id={task.id} {model_id} {tasks} />
 			</div>
 		{:else if modify}
 			<div class="raw nochildmodify">
-				<span class="info-name">
+				<span on:click|stopPropagation={() => updateChart(task.id)} class="info-name">
 					{task.name}
-					<ModalModifyTask on:message bind:tasks bind:templates {task} classAttribute={'btnmodify'} />
+					<svelte:component this={ModalModifyTask} on:message bind:tasks bind:templates {task} classAttribute={'btnmodify'} />
 				</span>
 				<span class="addtask">
 					<svelte:component this={ModalCreationTask} on:message bind:model_id bind:task_id={task.id} />
@@ -42,7 +57,7 @@
 			</div>
 		{:else}
 			<div class="raw nochild">
-				<span class="info-name">
+				<span on:click|stopPropagation={() => updateChart(task.id)} class="info-name">
 					{task.name}
 				</span>
 			</div>

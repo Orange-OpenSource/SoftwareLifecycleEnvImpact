@@ -2,7 +2,7 @@
 	export let details: any;
 </script>
 
-<div class="modal fade" id="modal{details}" tabindex="-1" aria-labelledby="modalLabel{details}" aria-hidden="true">
+<div on:click|stopPropagation={() => {}} class="modal fade" id="modal{details}" tabindex="-1" aria-labelledby="modalLabel{details}" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
 			<div class="modal-header">
