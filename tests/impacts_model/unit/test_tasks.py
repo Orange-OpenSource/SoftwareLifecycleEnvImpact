@@ -9,10 +9,23 @@ from flask_sqlalchemy import SQLAlchemy
 
 from api.data_model import Model, Project, Resource, Task
 from impacts_model.impact_sources import ImpactIndicator, ImpactSource
-from impacts_model.impacts import get_task_impact_by_indicator, get_task_impact_by_resource_type, get_task_impact_list, \
-    get_task_impacts
-from impacts_model.quantities.quantities import CUBIC_METER, DISEASE_INCIDENCE, ELECTRONIC_WASTE, KG_BQ_U235E, KG_CO2E, \
-    KG_SBE, MOL_HPOS, PRIMARY_MJ, TONNE_MIPS
+from impacts_model.impacts import (
+    get_task_impact_by_indicator,
+    get_task_impact_by_resource_type,
+    get_task_impact_list,
+    get_task_impacts,
+)
+from impacts_model.quantities.quantities import (
+    CUBIC_METER,
+    DISEASE_INCIDENCE,
+    ELECTRONIC_WASTE,
+    KG_BQ_U235E,
+    KG_CO2E,
+    KG_SBE,
+    MOL_HPOS,
+    PRIMARY_MJ,
+    TONNE_MIPS,
+)
 
 
 ########
@@ -91,7 +104,7 @@ class MockOpen:
 
 
 @mock.patch(
-    "impacts_model.resources.load_resource_impacts",
+    "impacts_model.impacts.load_resource_impacts",
     MagicMock(return_value=[ImpactSource(1000 * KG_CO2E), ImpactSource(776 * KG_CO2E)]),
 )
 def test_get_task_impact_by_indicator(
@@ -118,7 +131,7 @@ def test_get_task_impact_by_indicator(
 
 
 @mock.patch(
-    "impacts_model.resources.load_resource_impacts",
+    "impacts_model.impacts.load_resource_impacts",
     MagicMock(return_value=[ImpactSource(1000 * KG_CO2E)]),
 )
 def test_get_task_impact_list(
@@ -156,7 +169,7 @@ def test_get_task_impact_list(
 
 
 @mock.patch(
-    "impacts_model.resources.load_resource_impacts",
+    "impacts_model.impacts.load_resource_impacts",
     MagicMock(return_value=[ImpactSource(1000 * KG_CO2E)]),
 )
 def test_get_task_impacts(task_fixture_with_subtask: Task) -> None:
@@ -175,7 +188,7 @@ def test_get_task_impacts(task_fixture_with_subtask: Task) -> None:
 
 
 @mock.patch(
-    "impacts_model.resources.load_resource_impacts",
+    "impacts_model.impacts.load_resource_impacts",
     MagicMock(return_value=[ImpactSource(1000 * KG_CO2E)]),
 )
 def test_get_task_impact_by_resource_type(
@@ -185,13 +198,17 @@ def test_get_task_impact_by_resource_type(
     res_dict = get_task_impact_by_resource_type(single_task_fixture)
     assert res_dict["TestResource"][
         ImpactIndicator.CLIMATE_CHANGE
-    ] == get_task_impact_by_indicator(single_task_fixture, ImpactIndicator.CLIMATE_CHANGE)
+    ] == get_task_impact_by_indicator(
+        single_task_fixture, ImpactIndicator.CLIMATE_CHANGE
+    )
 
     # Test subtasks
     res_dict = get_task_impact_by_resource_type(task_fixture_with_subtask)
     assert res_dict["TestResource"][
         ImpactIndicator.CLIMATE_CHANGE
-    ] == get_task_impact_by_indicator(task_fixture_with_subtask, ImpactIndicator.CLIMATE_CHANGE)
+    ] == get_task_impact_by_indicator(
+        task_fixture_with_subtask, ImpactIndicator.CLIMATE_CHANGE
+    )
 
 
 def test_get_impact_by_resource_quantity() -> None:

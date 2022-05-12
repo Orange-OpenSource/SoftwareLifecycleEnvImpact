@@ -19,7 +19,12 @@ class TaskTemplate:
     Define a Task/Phase as a node containing an ImpactFactor and/or Subtask(s)
     """
 
-    def __init__(self, name: str, resources: List[Resource] = None, subtasks: List[TaskTemplate] = None):
+    def __init__(
+        self,
+        name: str,
+        resources: List[Resource] = None,
+        subtasks: List[TaskTemplate] = None,
+    ):
         """
         Define a task with a name, resources and subtasks
         :param name: the name of the resource
@@ -76,7 +81,14 @@ def resource_template_factory(name: str) -> ResourceTemplate:
         for impact_name in data_loaded["impact_factors"]:
             impacts_list.append(impact_source_factory(impact_name))
 
-        return ResourceTemplate(
-            name=data_loaded["name"],
-            impacts=impacts_list
-        )
+        return ResourceTemplate(name=data_loaded["name"], impacts=impacts_list)
+
+
+def load_resource_impacts(name: str) -> List[ImpactSource]:
+    name = name.replace(".yaml", "")
+    with open("impacts_model/data/resources/" + name + ".yaml", "r") as stream:
+        data_loaded = yaml.safe_load(stream)
+        impacts_list = []
+        for impact_name in data_loaded["impact_factors"]:
+            impacts_list.append(impact_source_factory(impact_name))
+        return impacts_list

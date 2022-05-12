@@ -2,19 +2,21 @@ from typing import Any, List, Union
 
 from pint import Quantity
 
-from api.data_model import Task
-from impacts_model.impact_sources import ImpactIndicator, ImpactsList, merge_impacts_lists
+from api.data_model import Resource, Task
+from impacts_model.impact_sources import (
+    ImpactIndicator,
+    ImpactsList,
+    merge_impacts_lists, merge_resource_list, ResourcesList,
+)
 from impacts_model.quantities.quantities import Q_
-from impacts_model.resources import (get_resource_impact, get_resource_impact_list, merge_resource_list, ResourcesList)
-
-
 ########
 # Task #
 ########
+from impacts_model.templates import load_resource_impacts
 
 
 def get_task_impact_by_indicator(
-        task: Task, indicator: ImpactIndicator
+    task: Task, indicator: ImpactIndicator
 ) -> Quantity[Any]:
     impacts_resources: List[Quantity[Any]] = [
         get_resource_impact(r, indicator) for r in task.resources
@@ -28,7 +30,7 @@ def get_task_impact_by_indicator(
 
 
 def get_task_impact_list(
-        task: Task,
+    task: Task,
 ) -> ImpactsList:  # TODO clarify the difference with get_task_impacts()
     impacts: ImpactsList = {}
 
@@ -41,7 +43,9 @@ def get_task_impact_list(
     return impacts
 
 
-def get_task_impacts(task: Task) -> dict[str, Union[str, float, Any]]:  # TODO bad return value
+def get_task_impacts(
+    task: Task,
+) -> dict[str, Union[str, float, Any]]:  # TODO bad return value
     """
     Return a task impact for this one and its children
     :param: The Task to get the impacts from
@@ -68,9 +72,49 @@ def get_task_impact_by_resource_type(task: Task) -> ResourcesList:
     resource_list: ResourcesList = {}
 
     for r in task.resources:
-        resource_list = merge_resource_list(resource_list, {r.type: get_resource_impact_list(r)})
+        resource_list = merge_resource_list(
+            resource_list, {r.type: get_resource_impact_list(r)}
+        )
 
     for s in task.subtasks:
-        resource_list = merge_resource_list(resource_list, get_task_impact_by_resource_type(s))
+        resource_list = merge_resource_list(
+            resource_list, get_task_impact_by_resource_type(s)
+        )
 
     return resource_list
+
+
+############
+# Resource #
+############
+
+
+def get_resource_impact(
+    resource: Resource, impact_indicator: ImpactIndicator
+) -> Quantity[Any]:
+    resource_impacts = load_resource_impacts(resource.type)
+
+    impacts: List[Quantity[Any]] = [
+        i.impacts_list[impact_indicator] * resource.value for i in resource_impacts
+    ]
+
+    return Q_(sum(impacts))
+
+
+def get_resource_impact_list(
+    resource: Resource,
+) -> ImpactsList:
+    resource_impacts = load_resource_impacts(resource.type)
+    impacts: ImpactsList = {}
+
+    for impact_source in resource_impacts:
+        impact_source_quantities = {}
+
+        for impact_indicator in impact_source.impacts_list:
+            impact_source_quantities[impact_indicator] = (
+                impact_source.impacts_list[impact_indicator] * resource.value
+            )
+
+        impacts = merge_impacts_lists(impacts, impact_source_quantities)
+
+    return impacts

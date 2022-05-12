@@ -1,9 +1,13 @@
 from impacts_model.impact_sources import (
     BikeImpact,
     CarImpact,
-    ImpactIndicator, ImpactsFactorsRegistry,
-    ImpactsList, ImpactSource, LaptopImpact,
-    merge_impacts_lists, MotorbikeImpact,
+    ImpactIndicator,
+    ImpactsFactorsRegistry,
+    ImpactsList,
+    ImpactSource,
+    LaptopImpact,
+    merge_impacts_lists,
+    MotorbikeImpact,
     OfficeImpact,
     PublicTransportImpact,
     ServerImpact,
@@ -18,8 +22,18 @@ from impacts_model.impact_sources import (
 ##########
 # STATIC #
 ##########
-from impacts_model.quantities.quantities import CUBIC_METER, DISEASE_INCIDENCE, ELECTRICITY_MIX, ELECTRONIC_WASTE, \
-    KG_BQ_U235E, KG_CO2E, KG_SBE, MOL_HPOS, PRIMARY_MJ, TONNE_MIPS
+from impacts_model.quantities.quantities import (
+    CUBIC_METER,
+    DISEASE_INCIDENCE,
+    ELECTRICITY_MIX,
+    ELECTRONIC_WASTE,
+    KG_BQ_U235E,
+    KG_CO2E,
+    KG_SBE,
+    MOL_HPOS,
+    PRIMARY_MJ,
+    TONNE_MIPS,
+)
 
 
 def test_merge_impacts_lists() -> None:

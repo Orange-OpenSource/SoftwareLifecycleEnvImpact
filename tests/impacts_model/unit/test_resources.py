@@ -5,14 +5,18 @@ import pytest
 from flask_sqlalchemy import SQLAlchemy
 
 from api.data_model import Model, Project, Resource, Task
-from impacts_model.impact_sources import ImpactIndicator, ImpactSource
-from impacts_model.quantities.quantities import CUBIC_METER, DISEASE_INCIDENCE, ELECTRONIC_WASTE, KG_BQ_U235E, KG_CO2E, \
-    KG_SBE, MOL_HPOS, PRIMARY_MJ, \
-    TONNE_MIPS
-from impacts_model.resources import (
-    get_resource_impact,
-    get_resource_impact_list, merge_resource_list,
-    ResourcesList,
+from impacts_model.impact_sources import ImpactIndicator, ImpactSource, merge_resource_list, ResourcesList
+from impacts_model.impacts import get_resource_impact, get_resource_impact_list
+from impacts_model.quantities.quantities import (
+    CUBIC_METER,
+    DISEASE_INCIDENCE,
+    ELECTRONIC_WASTE,
+    KG_BQ_U235E,
+    KG_CO2E,
+    KG_SBE,
+    MOL_HPOS,
+    PRIMARY_MJ,
+    TONNE_MIPS,
 )
 
 
@@ -102,7 +106,7 @@ def resource_fixture(db: SQLAlchemy) -> Resource:
 
 
 @mock.patch(
-    "impacts_model.resources.load_resource_impacts",
+    "impacts_model.impacts.load_resource_impacts",
     MagicMock(
         return_value=[
             ImpactSource(1000 * KG_CO2E),
@@ -128,8 +132,9 @@ def test_get_resource_impact(resource_fixture: Resource) -> None:
         == (1000 + 999 + 333) * 12321.423 * KG_CO2E
     )
 
+
 @mock.patch(
-    "impacts_model.resources.load_resource_impacts",
+    "impacts_model.impacts.load_resource_impacts",
     MagicMock(
         return_value=[
             ImpactSource(10000.123 * KG_CO2E, raw_materials=213.3 * TONNE_MIPS),
