@@ -86,7 +86,7 @@ def get_task_impacts(task: Task) -> TaskImpact:
     }
 
 
-def get_task_impact_by_resource(task: Task) -> ResourcesList:
+def get_task_impact_by_resource_type(task: Task) -> ResourcesList:
     """
     Return all _impacts grouped by resource type, int the format of ResourcesList:
 
@@ -97,10 +97,10 @@ def get_task_impact_by_resource(task: Task) -> ResourcesList:
     resource_list: ResourcesList = {}
 
     for r in task.resources:
-        resource_list = merge_resource_list(resource_list, {r.name: r.get_impacts()})
+        resource_list = merge_resource_list(resource_list, {r.type: get_resource_impact_list(r)})
 
     for s in task.subtasks:
-        resource_list = merge_resource_list(resource_list, s.get_impact_by_resource())
+        resource_list = merge_resource_list(resource_list, get_task_impact_by_resource_type(s))
 
     return resource_list
 

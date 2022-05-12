@@ -75,8 +75,8 @@ def get_resource_impact_list(
     return impacts
 
 
-ResourceName = str
-ResourcesList = dict[ResourceName, ImpactsList]
+ResourceType = str
+ResourcesList = dict[ResourceType, ImpactsList]
 
 
 def merge_resource_list(
@@ -90,9 +90,9 @@ def merge_resource_list(
     """
 
     result = {**first_list, **second_list}
-    for resource_name, _ in result.items():
-        if resource_name in first_list and resource_name in second_list:
-            result[resource_name] = merge_impacts_lists(
-                first_list[resource_name], second_list[resource_name]
+    for resource_type, _ in result.items():
+        if resource_type in first_list and resource_type in second_list:
+            result[resource_type] = merge_impacts_lists(
+                first_list[resource_type], second_list[resource_type]
             )
     return result
