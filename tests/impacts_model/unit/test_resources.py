@@ -1,4 +1,10 @@
-from api.data_model import Resource
+from unittest import mock
+from unittest.mock import MagicMock
+
+import pytest
+from flask_sqlalchemy import SQLAlchemy
+
+from api.data_model import Model, Project, Resource, Task
 from impacts_model.impact_sources import ImpactIndicator, ImpactSource
 from impacts_model.quantities import (
     CUBIC_METER,
@@ -12,9 +18,11 @@ from impacts_model.quantities import (
     TONNE_MIPS,
 )
 from impacts_model.resources import (
-    merge_resource_list,
-    ResourcesList, ResourceTemplate,
+    get_resource_impact,
+    get_resource_impact_list, merge_resource_list,
+    ResourcesList,
 )
+
 
 ##########
 # STATIC #
@@ -82,49 +90,67 @@ def test_merge_resource_list() -> None:
 ############
 
 
-def test_get_co2_impact() -> None:
+@pytest.fixture(scope="function")
+def resource_fixture(db: SQLAlchemy) -> Resource:
+    project = Project(name="Project test_resources")
+    model = Model(name="Model test_resourcess")
+    project.models = [model]
+    task = Task(name="Test_resources task")
+
+    resource = Resource(
+        name="Resource test",
+        type="TestResource",
+        value=2312,
+    )
+    task.resources = [resource]
+    model.tasks = [task]
+    db.session.add_all([project, model, task])
+    db.session.commit()
+    return resource
+
+
+@mock.patch(
+    "impacts_model.resources.load_resource_impacts",
+    MagicMock(
+        return_value=[
+            ImpactSource(1000 * KG_CO2E),
+            ImpactSource(999 * KG_CO2E),
+            ImpactSource(333 * KG_CO2E),
+        ]
+    ),
+)
+def test_get_resource_impact(resource_fixture: Resource) -> None:
     """
     For Resource.get_co2_impact test computation, quantity change and resource adding
     :return: None
     """
-    is1 = ImpactSource(9999 * KG_CO2E)
-    is2 = ImpactSource(1.123 * KG_CO2E)
-
-    test_resource = Resource("Resource", impacts=[is1, is2])  # Impacts =  1 * 1776
-    test_resource.quantity = 1
-    # Test ImpactFactor computation
     assert (
-            test_resource.get_impact(ImpactIndicator.CLIMATE_CHANGE)
-            == (9999 + 1.123) * KG_CO2E
+        get_resource_impact(resource_fixture, ImpactIndicator.CLIMATE_CHANGE)
+        == (1000 + 999 + 333) * resource_fixture.value * KG_CO2E
     )
 
     # Test quantity change
-    test_resource._quantity = 123
+    resource_fixture.value = 12321.423
     assert (
-            test_resource.get_impact(ImpactIndicator.CLIMATE_CHANGE)
-            == ((9999 + 1.123) * 123) * KG_CO2E
+        get_resource_impact(resource_fixture, ImpactIndicator.CLIMATE_CHANGE)
+        == (1000 + 999 + 333) * 12321.423 * KG_CO2E
     )
 
-    # Test add impact source
-    is3 = ImpactSource(432 * KG_CO2E)
-    test_resource.impacts.append(is3)
-    assert (
-            test_resource.get_impact(ImpactIndicator.CLIMATE_CHANGE)
-            == ((9999 + 1.123 + 432) * 123) * KG_CO2E
-    )
-
-
-def test_get_impacts() -> None:
+@mock.patch(
+    "impacts_model.resources.load_resource_impacts",
+    MagicMock(
+        return_value=[
+            ImpactSource(10000.123 * KG_CO2E, raw_materials=213.3 * TONNE_MIPS),
+        ]
+    ),
+)
+def test_get_resource_impact_list(resource_fixture: Resource) -> None:
     """
     Test get_impacts computation by changing quantity and impacts_list
     :return:
     """
-    is1 = ImpactSource(9999 * KG_CO2E)
-    is2 = ImpactSource(1.123 * KG_CO2E)
-
-    test_resource = ResourceTemplate(1, impacts=[is1, is2])  # Impacts =  1 * 1776
-    is2.raw_materials = 213.3 * TONNE_MIPS
-    assert test_resource.get_impacts() == {
+    resource_fixture.value = 1
+    assert get_resource_impact_list(resource_fixture) == {
         ImpactIndicator.CLIMATE_CHANGE: 10000.123 * KG_CO2E,
         ImpactIndicator.RESOURCE_DEPLETION: 0 * KG_SBE,
         ImpactIndicator.ACIDIFICATION: 0 * MOL_HPOS,
@@ -137,8 +163,8 @@ def test_get_impacts() -> None:
     }
 
     # Test quantity multiplication
-    test_resource.quantity = 10
-    assert test_resource.get_impacts() == {
+    resource_fixture.value = 10
+    assert get_resource_impact_list(resource_fixture) == {
         ImpactIndicator.CLIMATE_CHANGE: (10 * 10000.123) * KG_CO2E,
         ImpactIndicator.RESOURCE_DEPLETION: 0 * KG_SBE,
         ImpactIndicator.ACIDIFICATION: 0 * MOL_HPOS,
