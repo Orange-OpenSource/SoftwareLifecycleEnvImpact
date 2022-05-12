@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { deleteProject, getProjects, updateProject } from '$lib/controllers/RequestController';
+	import { deleteProject, getProjects } from '$lib/controllers/RequestController';
 	import { checkIfLogged } from '$lib/controllers/LoginController';
 	import ModalCreationProject from '$lib/components/modals/ModalCreationProject.svelte';
 	import ModalRenameProject from '$lib/components/modals/ModalRenameProject.svelte';
+	import { getCreationDate } from '$lib/utils/dates';
 
 	checkIfLogged();
 
@@ -17,25 +18,6 @@
 	async function deleteProjectInAPI(project_id: any) {
 		await deleteProject(project_id);
 		projects = await getProjects();
-	}
-
-	function getDate(ISODate: any) {
-		let date = new Date(ISODate);
-
-		return (
-			(date.getDate() < 10 ? '0' : '') +
-			date.getDate() +
-			'/' +
-			(date.getMonth() + 1 < 10 ? '0' : '') +
-			(date.getMonth() + 1) +
-			'/' +
-			date.getFullYear() +
-			' ' +
-			date.getHours() +
-			':' +
-			(date.getMinutes() < 10 ? '0' : '') +
-			date.getMinutes()
-		);
 	}
 
 	onMount(async function () {
@@ -64,7 +46,7 @@
 								</div>
 							</div>
 						</div>
-						<span class="d-flex justify-content-center" style="color:grey; font-size : 12px">Created at : {getDate(project.created_at)}</span>
+						<span class="d-flex justify-content-center" style="color:grey; font-size : 12px">Created at : {getCreationDate(project.created_at)}</span>
 					</li>
 				{/each}
 			</ul>

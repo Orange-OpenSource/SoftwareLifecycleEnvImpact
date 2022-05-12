@@ -52,7 +52,7 @@
 					<svelte:component this={ModalModifyTask} on:message bind:tasks bind:templates {task} classAttribute={'btnmodify'} />
 				</span>
 				<span class="addtask">
-					<svelte:component this={ModalCreationTask} on:message bind:model_id bind:task_id={task.id} />
+					<svelte:component this={ModalCreationTask} on:message bind:templates bind:model_id bind:task_id={task.id} />
 				</span>
 			</div>
 		{:else}
@@ -66,6 +66,6 @@
 {/each}
 {#if modify}
 	<div class="tree">
-		<svelte:component this={ModalCreationTask} on:message bind:model_id bind:task_id={parent_task_id} />
+		<svelte:component this={ModalCreationTask} on:message bind:templates bind:model_id bind:task_id={parent_task_id} />
 	</div>
 {/if}

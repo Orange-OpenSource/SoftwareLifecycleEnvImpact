@@ -32,8 +32,8 @@
 		});
 	}
 
-	async function updateTaskInAPI(template: string) {
-		await updateTask(task.id, template);
+	async function updateTaskInAPI(template: any) {
+		await updateTask(task.id, template.name);
 
 		dispatch('message', {
 			text: 'updateTree'
@@ -59,7 +59,7 @@
 				on:click={() => {
 					updateTaskInAPI(template);
 				}}
-				value={template}>{template}</option
+				selected={template.name === task.name}>{template.name}</option
 			>
 		{/each}
 	</select>

@@ -200,7 +200,10 @@ export async function deleteTask(task_id: any) {
 }
 
 export async function getTemplates() {
-	return ['Build', 'Run', 'Implementation', 'Test', 'Deployment', 'Other'];
+	const response = await fetch(endpoint + 'tasktemplates');
+	let res = await response.json();
+
+	return res;
 }
 
 export async function updateTask(idTask: any, newName: string) {
@@ -252,5 +255,8 @@ export async function updateParentTask(idTask: any, parent_task_id: string) {
 }
 
 export async function getImpactByResource(idModel: any) {
-	return { People: 50, Compute: 30, 'User devices': 10, Network: 5, Storage: 5 };
+	const response = await fetch(endpoint + 'models/' + idModel + '/impact');
+	let res = await response.json();
+
+	return res;
 }

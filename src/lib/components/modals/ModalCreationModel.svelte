@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { getModelInformations, getModels, createModel } from '$lib/controllers/RequestController';
-	import { Modal } from 'bootstrap';
 	import ModalComponent from './ModalComponent.svelte';
 
 	export let idProject: string;
@@ -10,7 +9,6 @@
 	export let model_id: any;
 	export let model_name: any;
 	export let rootTreeView: any;
-	let error: string = '';
 
 	async function createNewModel() {
 		// @ts-ignore
@@ -19,13 +17,10 @@
 		let res = await createModel(name, idProject);
 
 		if (res.status === 409) {
-			error = 'Model already exists';
+			alert('Model already exists');
 		} else {
-			error = '';
-			let myModal = document.getElementById('modalCreateModel')!;
-			let modal = Modal.getInstance(myModal);
-			modal!.hide();
-			document.querySelector('div.modal-backdrop.fade.show')!.remove();
+			// @ts-ignore
+			document.getElementById('createModelInput').value = '';
 
 			models = await getModels(idProject);
 			modelsContent = [];
@@ -49,11 +44,6 @@
 	<span slot="title">Create new model</span>
 	<div slot="body">
 		<input id="createModelInput" placeholder="Model name" required />
-		{#if error}
-			<div id="error_message" class="text-danger">
-				<small>{error}</small>
-			</div>
-		{/if}
 	</div>
-	<button slot="btnsave" on:click={createNewModel} type="button" class="btn btn-primary">Create model</button>
+	<button slot="btnsave" data-bs-dismiss="modal" on:click={createNewModel} type="button" class="btn btn-primary">Create model</button>
 </ModalComponent>

@@ -1,17 +1,16 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { onMount } from 'svelte';
-	import { getModels, getModelInformations, deleteModel, getTemplates, getImpactByResource } from '$lib/controllers/RequestController';
-	import RootTreeView from '$lib/components/RootTreeView.svelte';
+	import { onMount, tick } from 'svelte';
+	import { getModels, getModelInformations, getTemplates, getImpactByResource } from '$lib/controllers/RequestController';
 	import HeaderButtonsModel from '$lib/components/HeaderButtonsModel.svelte';
 	import { checkIfLogged } from '$lib/controllers/LoginController';
-	import Split from 'split.js';
-	import { browser } from '$app/env';
-	import { goto } from '$app/navigation';
 	import TiDelete from 'svelte-icons/ti/TiDelete.svelte';
 	import TiPencil from 'svelte-icons/ti/TiPencil.svelte';
 	import ModalConfirmDelete from '$lib/components/modals/ModalConfirmDelete.svelte';
 	import { Chart, registerables } from 'chart.js';
+	import { getLastUpdate } from '$lib/utils/dates';
+	import { get2RowsSplitObject, get3RowsSplitObject } from '$lib/utils/splitobj';
+	import { getChart } from '$lib/utils/chartobj';
 
 	checkIfLogged();
 
@@ -24,11 +23,14 @@
 	let model_name: string;
 	let ModalCreationModel: any;
 	let ModalRenameModel: any;
+	let RootTreeView: any;
 	let templates: any;
 	let labels: any[] = [];
 	let data: any[] = [];
 	let ctx: any;
 	let myChart: any;
+	let splitjs: any;
+	let compare: boolean = false;
 
 	/**
 	 * Reload all the models and tasks informations.
@@ -47,46 +49,58 @@
 	}
 
 	/**
-	 * Update the model for which we want to see the treeview.
+	 * Update the model for which we want to see the treeview and impact.
 	 *
-	 * @param id	The id of the model (linked to the tree).
+	 * @param id	The id of the model (linked to the tree and impact).
 	 * @param name 	The name of the model (linked to the input).
 	 */
 	async function updateModelId(id: any, name: string) {
 		model_id = id;
 		model_name = name;
+
+		labels = [];
+		data = [];
+		let res: any = await getImpactByResource(model_id);
+
+		for (let elem in res['Impact by task'].subtasks) {
+			for (let i in res['Impact by task'].subtasks[elem].impacts) {
+				let obj = res['Impact by task'].subtasks[elem].impacts[i];
+				for (var prop in obj) {
+					let values = obj[prop].split(' ');
+					labels.push(prop + ' (' + values[1] + ')');
+					data.push(+values[0]);
+					break;
+				}
+			}
+		}
+
+		labels = labels;
+		data = data;
+
+		await updateChart();
 		await rootTreeView.updateTree();
 	}
 
-	function comparePage() {
-		if (browser) {
-			goto('/compare/' + idProject);
-		}
-	}
-
-	function getDate(model: any) {
-		let date;
-
-		if (model.updated_at) {
-			date = new Date(model.updated_at);
+	/**
+	 * Switch to comparaison screen or goes back to initial screen
+	 */
+	async function comparePage() {
+		if (!compare) {
+			splitjs.destroy();
+			compare = true;
+			await tick();
+			splitjs = get2RowsSplitObject(document);
 		} else {
-			date = new Date(model.created_at);
-		}
+			splitjs.destroy();
+			compare = false;
+			await tick();
+			splitjs = get3RowsSplitObject(document);
 
-		return (
-			(date.getDate() < 10 ? '0' : '') +
-			date.getDate() +
-			'/' +
-			(date.getMonth() + 1 < 10 ? '0' : '') +
-			(date.getMonth() + 1) +
-			'/' +
-			date.getFullYear() +
-			' ' +
-			date.getHours() +
-			':' +
-			(date.getMinutes() < 10 ? '0' : '') +
-			date.getMinutes()
-		);
+			// @ts-ignore
+			ctx = document.getElementById('myChart').getContext('2d');
+			myChart = getChart(ctx, labels, data);
+			rootTreeView.updateTree();
+		}
 	}
 
 	/**
@@ -101,8 +115,12 @@
 	onMount(async function () {
 		if (document.querySelector('div.modal-backdrop.fade.show')) document.querySelector('div.modal-backdrop.fade.show')!.remove();
 
-		await updateElements();
 		templates = await getTemplates();
+
+		const moduletreeview = await import('$lib/components/RootTreeView.svelte');
+		RootTreeView = moduletreeview.default;
+
+		await updateElements();
 
 		const module = await import('$lib/components/modals/ModalCreationModel.svelte');
 		ModalCreationModel = module.default;
@@ -110,51 +128,31 @@
 		const moduleRename = await import('$lib/components/modals/ModalRenameModel.svelte');
 		ModalRenameModel = moduleRename.default;
 
-		Split(['#split-0', '#split-1', '#split-2'], {
-			sizes: [25, 50, 25],
-			minSize: 0,
-			snapOffset: 150,
-			onDrag: function () {
-				for (let i = 0; i < 3; i++) {
-					let element = document.getElementById('split-' + i);
-					if (element!.offsetWidth === 0) {
-						element!.style.visibility = 'hidden';
-					} else {
-						element!.style.visibility = 'visible';
-					}
-				}
-			}
-		});
-
-		Chart.register(...registerables);
+		splitjs = get3RowsSplitObject(document);
 
 		labels = [];
 		data = [];
-		let res: any = await getImpactByResource(1);
+		let res: any = await getImpactByResource(model_id);
 
-		for (var item in res) {
-			labels.push(item);
-			data.push(res[item]);
+		for (let elem in res['Impact by task'].subtasks) {
+			for (let i in res['Impact by task'].subtasks[elem].impacts) {
+				let obj = res['Impact by task'].subtasks[elem].impacts[i];
+				for (var prop in obj) {
+					let values = obj[prop].split(' ');
+					labels.push(prop + ' (' + values[1] + ')');
+					data.push(+values[0]);
+					break;
+				}
+			}
 		}
+
 		labels = labels;
 		data = data;
 
+		Chart.register(...registerables);
 		// @ts-ignore
 		ctx = document.getElementById('myChart').getContext('2d');
-		myChart = new Chart(ctx, {
-			type: 'pie',
-			data: {
-				labels: labels,
-				datasets: [
-					{
-						label: 'My First Dataset',
-						data: data,
-						backgroundColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(255, 205, 86)', 'rgb(153, 102, 255)', 'rgb(75, 192, 192)'],
-						hoverOffset: 4
-					}
-				]
-			}
-		});
+		myChart = getChart(ctx, labels, data);
 	});
 </script>
 
@@ -191,7 +189,7 @@
 							{/if}
 						</div>
 					</div>
-					<span class="d-flex align-items-start" style="color:grey; font-size : 12px">Last modified : {getDate(model)}</span>
+					<span class="d-flex align-items-start" style="color:grey; font-size : 12px">Last modified : {getLastUpdate(model)}</span>
 				</button>
 
 				<svelte:component this={ModalRenameModel} bind:modelsContent bind:models bind:idProject bind:model bind:model_name />
@@ -206,15 +204,21 @@
 		</div>
 	</div>
 
-	<div id="split-1">
-		<HeaderButtonsModel bind:model_id bind:model_name bind:modify bind:modelsContent bind:models bind:idProject />
+	{#if !compare}
+		<div id="split-1">
+			<HeaderButtonsModel bind:model_id bind:model_name bind:modify bind:modelsContent bind:models bind:idProject />
 
-		<RootTreeView bind:this={rootTreeView} bind:modify bind:model_id bind:templates bind:myChart />
-	</div>
+			<svelte:component this={RootTreeView} bind:this={rootTreeView} bind:modify bind:model_id bind:templates bind:myChart />
+		</div>
 
-	<div id="split-2">
-		<h2 class="title">Impact by resource</h2>
+		<div id="split-2">
+			<h2 class="title">Impact by task</h2>
 
-		<canvas id="myChart" width="400" height="400" />
-	</div>
+			<canvas id="myChart" width="400" height="400" />
+		</div>
+	{:else}
+		<div id="split-1">
+			<h2 class="title">Differences</h2>
+		</div>
+	{/if}
 </div>
