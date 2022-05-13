@@ -10,7 +10,8 @@ from flask_sqlalchemy import SQLAlchemy
 from api.data_model import Model, Project, Resource, Task
 from impacts_model.impact_sources import ImpactIndicator, ImpactSource
 from impacts_model.impacts import (
-    get_task_environmental_impact, get_task_impact_by_indicator,
+    get_task_environmental_impact,
+    get_task_impact_by_indicator,
     get_task_impact_by_resource_type,
     get_task_impacts,
 )
@@ -103,7 +104,7 @@ class MockOpen:
 
 
 @mock.patch(
-    "impacts_model.impacts.load_resource_impacts_source",
+    "impacts_model.impacts.ResourceTemplate._load_impacts",
     MagicMock(return_value=[ImpactSource(1000 * KG_CO2E), ImpactSource(776 * KG_CO2E)]),
 )
 def test_get_task_impact_by_indicator(
@@ -130,7 +131,7 @@ def test_get_task_impact_by_indicator(
 
 
 @mock.patch(
-    "impacts_model.impacts.load_resource_impacts_source",
+    "impacts_model.impacts.ResourceTemplate._load_impacts",
     MagicMock(return_value=[ImpactSource(1000 * KG_CO2E)]),
 )
 def test_get_task_impact_list(
@@ -168,7 +169,7 @@ def test_get_task_impact_list(
 
 
 @mock.patch(
-    "impacts_model.impacts.load_resource_impacts_source",
+    "impacts_model.impacts.ResourceTemplate._load_impacts",
     MagicMock(return_value=[ImpactSource(1000 * KG_CO2E)]),
 )
 def test_get_task_impacts(task_fixture_with_subtask: Task) -> None:
@@ -187,7 +188,7 @@ def test_get_task_impacts(task_fixture_with_subtask: Task) -> None:
 
 
 @mock.patch(
-    "impacts_model.impacts.load_resource_impacts_source",
+    "impacts_model.impacts.ResourceTemplate._load_impacts",
     MagicMock(return_value=[ImpactSource(1000 * KG_CO2E)]),
 )
 def test_get_task_impact_by_resource_type(

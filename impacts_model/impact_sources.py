@@ -36,6 +36,7 @@ class ImpactIndicator(str, Enum):
     PRIMARY_ENERGY = "Primary energy consumption"
     RAW_MATERIALS = "Raw materials"
 
+
 def impact_source_factory(name: str) -> ImpactSource:
     module = importlib.import_module("impacts_model.impact_sources")
     class_ = getattr(module, name)
