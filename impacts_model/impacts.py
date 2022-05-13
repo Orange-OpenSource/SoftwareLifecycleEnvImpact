@@ -104,32 +104,22 @@ def get_task_impact_by_resource_type(task: Task) -> dict[str, EnvironmentalImpac
     :return: ResourceList containing resources for this task
     """
 
-    def merge_resource_list(
-        first_list: dict[str, EnvironmentalImpact],
-        second_list: dict[str, EnvironmentalImpact],
-    ) -> dict[str, EnvironmentalImpact]:
-        """
-        Merge two list of Resource, adding them if they are in each list or merge them
-        :param first_list: first list to merge
-        :param second_list: second list to merge with
-        :return: a new list containing the parameters merged
-        """
-
-        result_list = {**first_list, **second_list}
-        for resource_type, _ in result.items():
-            if resource_type in first_list and resource_type in second_list:
-                result_list[resource_type].add(second_list[resource_type])
-        return result_list
-
     result: dict[str, EnvironmentalImpact] = {}
 
     for r in task.resources:
-        result = merge_resource_list(
-            result, {r.type: get_resource_environmental_impact(r)}
-        )
+        impacts_to_add = get_resource_environmental_impact(r)
+        if r.type in result:
+            result[r.type].add(impacts_to_add)
+        else:
+            result[r.type] = impacts_to_add
 
     for s in task.subtasks:
-        result = merge_resource_list(result, get_task_impact_by_resource_type(s))
+        subtasks_impacts = get_task_impact_by_resource_type(s)
+        for resource_type in subtasks_impacts:
+            if resource_type in result:
+                result[resource_type].add(subtasks_impacts[resource_type])
+            else:
+                result[resource_type] = subtasks_impacts[resource_type]
 
     return result
 
