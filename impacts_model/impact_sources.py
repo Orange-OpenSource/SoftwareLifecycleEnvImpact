@@ -2,9 +2,6 @@ from __future__ import annotations
 
 import importlib
 from enum import Enum
-from typing import Any
-
-from pint import Quantity
 
 from impacts_model.quantities.quantities import (
     CUBIC_METER,
@@ -38,60 +35,6 @@ class ImpactIndicator(str, Enum):
     ELECTRONIC_WASTE = "Electronic waste"
     PRIMARY_ENERGY = "Primary energy consumption"
     RAW_MATERIALS = "Raw materials"
-
-
-#########################################################################
-# TODO REMOVE
-#########################################################################
-
-ImpactsList = dict[ImpactIndicator, Quantity[Any]]  # TODO weird
-
-
-def merge_impacts_lists(  # TODO weird as well
-    first_list: ImpactsList, second_list: ImpactsList
-) -> ImpactsList:
-    """
-    Merge two list of impacts_list, adding them if they are in each list or merge them
-    :param first_list: first list to merge
-    :param second_list: second list to merge with
-    :return: a new list containing the parameters merged
-    """
-    result = {**first_list, **second_list}
-    for impact_indicator, _ in result.items():
-        if impact_indicator in first_list and impact_indicator in second_list:
-            result[impact_indicator] = (
-                first_list[impact_indicator] + second_list[impact_indicator]
-            )
-    return result
-
-
-ResourceType = str
-ResourcesList = dict[ResourceType, ImpactsList]
-
-
-def merge_resource_list(
-    first_list: ResourcesList, second_list: ResourcesList
-) -> ResourcesList:
-    """
-    Merge two list of Resource, adding them if they are in each list or merge them
-    :param first_list: first list to merge
-    :param second_list: second list to merge with
-    :return: a new list containing the parameters merged
-    """
-
-    result = {**first_list, **second_list}
-    for resource_type, _ in result.items():
-        if resource_type in first_list and resource_type in second_list:
-            result[resource_type] = merge_impacts_lists(
-                first_list[resource_type], second_list[resource_type]
-            )
-    return result
-
-
-#########################################################################
-# TODO ENDREMOVE
-#########################################################################
-
 
 def impact_source_factory(name: str) -> ImpactSource:
     module = importlib.import_module("impacts_model.impact_sources")

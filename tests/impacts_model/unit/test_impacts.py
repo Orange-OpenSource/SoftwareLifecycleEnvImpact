@@ -3,10 +3,8 @@ from impacts_model.impact_sources import (
     CarImpact,
     ImpactIndicator,
     ImpactsFactorsRegistry,
-    ImpactsList,
     ImpactSource,
     LaptopImpact,
-    merge_impacts_lists,
     MotorbikeImpact,
     OfficeImpact,
     PublicTransportImpact,
@@ -35,7 +33,7 @@ from impacts_model.quantities.quantities import (
     TONNE_MIPS,
 )
 
-
+'''
 def test_merge_impacts_lists() -> None:
     """
     Test the merge_impacts_lists list function, assessing empty list, same types and different types merging are correct
@@ -75,7 +73,7 @@ def test_merge_impacts_lists() -> None:
         ImpactIndicator.ELECTRONIC_WASTE: 2000 * ELECTRONIC_WASTE,
         ImpactIndicator.WATER_DEPLETION: 21323 * CUBIC_METER,
     }
-
+'''
 
 ###################
 # ImpactsFactorsRegistry #

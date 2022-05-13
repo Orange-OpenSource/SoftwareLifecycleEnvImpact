@@ -5,7 +5,6 @@ from typing import List
 
 import yaml
 
-from api.data_model import Resource
 from impacts_model.impact_sources import impact_source_factory, ImpactSource
 
 
@@ -22,7 +21,7 @@ class TaskTemplate:
     def __init__(
         self,
         name: str,
-        resources: List[Resource] = None,
+        resources: List[ResourceTemplate] = None,
         subtasks: List[TaskTemplate] = None,
     ):
         """
@@ -36,7 +35,7 @@ class TaskTemplate:
         self.subtasks = subtasks if (subtasks is not None) else []
 
 
-def get_tasks_templates() -> [TaskTemplate]:
+def get_tasks_templates() -> List[TaskTemplate]:
     tasks_template = []
     for filename in os.listdir("impacts_model/data/tasks"):
         tasks_template.append(task_template_factory(filename))
@@ -84,7 +83,7 @@ def resource_template_factory(name: str) -> ResourceTemplate:
         return ResourceTemplate(name=data_loaded["name"], impacts=impacts_list)
 
 
-def load_resource_impacts(name: str) -> List[ImpactSource]:
+def load_resource_impacts_source(name: str) -> List[ImpactSource]:
     name = name.replace(".yaml", "")
     with open("impacts_model/data/resources/" + name + ".yaml", "r") as stream:
         data_loaded = yaml.safe_load(stream)
