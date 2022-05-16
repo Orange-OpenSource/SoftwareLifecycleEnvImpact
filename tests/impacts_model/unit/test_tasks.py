@@ -6,6 +6,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 from flask_sqlalchemy import SQLAlchemy
+from pint import Quantity
 
 from api.data_model import Model, Project, Resource, Task
 from impacts_model.impact_sources import ImpactIndicator, ImpactSource
@@ -113,21 +114,19 @@ def test_get_task_impact_by_indicator(
     """Test that task co2 impact is those of all _resources from itself and its children"""
 
     # Mock task = 2 * TestResource (mocked) = 2 * (1000 + 776) = 3552
-    assert (
-        get_task_impact_by_indicator(
-            single_task_fixture, ImpactIndicator.CLIMATE_CHANGE
-        )
-        == 3552 * KG_CO2E
+    result = get_task_impact_by_indicator(
+        single_task_fixture, ImpactIndicator.CLIMATE_CHANGE
     )
+    assert isinstance(result, Quantity)
+    assert result == 3552 * KG_CO2E
 
     # Test adding a subtask
     # Task = 3552, subtask = 1776 -> 5328
-    assert (
-        get_task_impact_by_indicator(
-            task_fixture_with_subtask, ImpactIndicator.CLIMATE_CHANGE
-        )
-        == 5328 * KG_CO2E
+    result = get_task_impact_by_indicator(
+        task_fixture_with_subtask, ImpactIndicator.CLIMATE_CHANGE
     )
+    assert isinstance(result, Quantity)
+    assert result == 5328 * KG_CO2E
 
 
 @mock.patch(

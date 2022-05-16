@@ -6,7 +6,6 @@ from pint import Quantity
 
 from api.data_model import Resource, Task
 from impacts_model.impact_sources import ImpactIndicator
-from impacts_model.quantities.quantities import Q_
 #######################
 # EnvironmentalImpact #
 #######################
@@ -42,8 +41,7 @@ def get_task_impact_by_indicator(
         get_task_impact_by_indicator(s, indicator) for s in task.subtasks
     ]
 
-    return Q_(sum(impacts_resources) + sum(impacts_subtasks))
-    # TODO why Q_ here ?
+    return sum(impacts_resources) + sum(impacts_subtasks)
 
 
 def get_task_environmental_impact(task: Task) -> EnvironmentalImpact:
@@ -139,7 +137,7 @@ def get_resource_impact(
         for i in resource_template.impacts
     ]
 
-    return Q_(sum(impacts))
+    return sum(impacts)
 
 
 def get_resource_environmental_impact(resource: Resource) -> EnvironmentalImpact:

@@ -3,6 +3,7 @@ from unittest.mock import MagicMock
 
 import pytest
 from flask_sqlalchemy import SQLAlchemy
+from pint import Quantity
 
 from api.data_model import Model, Project, Resource, Task
 from impacts_model.impact_sources import ImpactIndicator, ImpactSource
@@ -119,17 +120,15 @@ def test_get_resource_impact(resource_fixture: Resource) -> None:
     For Resource.get_co2_impact test computation, quantity change and resource adding
     :return: None
     """
-    assert (
-        get_resource_impact(resource_fixture, ImpactIndicator.CLIMATE_CHANGE)
-        == (1000 + 999 + 333) * resource_fixture.value * KG_CO2E
-    )
+    impact = get_resource_impact(resource_fixture, ImpactIndicator.CLIMATE_CHANGE)
+    assert isinstance(impact, Quantity)
+    assert impact == (1000 + 999 + 333) * resource_fixture.value * KG_CO2E
 
     # Test quantity change
     resource_fixture.value = 12321.423
-    assert (
-        get_resource_impact(resource_fixture, ImpactIndicator.CLIMATE_CHANGE)
-        == (1000 + 999 + 333) * 12321.423 * KG_CO2E
-    )
+    impact = get_resource_impact(resource_fixture, ImpactIndicator.CLIMATE_CHANGE)
+    assert isinstance(impact, Quantity)
+    assert impact == (1000 + 999 + 333) * 12321.423 * KG_CO2E
 
 
 @mock.patch(
