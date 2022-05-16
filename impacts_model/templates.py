@@ -4,6 +4,7 @@ import os
 from typing import List
 
 import yaml
+from marshmallow import fields, Schema
 
 from impacts_model.impact_sources import impact_source_factory, ImpactSource
 
@@ -26,6 +27,9 @@ class ResourceTemplate:
             return impacts_list
 
 
+class ResourceTemplateSchema(Schema):
+    name = fields.String()
+
 ################
 # TaskTemplate #
 ################
@@ -44,7 +48,7 @@ class TaskTemplate:
         Define a task with a name, resources and subtasks
         :param name: the name of the resource
         """
-        self.name = name
+        self.name = name.replace(".yaml","")
         file_res = self._load_file()
         self.resources = file_res[0]
         self.subtasks = file_res[1]
@@ -66,6 +70,10 @@ class TaskTemplate:
 
             return resources_list, subtasks_list
 
+class TaskTemplateSchema(Schema):
+    name = fields.String()
+    resources = fields.Nested(ResourceTemplateSchema, many=True)
+    subtasks = fields.Nested("TaskTemplateSchema", many=True)
 
 def get_tasks_templates() -> List[TaskTemplate]:
     tasks_template = []

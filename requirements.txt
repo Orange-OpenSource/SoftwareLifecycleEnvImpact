@@ -1,13 +1,8 @@
-mypy~=0.942
-ipywidgets~=7.6.5
-matplotlib~=3.5.1
 Pint~=0.18
 Flask~=2.1.1
 connexion~=2.13.0
-marshmallow-sqlalchemy~=0.28.0
-flask-marshmallow~=0.14.0
-Flask-SQLAlchemy~=2.5.1
-connexion[swagger-ui]~=2.13.0
-Flask-Cors~=3.0.10
 jsonpatch~=1.32
-pytest-flask~=1.2.0
+SQLAlchemy~=1.4.35
+marshmallow~=3.15.0
+pytest~=7.1.0
+PyYAML~=6.0

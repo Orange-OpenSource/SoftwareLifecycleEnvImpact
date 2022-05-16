@@ -1,10 +1,11 @@
-from flask_marshmallow import Marshmallow
+from flask_marshmallow import Marshmallow as FlaskMarshmallow
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow_sqlalchemy.fields import Nested
 from sqlalchemy import func
 
+
 db = SQLAlchemy()
-ma = Marshmallow()
+ma = FlaskMarshmallow()
 
 
 class Resource(db.Model):  # type: ignore
