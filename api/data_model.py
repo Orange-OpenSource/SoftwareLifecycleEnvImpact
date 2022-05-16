@@ -9,6 +9,10 @@ ma = FlaskMarshmallow()
 
 
 class Resource(db.Model):  # type: ignore
+    """
+    Resource object and table with a name, a type and a value. Only for a task
+    The type represents the name of the ResourceTemplate to retrieve model values for computation
+    """
     __tablename__ = "resource"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
@@ -23,7 +27,11 @@ class Resource(db.Model):  # type: ignore
 
 
 class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
+    """
+    Resource schema to serialize a Resource object
+    """
     class Meta(ma.SQLAlchemyAutoSchema.Meta):  # type: ignore
+        """Schema meta class"""
         model = Resource
         include_relationships = True
         load_instance = True
@@ -34,6 +42,8 @@ class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
 class Task(db.Model):  # type: ignore
     """
     Table task representing one project phase
+    Has a parent task and can have sub tasks
+    Inputs are linked to resources
     """
 
     __tablename__ = "task"

@@ -1,4 +1,4 @@
 name: Storage
 unit: storage_hours
 impact_factors:
-- StorageImpact
+- StorageImpactSource

@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 import importlib
-from enum import Enum
 
+from impacts_model.impacts import EnvironmentalImpact, ImpactIndicator
 from impacts_model.quantities.quantities import (
     CUBIC_METER,
     DAY,
@@ -21,32 +21,9 @@ from impacts_model.quantities.quantities import (
 )
 
 
-class ImpactIndicator(str, Enum):
-    """
-    Enum defining all the environmental impact indicators, as used in LCAs
-    """
-
-    CLIMATE_CHANGE = "Climate change"
-    RESOURCE_DEPLETION = "Natural resources depletion"
-    ACIDIFICATION = "Acidification"
-    FINE_PARTICLES = "Fine particles"
-    IONIZING_RADIATIONS = "Ionizing radiations"
-    WATER_DEPLETION = "Water depletion"
-    ELECTRONIC_WASTE = "Electronic waste"
-    PRIMARY_ENERGY = "Primary energy consumption"
-    RAW_MATERIALS = "Raw materials"
-
-
-def impact_source_factory(name: str) -> ImpactSource:
-    module = importlib.import_module("impacts_model.impact_sources")
-    class_ = getattr(module, name)
-    instance = class_()
-    return instance
-
-
 class ImpactSource:
     """
-    Abstract class to define a source of impact emission(s)
+    A source of environmental impact_sources
     """
 
     def __init__(
@@ -82,26 +59,22 @@ class ImpactSource:
         self.primary_energy_consumption = primary_energy_consumption
         self.raw_materials = raw_materials
 
-    @property
-    def impacts_list(self) -> ImpactsList:
-        """
-        Return all impact factors value as an ImpactList of indicators
-        :return: ImpactList of indicators
-        """
-        return {
-            ImpactIndicator.CLIMATE_CHANGE: self.co2,
-            ImpactIndicator.RESOURCE_DEPLETION: self.resource_depletion,
-            ImpactIndicator.ACIDIFICATION: self.acidification,
-            ImpactIndicator.FINE_PARTICLES: self.fine_particles,
-            ImpactIndicator.IONIZING_RADIATIONS: self.ionizing_radiations,
-            ImpactIndicator.WATER_DEPLETION: self.water_depletion,
-            ImpactIndicator.ELECTRONIC_WASTE: self.electronic_waste,
-            ImpactIndicator.PRIMARY_ENERGY: self.primary_energy_consumption,
-            ImpactIndicator.RAW_MATERIALS: self.raw_materials,
-        }
+        self.environmental_impact = EnvironmentalImpact(
+            impacts={
+                ImpactIndicator.CLIMATE_CHANGE: self.co2,
+                ImpactIndicator.RESOURCE_DEPLETION: self.resource_depletion,
+                ImpactIndicator.ACIDIFICATION: self.acidification,
+                ImpactIndicator.FINE_PARTICLES: self.fine_particles,
+                ImpactIndicator.IONIZING_RADIATIONS: self.ionizing_radiations,
+                ImpactIndicator.WATER_DEPLETION: self.water_depletion,
+                ImpactIndicator.ELECTRONIC_WASTE: self.electronic_waste,
+                ImpactIndicator.PRIMARY_ENERGY: self.primary_energy_consumption,
+                ImpactIndicator.RAW_MATERIALS: self.raw_materials,
+            }
+        )
 
     @property
-    def co2(
+    def co2(  # TODO why is this a property ?
         self,
     ) -> KG_CO2E:
         """
@@ -111,16 +84,28 @@ class ImpactSource:
         return self._co2
 
 
-class ImpactsFactorsRegistry:
+def impact_source_factory(name: str) -> ImpactSource:
+    """
+    Factory class to create an ImpactSource object from its name
+    :param name: name of the ImpactSource to create
+    :return: an ImpactSource object
+    """
+    module = importlib.import_module("impacts_model.impact_sources")
+    class_ = getattr(module, name)
+    instance = class_()
+    return instance
+
+
+class ImpactsSourceRegistry:
     """
     Singleton registry containing the model calculations base values
     """
 
     _instance = None
 
-    def __new__(cls) -> ImpactsFactorsRegistry:
+    def __new__(cls) -> ImpactsSourceRegistry:
         if cls._instance is None:
-            cls._instance = super(ImpactsFactorsRegistry, cls).__new__(cls)
+            cls._instance = super(ImpactsSourceRegistry, cls).__new__(cls)
 
             # Values
             cls.pue: float = 1.5
@@ -129,9 +114,9 @@ class ImpactsFactorsRegistry:
         return cls._instance
 
 
-class ElectricityImpact(ImpactSource):
+class ElectricityImpactSource(ImpactSource):
     """
-    ImpactFactor for electricity in France
+    ImpactSource for electricity in France
     Ratio /kWh
     """
 
@@ -149,9 +134,9 @@ class ElectricityImpact(ImpactSource):
         )
 
 
-class UserDeviceImpact(ImpactSource):
+class UserDeviceImpactSource(ImpactSource):
     """
-    ImpactFactor for devices (smartphone, pc) usage/amortization induced by application transferred
+    ImpactSource for devices (smartphone, pc) usage/amortization induced by application transferred
     Ratio for 1h/user
     """
 
@@ -164,10 +149,10 @@ class UserDeviceImpact(ImpactSource):
         """
         Standard ratio for one hour of user device, half on a laptop and the other on a smartphone
         """
-        self.smartphone_impact = SmartphoneImpact()
-        self.laptop_impact = LaptopImpact()
-        self.tablet_impact = TabletImpact()
-        self.tv_impact = TelevisionImpact()
+        self.smartphone_impact = SmartphoneImpactSource()
+        self.laptop_impact = LaptopImpactSource()
+        self.tablet_impact = TabletImpactSource()
+        self.tv_impact = TelevisionImpactSource()
         super().__init__(self.co2)
 
     @property
@@ -185,9 +170,9 @@ class UserDeviceImpact(ImpactSource):
         return co2
 
 
-class LaptopImpact(ImpactSource):
+class LaptopImpactSource(ImpactSource):
     """
-    ImpactFactor for a laptop usage/amortization induced by application transferred
+    ImpactSource for a laptop usage/amortization induced by application transferred
     Ratio for 1h/laptop
     """
 
@@ -214,9 +199,9 @@ class LaptopImpact(ImpactSource):
         super().__init__(hour_amortization.to("kg_co2e"))
 
 
-class SmartphoneImpact(ImpactSource):
+class SmartphoneImpactSource(ImpactSource):
     """
-    ImpactFactor for a smartphone usage/amortization induced by application transferred
+    ImpactSource for a smartphone usage/amortization induced by application transferred
     Ratio for 1h/smartphone
     """
 
@@ -240,9 +225,9 @@ class SmartphoneImpact(ImpactSource):
         super().__init__(hour_amortization.to("kg_co2e"))
 
 
-class TabletImpact(ImpactSource):
+class TabletImpactSource(ImpactSource):
     """
-    ImpactFactor for a Tablet usage/amortization induced by application
+    ImpactSource for a Tablet usage/amortization induced by application
     Ratio for 1h/smartphone
     """
 
@@ -265,9 +250,9 @@ class TabletImpact(ImpactSource):
         super().__init__(hour_amortization.to("kg_co2e"))
 
 
-class TelevisionImpact(ImpactSource):
+class TelevisionImpactSource(ImpactSource):
     """
-    ImpactFactor for a 49-inch tv usage/amortization induced by application
+    ImpactSource for a 49-inch tv usage/amortization induced by application
     Ratio for 1h watched
     """
 
@@ -293,9 +278,9 @@ class TelevisionImpact(ImpactSource):
         super().__init__(hour_amortization.to("kg_co2e"))
 
 
-class NetworkImpact(ImpactSource):
+class NetworkImpactSource(ImpactSource):
     """
-    ImpactFactor for network usage caused by software induced data transferred
+    ImpactSource for network usage caused by software induced data transferred
     Ratio/gb transferred
     """
 
@@ -303,9 +288,9 @@ class NetworkImpact(ImpactSource):
         super().__init__(0.0015 * KG_CO2E)
 
 
-class OfficeImpact(ImpactSource):
+class OfficeImpactSource(ImpactSource):
     """
-    ImpactFactor for offices buildings construction and amortization
+    ImpactSource for offices buildings construction and amortization
     Ratio / day / person
     """
 
@@ -336,7 +321,7 @@ class OfficeImpact(ImpactSource):
         super().__init__(office_co2_person)
 
 
-class StorageImpact(ImpactSource):
+class StorageImpactSource(ImpactSource):
     """
     EnvironmentalImpact source for storage (disks)
     Ratio / tb / day
@@ -352,7 +337,7 @@ class StorageImpact(ImpactSource):
         Storage impact source, defined by the electricity mix used to make it run, and the pue of its datacenter
         Uses the impactRegistry to get pue and electricity_mix
         """
-        self.registry = ImpactsFactorsRegistry()
+        self.registry = ImpactsSourceRegistry()
         super().__init__(self.co2)
 
     @property
@@ -374,9 +359,9 @@ class StorageImpact(ImpactSource):
         return co2_total
 
 
-class ServerImpact(ImpactSource):
+class ServerImpactSource(ImpactSource):
     """
-    ImpactFactor for servers
+    ImpactSource for servers
     Ratio/day
     """
 
@@ -393,7 +378,7 @@ class ServerImpact(ImpactSource):
         Server impact source, defined by the electricity mix used to make it run, and the pue of its datacenter
         Uses the impactRegistry to get pue and electricity_mix
         """
-        self.registry = ImpactsFactorsRegistry()
+        self.registry = ImpactsSourceRegistry()
         super().__init__(self.co2)
 
     @property
@@ -418,9 +403,9 @@ class ServerImpact(ImpactSource):
         return co2_total.to("kg_co2e")
 
 
-class TransportImpact(ImpactSource):
+class TransportImpactSource(ImpactSource):
     """
-    ImpactFactor for all transports
+    ImpactSource for all transports
     Ratio/person/day
     """
 
@@ -445,18 +430,18 @@ class TransportImpact(ImpactSource):
         """
         co2_km = (
             self.FOOT_PERCENTAGE * 0
-            + self.BIKE_PERCENTAGE * BikeImpact().co2
-            + self.PUBLIC_TRANSPORT_PERCENTAGE * PublicTransportImpact().co2
-            + self.CAR_PERCENTAGE * CarImpact().co2
-            + self.MOTORBIKE_PERCENTAGE * MotorbikeImpact().co2
+            + self.BIKE_PERCENTAGE * BikeImpactSource().co2
+            + self.PUBLIC_TRANSPORT_PERCENTAGE * PublicTransportImpactSource().co2
+            + self.CAR_PERCENTAGE * CarImpactSource().co2
+            + self.MOTORBIKE_PERCENTAGE * MotorbikeImpactSource().co2
         ) / 100
         co2_day = co2_km * self.MEAN_DISTANCE
         super().__init__(co2_day)
 
 
-class CarImpact(ImpactSource):
+class CarImpactSource(ImpactSource):
     """
-    ImpactFactor for car
+    ImpactSource for car
     Ratio /km
     """
 
@@ -467,9 +452,9 @@ class CarImpact(ImpactSource):
         super().__init__(0.218 * KG_CO2E)
 
 
-class BikeImpact(ImpactSource):
+class BikeImpactSource(ImpactSource):
     """
-    ImpactFactor for bike
+    ImpactSource for bike
     Ratio /km
     """
 
@@ -480,9 +465,9 @@ class BikeImpact(ImpactSource):
         super().__init__(0.00348 * KG_CO2E)
 
 
-class PublicTransportImpact(ImpactSource):
+class PublicTransportImpactSource(ImpactSource):
     """
-    ImpactFactor for public transport
+    ImpactSource for public transport
     Ratio / km / person
     """
 
@@ -492,9 +477,9 @@ class PublicTransportImpact(ImpactSource):
         super().__init__(0.00503 * KG_CO2E)
 
 
-class MotorbikeImpact(ImpactSource):
+class MotorbikeImpactSource(ImpactSource):
     """
-    ImpactFactor for motorbike
+    ImpactSource for motorbike
     Ratio / km / personq
     """
 
@@ -504,9 +489,9 @@ class MotorbikeImpact(ImpactSource):
         super().__init__(0.191 * KG_CO2E)
 
 
-class RmVCPUImpact(ImpactSource):
+class RmVCPUImpactSource(ImpactSource):
     """
-    Impact factor for one vCPU for one month at Rueil-Malmaison DC
+    ImpactSource for one vCPU for one month at Rueil-Malmaison DC
     """
 
     def __init__(self) -> None:
@@ -523,9 +508,9 @@ class RmVCPUImpact(ImpactSource):
         )
 
 
-class VdrCPUImpact(ImpactSource):
+class VdrCPUImpactSource(ImpactSource):
     """
-    Impact factor for one vCPU for one month at Val de reuil DC
+    ImpactSource for one vCPU for one month at Val de reuil DC
     """
 
     def __init__(self) -> None:
@@ -542,9 +527,9 @@ class VdrCPUImpact(ImpactSource):
         )
 
 
-class RmRAMImpact(ImpactSource):
+class RmRAMImpactSource(ImpactSource):
     """
-    Impact factor for one GB of RAM for one month at Rueil-Malmaison DC
+    ImpactSource for one GB of RAM for one month at Rueil-Malmaison DC
     """
 
     def __init__(self) -> None:
@@ -561,9 +546,9 @@ class RmRAMImpact(ImpactSource):
         )
 
 
-class VdrRAMImpact(ImpactSource):
+class VdrRAMImpactSource(ImpactSource):
     """
-    Impact factor for one GB of RAM for one month at Val de Reuil DC
+    ImpactSource for one GB of RAM for one month at Val de Reuil DC
     """
 
     def __init__(self) -> None:
@@ -580,9 +565,9 @@ class VdrRAMImpact(ImpactSource):
         )
 
 
-class RmStorageImpact(ImpactSource):
+class RmStorageImpactSource(ImpactSource):
     """
-    Impact factor for one GB of storage for one month at Rueil-Malmaison DC
+    ImpactSource for one GB of storage for one month at Rueil-Malmaison DC
     """
 
     def __init__(self) -> None:
@@ -599,9 +584,9 @@ class RmStorageImpact(ImpactSource):
         )
 
 
-class VdrRamStorageImpact(ImpactSource):
+class VdrRamStorageImpactSource(ImpactSource):
     """
-    Impact factor for one GB of storage for one month at Val de Reuil DC
+    ImpactSource for one GB of storage for one month at Val de Reuil DC
     """
 
     def __init__(self) -> None:

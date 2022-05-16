@@ -132,5 +132,3 @@ def test_get_project_models(
     """
     response = client.get(projects_root + "/" + str(project_fixture.id) + "/models")
     assert response.status_code == 200
-    # assert response.json["models"][0]["name"] == "Model 1" # TODO
-    # assert response.json["models"][1]["name"] == "Model 2" # TODO

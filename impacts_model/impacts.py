@@ -1,180 +1,67 @@
 from __future__ import annotations
 
-from typing import Any, List, Union
+from enum import Enum
+from typing import Any
 
 from pint import Quantity
 
-from api.data_model import Resource, Task
-from impacts_model.impact_sources import ImpactIndicator
+
+class ImpactIndicator(str, Enum):
+    """
+    Enum defining all the environmental impact indicators, as used in LCAs
+    """
+
+    CLIMATE_CHANGE = "Climate change"
+    RESOURCE_DEPLETION = "Natural resources depletion"
+    ACIDIFICATION = "Acidification"
+    FINE_PARTICLES = "Fine particles"
+    IONIZING_RADIATIONS = "Ionizing radiations"
+    WATER_DEPLETION = "Water depletion"
+    ELECTRONIC_WASTE = "Electronic waste"
+    PRIMARY_ENERGY = "Primary energy consumption"
+    RAW_MATERIALS = "Raw materials"
+
+
 #######################
 # EnvironmentalImpact #
 #######################
-from impacts_model.templates import ResourceTemplate
-
-
 class EnvironmentalImpact:
+    """
+    EnvironmentalImpact class, encapsulating all ImpactIndicator as a list, with the corresponding quantity for each of them
+    """
     def __init__(self, impacts: dict[ImpactIndicator, Quantity[Any]] = None) -> None:
-        self.impacts: dict[ImpactIndicator, Quantity[Any]] = (
+        self.impacts: dict[
+            ImpactIndicator, Quantity[Any]
+        ] = (  # TODO impact_sources are accessed everytime ?
             impacts if impacts is not None else {}
         )
 
     def add(self, other: EnvironmentalImpact) -> None:
-        result = {**self.impacts, **other.impacts}
-        for impact_indicator, _ in result.items():
-            if impact_indicator in self.impacts and impact_indicator in other.impacts:
-                result[impact_indicator] = (
-                    self.impacts[impact_indicator] + other.impacts[impact_indicator]
-                )
-        self.impacts = result
+        """
+        Merge another EnvironmentalObject into this one
+        :param other: the EnvironmentalObject to get
+        :return: None
+        """
+        self.add_dict(other.impacts)
 
+    def add_dict(self, dict_to_add: dict[ImpactIndicator, Quantity[Any]]) -> None:
+        """
+        Merge another dict of ImpactIndicator with their corresponding quantity into self
+        :param dict_to_add: the dict to merge with self.impacts
+        :return: None
+        """
+        for impact_indicator in dict_to_add:
+            self.add_impact(impact_indicator, dict_to_add[impact_indicator])
 
-########
-# Task #
-########
-def get_task_impact_by_indicator(
-    task: Task, indicator: ImpactIndicator
-) -> Quantity[Any]:
-    impacts_resources: List[Quantity[Any]] = [
-        get_resource_impact(r, indicator) for r in task.resources
-    ]
-    impacts_subtasks: List[Quantity[Any]] = [
-        get_task_impact_by_indicator(s, indicator) for s in task.subtasks
-    ]
-
-    return sum(impacts_resources) + sum(impacts_subtasks)
-
-
-def get_task_environmental_impact(task: Task) -> EnvironmentalImpact:
-    environmental_impact = EnvironmentalImpact()
-
-    for r in task.resources:
-        environmental_impact.add(get_resource_environmental_impact(r))
-
-    for s in task.subtasks:
-        environmental_impact.add(get_task_environmental_impact(s))
-
-    return environmental_impact
-
-
-"""
-def get_task_impact_list(
-        task: Task,
-) -> ImpactsList:  # TODO clarify the difference with get_task_impacts()
-    impacts: ImpactsList = {}
-
-    for r in task.resources:
-        impacts = merge_impacts_lists(impacts, get_resource_impact_list(r))
-
-    for s in task.subtasks:
-        impacts = merge_impacts_lists(impacts, get_task_impact_list(s))
-
-    return impacts
-"""
-
-
-def get_task_impacts(
-    task: Task,
-) -> dict[str, Union[str, float, Any]]:  # TODO bad return value
-    """
-    Return a task impact for this one and its children
-    :param: The Task to get the impacts from
-    :return: TaskImpact with name, impact sources and subtasks
-    """
-    return {
-        "id": task.id,
-        "name": task.name,
-        "impacts": [
-            {key.value: str(value)}
-            for key, value in get_task_environmental_impact(
-                task
-            ).impacts.items()  # TODO . . . . .
-        ],
-        "subtasks": [get_task_impacts(r) for r in task.subtasks],
-    }
-
-
-def get_task_impact_by_resource_type(task: Task) -> dict[str, EnvironmentalImpact]:
-    """
-    Return all _impacts grouped by resource type, int the format of ResourcesList:
-
-     {'People': {'CO2': 2000.0}}
-     {'Build': {'CO2': 234325.0}}
-    :return: ResourceList containing resources for this task
-    """
-
-    result: dict[str, EnvironmentalImpact] = {}
-
-    for r in task.resources:
-        impacts_to_add = get_resource_environmental_impact(r)
-        if r.type in result:
-            result[r.type].add(impacts_to_add)
+    def add_impact(self, indicator: ImpactIndicator, value: Quantity[Any]) -> None:
+        """
+        Add an ImpactIndicator with this value in self.impacts
+        Add to corresponding value in self.impacts if it exists, create it else
+        :param indicator: ImpactIndicator to add
+        :param value: corresponding calue
+        :return: None
+        """
+        if indicator in self.impacts:
+            self.impacts[indicator] += value
         else:
-            result[r.type] = impacts_to_add
-
-    for s in task.subtasks:
-        subtasks_impacts = get_task_impact_by_resource_type(s)
-        for resource_type in subtasks_impacts:
-            if resource_type in result:
-                result[resource_type].add(subtasks_impacts[resource_type])
-            else:
-                result[resource_type] = subtasks_impacts[resource_type]
-
-    return result
-
-
-############
-# Resource #
-############
-
-
-def get_resource_impact(
-    resource: Resource, impact_indicator: ImpactIndicator
-) -> Quantity[Any]:
-    resource_template = ResourceTemplate(resource.type)
-
-    impacts: List[Quantity[Any]] = [
-        i.impacts_list[impact_indicator] * resource.value
-        for i in resource_template.impacts
-    ]
-
-    return sum(impacts)
-
-
-def get_resource_environmental_impact(resource: Resource) -> EnvironmentalImpact:
-    resource_template = ResourceTemplate(resource.type)
-    environmental_impact = EnvironmentalImpact()
-
-    for impact_source in resource_template.impacts:
-        impact_source_quantities = (
-            EnvironmentalImpact()
-        )  # TODO why do we create two objects ?
-
-        for impact_indicator in impact_source.impacts_list:
-            impact_source_quantities.impacts[impact_indicator] = (
-                impact_source.impacts_list[impact_indicator] * resource.value
-            )
-
-        environmental_impact.add(impact_source_quantities)
-
-    return environmental_impact
-
-
-"""
-def get_resource_impact_list(
-        resource: Resource,
-) -> ImpactsList:
-    resource_impacts = load_resource_impacts_source(resource.type)
-    impacts: ImpactsList = {}
-
-    for impact_source in resource_impacts:
-        impact_source_quantities = {}
-
-        for impact_indicator in impact_source.impacts_list:
-            impact_source_quantities[impact_indicator] = (
-                    impact_source.impacts_list[impact_indicator] * resource.value
-            )
-
-        impacts = merge_impacts_lists(impacts, impact_source_quantities)
-
-    return impacts
-"""
+            self.impacts[indicator] = value

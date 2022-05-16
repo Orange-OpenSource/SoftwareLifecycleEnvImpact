@@ -1,6 +1,6 @@
 name: People
 unit: man/day
 impact_factors:
-- OfficeImpact
-- TransportImpact
-- LaptopImpact
+- OfficeImpactSource
+- TransportImpactSource
+- LaptopImpactSource

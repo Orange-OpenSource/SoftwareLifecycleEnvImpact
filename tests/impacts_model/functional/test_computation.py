@@ -40,7 +40,7 @@ def test_build_task_impacts() -> None:
 def test_run_task_impacts() -> None:
     """Test co2 consequence of updating all project's inputs for run task"""
     s = StandardProject()
-    registry = ImpactsFactorsRegistry()
+    registry = ImpactsSourceRegistry()
 
     # Maintenance days
     old_co2 = s.run_task.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE)
@@ -51,7 +51,7 @@ def test_run_task_impacts() -> None:
     old_co2 = s.run_task.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE)
     registry.electricity_mix = 4432 * ELECTRICITY_MIX
     assert registry.electricity_mix == 4432 * ELECTRICITY_MIX
-    assert ImpactsFactorsRegistry().electricity_mix == 4432 * ELECTRICITY_MIX
+    assert ImpactsSourceRegistry().electricity_mix == 4432 * ELECTRICITY_MIX
     assert s.run_task.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE) != old_co2
 
     # PUE
@@ -173,7 +173,7 @@ def test_hosting_task_impacts() -> None:
 
     # Electricity mix
     old_co2 = s.hosting_task.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE)
-    ImpactsFactorsRegistry().electricity_mix = 2.12312312 * ELECTRICITY_MIX
+    ImpactsSourceRegistry().electricity_mix = 2.12312312 * ELECTRICITY_MIX
     assert (
         s.hosting_task.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE)
         != old_co2
@@ -181,7 +181,7 @@ def test_hosting_task_impacts() -> None:
 
     # PUE
     old_co2 = s.hosting_task.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE)
-    ImpactsFactorsRegistry().pue = 1.2342342344
+    ImpactsSourceRegistry().pue = 1.2342342344
     assert (
         s.hosting_task.get_impact_by_indicator(ImpactIndicator.CLIMATE_CHANGE)
         != old_co2

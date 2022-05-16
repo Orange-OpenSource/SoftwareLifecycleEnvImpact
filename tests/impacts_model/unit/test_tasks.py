@@ -9,13 +9,10 @@ from flask_sqlalchemy import SQLAlchemy
 from pint import Quantity
 
 from api.data_model import Model, Project, Resource, Task
-from impacts_model.impact_sources import ImpactIndicator, ImpactSource
-from impacts_model.impacts import (
-    get_task_environmental_impact,
-    get_task_impact_by_indicator,
-    get_task_impact_by_resource_type,
-    get_task_impacts,
-)
+from impacts_model.computation import (get_task_environmental_impact, get_task_environmental_impact_tree,
+                                       get_task_impact_by_indicator, get_task_impact_by_resource_type)
+from impacts_model.impact_sources import ImpactSource
+from impacts_model.impacts import ImpactIndicator
 from impacts_model.quantities.quantities import (
     CUBIC_METER,
     DISEASE_INCIDENCE,
@@ -36,6 +33,7 @@ from impacts_model.quantities.quantities import (
 
 @pytest.fixture(scope="function")
 def single_task_fixture(db: SQLAlchemy) -> Task:
+    """Task fixture without subtask"""
     project = Project(name="Project test_task")
     model = Model(name="Model test_task")
     project.models = [model]
@@ -60,6 +58,7 @@ def single_task_fixture(db: SQLAlchemy) -> Task:
 
 @pytest.fixture(scope="function")
 def task_fixture_with_subtask(db: SQLAlchemy) -> Task:
+    """Task fixture with a subtask"""
     project = Project(name="Project test_task with subtask")
     model = Model(name="Model test_task with subtask")
     project.models = [model]
@@ -93,9 +92,11 @@ def task_fixture_with_subtask(db: SQLAlchemy) -> Task:
 
 
 class MockOpen:
+    """Mock class to override the builtin open file to load a mock TestResource.yaml file"""
     builtin_open = open
 
     def open(self, *args, **kwargs):
+        """Mock function"""
         if args[0] == "impacts_model/res/resources/TestResource.yaml":
             with patch("impacts_model.impact_sources.impact_source_factory") as p1:
                 return mock.mock_open(
@@ -105,7 +106,7 @@ class MockOpen:
 
 
 @mock.patch(
-    "impacts_model.impacts.ResourceTemplate._load_impacts",
+    "impacts_model.computation.ResourceTemplate._load_impacts",
     MagicMock(return_value=[ImpactSource(1000 * KG_CO2E), ImpactSource(776 * KG_CO2E)]),
 )
 def test_get_task_impact_by_indicator(
@@ -130,7 +131,7 @@ def test_get_task_impact_by_indicator(
 
 
 @mock.patch(
-    "impacts_model.impacts.ResourceTemplate._load_impacts",
+    "impacts_model.computation.ResourceTemplate._load_impacts",
     MagicMock(return_value=[ImpactSource(1000 * KG_CO2E)]),
 )
 def test_get_task_impact_list(
@@ -168,14 +169,14 @@ def test_get_task_impact_list(
 
 
 @mock.patch(
-    "impacts_model.impacts.ResourceTemplate._load_impacts",
+    "impacts_model.computation.ResourceTemplate._load_impacts",
     MagicMock(return_value=[ImpactSource(1000 * KG_CO2E)]),
 )
 def test_get_task_impacts(task_fixture_with_subtask: Task) -> None:
     """
     Test return value of get_impact_quantity is in form of TaskImpact
     """
-    impact = get_task_impacts(task_fixture_with_subtask)
+    impact = get_task_environmental_impact_tree(task_fixture_with_subtask)
     assert isinstance(impact, dict)
 
     assert impact["id"] == task_fixture_with_subtask.id
@@ -183,16 +184,21 @@ def test_get_task_impacts(task_fixture_with_subtask: Task) -> None:
 
     # Test subtask
     subtask_dict = impact["subtasks"][0]
-    assert subtask_dict == get_task_impacts(task_fixture_with_subtask.subtasks[0])
+    assert subtask_dict == get_task_environmental_impact_tree(
+        task_fixture_with_subtask.subtasks[0]
+    )
 
 
 @mock.patch(
-    "impacts_model.impacts.ResourceTemplate._load_impacts",
+    "impacts_model.computation.ResourceTemplate._load_impacts",
     MagicMock(return_value=[ImpactSource(1000 * KG_CO2E)]),
 )
 def test_get_task_impact_by_resource_type(
     single_task_fixture: Task, task_fixture_with_subtask: Task
 ) -> None:
+    """
+    Test the function get_impact_by_resource_type with two resources and a subtask
+    """
     # Test two res
     res_dict = get_task_impact_by_resource_type(single_task_fixture)
     assert res_dict["TestResource"].impacts[
@@ -210,17 +216,13 @@ def test_get_task_impact_by_resource_type(
     )
 
 
-def test_get_impact_by_resource_quantity() -> None:
-    """
-    Assess that get_impact_by_resource() get all the co2 impact quantity for all the tasks/subtasks/res
-    :return:
-    """
-    # p = StandardProject()
-    # co2 = 0.0
-    # d = p.root_task.get_impact_by_resource()
-
-    # for resource in d:
-    #     co2 += d[resource][ImpactIndicator.CLIMATE_CHANGE]
-    #
-    # assert round(p.get_co2_impact(), 5) == round(co2, 5)
-    # TODO
+def test_get_task_impact_by_resource_type_quantity(
+    task_fixture_with_subtask: Task,
+) -> None:
+    """TODO"""
+    co2 = 0.0
+    # d = get_task_environmental_impact(task_fixture_with_subtask)
+    # TODO should test quantity computation diff between functions but unclear
+    # for impact in d:
+    #    co2 += d[impact].impact_sources[ImpactIndicator.CLIMATE_CHANGE]
+    #    assert round(p.get_co2_impact(), 5) == round(co2, 5)

@@ -1,25 +1,12 @@
-from impacts_model.impact_sources import (
-    BikeImpact,
-    CarImpact,
-    ImpactIndicator,
-    ImpactsFactorsRegistry,
-    ImpactSource,
-    LaptopImpact,
-    MotorbikeImpact,
-    OfficeImpact,
-    PublicTransportImpact,
-    ServerImpact,
-    SmartphoneImpact,
-    StorageImpact,
-    TabletImpact,
-    TelevisionImpact,
-    TransportImpact,
-    UserDeviceImpact,
-)
-
+from impacts_model.impact_sources import (BikeImpactSource, CarImpactSource, ImpactSource, ImpactsSourceRegistry,
+                                          LaptopImpactSource, MotorbikeImpactSource, OfficeImpactSource,
+                                          PublicTransportImpactSource, ServerImpactSource, SmartphoneImpactSource,
+                                          StorageImpactSource, TabletImpactSource, TelevisionImpactSource,
+                                          TransportImpactSource, UserDeviceImpactSource)
 ##########
 # STATIC #
 ##########
+from impacts_model.impacts import ImpactIndicator
 from impacts_model.quantities.quantities import (
     CUBIC_METER,
     DISEASE_INCIDENCE,
@@ -76,14 +63,14 @@ def test_merge_impacts_lists() -> None:
 '''
 
 ###################
-# ImpactsFactorsRegistry #
+# ImpactsSourceRegistry #
 ###################
 
 
 def test_impact_registry_singleton() -> None:
     """Test that ImpactRegistry follow the singleton pattern"""
-    ir1 = ImpactsFactorsRegistry()
-    ir2 = ImpactsFactorsRegistry()
+    ir1 = ImpactsSourceRegistry()
+    ir2 = ImpactsSourceRegistry()
 
     assert ir1 == ir2
     ir1.pue = 3.4
@@ -94,9 +81,9 @@ def test_impact_registry_singleton() -> None:
     ir1.electricity_mix = 2.12312312 * ELECTRICITY_MIX
     assert ir2.electricity_mix == 2.12312312 * ELECTRICITY_MIX
 
-    assert ImpactsFactorsRegistry().electricity_mix == 2.12312312 * ELECTRICITY_MIX
-    ImpactsFactorsRegistry().electricity_mix = 214234.31232 * ELECTRICITY_MIX
-    assert ImpactsFactorsRegistry().electricity_mix == 214234.31232 * ELECTRICITY_MIX
+    assert ImpactsSourceRegistry().electricity_mix == 2.12312312 * ELECTRICITY_MIX
+    ImpactsSourceRegistry().electricity_mix = 214234.31232 * ELECTRICITY_MIX
+    assert ImpactsSourceRegistry().electricity_mix == 214234.31232 * ELECTRICITY_MIX
 
 
 ################
@@ -154,7 +141,7 @@ def test_get_impacts_quantities() -> None:
         raw_materials=124.123441 * TONNE_MIPS,
     )
 
-    assert i.impacts_list == {
+    assert i.environmental_impact.impacts == {
         ImpactIndicator.CLIMATE_CHANGE: 103.72 * KG_CO2E,
         ImpactIndicator.RESOURCE_DEPLETION: 312.23 * KG_SBE,
         ImpactIndicator.ACIDIFICATION: 32443.2134 * MOL_HPOS,
@@ -168,7 +155,7 @@ def test_get_impacts_quantities() -> None:
 
 
 ####################
-# UserDeviceImpact #
+# UserDeviceImpactSource #
 ####################
 
 
@@ -177,17 +164,17 @@ def test_user_device_impact_co2() -> None:
     Test that user device correspond to the ratio of devices by their impact
     :return:
     """
-    user_device_impact = UserDeviceImpact()
+    user_device_impact = UserDeviceImpactSource()
     assert user_device_impact.co2 == (
-        user_device_impact.RATIO_TABLET * TabletImpact().co2
-        + user_device_impact.RATIO_PC * LaptopImpact().co2
-        + user_device_impact.RATIO_TV * TelevisionImpact().co2
-        + user_device_impact.RATIO_SMARTPHONE * SmartphoneImpact().co2
+        user_device_impact.RATIO_TABLET * TabletImpactSource().co2
+        + user_device_impact.RATIO_PC * LaptopImpactSource().co2
+        + user_device_impact.RATIO_TV * TelevisionImpactSource().co2
+        + user_device_impact.RATIO_SMARTPHONE * SmartphoneImpactSource().co2
     )
 
 
 ################
-# LaptopImpact #
+# LaptopImpactSource #
 ################
 
 
@@ -196,14 +183,14 @@ def test_laptop_impact() -> None:
     Test laptop impact with amortization, with computation by hand instead of pint day/years translation
     :return:
     """
-    l = LaptopImpact()
+    l = LaptopImpactSource()
     amortization_day = l.FABRICATION_CO2.magnitude / (l.LIFE_EXPECTANCY.magnitude * 365)
     amortization_hour = amortization_day / l.DAILY_USE.magnitude
     assert round(l.co2, 2) == round(amortization_hour * KG_CO2E, 2)
 
 
 ####################
-# SmartphoneImpact #
+# SmartphoneImpactSource #
 ####################
 
 
@@ -212,14 +199,14 @@ def test_smartphone_impact() -> None:
     Test smartphone impact with amortization, with computation by hand instead of pint day/years translation
     :return:
     """
-    s = SmartphoneImpact()
+    s = SmartphoneImpactSource()
     amortization_day = s.FABRICATION_CO2.magnitude / (s.LIFE_EXPECTANCY.magnitude * 365)
     amortization_hour = amortization_day / s.DAILY_USE.magnitude
     assert round(s.co2, 2) == round(amortization_hour * KG_CO2E, 2)
 
 
 ################
-# TabletImpact #
+# TabletImpactSource #
 ################
 
 
@@ -228,14 +215,14 @@ def test_tablet_impact() -> None:
     Test tablet impact with amortization, with computation by hand instead of pint day/years translation
     :return:
     """
-    t = TabletImpact()
+    t = TabletImpactSource()
     amortization_day = t.FABRICATION_CO2.magnitude / (t.LIFE_EXPECTANCY.magnitude * 365)
     amortization_hour = amortization_day / t.DAILY_USE.magnitude
     assert round(t.co2, 2) == round(amortization_hour * KG_CO2E, 2)
 
 
 ####################
-# TelevisionImpact #
+# TelevisionImpactSource #
 ####################
 
 
@@ -244,14 +231,14 @@ def test_television_impact() -> None:
     Test television impact with amortization, with computation by hand instead of pint day/years translation
     :return:
     """
-    t = TelevisionImpact()
+    t = TelevisionImpactSource()
     amortization_day = t.FABRICATION_CO2.magnitude / (t.LIFE_EXPECTANCY.magnitude * 365)
     amortization_hour = amortization_day / t.DAILY_USE.magnitude
     assert round(t.co2, 2) == round(amortization_hour * KG_CO2E, 2)
 
 
 ################
-# OfficeImpact #
+# OfficeImpactSource #
 ################
 
 
@@ -260,25 +247,25 @@ def test_office_impact() -> None:
     Test office emission /person computation by hand without pint
     :return:
     """
-    o = OfficeImpact()
+    o = OfficeImpactSource()
     one_person_office_size = o.OFFICE_SIZE / o.OFFICES_OCCUPANCY
     square_meter_co2_day = o.BUILDING_EMISSIONS.magnitude / (o.LIFE_EXPECTANCY * 365)
     assert o.co2 == (one_person_office_size * square_meter_co2_day) * KG_CO2E
 
 
 ################
-# ServerImpact #
+# ServerImpactSource #
 ################
 
 
 def test_server_impact() -> None:
     """
-    Test that ServerImpact co2 is updated when electricity_mix or pue changes, and that the output is the same with
+    Test that ServerImpactSource co2 is updated when electricity_mix or pue changes, and that the output is the same with
     the same input
     :return: None
     """
-    s = ServerImpact()
-    impacts_registry = ImpactsFactorsRegistry()
+    s = ServerImpactSource()
+    impacts_registry = ImpactsSourceRegistry()
     impacts_registry.electricity_mix = 0.7543 * ELECTRICITY_MIX
     impacts_registry.pue = 1.5
     first_co2 = s.co2
@@ -297,19 +284,19 @@ def test_server_impact() -> None:
 
 
 #################
-# StorageImpact #
+# StorageImpactSource #
 #################
 
 
 def test_storage_impact() -> None:
     """
-    Test that StorageImpact co2 is updated when electricity_mix or pue changes, and that the output is the same with
+    Test that StorageImpactSource co2 is updated when electricity_mix or pue changes, and that the output is the same with
     the same input
     :return: None
     """
 
-    s = StorageImpact()
-    registry = ImpactsFactorsRegistry()
+    s = StorageImpactSource()
+    registry = ImpactsSourceRegistry()
     registry.pue = 1.5
     registry.electricity_mix = 0.7543 * ELECTRICITY_MIX
     first_co2 = s.co2
@@ -328,7 +315,7 @@ def test_storage_impact() -> None:
 
 
 ###################
-# TransportImpact #
+# TransportImpactSource #
 ###################
 
 
@@ -337,16 +324,17 @@ def test_transport_impact() -> None:
     Test that transport impact correspond to a standard ratio of all impacts_list, multiplied by the average travel distance
     :return:
     """
-    u = TransportImpact()
+    u = TransportImpactSource()
     assert (
         u.co2
         == (
             (
                 u.FOOT_PERCENTAGE * 0
-                + u.BIKE_PERCENTAGE * BikeImpact().co2.magnitude
-                + u.PUBLIC_TRANSPORT_PERCENTAGE * PublicTransportImpact().co2.magnitude
-                + u.CAR_PERCENTAGE * CarImpact().co2.magnitude
-                + u.MOTORBIKE_PERCENTAGE * MotorbikeImpact().co2.magnitude
+                + u.BIKE_PERCENTAGE * BikeImpactSource().co2.magnitude
+                + u.PUBLIC_TRANSPORT_PERCENTAGE
+                * PublicTransportImpactSource().co2.magnitude
+                + u.CAR_PERCENTAGE * CarImpactSource().co2.magnitude
+                + u.MOTORBIKE_PERCENTAGE * MotorbikeImpactSource().co2.magnitude
             )
             / 100
         )

@@ -250,7 +250,7 @@ paths:
     parameters:
       - name: model_id
         in: path
-        description: Id of the model to get the impacts from
+        description: Id of the model to get the impact_sources from
         type: integer
         required: true
     get:

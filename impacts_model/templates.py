@@ -6,18 +6,25 @@ from typing import List
 import yaml
 from marshmallow import fields, Schema
 
+####################
+# ResourceTemplate #
+####################
 from impacts_model.impact_sources import impact_source_factory, ImpactSource
 
 
-################
-# ResourceTemplate #
-################
 class ResourceTemplate:
+    """
+    Resource template to load from files
+    A name with a list of ImpactSource
+    """
     def __init__(self, name: str):
         self.name = name
-        self.impacts = self._load_impacts()
+        self.impact_sources = self._load_impacts()
 
     def _load_impacts(self) -> List[ImpactSource]:
+        """
+        Load the list of impact_sources from the corresponding Resource file
+        """
         name = self.name.replace(".yaml", "")
         with open("impacts_model/data/resources/" + name + ".yaml", "r") as stream:
             data_loaded = yaml.safe_load(stream)
@@ -28,7 +35,9 @@ class ResourceTemplate:
 
 
 class ResourceTemplateSchema(Schema):
+    """Marshmallow schema to serialize a ResourceTemplate object"""
     name = fields.String()
+
 
 ################
 # TaskTemplate #
@@ -48,7 +57,7 @@ class TaskTemplate:
         Define a task with a name, resources and subtasks
         :param name: the name of the resource
         """
-        self.name = name.replace(".yaml","")
+        self.name = name.replace(".yaml", "")
         file_res = self._load_file()
         self.resources = file_res[0]
         self.subtasks = file_res[1]
@@ -70,37 +79,17 @@ class TaskTemplate:
 
             return resources_list, subtasks_list
 
+
 class TaskTemplateSchema(Schema):
+    """Marshmallow schema to serialize a TaskTemplate object"""
     name = fields.String()
     resources = fields.Nested(ResourceTemplateSchema, many=True)
     subtasks = fields.Nested("TaskTemplateSchema", many=True)
 
+
 def get_tasks_templates() -> List[TaskTemplate]:
+    """Load and return all TaskTemplate from files"""
     tasks_template = []
     for filename in os.listdir("impacts_model/data/tasks"):
         tasks_template.append(TaskTemplate(filename))
     return tasks_template
-
-
-"""
-def resource_template_factory(name: str) -> ResourceTemplate:
-    name = name.replace(".yaml", "")
-    with open("impacts_model/data/resources/" + name + ".yaml", "r") as stream:
-        data_loaded = yaml.safe_load(stream)
-
-        impacts_list = []
-        for impact_name in data_loaded["impact_factors"]:
-            impacts_list.append(impact_source_factory(impact_name))
-
-        return ResourceTemplate(name=data_loaded["name"], impacts=impacts_list)
-
-
-def load_resource_impacts_source(name: str) -> List[ImpactSource]:
-    name = name.replace(".yaml", "")
-    with open("impacts_model/data/resources/" + name + ".yaml", "r") as stream:
-        data_loaded = yaml.safe_load(stream)
-        impacts_list = []
-        for impact_name in data_loaded["impact_factors"]:
-            impacts_list.append(impact_source_factory(impact_name))
-        return impacts_list
-"""

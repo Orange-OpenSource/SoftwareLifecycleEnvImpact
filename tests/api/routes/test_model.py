@@ -9,6 +9,7 @@ models_root = "/api/v1/models"
 
 @pytest.fixture(scope="function")
 def model_fixture(db: SQLAlchemy) -> Model:
+    """Fixture Model object"""
     model = Model(name="Test Model")
     project = Project(name="Project test_model")
     project.models = [model]
@@ -152,5 +153,3 @@ def test_get_model_tasks(client: FlaskClient, db: SQLAlchemy) -> None:
 
     response = client.get(models_root + "/" + str(model.id) + "/tasks")
     assert response.status_code == 200
-    # assert response.json["models"][0]["name"] == "Model 1" # TODO
-    # assert response.json["models"][1]["name"] == "Model 2" # TODO

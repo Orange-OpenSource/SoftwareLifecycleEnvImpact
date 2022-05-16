@@ -1,15 +1,9 @@
 from typing import Any
 
-from impacts_model.templates import get_tasks_templates, TaskTemplate, TaskTemplateSchema
-
-
-def json_task_template(task_template: TaskTemplate) -> dict[str, Any]:
-    # TODO maybe move ?
-    return {
-        "name": task_template.name,
-        "subtasks": [json_task_template(t) for t in task_template.subtasks],
-        "resources": [{"name": r.name} for r in task_template.resources],
-    }
+from impacts_model.templates import (
+    get_tasks_templates,
+    TaskTemplateSchema,
+)
 
 
 def get_task_templates() -> Any:
@@ -23,14 +17,3 @@ def get_task_templates() -> Any:
     # Serialize
     project_schema = TaskTemplateSchema(many=True)
     return project_schema.dump(templates)
-
-
-    # TODO implement a chache mecanism
-    #return_json = []
-
-    #for template in get_tasks_templates():
-    #    return_json.append(json_task_template(template))
-
-    #return return_json
-
-    # return templates.get_tasks_templates()

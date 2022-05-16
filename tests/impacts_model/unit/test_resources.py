@@ -6,8 +6,12 @@ from flask_sqlalchemy import SQLAlchemy
 from pint import Quantity
 
 from api.data_model import Model, Project, Resource, Task
-from impacts_model.impact_sources import ImpactIndicator, ImpactSource
-from impacts_model.impacts import get_resource_environmental_impact, get_resource_impact
+from impacts_model.computation import (
+    get_resource_environmental_impact,
+    get_resource_impact,
+)
+from impacts_model.impact_sources import ImpactSource
+from impacts_model.impacts import ImpactIndicator
 from impacts_model.quantities.quantities import (
     CUBIC_METER,
     DISEASE_INCIDENCE,
@@ -88,6 +92,7 @@ def test_merge_resource_list() -> None:
 
 @pytest.fixture(scope="function")
 def resource_fixture(db: SQLAlchemy) -> Resource:
+    """Resource fixture object"""
     project = Project(name="Project test_resources")
     model = Model(name="Model test_resourcess")
     project.models = [model]
@@ -106,7 +111,7 @@ def resource_fixture(db: SQLAlchemy) -> Resource:
 
 
 @mock.patch(
-    "impacts_model.impacts.ResourceTemplate._load_impacts",
+    "impacts_model.computation.ResourceTemplate._load_impacts",
     MagicMock(
         return_value=[
             ImpactSource(1000 * KG_CO2E),
@@ -132,7 +137,7 @@ def test_get_resource_impact(resource_fixture: Resource) -> None:
 
 
 @mock.patch(
-    "impacts_model.impacts.ResourceTemplate._load_impacts",
+    "impacts_model.computation.ResourceTemplate._load_impacts",
     MagicMock(
         return_value=[
             ImpactSource(10000.123 * KG_CO2E, raw_materials=213.3 * TONNE_MIPS),
