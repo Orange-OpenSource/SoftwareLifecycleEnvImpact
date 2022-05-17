@@ -9,7 +9,8 @@ from flask_sqlalchemy import SQLAlchemy
 from pint import Quantity
 
 from api.data_model import Model, Project, Resource, Task
-from impacts_model.computation import (get_task_environmental_impact, get_task_environmental_impact_tree,
+from impacts_model.computation import (EnvironmentalImpactTree, get_task_environmental_impact,
+                                       get_task_environmental_impact_tree,
                                        get_task_impact_by_indicator, get_task_impact_by_resource_type)
 from impacts_model.impact_sources import ImpactSource
 from impacts_model.impacts import ImpactIndicator
@@ -172,21 +173,19 @@ def test_get_task_impact_list(
     "impacts_model.computation.ResourceTemplate._load_impacts",
     MagicMock(return_value=[ImpactSource(1000 * KG_CO2E)]),
 )
-def test_get_task_impacts(task_fixture_with_subtask: Task) -> None:
+def test_get_task_environmental_impact_tree(task_fixture_with_subtask: Task) -> None:
     """
     Test return value of get_impact_quantity is in form of TaskImpact
     """
     impact = get_task_environmental_impact_tree(task_fixture_with_subtask)
-    assert isinstance(impact, dict)
+    assert isinstance(impact, EnvironmentalImpactTree)
 
-    assert impact["id"] == task_fixture_with_subtask.id
-    assert impact["name"] == task_fixture_with_subtask.name
+    assert impact.task == task_fixture_with_subtask
+    # Assert that climate change is correct for the complete task
+    assert impact.environmental_impact.impacts[ImpactIndicator.CLIMATE_CHANGE] == get_task_environmental_impact(task_fixture_with_subtask).impacts[ImpactIndicator.CLIMATE_CHANGE]
 
-    # Test subtask
-    subtask_dict = impact["subtasks"][0]
-    assert subtask_dict == get_task_environmental_impact_tree(
-        task_fixture_with_subtask.subtasks[0]
-    )
+    # Assert that climate change is correct for the subtask
+    assert impact.subtasks_impacts[0].environmental_impact.impacts[ImpactIndicator.CLIMATE_CHANGE] == get_task_environmental_impact(task_fixture_with_subtask.subtasks[0]).impacts[ImpactIndicator.CLIMATE_CHANGE]
 
 
 @mock.patch(

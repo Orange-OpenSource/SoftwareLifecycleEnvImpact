@@ -4,6 +4,8 @@ import jsonpatch
 from flask import abort, request
 
 from api.data_model import db, Model, Task, TaskSchema
+from impacts_model.computation import get_task_environmental_impact
+from impacts_model.impacts import EnvironmentalImpactSchema
 
 
 def get_tasks() -> Any:
@@ -63,6 +65,18 @@ def update_task(task_id: int) -> Any:
             "No task found for Id: {task_id}".format(task_id=task_id),
         )
 
+def get_task_impacts(task_id: int):
+    task = Task.query.filter(Task.id == task_id).one_or_none()
+
+    if task is not None:
+        environmental_impact = get_task_environmental_impact(task)
+        schema = EnvironmentalImpactSchema()
+        return schema.dump(environmental_impact)
+    else:
+        return abort(
+            404,
+            "No task found for Id: {task_id}".format(task_id=task_id),
+        )
 
 def delete_task(task_id: int) -> Any:
     """

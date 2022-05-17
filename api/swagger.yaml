@@ -164,7 +164,6 @@ paths:
         409:
           description: Model exists already
 
-
   /models/{model_id}:
     parameters:
       - name: model_id
@@ -222,7 +221,6 @@ paths:
         404:
           description: No model project with this id
 
-
   /models/{model_id}/tasks:
     parameters:
       - name: model_id
@@ -256,7 +254,7 @@ paths:
     get:
       operationId: api.routes.model.get_impacts
       tags:
-        - Task
+        - Model
         - Impact
       summary: Get model impact
       responses:
@@ -363,6 +361,28 @@ paths:
           description: Cannot delete the root task of a model
         404:
           description: No task with this id
+
+  /tasks/{task_id}/impacts:
+    parameters:
+      - name: task_id
+        in: path
+        description: Id of the task to get the impacts from
+        type: integer
+        required: true
+    get:
+      operationId: api.routes.task.get_task_impacts
+      tags:
+        - Task
+        - Impact
+      summary: Read one task impacts
+      description: Read one task impacts
+      responses:
+        200:
+          description: Sucessfully read task impacts
+          schema:
+            $ref: '#/definitions/EnvironmentalImpact'
+        404:
+          description: No task found with this id
 
   /tasktemplates:
     get:
@@ -541,3 +561,23 @@ definitions:
           type: string
           format: date
           description: Last update date of the resource
+
+    EnvironmentalImpact:
+      type: object
+      properties:
+        impacts:
+          type: object
+          additionalProperties:
+            type: string
+      example:
+        {
+          "Acidification": "0 mol_Hpos",
+          "Climate change": "1522.8450773144025 kg_co2e",
+          "Electronic waste": "0 electronic_waste",
+          "Fine particles": "0 disease_incidence",
+          "Ionizing radiations": "0 kg_Bq_u235e",
+          "Natural resources depletion": "0 kg_Sbe",
+          "Primary energy consumption": "0 primary_MJ",
+          "Raw materials": "0 tonne_mips",
+          "Water depletion": "0 cubic_meter"
+        }

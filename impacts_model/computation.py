@@ -1,9 +1,11 @@
-from typing import Any, List, Union
+from __future__ import annotations
+
+from typing import Any, List
 
 from pint import Quantity
 
 from api.data_model import Resource, Task
-from impacts_model.impacts import EnvironmentalImpact, ImpactIndicator
+from impacts_model.impacts import EnvironmentalImpact, EnvironmentalImpactTree, ImpactIndicator
 from impacts_model.templates import ResourceTemplate
 
 
@@ -28,7 +30,7 @@ def get_task_environmental_impact(task: Task) -> EnvironmentalImpact:
 
 
 def get_task_impact_by_indicator(
-    task: Task, indicator: ImpactIndicator
+        task: Task, indicator: ImpactIndicator
 ) -> Quantity[Any]:
     """
     Compute and return a Task impact for a given ImpactIndicator
@@ -45,14 +47,8 @@ def get_task_impact_by_indicator(
 
     return sum(impacts_resources) + sum(impacts_subtasks)
 
-
-EnvironmentalImpactTree = dict[
-    str, Union[str, float, Any]
-]  # TODO check to make a class/ a schema that transform to json but in the api?
-
-
 def get_task_environmental_impact_tree(
-    task: Task,
+        task: Task,
 ) -> EnvironmentalImpactTree:
     """
     Get a Task complete Environmental impact via an EnvironmentalImpact object as well as those of its subtasks
@@ -60,20 +56,11 @@ def get_task_environmental_impact_tree(
     :param task:the Task object to get the impact from
     :return: an EnvironmentImpactTree object with all the task environmental impacts
     """
-    return {
-        "id": task.id,
-        "name": task.name,
-        "impact_sources": [
-            {key.value: str(value)}
-            for key, value in get_task_environmental_impact(task).impacts.items()
-        ],
-        "subtasks": [get_task_environmental_impact_tree(r) for r in task.subtasks],
-    }
-
-
-ResourcesEnvironmentalImpact = dict[
-    str, EnvironmentalImpact
-]  # TODO add object, schema etc ?
+    return EnvironmentalImpactTree(
+        task=task,
+        environmental_impact=get_task_environmental_impact(task),
+        subtasks_impacts=[get_task_environmental_impact_tree(r) for r in task.subtasks]
+    )
 
 
 def get_task_impact_by_resource_type(task: Task) -> ResourcesEnvironmentalImpact:
@@ -124,7 +111,7 @@ def get_resource_environmental_impact(resource: Resource) -> EnvironmentalImpact
 
 
 def get_resource_impact(
-    resource: Resource, impact_indicator: ImpactIndicator
+        resource: Resource, impact_indicator: ImpactIndicator
 ) -> Quantity[Any]:
     """
     Compute and return a resource environmental impct for an ImpactIndicator

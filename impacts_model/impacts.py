@@ -1,9 +1,12 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Any
+from typing import Any, List
 
+from marshmallow import fields, post_dump, Schema
 from pint import Quantity
+
+from api.data_model import Task
 
 
 class ImpactIndicator(str, Enum):
@@ -29,6 +32,7 @@ class EnvironmentalImpact:
     """
     EnvironmentalImpact class, encapsulating all ImpactIndicator as a list, with the corresponding quantity for each of them
     """
+
     def __init__(self, impacts: dict[ImpactIndicator, Quantity[Any]] = None) -> None:
         self.impacts: dict[
             ImpactIndicator, Quantity[Any]
@@ -65,3 +69,49 @@ class EnvironmentalImpact:
             self.impacts[indicator] += value
         else:
             self.impacts[indicator] = value
+
+
+class EnvironmentalImpactSchema(Schema):
+    """Marshmallow schema to serialize a EnvironmentalImpactSchema object"""
+    impacts = fields.Dict(keys=fields.Str(), values=fields.Str())
+
+    @post_dump
+    def translate_quantities(self, in_data, **kwargs) -> dict[str, str]: # type: ignore
+        """Translate pint quantities to str for serialization"""
+        out_data: dict[str, str] = {}
+        for impact_indicator_name in in_data["impacts"]:
+            impact_enum = ImpactIndicator[impact_indicator_name.replace("ImpactIndicator.", "")]
+            out_data[impact_enum.value] = str(in_data["impacts"][impact_indicator_name])
+        return out_data
+
+
+###########################
+# EnvironmentalImpactTree #
+###########################
+class EnvironmentalImpactTree:
+    """
+    Represent a complete tree of task with impact for each task and its children
+    """
+
+    def __init__(
+        self,
+        task: Task,
+        environmental_impact: EnvironmentalImpact,
+        subtasks_impacts: List[EnvironmentalImpactTree],
+    ):
+        self.task = task
+        self.environmental_impact = environmental_impact
+        self.subtasks_impacts = subtasks_impacts
+
+
+class EnvironmentalImpactTreeSchema(Schema):
+    """Marshmallow schema to serialize a EnvironmentalImpactTree object"""
+
+    task = fields.Nested("TaskSchema")
+    environmental_impact = fields.Nested(EnvironmentalImpactSchema)
+    subtasks_impacts = fields.Nested("EnvironmentalImpactTreeSchema", many=True)
+
+
+ResourcesEnvironmentalImpact = dict[
+    str, EnvironmentalImpact
+]  # TODO add object, schema etc ?
