@@ -400,6 +400,82 @@ paths:
             items:
               $ref: '#/definitions/TaskTemplate'
 
+  /resources:
+    get:
+      operationId: api.routes.resource.get_resources
+      tags:
+        - Resource
+      summary: Get all resources
+      responses:
+        200:
+          description: List of resources
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Resource'
+
+  /resource/{resource_id}:
+    parameters:
+      - name: resource_id
+        in: path
+        description: Id of the resource to get
+        type: integer
+        required: true
+    get:
+      operationId: api.routes.resource.get_resource
+      tags:
+        - Resource
+      summary: Read one resource
+      description: Read one resource
+      responses:
+        200:
+          description: Sucessfully read resource
+          schema:
+            $ref: '#/definitions/Resource'
+        404:
+          description: No resource found with this id
+    patch:
+      operationId: api.routes.resource.update_resource
+      tags:
+        - Resource
+      summary: Update a resource
+      description: Update a resource
+      parameters:
+        - name: JsonPatch
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/PatchRequest"
+      responses:
+        200:
+          description: Successfully updated resource
+          schema:
+            $ref: '#/definitions/Resource'
+        403:
+          description: Patch format is incorrect
+        404:
+          description: No resource with this id
+
+  /resources/{resource_id}/impacts:
+    parameters:
+      - name: resource_id
+        in: path
+        description: Id of the resource to get
+        type: integer
+        required: true
+    get:
+      operationId: api.routes.resource.get_resource_impacts
+      tags:
+        - Resource
+        - Impact
+      summary: Get resource impact
+      responses:
+        200:
+          description: Impacts
+          schema:
+            $ref: '#/definitions/EnvironmentalImpact'
+
+
   /debug/reset:
     get:
       summary: Debug function to reset the database

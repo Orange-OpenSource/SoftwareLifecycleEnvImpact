@@ -115,7 +115,7 @@ def get_resource_impact(
         resource: Resource, impact_indicator: ImpactIndicator
 ) -> Quantity[Any]:
     """
-    Compute and return a resource environmental impct for an ImpactIndicator
+    Compute and return a resource environmental impact for an ImpactIndicator
     :param resource: the Resource object to view to impact from
     :param impact_indicator: The ImpactIndicator to retrieve the impact
     :return: A quantity corresponding to the resource ImpactIndicator quantity
