@@ -5,8 +5,8 @@ from flask import abort, request
 
 from api.data_model import db, Model, ModelSchema, Project, Task
 from api.routes.task import get_task
-from impacts_model.computation import get_task_environmental_impact_tree, get_task_impact_by_indicator
-from impacts_model.impacts import EnvironmentalImpactTreeSchema, ImpactIndicator
+from impacts_model.computation import get_task_environmental_impact_tree
+from impacts_model.impacts import EnvironmentalImpactTreeSchema
 
 
 def get_models() -> Any:
@@ -115,22 +115,16 @@ def get_tasks(model_id: int) -> Any:
 
 def get_impacts(model_id: int) -> Any:
     """
-    GET /models/{model_id}/impact_sources
-    :param model_id: id of the model to get the impact_sources
+    GET /models/{model_id}/impact
+    :param model_id: id of the model to get the impact
     :return: All impact_sources computed for a model
     """
     model = Model.query.filter(Model.id == model_id).one_or_none()
 
     if model is not None:
-        total_impact = get_task_impact_by_indicator(
-            model.root_task, ImpactIndicator.CLIMATE_CHANGE
-        )
-        impact_by_task = get_task_environmental_impact_tree(model.root_task)
+        impact_tree = get_task_environmental_impact_tree(model.root_task)
         schema = EnvironmentalImpactTreeSchema()
-        return {
-            "Total CO2": str(total_impact),
-            "Impact by task": schema.dump(impact_by_task),
-        }
+        return schema.dump(impact_tree)
     else:
         return abort(
             404,

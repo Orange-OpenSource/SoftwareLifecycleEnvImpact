@@ -260,6 +260,8 @@ paths:
       responses:
         200:
           description: Impacts
+          schema:
+            $ref: '#/definitions/EnvironmentalImpactTree'
 
   /tasks:
     get:
@@ -581,3 +583,17 @@ definitions:
           "Raw materials": "0 tonne_mips",
           "Water depletion": "0 cubic_meter"
         }
+
+    EnvironmentalImpactTree:
+      type: object
+      properties:
+        task:
+          type: object
+          $ref: '#/definitions/Task'
+        environmental_impact:
+          type: object
+          $ref: '#/definitions/EnvironmentalImpact'
+        subtasks_impacts:
+          type: array
+          items:
+            $ref: '#/definitions/EnvironmentalImpact'

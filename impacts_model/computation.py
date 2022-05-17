@@ -47,6 +47,7 @@ def get_task_impact_by_indicator(
 
     return sum(impacts_resources) + sum(impacts_subtasks)
 
+
 def get_task_environmental_impact_tree(
         task: Task,
 ) -> EnvironmentalImpactTree:

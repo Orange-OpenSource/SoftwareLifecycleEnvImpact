@@ -77,7 +77,7 @@ class EnvironmentalImpactSchema(Schema):
 
     @post_dump
     def translate_quantities(self, in_data, **kwargs) -> dict[str, str]: # type: ignore
-        """Translate pint quantities to str for serialization"""
+        """Translate pint quantities to str for serialization, and ImpactIndicator to its string values"""
         out_data: dict[str, str] = {}
         for impact_indicator_name in in_data["impacts"]:
             impact_enum = ImpactIndicator[impact_indicator_name.replace("ImpactIndicator.", "")]
