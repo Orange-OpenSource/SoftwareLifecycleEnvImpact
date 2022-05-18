@@ -11,7 +11,51 @@ Use `flask run --host=0.0.0.0 --port=5001` on the server.
 
 # Architecture
 
-Project -> Model -> Task -> Resource -> Impacts -> ImpactIndicator
+@startuml
+package API {
+class Config
+
+
+package routes {}
+package utils {}
+
+package BDD <<Database>>{
+class Project
+class Model
+class Task
+class Resource
+}
+
+}
+
+package impacts_model {
+
+class ImpactSource
+
+package quantities{}
+package Impact{
+class ImpactIndicator
+class EnvironmentalImpact
+class EnvironmentalImpactTree
+}
+
+package templates <<Rectangle>> {
+package data {}
+class TaskTemplate
+class ResourceTemplate
+}
+}
+
+Project "1" *-- "*" Model
+Model "1" *-- "*" Task
+Task "1" *-- "*" Resource
+
+EnvironmentalImpact -- ImpactIndicator 
+EnvironmentalImpactTree  "1" *-- "*" EnvironmentalImpact
+
+Resource -- ResourceTemplate : type
+
+@enduml
 
 ## API
 - Swagger
