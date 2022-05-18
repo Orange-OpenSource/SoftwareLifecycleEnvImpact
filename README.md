@@ -11,6 +11,8 @@ Use `flask run --host=0.0.0.0 --port=5001` on the server.
 
 # Architecture
 
+```plantuml
+
 @startuml
 package API {
 class Config
@@ -56,6 +58,8 @@ EnvironmentalImpactTree  "1" *-- "*" EnvironmentalImpact
 Resource -- ResourceTemplate : type
 
 @enduml
+```
+
 
 ## API
 - Swagger
