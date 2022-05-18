@@ -59,8 +59,10 @@ class TaskTemplate:
         """
         self.name = name.replace(".yaml", "")
         file_res = self._load_file()
-        self.resources = file_res[0]
-        self.subtasks = file_res[1]
+        self.id = file_res[0]
+        self.unit = file_res[1]
+        self.resources = file_res[2]
+        self.subtasks = file_res[3]
 
     def _load_file(self):
         name = self.name.replace(".yaml", "")
@@ -77,17 +79,18 @@ class TaskTemplate:
                 for subtask_name in data_loaded["subtasks"]:
                     subtasks_list.append(TaskTemplate(subtask_name))
 
-            return resources_list, subtasks_list
+            return data_loaded["id"],data_loaded["unit"], resources_list, subtasks_list
 
 
 class TaskTemplateSchema(Schema):
     """Marshmallow schema to serialize a TaskTemplate object"""
+    id = fields.Integer()
     name = fields.String()
     resources = fields.Nested(ResourceTemplateSchema, many=True)
     subtasks = fields.Nested("TaskTemplateSchema", many=True)
 
 
-def get_tasks_templates() -> List[TaskTemplate]:
+def get_tasks_templates() -> List[TaskTemplate]: # TODO improve naming clash with route
     """Load and return all TaskTemplate from files"""
     tasks_template = []
     for filename in os.listdir("impacts_model/data/tasks"):

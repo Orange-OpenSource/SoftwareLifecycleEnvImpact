@@ -3,9 +3,10 @@ from typing import Any
 import jsonpatch
 from flask import abort, request
 
-from api.data_model import db, Model, Task, TaskSchema
+from api.data_model import db, Model, Resource, Task, TaskSchema
 from impacts_model.computation import get_task_environmental_impact
 from impacts_model.impacts import EnvironmentalImpactSchema
+from impacts_model.templates import get_tasks_templates, TaskTemplate
 
 
 def get_tasks() -> Any:
@@ -115,6 +116,7 @@ def create_task(task: dict[str, Any]) -> Any:
     name = task.get("name")
     parent_task_id = task.get("parent_task_id")
     model_id = task.get("model_id")
+    template_id = task.get("template_id")
 
     existing_task = (
         Task.query.filter(Task.name == name)
@@ -125,8 +127,18 @@ def create_task(task: dict[str, Any]) -> Any:
 
     if existing_task is None:
         schema = TaskSchema()
+        task.pop("template_id")
         new_task = schema.load(task)
 
+
+
+        task_template:TaskTemplate = [x for x in get_tasks_templates() if x.id == template_id][0] # TODO bad solution to create associated resource
+        for resource_template in task_template.resources:
+            new_task.resources.append(Resource(
+                name=task_template.name + " " + task_template.unit,
+                type=resource_template.name,
+                value=100,
+            ))
         db.session.add(new_task)
         db.session.commit()
 

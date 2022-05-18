@@ -298,7 +298,10 @@ paths:
                 description: Id of the related Model
               parent_task_id:
                 type: integer
-                description: Optional parent task id
+                description: Parent task id
+              template_id:
+                type: integer
+                description: Id of the template to create from
       responses:
         201:
           description: Sucessfully created Task
