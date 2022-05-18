@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { deleteTask, updateParentTask, updateTask } from '$lib/controllers/RequestController';
+	import { deleteTask, updateParentTask, updateResource, updateTask } from '$lib/controllers/RequestController';
 	import { createEventDispatcher } from 'svelte';
 	import ModalComponent from './ModalComponent.svelte';
 
@@ -40,6 +40,11 @@
 		});
 	}
 
+	async function updateResourceInAPI(idResource: any) {
+		// @ts-ignore
+		await updateResource(idResource, document.getElementById('typeNumber' + idResource).value);
+	}
+
 	/**
 	 * Set the "<select>" tag on the current parent by default.
 	 *
@@ -66,13 +71,25 @@
 	<button slot="btndelete" on:click={deleteTaskInAPI} type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Delete</button>
 
 	<div slot="body">
-		Parent :
-		<select class="form-select" aria-label="Default select example">
-			{#each tasks as currentTask}
-				{#if currentTask.id !== task.id}
-					<option data-bs-dismiss="modal" on:click={() => updateParent(currentTask.id)} selected={isParent(currentTask)}>{currentTask.name}</option>
-				{/if}
-			{/each}
-		</select>
+		<div class="input-group mb-3">
+			<label for="selectparent" class="input-group-text">Parent task</label>
+			<select id="selectparent" class="form-select" style="margin: 0px;">
+				{#each tasks as currentTask}
+					{#if currentTask.id !== task.id}
+						<option data-bs-dismiss="modal" on:click={() => updateParent(currentTask.id)} selected={isParent(currentTask)}>{currentTask.name}</option>
+					{/if}
+				{/each}
+			</select>
+		</div>
+
+		<h2>Resources</h2>
+
+		{#each task.resources as resource}
+			<div class="input-group mb-3">
+				<label class="input-group-text" for="typeNumber">{resource.name}</label>
+				<input style="margin : 0px;" type="number" id="typeNumber{resource.id}" class="form-control" value={resource.value} />
+				<button on:click={() => updateResourceInAPI(resource.id)} style="margin : 0px;" class="btn btn-outline-secondary" type="button">Save</button>
+			</div>
+		{/each}
 	</div>
 </ModalComponent>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { onMount, tick } from 'svelte';
-	import { getModels, getModelInformations, getTemplates, getImpactByResource } from '$lib/controllers/RequestController';
+	import { getModels, getModelInformations, getTemplates, getModelImpact } from '$lib/controllers/RequestController';
 	import HeaderButtonsModel from '$lib/components/HeaderButtonsModel.svelte';
 	import { checkIfLogged } from '$lib/controllers/LoginController';
 	import TiDelete from 'svelte-icons/ti/TiDelete.svelte';
@@ -45,7 +45,7 @@
 		modelsContent = modelsContent;
 		model_id = models[0].id;
 		model_name = models[0].name;
-		await rootTreeView.updateTree();
+		if (!compare) await rootTreeView.updateTree();
 	}
 
 	/**
@@ -55,30 +55,34 @@
 	 * @param name 	The name of the model (linked to the input).
 	 */
 	async function updateModelId(id: any, name: string) {
-		model_id = id;
-		model_name = name;
+		if (!compare) {
+			model_id = id;
+			model_name = name;
 
-		labels = [];
-		data = [];
-		let res: any = await getImpactByResource(model_id);
+			labels = [];
+			data = [];
+			let res: any = await getModelImpact(model_id);
 
-		for (let elem in res['Impact by task'].subtasks) {
-			for (let i in res['Impact by task'].subtasks[elem].impacts) {
-				let obj = res['Impact by task'].subtasks[elem].impacts[i];
-				for (var prop in obj) {
-					let values = obj[prop].split(' ');
-					labels.push(prop + ' (' + values[1] + ')');
-					data.push(+values[0]);
-					break;
+			/*
+			for (let elem in res['Impact by task'].subtasks) {
+				for (let i in res['Impact by task'].subtasks[elem].impacts) {
+					let obj = res['Impact by task'].subtasks[elem].impacts[i];
+					for (var prop in obj) {
+						let values = obj[prop].split(' ');
+						labels.push(prop + ' (' + values[1] + ')');
+						data.push(+values[0]);
+						break;
+					}
 				}
 			}
+			*/
+
+			labels = labels;
+			data = data;
+
+			await updateChart();
+			await rootTreeView.updateTree();
 		}
-
-		labels = labels;
-		data = data;
-
-		await updateChart();
-		await rootTreeView.updateTree();
 	}
 
 	/**
@@ -90,6 +94,15 @@
 			compare = true;
 			await tick();
 			splitjs = get2RowsSplitObject(document);
+
+			/*TODO
+			let inputs = document.getElementsByClassName('modelsInput');
+
+			for (var i = 0; i < inputs.length; i++) {
+				// @ts-ignore
+				console.log(inputs[i].value + ' ' + inputs[i].checked);
+			}
+			*/
 		} else {
 			splitjs.destroy();
 			compare = false;
@@ -99,8 +112,22 @@
 			// @ts-ignore
 			ctx = document.getElementById('myChart').getContext('2d');
 			myChart = getChart(ctx, labels, data);
-			rootTreeView.updateTree();
+			await rootTreeView.updateTree();
 		}
+	}
+
+	/**
+	 * Update the charts when a checkbox is checked.
+	 */
+	async function updateComparaison() {
+		let inputs = document.getElementsByClassName('modelsInput');
+
+		/*TODO
+		for (var i = 0; i < inputs.length; i++) {
+			// @ts-ignore
+			console.log(inputs[i].value + ' ' + inputs[i].checked);
+		}
+		*/
 	}
 
 	/**
@@ -132,19 +159,15 @@
 
 		labels = [];
 		data = [];
-		let res: any = await getImpactByResource(model_id);
+		let res: any = await getModelImpact(model_id);
 
-		for (let elem in res['Impact by task'].subtasks) {
-			for (let i in res['Impact by task'].subtasks[elem].impacts) {
-				let obj = res['Impact by task'].subtasks[elem].impacts[i];
-				for (var prop in obj) {
-					let values = obj[prop].split(' ');
-					labels.push(prop + ' (' + values[1] + ')');
-					data.push(+values[0]);
-					break;
-				}
-			}
+		for (let i in res.subtasks_impacts) {
+			let climate_change = res.subtasks_impacts[i].environmental_impact['Climate change'].split(' ')[0];
+			data.push(+climate_change);
 		}
+
+		for (let i in res.task.subtasks)
+			labels.push(res.task.subtasks[i].name);
 
 		labels = labels;
 		data = data;
@@ -169,7 +192,7 @@
 				<button type="button" class="list-group-item list-group-item-action model-content" on:click|stopPropagation={() => updateModelId(model.id, model.name)} style="padding-bottom: 20px">
 					<div class="card-body d-flex justify-content-between" style="padding-bottom:0px">
 						<div>
-							<input type="checkbox" class="modelsInput" name={model.id} />
+							<input on:click={updateComparaison} type="checkbox" class="modelsInput" value={model.id} name={model.id} />
 							<span class="underline-on-hover">
 								{model.name}
 								{#if i == 0}

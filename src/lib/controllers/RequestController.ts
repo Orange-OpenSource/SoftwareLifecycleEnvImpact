@@ -254,9 +254,33 @@ export async function updateParentTask(idTask: any, parent_task_id: string) {
 	return json;
 }
 
-export async function getImpactByResource(idModel: any) {
+export async function getModelImpact(idModel: any) {
 	const response = await fetch(endpoint + 'models/' + idModel + '/impact');
 	let res = await response.json();
 
 	return res;
+}
+
+export async function updateResource(idResource: any, value: any) {
+	const res = await fetch(endpoint + 'resource/' + idResource, {
+		method: 'PATCH',
+		headers: {
+			'Content-Type': 'application/json',
+			Accept: 'application/json'
+		},
+		body: JSON.stringify([
+			{
+				op: 'replace',
+				path: '/value',
+				value: value
+			}
+		])
+	});
+
+	const json = await res.json();
+
+	if (json.status === 403) alert('Patch format is incorrect');
+	else if (json.status === 404) alert('No model found with this id');
+
+	return json;
 }
