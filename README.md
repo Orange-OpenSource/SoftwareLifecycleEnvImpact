@@ -9,6 +9,7 @@ flask run
 ```
 Use `flask run --host=0.0.0.0 --port=5001` on the server.
 
+Th swagger UI should be at `http://127.0.0.1:5000/api/v1/ui/`
 # Architecture
 
 ```plantuml
