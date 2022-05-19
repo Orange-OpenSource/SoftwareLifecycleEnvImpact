@@ -1,3 +1,9 @@
+/**
+ * Returns the last updated date (or creation date if null).
+ *
+ * @param model the model with `created_at` and `updated_at` fields.
+ * @returns 	the date under format : DD/MM/YYYY XX:XX
+ */
 export function getLastUpdate(model: any) {
 	let date;
 
@@ -23,7 +29,13 @@ export function getLastUpdate(model: any) {
 	);
 }
 
-export function getCreationDate(ISODate: any) {
+/**
+ * Returns the creation date.
+ *
+ * @param ISODate 	the date in ISO format.
+ * @returns 		the date under format : DD/MM/YYYY XX:XX
+ */
+export function getCreationDate(ISODate: string) {
 	let date = new Date(ISODate);
 
 	return (

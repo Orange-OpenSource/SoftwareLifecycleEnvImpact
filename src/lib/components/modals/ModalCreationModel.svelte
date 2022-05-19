@@ -1,15 +1,18 @@
 <script lang="ts">
-	import { getModelInformations, getModels, createModel } from '$lib/controllers/RequestController';
+	import { getModels, createModel } from '$lib/controllers/RequestController';
 	import ModalComponent from './ModalComponent.svelte';
 
+	/* Bound var */
 	export let idProject: string;
-	export let models: string | any[] = [];
-	export let modelsContent: any = [];
+	export let LIST_MODELS: any[] = [];
 	export let modify: boolean;
 	export let CURRENT_MODEL_ID: any;
 	export let CURRENT_MODEL_NAME: any;
 	export let rootTreeView: any;
 
+	/**
+	 * Create a new model and set the treeview to the new model.
+	 */
 	async function createNewModel() {
 		// @ts-ignore
 		let name = document.getElementById('createModelInput').value;
@@ -22,14 +25,7 @@
 			// @ts-ignore
 			document.getElementById('createModelInput').value = '';
 
-			models = await getModels(idProject);
-			modelsContent = [];
-			for (var i = 0; i < models.length; i++) {
-				let content = await getModelInformations(models[i].id);
-				modelsContent.push(content);
-			}
-			modelsContent = modelsContent;
-
+			LIST_MODELS = await getModels(idProject);
 			modify = true;
 			CURRENT_MODEL_ID = res.id;
 			CURRENT_MODEL_NAME = res.name;

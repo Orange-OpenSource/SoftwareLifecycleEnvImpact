@@ -1,6 +1,12 @@
 import Split from 'split.js';
 
-export function get3RowsSplitObject(document: any) {
+/**
+ * Returns a Split object with 3 rows (for the main page with "My models" / Treeview / "Impact by task")
+ *
+ * @param document 	the html Document() object
+ * @returns 		Split object
+ */
+export function get3RowsSplitObject(document: Document) {
 	return Split(['#split-0', '#split-1', '#split-2'], {
 		sizes: [25, 50, 25],
 		minSize: 0,
@@ -18,7 +24,13 @@ export function get3RowsSplitObject(document: any) {
 	});
 }
 
-export function get2RowsSplitObject(document: any) {
+/**
+ * Returns a Split object with 2 rows (for the compare page with "My models" / "Differences")
+ *
+ * @param document 	the html Document() object
+ * @returns 		Split object
+ */
+export function get2RowsSplitObject(document: Document) {
 	return Split(['#split-0', '#split-1'], {
 		sizes: [25, 75],
 		minSize: 0,

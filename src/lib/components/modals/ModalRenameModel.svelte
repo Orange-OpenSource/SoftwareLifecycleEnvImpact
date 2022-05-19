@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { getModelInformations, getModels, updateModel } from '$lib/controllers/RequestController';
+	import { getModels, updateModel } from '$lib/controllers/RequestController';
 	import ModalComponent from './ModalComponent.svelte';
 
+	/* Bound var */
 	export let model: any;
 	export let idProject: any;
-	export let models: any;
-	export let modelsContent: any;
+	export let LIST_MODELS: any[];
 	export let CURRENT_MODEL_NAME: string;
 
 	/**
@@ -21,13 +21,7 @@
 		if (res.status === 409) {
 			alert('Model already exists');
 		} else {
-			models = await getModels(idProject);
-			modelsContent = [];
-			for (var i = 0; i < models.length; i++) {
-				let content = await getModelInformations(models[i].id);
-				modelsContent.push(content);
-			}
-			modelsContent = modelsContent;
+			LIST_MODELS = await getModels(idProject);
 
 			if (oldname == CURRENT_MODEL_NAME) CURRENT_MODEL_NAME = newName;
 		}

@@ -1,22 +1,19 @@
 <script lang="ts">
-	import { getModelInformations, getModels, updateModel } from '$lib/controllers/RequestController';
+	import { getModels, updateModel } from '$lib/controllers/RequestController';
 
+	/* Bound var */
 	export let idProject: any;
 	export let CURRENT_MODEL_ID: any;
 	export let CURRENT_MODEL_NAME: string;
 	export let modify: boolean;
-	export let models: string | any[];
-	export let modelsContent: any;
+	export let LIST_MODELS: any[];
 
 	async function changeState() {
 		// @ts-ignore
 		let state = document.getElementById('editmodeSwitch').checked;
 
-		if (state) {
-			enableModifications();
-		} else {
-			await renameModel();
-		}
+		if (state) enableModifications();
+		else await renameModel();
 	}
 
 	function enableModifications() {
@@ -33,13 +30,7 @@
 		if (newName !== CURRENT_MODEL_NAME) {
 			await updateModel(CURRENT_MODEL_ID, newName);
 			CURRENT_MODEL_NAME = newName;
-			models = await getModels(idProject);
-			modelsContent = [];
-			for (var i = 0; i < models.length; i++) {
-				let content = await getModelInformations(models[i].id);
-				modelsContent.push(content);
-			}
-			modelsContent = modelsContent;
+			LIST_MODELS = await getModels(idProject);
 		}
 	}
 </script>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { onMount, tick } from 'svelte';
-	import { getModels, getModelInformations, getTemplates, getModelImpact } from '$lib/controllers/RequestController';
+	import { getModels, getTemplates, getModelImpact } from '$lib/controllers/RequestController';
 	import HeaderButtonsModel from '$lib/components/HeaderButtonsModel.svelte';
 	import { checkIfLogged } from '$lib/controllers/LoginController';
 	import TiDelete from 'svelte-icons/ti/TiDelete.svelte';
@@ -14,29 +14,35 @@
 
 	checkIfLogged();
 
-	/* Id of the model which has to be displayed in the treeview and chart */
-	let CURRENT_MODEL_ID: any;
-	/* Name of the model which has to be displayed in the root task of treeview */
-	let CURRENT_MODEL_NAME: string;
+	let CURRENT_MODEL_ID: number; // Id of the model which has to be displayed in the treeview and chart
+	let CURRENT_MODEL_NAME: string; // Name of the model which has to be displayed in the root task of treeview
+	let LIST_MODELS: any[] = []; // List of models which has to be displayed in "My models"
+
+	let modify: boolean = false; // true if modifications are allowed (when "editing mode" is checked)
+	let compare_screen: boolean = false; // true if user is on the comparaison screen (after click on "compare models")
 
 	/* Components var */
 	let ModalCreationModel: any;
 	let ModalRenameModel: any;
 	let RootTreeView: any;
 
-	let idProject = $page.params.id;
-	let models: string | any[] = [];
-	let modelsContent: any = [];
-	let modify = false;
-	let rootTreeView: any;
-	let templates: any;
-	let labels: any[] = [];
+	/* Var needed for chartjs */
+	let labels: string[] = [];
 	let data: any[] = [];
-	let ctx: any;
-	let myChart: any;
-	let splitjs: any;
-	let compare: boolean = false;
+	let ctx: CanvasRenderingContext2D;
+	let myChart: Chart;
 
+	let splitjs: any; // Splitjs object
+
+	let idProject = $page.params.id; // id of project clicked on (arg in URL "/view/X")
+	let rootTreeView: any; // bound to component RootTreeView (to access function "updateTree" when needed)
+	let templates: any; // var which contains all task templates when user want to create task or modify task name.
+
+	/**
+	 * Update chart when a modification in the treeview is detected.
+	 *
+	 * @param event	event details
+	 */
 	async function handleMessage(event: { detail: { text: any } }) {
 		await updateChart();
 	}
@@ -45,16 +51,10 @@
 	 * Reload all the models and tasks informations.
 	 */
 	async function updateElements() {
-		models = await getModels(idProject);
-		modelsContent = [];
-		for (var i = 0; i < models.length; i++) {
-			let content = await getModelInformations(models[i].id);
-			modelsContent.push(content);
-		}
-		modelsContent = modelsContent;
-		CURRENT_MODEL_ID = models[0].id;
-		CURRENT_MODEL_NAME = models[0].name;
-		if (!compare) await rootTreeView.updateTree();
+		LIST_MODELS = await getModels(idProject);
+		CURRENT_MODEL_ID = LIST_MODELS[0].id;
+		CURRENT_MODEL_NAME = LIST_MODELS[0].name;
+		if (!compare_screen) await rootTreeView.updateTree();
 	}
 
 	/**
@@ -64,7 +64,7 @@
 	 * @param name 	The name of the model (which will be linked to the root task input).
 	 */
 	async function updateModelId(id: any, name: string) {
-		if (!compare) {
+		if (!compare_screen) {
 			CURRENT_MODEL_ID = id;
 			CURRENT_MODEL_NAME = name;
 
@@ -77,13 +77,13 @@
 	 * Switch to comparaison screen or goes back to initial screen
 	 */
 	async function comparePage() {
-		if (!compare) {
+		if (!compare_screen) {
 			splitjs.destroy();
-			compare = true;
+			compare_screen = true;
 			await tick();
 			splitjs = get2RowsSplitObject(document);
 
-			/*TODO
+			/*TODO handle comparaison charts depending on checked models
 			let inputs = document.getElementsByClassName('modelsInput');
 
 			for (var i = 0; i < inputs.length; i++) {
@@ -93,7 +93,7 @@
 			*/
 		} else {
 			splitjs.destroy();
-			compare = false;
+			compare_screen = false;
 			await tick();
 			splitjs = get3RowsSplitObject(document);
 
@@ -110,7 +110,7 @@
 	async function updateComparaison() {
 		let inputs = document.getElementsByClassName('modelsInput');
 
-		/*TODO
+		/*TODO handle comparaison charts depending on checked models
 		for (var i = 0; i < inputs.length; i++) {
 			// @ts-ignore
 			console.log(inputs[i].value + ' ' + inputs[i].checked);
@@ -128,6 +128,7 @@
 
 		let dict: any = {};
 
+		/* Run recursively through tree to get all task id and their corresponding impact in dictionary */
 		function pushEachTaskAndImpactIntoDict(array: any) {
 			dict[array.task.id] = array.environmental_impact;
 
@@ -138,6 +139,7 @@
 
 		if (res.task.subtasks.length) {
 			for (let i in res.task.subtasks) {
+				// if the subtask has an impact (some tasks still have empty `environmental_impact` field)
 				if (Object.keys(dict[res.task.subtasks[i].id]).length) {
 					let climate_change = dict[res.task.subtasks[i].id]['Climate change'].split(' ')[0];
 					data.push(+climate_change);
@@ -145,6 +147,7 @@
 				}
 			}
 		} else {
+			// if the task has no subtask (= chart filled with 100% of task)
 			if (Object.keys(dict[res.task.id]).length) {
 				let climate_change = dict[res.task.id]['Climate change'].split(' ')[0];
 				data.push(+climate_change);
@@ -196,7 +199,7 @@
 		<h2 class="title">My models</h2>
 
 		<div class="list-group list-group-flush" style="margin-bottom : 5px;">
-			{#each modelsContent as model, i}
+			{#each LIST_MODELS as model, i}
 				<button type="button" class="list-group-item list-group-item-action model-content" on:click|stopPropagation={() => updateModelId(model.id, model.name)} style="padding-bottom: 20px">
 					<div class="card-body d-flex justify-content-between" style="padding-bottom:0px">
 						<div>
@@ -223,21 +226,21 @@
 					<span class="d-flex align-items-start" style="color:grey; font-size : 12px">Last modified : {getLastUpdate(model)}</span>
 				</button>
 
-				<svelte:component this={ModalRenameModel} bind:modelsContent bind:models bind:idProject bind:model bind:CURRENT_MODEL_NAME />
+				<svelte:component this={ModalRenameModel} bind:LIST_MODELS bind:idProject bind:model bind:CURRENT_MODEL_NAME />
 
-				<ModalConfirmDelete bind:CURRENT_MODEL_ID bind:CURRENT_MODEL_NAME bind:modelsContent bind:models bind:idProject bind:model bind:rootTreeView />
+				<ModalConfirmDelete bind:CURRENT_MODEL_ID bind:CURRENT_MODEL_NAME bind:LIST_MODELS bind:idProject bind:model bind:rootTreeView />
 			{/each}
 		</div>
 
 		<div class="row d-flex justify-content-evenly">
-			<svelte:component this={ModalCreationModel} bind:CURRENT_MODEL_ID bind:CURRENT_MODEL_NAME bind:rootTreeView bind:modify bind:idProject bind:models bind:modelsContent />
+			<svelte:component this={ModalCreationModel} bind:CURRENT_MODEL_ID bind:CURRENT_MODEL_NAME bind:rootTreeView bind:modify bind:idProject bind:LIST_MODELS />
 			<button on:click={comparePage} type="button" class="col-5 btn btn-outline-primary">Compare models</button>
 		</div>
 	</div>
 
-	{#if !compare}
+	{#if !compare_screen}
 		<div id="split-1">
-			<HeaderButtonsModel bind:CURRENT_MODEL_ID bind:CURRENT_MODEL_NAME bind:modify bind:modelsContent bind:models bind:idProject />
+			<HeaderButtonsModel bind:CURRENT_MODEL_ID bind:CURRENT_MODEL_NAME bind:modify bind:LIST_MODELS bind:idProject />
 
 			<svelte:component this={RootTreeView} on:message={handleMessage} bind:this={rootTreeView} bind:modify bind:CURRENT_MODEL_ID bind:templates bind:myChart />
 		</div>
@@ -250,6 +253,8 @@
 	{:else}
 		<div id="split-1">
 			<h2 class="title">Differences</h2>
+
+			<!-- TODO canvas elements to show comparaison charts -->
 		</div>
 	{/if}
 </div>

@@ -2,6 +2,7 @@
 	import { getModelImpact } from '$lib/controllers/RequestController';
 	import { onMount } from 'svelte';
 
+	/* Bound var */
 	export let CURRENT_MODEL_ID: any;
 	export let subtasks: any;
 	export let modify: any;
@@ -10,6 +11,7 @@
 	export let templates: any;
 	export let myChart: any;
 
+	/* Components var */
 	let ModalCreationTask: any;
 	let ModalModifyTask: any;
 
@@ -22,6 +24,7 @@
 		let res: any = await getModelImpact(CURRENT_MODEL_ID);
 		let dict: any = {};
 
+		/* Run recursively through tree to get all task id and their corresponding impact in dictionary */
 		function pushEachTaskAndImpactIntoDict(array: any) {
 			dict[array.task.id] = array.environmental_impact;
 
@@ -32,6 +35,7 @@
 
 		if (task.subtasks.length) {
 			for (let i in task.subtasks) {
+				// if the subtask has an impact (some tasks still have empty `environmental_impact` field)
 				if (Object.keys(dict[task.subtasks[i].id]).length) {
 					let climate_change = dict[task.subtasks[i].id]['Climate change'].split(' ')[0];
 					data.push(+climate_change);
@@ -39,6 +43,7 @@
 				}
 			}
 		} else {
+			// if the task has no subtask (= chart filled with 100% of task)
 			if (Object.keys(dict[task.id]).length) {
 				let climate_change = dict[task.id]['Climate change'].split(' ')[0];
 				data.push(+climate_change);

@@ -3,10 +3,12 @@
 	import TreeView from './TreeView.svelte';
 	import { createEventDispatcher, tick } from 'svelte';
 
+	/* Bound var */
 	export let modify: any;
 	export let CURRENT_MODEL_ID: any;
 	export let templates: any;
 	export let myChart: any;
+
 	let tasks: any[] = [];
 	let rootTask, parent_task_id: any;
 	let subtasks: never[] = [];

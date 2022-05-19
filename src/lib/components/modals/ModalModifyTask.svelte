@@ -3,6 +3,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import ModalComponent from './ModalComponent.svelte';
 
+	/* Bound var */
 	export let task: any;
 	export let tasks: any[];
 	export let classAttribute: string;
@@ -32,6 +33,11 @@
 		});
 	}
 
+	/**
+	 * Update task name with template.name
+	 *
+	 * @param template the selected template
+	 */
 	async function updateTaskInAPI(template: any) {
 		await updateTask(task.id, template.name);
 
@@ -40,6 +46,11 @@
 		});
 	}
 
+	/**
+	 * Update resource value with template.resource
+	 *
+	 * @param idResource the selected resource
+	 */
 	async function updateResourceInAPI(idResource: any) {
 		// @ts-ignore
 		await updateResource(idResource, document.getElementById('typeNumber' + idResource).value);

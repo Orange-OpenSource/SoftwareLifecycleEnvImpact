@@ -2,6 +2,7 @@
 	import { getProjects, updateProject } from '$lib/controllers/RequestController';
 	import ModalComponent from './ModalComponent.svelte';
 
+	/* Bound var */
 	export let project: any;
 	export let projects: any[] = [];
 

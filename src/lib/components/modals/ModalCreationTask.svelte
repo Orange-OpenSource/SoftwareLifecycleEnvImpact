@@ -3,6 +3,7 @@
 	import { createTask } from '$lib/controllers/RequestController';
 	import { createEventDispatcher, onMount } from 'svelte';
 
+	/* Bound var */
 	export let task_id: any;
 	export let CURRENT_MODEL_ID: any;
 	export let templates: any;

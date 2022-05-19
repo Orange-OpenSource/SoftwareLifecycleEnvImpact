@@ -1,14 +1,13 @@
 <script lang="ts">
-	import { deleteModel, getModelInformations, getModels } from '$lib/controllers/RequestController';
-
+	import { deleteModel, getModels } from '$lib/controllers/RequestController';
 	import ModalComponent from './ModalComponent.svelte';
 
-	export let model: any;
-	export let CURRENT_MODEL_NAME: string;
+	/* Bound var */
 	export let CURRENT_MODEL_ID: any;
+	export let CURRENT_MODEL_NAME: string;
+	export let model: any;
 	export let idProject: any;
-	export let models: any;
-	export let modelsContent: any;
+	export let LIST_MODELS: any[];
 	export let rootTreeView: any;
 
 	/**
@@ -17,15 +16,9 @@
 	async function deleteModelInAPI(idModel: any) {
 		await deleteModel(idModel);
 
-		models = await getModels(idProject);
-		modelsContent = [];
-		for (var i = 0; i < models.length; i++) {
-			let content = await getModelInformations(models[i].id);
-			modelsContent.push(content);
-		}
-		modelsContent = modelsContent;
-		CURRENT_MODEL_ID = models[0].id;
-		CURRENT_MODEL_NAME = models[0].name;
+		LIST_MODELS = await getModels(idProject);
+		CURRENT_MODEL_ID = LIST_MODELS[0].id;
+		CURRENT_MODEL_NAME = LIST_MODELS[0].name;
 		await rootTreeView.updateTree();
 	}
 </script>

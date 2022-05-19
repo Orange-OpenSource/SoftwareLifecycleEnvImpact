@@ -1,5 +1,13 @@
 import { Chart } from 'chart.js';
 
+/**
+ * Returns a pie chart filled with `labels` and `data`.
+ *
+ * @param ctx		the canvas context
+ * @param labels 	the labels
+ * @param data		the data
+ * @returns 		the pie Chart object
+ */
 export function getChart(ctx: any, labels: any, data: any) {
 	return new Chart(ctx, {
 		type: 'pie',
