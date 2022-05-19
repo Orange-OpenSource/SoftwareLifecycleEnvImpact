@@ -2,8 +2,8 @@
 	import { getModelInformations, getModels, updateModel } from '$lib/controllers/RequestController';
 
 	export let idProject: any;
-	export let model_id: any;
-	export let model_name: string;
+	export let CURRENT_MODEL_ID: any;
+	export let CURRENT_MODEL_NAME: string;
 	export let modify: boolean;
 	export let models: string | any[];
 	export let modelsContent: any;
@@ -30,9 +30,9 @@
 		modify = false;
 		// @ts-ignore
 		let newName = document.getElementById('nameproject').value;
-		if (newName !== model_name) {
-			await updateModel(model_id, newName);
-			model_name = newName;
+		if (newName !== CURRENT_MODEL_NAME) {
+			await updateModel(CURRENT_MODEL_ID, newName);
+			CURRENT_MODEL_NAME = newName;
 			models = await getModels(idProject);
 			modelsContent = [];
 			for (var i = 0; i < models.length; i++) {
@@ -46,7 +46,7 @@
 
 <div class="row" style="padding : 20px 0px 0px 10px; margin-bottom: 20px;">
 	<span class="col-4">
-		<input class="form-control" id="nameproject" placeholder="Name project" value={model_name} readonly={!modify} />
+		<input class="form-control" id="nameproject" placeholder="Name project" value={CURRENT_MODEL_NAME} readonly={!modify} />
 	</span>
 
 	<div class="col-4 form-check form-switch" style="margin:5px 0px 0px 10px;">

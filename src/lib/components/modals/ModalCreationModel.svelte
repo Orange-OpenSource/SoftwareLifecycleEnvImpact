@@ -6,8 +6,8 @@
 	export let models: string | any[] = [];
 	export let modelsContent: any = [];
 	export let modify: boolean;
-	export let model_id: any;
-	export let model_name: any;
+	export let CURRENT_MODEL_ID: any;
+	export let CURRENT_MODEL_NAME: any;
 	export let rootTreeView: any;
 
 	async function createNewModel() {
@@ -31,8 +31,8 @@
 			modelsContent = modelsContent;
 
 			modify = true;
-			model_id = res.id;
-			model_name = res.name;
+			CURRENT_MODEL_ID = res.id;
+			CURRENT_MODEL_NAME = res.name;
 			rootTreeView.updateTree();
 		}
 	}

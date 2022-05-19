@@ -1,18 +1,24 @@
 <script lang="ts">
 	import { getTasksFromModel } from '$lib/controllers/RequestController';
 	import TreeView from './TreeView.svelte';
-	import { tick } from 'svelte';
+	import { createEventDispatcher, tick } from 'svelte';
 
 	export let modify: any;
-	export let model_id: any;
+	export let CURRENT_MODEL_ID: any;
 	export let templates: any;
 	export let myChart: any;
 	let tasks: any[] = [];
 	let rootTask, parent_task_id: any;
 	let subtasks: never[] = [];
 
+	const dispatch = createEventDispatcher();
+
 	async function handleMessage(event: { detail: { text: any } }) {
-		await updateTree();
+		if (event.detail.text === 'updateTree') await updateTree();
+
+		dispatch('message', {
+			text: 'updateChart'
+		});
 	}
 
 	/**
@@ -31,11 +37,11 @@
 	}
 
 	/**
-	 * Update the treeview with the global "model_id" variable.
+	 * Update the treeview with the global "CURRENT_MODEL_ID" variable.
 	 */
 	export async function updateTree() {
 		await tick();
-		rootTask = await getTasksFromModel(model_id);
+		rootTask = await getTasksFromModel(CURRENT_MODEL_ID);
 		tasks = [];
 		tasks.push(rootTask);
 		pushEachTaskFromModelInArray(rootTask.subtasks);
@@ -51,5 +57,5 @@
 </script>
 
 <div class="col scroll">
-	<TreeView on:message={handleMessage} bind:templates bind:myChart bind:model_id {parent_task_id} {subtasks} bind:modify {tasks} />
+	<TreeView on:message={handleMessage} bind:templates bind:myChart bind:CURRENT_MODEL_ID {parent_task_id} {subtasks} bind:modify {tasks} />
 </div>

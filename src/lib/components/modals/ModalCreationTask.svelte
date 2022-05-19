@@ -4,7 +4,7 @@
 	import { createEventDispatcher, onMount } from 'svelte';
 
 	export let task_id: any;
-	export let model_id: any;
+	export let CURRENT_MODEL_ID: any;
 	export let templates: any;
 
 	const dispatch = createEventDispatcher();
@@ -15,10 +15,14 @@
 	 * @param parentId The parent id of the new task.
 	 */
 	async function createNewTask(parentId: any) {
-		// @ts-ignore
-		let taskname = document.getElementById('createTaskInput' + parentId).value;
+		let input = document.getElementById('createTaskInput' + parentId);
 
-		let newTask = await createTask(model_id, taskname, parentId);
+		// @ts-ignore
+		let template_id = input.value;
+		// @ts-ignore
+		let template_name = input.options[input.selectedIndex].text;
+
+		let newTask = await createTask(CURRENT_MODEL_ID, template_name, parentId, template_id);
 
 		if (newTask.status === 409) alert('Task already exists on this level');
 		else
@@ -35,7 +39,7 @@
 	<div slot="body">
 		<select id="createTaskInput{task_id}" class="form-select">
 			{#each templates as template}
-				<option on:click={() => {}}>{template.name}</option>
+				<option on:click={() => {}} value={template.id}>{template.name}</option>
 			{/each}
 		</select>
 	</div>

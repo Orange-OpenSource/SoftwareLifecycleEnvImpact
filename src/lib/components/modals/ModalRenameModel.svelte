@@ -6,7 +6,7 @@
 	export let idProject: any;
 	export let models: any;
 	export let modelsContent: any;
-	export let model_name: string;
+	export let CURRENT_MODEL_NAME: string;
 
 	/**
 	 * Update the name of the model.
@@ -29,7 +29,7 @@
 			}
 			modelsContent = modelsContent;
 
-			if (oldname == model_name) model_name = newName;
+			if (oldname == CURRENT_MODEL_NAME) CURRENT_MODEL_NAME = newName;
 		}
 	}
 </script>

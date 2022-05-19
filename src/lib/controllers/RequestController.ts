@@ -142,7 +142,7 @@ export async function getTasksFromModel(idModel: any) {
 	return res;
 }
 
-export async function createTask(idModel: any, taskName: any, parentTaskId: any) {
+export async function createTask(idModel: any, taskName: any, parentTaskId: any, template_id: any) {
 	const res = await fetch(endpoint + 'tasks', {
 		method: 'POST',
 		headers: {
@@ -152,7 +152,8 @@ export async function createTask(idModel: any, taskName: any, parentTaskId: any)
 		body: JSON.stringify({
 			model_id: idModel,
 			name: taskName,
-			parent_task_id: parentTaskId
+			parent_task_id: parentTaskId,
+			template_id: +template_id
 		})
 	});
 

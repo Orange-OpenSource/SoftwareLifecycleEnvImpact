@@ -14,16 +14,21 @@
 
 	checkIfLogged();
 
+	/* Id of the model which has to be displayed in the treeview and chart */
+	let CURRENT_MODEL_ID: any;
+	/* Name of the model which has to be displayed in the root task of treeview */
+	let CURRENT_MODEL_NAME: string;
+
+	/* Components var */
+	let ModalCreationModel: any;
+	let ModalRenameModel: any;
+	let RootTreeView: any;
+
 	let idProject = $page.params.id;
 	let models: string | any[] = [];
 	let modelsContent: any = [];
 	let modify = false;
-	let model_id: any;
 	let rootTreeView: any;
-	let model_name: string;
-	let ModalCreationModel: any;
-	let ModalRenameModel: any;
-	let RootTreeView: any;
 	let templates: any;
 	let labels: any[] = [];
 	let data: any[] = [];
@@ -31,6 +36,10 @@
 	let myChart: any;
 	let splitjs: any;
 	let compare: boolean = false;
+
+	async function handleMessage(event: { detail: { text: any } }) {
+		await updateChart();
+	}
 
 	/**
 	 * Reload all the models and tasks informations.
@@ -43,42 +52,21 @@
 			modelsContent.push(content);
 		}
 		modelsContent = modelsContent;
-		model_id = models[0].id;
-		model_name = models[0].name;
+		CURRENT_MODEL_ID = models[0].id;
+		CURRENT_MODEL_NAME = models[0].name;
 		if (!compare) await rootTreeView.updateTree();
 	}
 
 	/**
 	 * Update the model for which we want to see the treeview and impact.
 	 *
-	 * @param id	The id of the model (linked to the tree and impact).
-	 * @param name 	The name of the model (linked to the input).
+	 * @param id	The id of the model (which will be linked to the tree and impact).
+	 * @param name 	The name of the model (which will be linked to the root task input).
 	 */
 	async function updateModelId(id: any, name: string) {
 		if (!compare) {
-			model_id = id;
-			model_name = name;
-
-			labels = [];
-			data = [];
-			let res: any = await getModelImpact(model_id);
-
-			/*
-			for (let elem in res['Impact by task'].subtasks) {
-				for (let i in res['Impact by task'].subtasks[elem].impacts) {
-					let obj = res['Impact by task'].subtasks[elem].impacts[i];
-					for (var prop in obj) {
-						let values = obj[prop].split(' ');
-						labels.push(prop + ' (' + values[1] + ')');
-						data.push(+values[0]);
-						break;
-					}
-				}
-			}
-			*/
-
-			labels = labels;
-			data = data;
+			CURRENT_MODEL_ID = id;
+			CURRENT_MODEL_NAME = name;
 
 			await updateChart();
 			await rootTreeView.updateTree();
@@ -133,7 +121,40 @@
 	/**
 	 * Update the chart with the new data.
 	 */
-	function updateChart() {
+	async function updateChart() {
+		labels = [];
+		data = [];
+		let res: any = await getModelImpact(CURRENT_MODEL_ID);
+
+		let dict: any = {};
+
+		function pushEachTaskAndImpactIntoDict(array: any) {
+			dict[array.task.id] = array.environmental_impact;
+
+			for (let i = 0; i < array.subtasks_impacts.length; i++) pushEachTaskAndImpactIntoDict(array.subtasks_impacts[i]);
+		}
+
+		pushEachTaskAndImpactIntoDict(res);
+
+		if (res.task.subtasks.length) {
+			for (let i in res.task.subtasks) {
+				if (Object.keys(dict[res.task.subtasks[i].id]).length) {
+					let climate_change = dict[res.task.subtasks[i].id]['Climate change'].split(' ')[0];
+					data.push(+climate_change);
+					labels.push(res.task.subtasks[i].name);
+				}
+			}
+		} else {
+			if (Object.keys(dict[res.task.id]).length) {
+				let climate_change = dict[res.task.id]['Climate change'].split(' ')[0];
+				data.push(+climate_change);
+				labels.push(res.task.name);
+			}
+		}
+
+		labels = labels;
+		data = data;
+
 		myChart.data.labels = labels;
 		myChart.data.datasets[0].data = data;
 		myChart.update();
@@ -157,25 +178,12 @@
 
 		splitjs = get3RowsSplitObject(document);
 
-		labels = [];
-		data = [];
-		let res: any = await getModelImpact(model_id);
-
-		for (let i in res.subtasks_impacts) {
-			let climate_change = res.subtasks_impacts[i].environmental_impact['Climate change'].split(' ')[0];
-			data.push(+climate_change);
-		}
-
-		for (let i in res.task.subtasks)
-			labels.push(res.task.subtasks[i].name);
-
-		labels = labels;
-		data = data;
-
 		Chart.register(...registerables);
 		// @ts-ignore
 		ctx = document.getElementById('myChart').getContext('2d');
 		myChart = getChart(ctx, labels, data);
+
+		await updateChart();
 	});
 </script>
 
@@ -215,23 +223,23 @@
 					<span class="d-flex align-items-start" style="color:grey; font-size : 12px">Last modified : {getLastUpdate(model)}</span>
 				</button>
 
-				<svelte:component this={ModalRenameModel} bind:modelsContent bind:models bind:idProject bind:model bind:model_name />
+				<svelte:component this={ModalRenameModel} bind:modelsContent bind:models bind:idProject bind:model bind:CURRENT_MODEL_NAME />
 
-				<ModalConfirmDelete bind:model_id bind:model_name bind:modelsContent bind:models bind:idProject bind:model bind:rootTreeView />
+				<ModalConfirmDelete bind:CURRENT_MODEL_ID bind:CURRENT_MODEL_NAME bind:modelsContent bind:models bind:idProject bind:model bind:rootTreeView />
 			{/each}
 		</div>
 
 		<div class="row d-flex justify-content-evenly">
-			<svelte:component this={ModalCreationModel} bind:model_id bind:model_name bind:rootTreeView bind:modify bind:idProject bind:models bind:modelsContent />
+			<svelte:component this={ModalCreationModel} bind:CURRENT_MODEL_ID bind:CURRENT_MODEL_NAME bind:rootTreeView bind:modify bind:idProject bind:models bind:modelsContent />
 			<button on:click={comparePage} type="button" class="col-5 btn btn-outline-primary">Compare models</button>
 		</div>
 	</div>
 
 	{#if !compare}
 		<div id="split-1">
-			<HeaderButtonsModel bind:model_id bind:model_name bind:modify bind:modelsContent bind:models bind:idProject />
+			<HeaderButtonsModel bind:CURRENT_MODEL_ID bind:CURRENT_MODEL_NAME bind:modify bind:modelsContent bind:models bind:idProject />
 
-			<svelte:component this={RootTreeView} bind:this={rootTreeView} bind:modify bind:model_id bind:templates bind:myChart />
+			<svelte:component this={RootTreeView} on:message={handleMessage} bind:this={rootTreeView} bind:modify bind:CURRENT_MODEL_ID bind:templates bind:myChart />
 		</div>
 
 		<div id="split-2">

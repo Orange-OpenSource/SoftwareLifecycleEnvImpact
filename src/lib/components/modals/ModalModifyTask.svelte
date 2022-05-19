@@ -43,6 +43,10 @@
 	async function updateResourceInAPI(idResource: any) {
 		// @ts-ignore
 		await updateResource(idResource, document.getElementById('typeNumber' + idResource).value);
+
+		dispatch('message', {
+			text: 'updateChart'
+		});
 	}
 
 	/**

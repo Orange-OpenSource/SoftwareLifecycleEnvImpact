@@ -4,8 +4,8 @@
 	import ModalComponent from './ModalComponent.svelte';
 
 	export let model: any;
-	export let model_name: string;
-	export let model_id: any;
+	export let CURRENT_MODEL_NAME: string;
+	export let CURRENT_MODEL_ID: any;
 	export let idProject: any;
 	export let models: any;
 	export let modelsContent: any;
@@ -24,8 +24,8 @@
 			modelsContent.push(content);
 		}
 		modelsContent = modelsContent;
-		model_id = models[0].id;
-		model_name = models[0].name;
+		CURRENT_MODEL_ID = models[0].id;
+		CURRENT_MODEL_NAME = models[0].name;
 		await rootTreeView.updateTree();
 	}
 </script>
