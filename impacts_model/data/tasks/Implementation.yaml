@@ -2,7 +2,6 @@ id: 5
 name: Implementation
 unit: man_days
 resources:
-  - People
 subtasks:
   - Development
   - Design

@@ -2,8 +2,8 @@ import pytest
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
-from api.data_model import db as _db
 from api.server import create_app
+from impacts_model.data_model import db as _db
 
 TESTDB = "test.db"
 # TESTDB_PATH = "/opt/project/data/{}".format(TESTDB)

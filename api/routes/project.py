@@ -3,7 +3,7 @@ from typing import Any
 import jsonpatch
 from flask import abort, request
 
-from api.data_model import db, Model, ModelSchema, Project, ProjectSchema, Task
+from impacts_model.data_model import db, Model, ModelSchema, Project, ProjectSchema, Task
 
 
 def get_projects() -> Any:

@@ -89,7 +89,7 @@ class TaskTemplateSchema(Schema):
     resources = fields.Nested(ResourceTemplateSchema, many=True)
     subtasks = fields.Nested("TaskTemplateSchema", many=True)
 
-
+#TODO regarder décorateur pour cache ? Memoize ? Sinon cache dans flask
 def get_tasks_templates() -> List[TaskTemplate]: # TODO improve naming clash with route
     """Load and return all TaskTemplate from files"""
     tasks_template = []

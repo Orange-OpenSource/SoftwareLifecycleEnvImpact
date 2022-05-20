@@ -2,7 +2,7 @@ import pytest
 from flask.testing import FlaskClient
 from flask_sqlalchemy import SQLAlchemy
 
-from api.data_model import Project
+from impacts_model.data_model import Project
 
 projects_root = "/api/v1/projects"
 

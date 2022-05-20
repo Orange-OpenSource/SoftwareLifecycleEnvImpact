@@ -2,8 +2,9 @@ import connexion
 import flask
 from flask_cors import CORS
 
-from api import config, data_model
+from api import config
 from api.config import DevelopmentConfig, ProdConfig, TestConfig
+from impacts_model import data_model
 
 
 def create_app(env: str = "") -> flask.app.Flask:

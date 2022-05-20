@@ -3,8 +3,7 @@ from typing import Any
 import jsonpatch
 from flask import abort, request
 
-from api.data_model import db, Model, Resource, Task, TaskSchema
-from impacts_model.computation import get_task_environmental_impact
+from impacts_model.data_model import db, Model, Resource, Task, TaskSchema
 from impacts_model.impacts import EnvironmentalImpactSchema
 from impacts_model.templates import get_tasks_templates, TaskTemplate
 
@@ -70,7 +69,7 @@ def get_task_impacts(task_id: int):
     task = Task.query.filter(Task.id == task_id).one_or_none()
 
     if task is not None:
-        environmental_impact = get_task_environmental_impact(task)
+        environmental_impact = task.get_task_environmental_impact()
         schema = EnvironmentalImpactSchema()
         return schema.dump(environmental_impact)
     else:

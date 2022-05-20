@@ -1,8 +1,14 @@
+from typing import Any, List
+
 from flask_marshmallow import Marshmallow as FlaskMarshmallow
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow_sqlalchemy.fields import Nested
+from pint import Quantity
 from sqlalchemy import func
 
+from impacts_model.impacts import EnvironmentalImpact, EnvironmentalImpactTree, ImpactIndicator, \
+    ResourcesEnvironmentalImpact
+from impacts_model.templates import ResourceTemplate
 
 db = SQLAlchemy()
 ma = FlaskMarshmallow()
@@ -24,6 +30,38 @@ class Resource(db.Model):  # type: ignore
 
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
+
+    def get_environmental_impact(self) -> EnvironmentalImpact:
+        """
+        Get a resource complete environmental impact as an EnvironementalImapct object
+        :return: an EnvironmentalImpact object with all resource impacts
+        """
+        resource_template = ResourceTemplate(self.type)
+        environmental_impact = EnvironmentalImpact()
+
+        for impact_source in resource_template.impact_sources:
+            for key in impact_source.environmental_impact.impacts:
+                environmental_impact.add_impact(
+                    key, impact_source.environmental_impact.impacts[key] * self.value
+                )
+
+        return environmental_impact
+
+    def get_indicator_impact(self,impact_indicator: ImpactIndicator) -> Quantity[Any]:
+        """
+        Compute and return a resource environmental impact for an ImpactIndicator
+        :param resource: the Resource object to view to impact from
+        :param impact_indicator: The ImpactIndicator to retrieve the impact
+        :return: A quantity corresponding to the resource ImpactIndicator quantity
+        """
+        resource_template = ResourceTemplate(self.type)
+
+        impacts: List[Quantity[Any]] = [
+            i.environmental_impact.impacts[impact_indicator] * self.value
+            for i in resource_template.impact_sources
+        ]
+
+        return sum(impacts)
 
 
 class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
@@ -61,6 +99,73 @@ class Task(db.Model):  # type: ignore
 
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
+
+    def get_environmental_impact(self) -> EnvironmentalImpact:
+        """
+        Get a Task complete Environmental impact via an EnvironmentalImpact object
+        :return: an EnvironmentImpact object with all the task environmental impacts
+        """
+        environmental_impact = EnvironmentalImpact()
+
+        for r in self.resources:
+            environmental_impact.add(r.get_environmental_impact())
+
+        for s in self.subtasks:
+            environmental_impact.add(s.get_environmental_impact())
+
+        return environmental_impact
+
+    def get_environmental_impact_tree(self) -> EnvironmentalImpactTree:
+        """
+        Get a Task complete Environmental impact via an EnvironmentalImpact object as well as those of its subtasks
+        Returns an EnvironmentalTree object
+        :return: an EnvironmentImpactTree object with all the task environmental impacts
+        """
+        return EnvironmentalImpactTree(
+            task=self,
+            environmental_impact=self.get_environmental_impact(),
+            subtasks_impacts=[s.get_environmental_impact_tree() for s in self.subtasks]
+        )
+
+    def get_indicator_impact(self, indicator: ImpactIndicator) -> Quantity[Any]:
+        """
+        Compute and return a Task impact for a given ImpactIndicator
+        :param indicator: the ImpactIndicator to get the value for the task
+        :return: A quantity corresponding to the task ImpactIndicator chosen
+        """
+        impacts_resources: List[Quantity[Any]] = [
+            r.get_indicator_impact(indicator) for r in self.resources
+        ]
+        impacts_subtasks: List[Quantity[Any]] = [
+            s.get_indicator_impact(indicator) for s in self.subtasks
+        ]
+
+        return sum(impacts_resources) + sum(impacts_subtasks)
+
+    def get_impact_by_resource_type(self) -> ResourcesEnvironmentalImpact:
+        """
+        Return a class environmental impact classified by its Resource types
+        :param task: task to get the impact from
+        :return: ResourcesEnvironmentalImpact object, with EnvironmentalImpact objects by resource type
+        """
+        result: ResourcesEnvironmentalImpact = {}
+
+        for r in self.resources:
+            impacts_to_add = r.get_environmental_impact()
+            if r.type in result:
+                result[r.type].add(impacts_to_add)
+            else:
+                result[r.type] = impacts_to_add
+
+        for s in self.subtasks:
+            subtasks_impacts = s.get_impact_by_resource_type()
+            for resource_type in subtasks_impacts:
+                if resource_type in result:
+                    result[resource_type].add(subtasks_impacts[resource_type])
+                else:
+                    result[resource_type] = subtasks_impacts[resource_type]
+
+        return result
 
 
 class TaskSchema(ma.SQLAlchemyAutoSchema):  # type: ignore

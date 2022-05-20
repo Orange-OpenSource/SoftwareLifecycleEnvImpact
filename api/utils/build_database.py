@@ -1,4 +1,4 @@
-from api.data_model import db, Model, Project, Resource, Task
+from impacts_model.data_model import db, Model, Project, Resource, Task
 
 projects = [
     {"id": 0, "name": "Project 0"},

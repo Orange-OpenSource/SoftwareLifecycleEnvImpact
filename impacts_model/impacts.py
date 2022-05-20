@@ -6,7 +6,7 @@ from typing import Any, List
 from marshmallow import fields, post_dump, Schema
 from pint import Quantity
 
-from api.data_model import Task
+from impacts_model.data_model import Task
 
 
 class ImpactIndicator(str, Enum):
@@ -32,6 +32,8 @@ class EnvironmentalImpact:
     """
     EnvironmentalImpact class, encapsulating all ImpactIndicator as a list, with the corresponding quantity for each of them
     """
+    # TODO describe better AggregatedImpact
+
 
     def __init__(self, impacts: dict[ImpactIndicator, Quantity[Any]] = None) -> None:
         self.impacts: dict[

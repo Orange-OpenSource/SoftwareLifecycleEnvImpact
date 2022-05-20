@@ -3,8 +3,7 @@ from typing import Any
 import jsonpatch
 from flask import abort, request
 
-from api.data_model import db, Resource, ResourceSchema
-from impacts_model.computation import get_resource_environmental_impact
+from impacts_model.data_model import db, Resource, ResourceSchema
 from impacts_model.impacts import EnvironmentalImpactSchema
 
 

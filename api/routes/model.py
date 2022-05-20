@@ -3,9 +3,8 @@ from typing import Any
 import jsonpatch
 from flask import abort, request
 
-from api.data_model import db, Model, ModelSchema, Project, Task
 from api.routes.task import get_task
-from impacts_model.computation import get_task_environmental_impact_tree
+from impacts_model.data_model import db, Model, ModelSchema, Project, Task
 from impacts_model.impacts import EnvironmentalImpactTreeSchema
 
 
