@@ -177,7 +177,7 @@ def test_get_task_environmental_impact_tree(task_fixture_with_subtask: Task) -> 
             ImpactIndicator.CLIMATE_CHANGE
         ]
         == subtask
-        .get_task_environmental_impact()
+        .get_environmental_impact()
         .impacts[ImpactIndicator.CLIMATE_CHANGE]
     )
 

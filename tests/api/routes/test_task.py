@@ -1,11 +1,13 @@
+from unittest import mock
+from unittest.mock import MagicMock
+
 import pytest
 from flask.testing import FlaskClient
 from flask_sqlalchemy import SQLAlchemy
 
-from api.data_model import Model, Project, Task
+from impacts_model.data_model import Model, Project, Task
 
 tasks_root_path = "/api/v1/tasks"
-
 
 @pytest.fixture(scope="function")
 def task_fixture(db: SQLAlchemy) -> Task:
@@ -19,7 +21,6 @@ def task_fixture(db: SQLAlchemy) -> Task:
     db.session.commit()
     return task
 
-
 def test_get_tasks(client: FlaskClient, task_fixture: Task) -> None:
     """
     Test response of GET /tasks
@@ -31,7 +32,10 @@ def test_get_tasks(client: FlaskClient, task_fixture: Task) -> None:
     assert response.status_code == 200
     assert len(response.json) == len(all_tasks)
 
-
+@mock.patch(
+    "api.routes.task.get_task_template_by_id",
+    MagicMock(return_value=MagicMock()),
+)
 def test_post_task(client: FlaskClient, task_fixture: Task) -> None:
     """
     Test response of POST /tasks
@@ -44,6 +48,7 @@ def test_post_task(client: FlaskClient, task_fixture: Task) -> None:
             "model_id": task_fixture.model_id,
             "name": "Task test post",
             "parent_task_id": task_fixture.id,
+            "template_id": 0
         },
     )
 
@@ -58,6 +63,7 @@ def test_post_task(client: FlaskClient, task_fixture: Task) -> None:
             "model_id": task_fixture.model_id,
             "name": "Task test post",
             "parent_task_id": task_fixture.id,
+            "template_id": 0
         },
     )
     assert response.status_code == 409

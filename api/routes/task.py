@@ -5,7 +5,7 @@ from flask import abort, request
 
 from impacts_model.data_model import db, Model, Resource, Task, TaskSchema
 from impacts_model.impacts import EnvironmentalImpactSchema
-from impacts_model.templates import get_tasks_templates, TaskTemplate
+from impacts_model.templates import get_task_template_by_id, TaskTemplate
 
 
 def get_tasks() -> Any:
@@ -65,6 +65,7 @@ def update_task(task_id: int) -> Any:
             "No task found for Id: {task_id}".format(task_id=task_id),
         )
 
+
 def get_task_impacts(task_id: int):
     task = Task.query.filter(Task.id == task_id).one_or_none()
 
@@ -77,6 +78,7 @@ def get_task_impacts(task_id: int):
             404,
             "No task found for Id: {task_id}".format(task_id=task_id),
         )
+
 
 def delete_task(task_id: int) -> Any:
     """
@@ -119,19 +121,17 @@ def create_task(task: dict[str, Any]) -> Any:
 
     existing_task = (
         Task.query.filter(Task.name == name)
-        .filter(Task.parent_task_id == parent_task_id)
-        .filter(Task.model_id == model_id)
-        .one_or_none()
+            .filter(Task.parent_task_id == parent_task_id)
+            .filter(Task.model_id == model_id)
+            .one_or_none()
     )
 
     if existing_task is None:
         schema = TaskSchema()
         task.pop("template_id")
         new_task = schema.load(task)
+        task_template:TaskTemplate = get_task_template_by_id(template_id)
 
-
-
-        task_template:TaskTemplate = [x for x in get_tasks_templates() if x.id == template_id][0] # TODO bad solution to create associated resource
         for resource_template in task_template.resources:
             new_task.resources.append(Resource(
                 name=task_template.name + " " + task_template.unit,

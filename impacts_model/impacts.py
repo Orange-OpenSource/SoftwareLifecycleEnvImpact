@@ -6,8 +6,6 @@ from typing import Any, List
 from marshmallow import fields, post_dump, Schema
 from pint import Quantity
 
-from impacts_model.data_model import Task
-
 
 class ImpactIndicator(str, Enum):
     """
@@ -97,7 +95,7 @@ class EnvironmentalImpactTree:
 
     def __init__(
         self,
-        task: Task,
+        task,
         environmental_impact: EnvironmentalImpact,
         subtasks_impacts: List[EnvironmentalImpactTree],
     ):

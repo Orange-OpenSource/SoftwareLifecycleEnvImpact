@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import os
-from typing import List
+from typing import List, Optional
 
 import yaml
 from marshmallow import fields, Schema
@@ -96,3 +96,6 @@ def get_tasks_templates() -> List[TaskTemplate]: # TODO improve naming clash wit
     for filename in os.listdir("impacts_model/data/tasks"):
         tasks_template.append(TaskTemplate(filename))
     return tasks_template
+
+def get_task_template_by_id(template_id: int) -> Optional[TaskTemplate]:
+    return [x for x in get_tasks_templates() if x.id == template_id][0]  # TODO bad solution to create associated resource
