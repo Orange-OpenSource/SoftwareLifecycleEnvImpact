@@ -24,45 +24,43 @@ class ImpactIndicator(str, Enum):
 
 
 #######################
-# EnvironmentalImpact #
+# AggregatedImpact #
 #######################
-class EnvironmentalImpact:
+class AggregatedImpact:
     """
-    EnvironmentalImpact class, encapsulating all ImpactIndicator as a list, with the corresponding quantity for each of them
+    Class to aggregate impact indicators with their associated quantities
+    Helpers method to easily merge_aggregated_impact a single impact, a list or another AggregatedImpact object
     """
-    # TODO describe better AggregatedImpact
-
 
     def __init__(self, impacts: dict[ImpactIndicator, Quantity[Any]] = None) -> None:
-        self.impacts: dict[
-            ImpactIndicator, Quantity[Any]
-        ] = (  # TODO impact_sources are accessed everytime ?
+        self.impacts: dict[ImpactIndicator, Quantity[Any]] = (
             impacts if impacts is not None else {}
         )
 
-    def add(self, other: EnvironmentalImpact) -> None:
+    def merge_aggregated_impact(self, other: AggregatedImpact) -> None:
         """
-        Merge another EnvironmentalObject into this one
-        :param other: the EnvironmentalObject to get
+        Merge another aggregated impact into this one. For each of its ImpactIndicators, append the quantity if it exists in the list, create it if not
+        :param other: the AggregatedImpact object to merge
         :return: None
         """
-        self.add_dict(other.impacts)
+        self.merge_dict(other.impacts)
 
-    def add_dict(self, dict_to_add: dict[ImpactIndicator, Quantity[Any]]) -> None:
+    def merge_dict(self, dict_to_add: dict[ImpactIndicator, Quantity[Any]]) -> None:
         """
-        Merge another dict of ImpactIndicator with their corresponding quantity into self
-        :param dict_to_add: the dict to merge with self.impacts
+        Merge another dict with a quantity for an ImpactIndicator into this object impacts
+        For each of its ImpactIndicators, append the quantity if it exists in the list, create it if not
+        :param dict_to_add: the dict to merge with self impacts
         :return: None
         """
         for impact_indicator in dict_to_add:
-            self.add_impact(impact_indicator, dict_to_add[impact_indicator])
+            self.merge_impact(impact_indicator, dict_to_add[impact_indicator])
 
-    def add_impact(self, indicator: ImpactIndicator, value: Quantity[Any]) -> None:
+    def merge_impact(self, indicator: ImpactIndicator, value: Quantity[Any]) -> None:
         """
-        Add an ImpactIndicator with this value in self.impacts
-        Add to corresponding value in self.impacts if it exists, create it else
-        :param indicator: ImpactIndicator to add
-        :param value: corresponding calue
+        Add an ImpactIndicator with this quantity in self impacts
+        For each of its ImpactIndicators, append the quantity if it exists in the list, create it if not
+        :param indicator: ImpactIndicator to merge
+        :param value: corresponding quantity
         :return: None
         """
         if indicator in self.impacts:
@@ -71,20 +69,27 @@ class EnvironmentalImpact:
             self.impacts[indicator] = value
 
 
-class EnvironmentalImpactSchema(Schema):
-    """Marshmallow schema to serialize a EnvironmentalImpactSchema object"""
+class AggregatedImpactSchema(Schema):
+    """Marshmallow schema to serialize a AggregatedImpactSchema object"""
+
     impacts = fields.Dict(keys=fields.Str(), values=fields.Str())
 
     @post_dump
-    def translate_quantities(self, in_data, **kwargs) -> dict[str, str]: # type: ignore
-        """Translate pint quantities to str for serialization, and ImpactIndicator to its string values"""
+    def translate_quantities(self, in_data, **kwargs) -> dict[str, str]:  # type: ignore
+        """Translate pint quantities to str before serialization, and ImpactIndicator to its string values"""
         out_data: dict[str, str] = {}
         for impact_indicator_name in in_data["impacts"]:
-            impact_enum = ImpactIndicator[impact_indicator_name.replace("ImpactIndicator.", "")]
+            impact_enum = ImpactIndicator[
+                impact_indicator_name.replace("ImpactIndicator.", "")
+            ]
             out_data[impact_enum.value] = str(in_data["impacts"][impact_indicator_name])
         return out_data
 
 
+##############################
+# AggregatedImpactByResource #
+##############################
+AggregatedImpactByResource = dict[str, AggregatedImpact]
 ###########################
 # EnvironmentalImpactTree #
 ###########################
@@ -96,11 +101,13 @@ class EnvironmentalImpactTree:
     def __init__(
         self,
         task,
-        environmental_impact: EnvironmentalImpact,
+        task_impact: AggregatedImpact,
+        resources_impact: AggregatedImpactByResource,
         subtasks_impacts: List[EnvironmentalImpactTree],
     ):
         self.task = task
-        self.environmental_impact = environmental_impact
+        self.task_impact = task_impact
+        self.resources_impact = resources_impact
         self.subtasks_impacts = subtasks_impacts
 
 
@@ -108,10 +115,8 @@ class EnvironmentalImpactTreeSchema(Schema):
     """Marshmallow schema to serialize a EnvironmentalImpactTree object"""
 
     task = fields.Nested("TaskSchema")
-    environmental_impact = fields.Nested(EnvironmentalImpactSchema)
+    task_impact = fields.Nested(AggregatedImpactSchema)
+    resources_impact = fields.Dict(
+        keys=fields.Str(), values=fields.Nested("AggregatedImpactSchema")
+    )
     subtasks_impacts = fields.Nested("EnvironmentalImpactTreeSchema", many=True)
-
-
-ResourcesEnvironmentalImpact = dict[
-    str, EnvironmentalImpact
-]  # TODO add object, schema etc ?

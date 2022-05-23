@@ -4,7 +4,7 @@ import jsonpatch
 from flask import abort, request
 
 from impacts_model.data_model import db, Resource, ResourceSchema
-from impacts_model.impacts import EnvironmentalImpactSchema
+from impacts_model.impacts import AggregatedImpactSchema
 
 
 def get_resources() -> Any:
@@ -16,6 +16,7 @@ def get_resources() -> Any:
 
     resource_schema = ResourceSchema(many=True)
     return resource_schema.dump(resources)
+
 
 def get_resource(resource_id: int) -> Any:
     """
@@ -33,6 +34,7 @@ def get_resource(resource_id: int) -> Any:
             404,
             "No resource found for Id: {resource_id}".format(resource_id=resource_id),
         )
+
 
 def update_resource(resource_id: int) -> Any:
     """
@@ -63,12 +65,13 @@ def update_resource(resource_id: int) -> Any:
             "No resource found for Id: {resource_id}".format(resource_id=resource_id),
         )
 
+
 def get_resource_impacts(resource_id: int):
     resource = Resource.query.filter(Resource.id == resource_id).one_or_none()
 
     if resource is not None:
         environmental_impact = get_resource_environmental_impact(resource)
-        schema = EnvironmentalImpactSchema()
+        schema = AggregatedImpactSchema()
         return schema.dump(environmental_impact)
     else:
         return abort(

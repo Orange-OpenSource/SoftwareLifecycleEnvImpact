@@ -385,7 +385,7 @@ paths:
         200:
           description: Sucessfully read task impacts
           schema:
-            $ref: '#/definitions/EnvironmentalImpact'
+            $ref: '#/definitions/AggregatedImpact'
         404:
           description: No task found with this id
 
@@ -476,7 +476,7 @@ paths:
         200:
           description: Impacts
           schema:
-            $ref: '#/definitions/EnvironmentalImpact'
+            $ref: '#/definitions/AggregatedImpact'
 
 
   /debug/reset:
@@ -502,7 +502,7 @@ definitions:
           type: string
           description: The operation to be performed
           enum:
-            - "add"
+            - "merge_aggregated_impact"
             - "remove"
             - "replace"
             - "move"
@@ -643,7 +643,7 @@ definitions:
           format: date
           description: Last update date of the resource
 
-    EnvironmentalImpact:
+    AggregatedImpact:
       type: object
       properties:
         impacts:
@@ -671,8 +671,8 @@ definitions:
           $ref: '#/definitions/Task'
         environmental_impact:
           type: object
-          $ref: '#/definitions/EnvironmentalImpact'
+          $ref: '#/definitions/AggregatedImpact'
         subtasks_impacts:
           type: array
           items:
-            $ref: '#/definitions/EnvironmentalImpact'
+            $ref: '#/definitions/AggregatedImpact' # TODO check if not another EnvironmentalImpactTree

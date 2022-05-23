@@ -121,7 +121,7 @@ def get_impacts(model_id: int) -> Any:
     model = Model.query.filter(Model.id == model_id).one_or_none()
 
     if model is not None:
-        impact_tree = get_task_environmental_impact_tree(model.root_task)
+        impact_tree = model.root_task.get_environmental_impact_tree()
         schema = EnvironmentalImpactTreeSchema()
         return schema.dump(impact_tree)
     else:

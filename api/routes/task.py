@@ -4,7 +4,7 @@ import jsonpatch
 from flask import abort, request
 
 from impacts_model.data_model import db, Model, Resource, Task, TaskSchema
-from impacts_model.impacts import EnvironmentalImpactSchema
+from impacts_model.impacts import AggregatedImpactSchema
 from impacts_model.templates import get_task_template_by_id, TaskTemplate
 
 
@@ -70,8 +70,8 @@ def get_task_impacts(task_id: int):
     task = Task.query.filter(Task.id == task_id).one_or_none()
 
     if task is not None:
-        environmental_impact = task.get_task_environmental_impact()
-        schema = EnvironmentalImpactSchema()
+        environmental_impact = task.get_environmental_impact()
+        schema = AggregatedImpactSchema()
         return schema.dump(environmental_impact)
     else:
         return abort(
@@ -107,11 +107,30 @@ def delete_task(task_id: int) -> Any:
         )
 
 
+def insert_task_db(new_task: Task, template_id: int):
+    task_template: TaskTemplate = get_task_template_by_id(template_id)
+
+    for resource_template in task_template.resources:
+        new_task.resources.append(
+            Resource(
+                name=task_template.name + " " + task_template.unit,
+                type=resource_template.name,
+                value=100,
+            )
+        )
+
+    for subtask in task_template.subtasks:
+        insert_task_db(subtask)
+
+    db.session.add(new_task)
+    db.session.commit()
+
+
 def create_task(task: dict[str, Any]) -> Any:
     """
     POST /tasks/
 
-    :param task: task to add
+    :param task: task to merge_aggregated_impact
     :return: the task inserted with its id
     """
     name = task.get("name")
@@ -121,28 +140,17 @@ def create_task(task: dict[str, Any]) -> Any:
 
     existing_task = (
         Task.query.filter(Task.name == name)
-            .filter(Task.parent_task_id == parent_task_id)
-            .filter(Task.model_id == model_id)
-            .one_or_none()
+        .filter(Task.parent_task_id == parent_task_id)
+        .filter(Task.model_id == model_id)
+        .one_or_none()
     )
 
     if existing_task is None:
         schema = TaskSchema()
         task.pop("template_id")
         new_task = schema.load(task)
-        task_template:TaskTemplate = get_task_template_by_id(template_id)
-
-        for resource_template in task_template.resources:
-            new_task.resources.append(Resource(
-                name=task_template.name + " " + task_template.unit,
-                type=resource_template.name,
-                value=100,
-            ))
-        db.session.add(new_task)
-        db.session.commit()
-
+        insert_task_db(new_task, template_id)
         data = schema.dump(new_task)
-
         return data, 201
     else:
         return abort(

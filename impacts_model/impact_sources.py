@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import importlib
 
-from impacts_model.impacts import EnvironmentalImpact, ImpactIndicator
+from impacts_model.impacts import AggregatedImpact, ImpactIndicator
 from impacts_model.quantities.quantities import (
     CUBIC_METER,
     DAY,
@@ -59,7 +59,7 @@ class ImpactSource:
         self.primary_energy_consumption = primary_energy_consumption
         self.raw_materials = raw_materials
 
-        self.environmental_impact = EnvironmentalImpact(
+        self.environmental_impact = AggregatedImpact(
             impacts={
                 ImpactIndicator.CLIMATE_CHANGE: self.co2,
                 ImpactIndicator.RESOURCE_DEPLETION: self.resource_depletion,
@@ -323,7 +323,7 @@ class OfficeImpactSource(ImpactSource):
 
 class StorageImpactSource(ImpactSource):
     """
-    EnvironmentalImpact source for storage (disks)
+    AggregatedImpact source for storage (disks)
     Ratio / tb / day
     """
 

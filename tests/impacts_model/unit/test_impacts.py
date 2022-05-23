@@ -1,8 +1,21 @@
-from impacts_model.impact_sources import (BikeImpactSource, CarImpactSource, ImpactSource, ImpactsSourceRegistry,
-                                          LaptopImpactSource, MotorbikeImpactSource, OfficeImpactSource,
-                                          PublicTransportImpactSource, ServerImpactSource, SmartphoneImpactSource,
-                                          StorageImpactSource, TabletImpactSource, TelevisionImpactSource,
-                                          TransportImpactSource, UserDeviceImpactSource)
+from impacts_model.impact_sources import (
+    BikeImpactSource,
+    CarImpactSource,
+    ImpactSource,
+    ImpactsSourceRegistry,
+    LaptopImpactSource,
+    MotorbikeImpactSource,
+    OfficeImpactSource,
+    PublicTransportImpactSource,
+    ServerImpactSource,
+    SmartphoneImpactSource,
+    StorageImpactSource,
+    TabletImpactSource,
+    TelevisionImpactSource,
+    TransportImpactSource,
+    UserDeviceImpactSource,
+)
+
 ##########
 # STATIC #
 ##########

@@ -5,10 +5,11 @@ from typing import List, Optional
 
 import yaml
 from marshmallow import fields, Schema
-
 ####################
 # ResourceTemplate #
 ####################
+from prompt_toolkit.cache import memoized
+
 from impacts_model.impact_sources import impact_source_factory, ImpactSource
 
 
@@ -17,6 +18,7 @@ class ResourceTemplate:
     Resource template to load from files
     A name with a list of ImpactSource
     """
+
     def __init__(self, name: str):
         self.name = name
         self.impact_sources = self._load_impacts()
@@ -36,6 +38,7 @@ class ResourceTemplate:
 
 class ResourceTemplateSchema(Schema):
     """Marshmallow schema to serialize a ResourceTemplate object"""
+
     name = fields.String()
 
 
@@ -79,23 +82,38 @@ class TaskTemplate:
                 for subtask_name in data_loaded["subtasks"]:
                     subtasks_list.append(TaskTemplate(subtask_name))
 
-            return data_loaded["id"],data_loaded["unit"], resources_list, subtasks_list
+            return data_loaded["id"], data_loaded["unit"], resources_list, subtasks_list
 
 
 class TaskTemplateSchema(Schema):
     """Marshmallow schema to serialize a TaskTemplate object"""
+
     id = fields.Integer()
     name = fields.String()
     resources = fields.Nested(ResourceTemplateSchema, many=True)
     subtasks = fields.Nested("TaskTemplateSchema", many=True)
 
-#TODO regarder décorateur pour cache ? Memoize ? Sinon cache dans flask
-def get_tasks_templates() -> List[TaskTemplate]: # TODO improve naming clash with route
-    """Load and return all TaskTemplate from files"""
+
+@memoized
+def get_tasks_templates() -> List[TaskTemplate]:  # TODO improve naming clash with route
+    """
+    Load and return all TaskTemplate from files
+    Memoized function to avoid loading from files at each call
+    """
     tasks_template = []
     for filename in os.listdir("impacts_model/data/tasks"):
         tasks_template.append(TaskTemplate(filename))
     return tasks_template
 
+
+@memoized
 def get_task_template_by_id(template_id: int) -> Optional[TaskTemplate]:
-    return [x for x in get_tasks_templates() if x.id == template_id][0]  # TODO bad solution to create associated resource
+    """
+    Search in task templates and reurn the one corresponding to an id, if it exits
+    Memoized function to avoid loading from files at each call
+    :param template_id: id of the TaskTemplate to retrieve
+    :return: TaskTemplate if it exists with id, or None
+    """
+    return [x for x in get_tasks_templates() if x.id == template_id][
+        0
+    ]  # TODO bad solution to create associated resource

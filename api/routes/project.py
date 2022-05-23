@@ -3,7 +3,14 @@ from typing import Any
 import jsonpatch
 from flask import abort, request
 
-from impacts_model.data_model import db, Model, ModelSchema, Project, ProjectSchema, Task
+from impacts_model.data_model import (
+    db,
+    Model,
+    ModelSchema,
+    Project,
+    ProjectSchema,
+    Task,
+)
 
 
 def get_projects() -> Any:
@@ -90,7 +97,7 @@ def create_project(project: dict[str, Any]) -> Any:
     """
     POST /projects/
 
-    :param project: project to add
+    :param project: project to merge_aggregated_impact
     :return: the project inserted with its id
     """
     name = project.get("name")

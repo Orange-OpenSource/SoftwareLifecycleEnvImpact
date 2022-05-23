@@ -31,18 +31,18 @@ Project -> Model -> Task -> Resource -> Impacts -> ImpactIndicator
 - Module quantities:  unit et alias pint
 - impacts.py:
 	- ImpactIndicator enumeration, the 10 impact indicators used in LCAs to show the impact of a product or service on the environment
-	- EnvironmentalImpact class aggregates all ImpactIndicators with their corresponding (pint) quantity. Contains various methods to add impacts
+	- AggregatedImpact class aggregates all ImpactIndicators with their corresponding (pint) quantity. Contains various methods to merge_aggregated_impact impacts
 - impact_sources.py:
-	- Contains all sources of impact (laptop, car....) with their associated EnvironmentalImpact object
+	- Contains all sources of impact (laptop, car....) with their associated AggregatedImpact object
 - computation.py
 	- All impact modelling logic
 	- Niveau task:
-		- EnvironmentalImpact object with all impacts
+		- Aggregated object with all impacts
 		- Quantity for one ImpactIndicator
 		- EnvironmentalImpactTree object with all impacts and those of its subtasks
 		- ResourcesEnvironmentalImpact object, EnvironmentalImpact per resource type
 	- Niveau resource:
-		- EnvironmentalImpact object with all impacts
+		- AggregatedImpact object with all impacts
 		- Quantity for one ImpactIndicator
 
 **Api is linked to the model via Resource "type" field, which corresponds to a ResourceTemplate file name to retrieves its impact sources**

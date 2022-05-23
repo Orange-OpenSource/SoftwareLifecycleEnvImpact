@@ -6,8 +6,8 @@ from marshmallow_sqlalchemy.fields import Nested
 from pint import Quantity
 from sqlalchemy import func
 
-from impacts_model.impacts import EnvironmentalImpact, EnvironmentalImpactTree, ImpactIndicator, \
-    ResourcesEnvironmentalImpact
+from impacts_model.impacts import (AggregatedImpact, AggregatedImpactByResource, EnvironmentalImpactTree,
+                                   ImpactIndicator)
 from impacts_model.templates import ResourceTemplate
 
 db = SQLAlchemy()
@@ -19,6 +19,7 @@ class Resource(db.Model):  # type: ignore
     Resource object and table with a name, a type and a value. Only for a task
     The type represents the name of the ResourceTemplate to retrieve model values for computation
     """
+
     __tablename__ = "resource"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
@@ -31,23 +32,23 @@ class Resource(db.Model):  # type: ignore
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
-    def get_environmental_impact(self) -> EnvironmentalImpact:
+    def get_environmental_impact(self) -> AggregatedImpact:
         """
         Get a resource complete environmental impact as an EnvironementalImapct object
-        :return: an EnvironmentalImpact object with all resource impacts
+        :return: an AggregatedImpact object with all resource impacts
         """
         resource_template = ResourceTemplate(self.type)
-        environmental_impact = EnvironmentalImpact()
+        environmental_impact = AggregatedImpact()
 
         for impact_source in resource_template.impact_sources:
             for key in impact_source.environmental_impact.impacts:
-                environmental_impact.add_impact(
+                environmental_impact.merge_impact(
                     key, impact_source.environmental_impact.impacts[key] * self.value
                 )
 
         return environmental_impact
 
-    def get_indicator_impact(self,impact_indicator: ImpactIndicator) -> Quantity[Any]:
+    def get_indicator_impact(self, impact_indicator: ImpactIndicator) -> Quantity[Any]:
         """
         Compute and return a resource environmental impact for an ImpactIndicator
         :param resource: the Resource object to view to impact from
@@ -68,8 +69,10 @@ class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
     """
     Resource schema to serialize a Resource object
     """
+
     class Meta(ma.SQLAlchemyAutoSchema.Meta):  # type: ignore
         """Schema meta class"""
+
         model = Resource
         include_relationships = True
         load_instance = True
@@ -100,31 +103,32 @@ class Task(db.Model):  # type: ignore
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
-    def get_environmental_impact(self) -> EnvironmentalImpact:
+    def get_environmental_impact(self) -> AggregatedImpact:
         """
-        Get a Task complete Environmental impact via an EnvironmentalImpact object
+        Get a Task complete Environmental impact via an AggregatedImpact object
         :return: an EnvironmentImpact object with all the task environmental impacts
         """
-        environmental_impact = EnvironmentalImpact()
+        environmental_impact = AggregatedImpact()
 
         for r in self.resources:
-            environmental_impact.add(r.get_environmental_impact())
+            environmental_impact.merge_aggregated_impact(r.get_environmental_impact())
 
         for s in self.subtasks:
-            environmental_impact.add(s.get_environmental_impact())
+            environmental_impact.merge_aggregated_impact(s.get_environmental_impact())
 
         return environmental_impact
 
     def get_environmental_impact_tree(self) -> EnvironmentalImpactTree:
         """
-        Get a Task complete Environmental impact via an EnvironmentalImpact object as well as those of its subtasks
+        Get a Task complete Environmental impact via an AggregatedImpact object as well as those of its subtasks
         Returns an EnvironmentalTree object
         :return: an EnvironmentImpactTree object with all the task environmental impacts
         """
         return EnvironmentalImpactTree(
             task=self,
-            environmental_impact=self.get_environmental_impact(),
-            subtasks_impacts=[s.get_environmental_impact_tree() for s in self.subtasks]
+            task_impact=self.get_environmental_impact(),
+            resources_impact=self.get_impact_by_resource_type(),
+            subtasks_impacts=[s.get_environmental_impact_tree() for s in self.subtasks],
         )
 
     def get_indicator_impact(self, indicator: ImpactIndicator) -> Quantity[Any]:
@@ -142,18 +146,18 @@ class Task(db.Model):  # type: ignore
 
         return sum(impacts_resources) + sum(impacts_subtasks)
 
-    def get_impact_by_resource_type(self) -> ResourcesEnvironmentalImpact:
+    def get_impact_by_resource_type(self) -> AggregatedImpactByResource:
         """
         Return a class environmental impact classified by its Resource types
         :param task: task to get the impact from
-        :return: ResourcesEnvironmentalImpact object, with EnvironmentalImpact objects by resource type
+        :return: AggregatedImpactByResource object, with AggregatedImpact objects by resource type
         """
-        result: ResourcesEnvironmentalImpact = {}
+        result: AggregatedImpactByResource = {}
 
         for r in self.resources:
             impacts_to_add = r.get_environmental_impact()
             if r.type in result:
-                result[r.type].add(impacts_to_add)
+                result[r.type].merge_aggregated_impact(impacts_to_add)
             else:
                 result[r.type] = impacts_to_add
 
@@ -161,7 +165,9 @@ class Task(db.Model):  # type: ignore
             subtasks_impacts = s.get_impact_by_resource_type()
             for resource_type in subtasks_impacts:
                 if resource_type in result:
-                    result[resource_type].add(subtasks_impacts[resource_type])
+                    result[resource_type].merge_aggregated_impact(
+                        subtasks_impacts[resource_type]
+                    )
                 else:
                     result[resource_type] = subtasks_impacts[resource_type]
 

@@ -164,7 +164,7 @@ def test_get_task_environmental_impact_tree(task_fixture_with_subtask: Task) -> 
     assert impact.task == task_fixture_with_subtask
     # Assert that climate change is correct for the complete task
     assert (
-        impact.environmental_impact.impacts[ImpactIndicator.CLIMATE_CHANGE]
+        impact.task_impact.impacts[ImpactIndicator.CLIMATE_CHANGE]
         == task_fixture_with_subtask.get_environmental_impact().impacts[
             ImpactIndicator.CLIMATE_CHANGE
         ]
@@ -173,13 +173,13 @@ def test_get_task_environmental_impact_tree(task_fixture_with_subtask: Task) -> 
     # Assert that climate change is correct for the subtask
     subtask = task_fixture_with_subtask.subtasks[0]
     assert (
-        impact.subtasks_impacts[0].environmental_impact.impacts[
+        impact.subtasks_impacts[0].task_impact.impacts[
             ImpactIndicator.CLIMATE_CHANGE
         ]
-        == subtask
-        .get_environmental_impact()
-        .impacts[ImpactIndicator.CLIMATE_CHANGE]
+        == subtask.get_environmental_impact().impacts[ImpactIndicator.CLIMATE_CHANGE]
     )
+
+    # Todo test also resource impact
 
 
 @mock.patch(

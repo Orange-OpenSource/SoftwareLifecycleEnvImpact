@@ -9,6 +9,7 @@ from impacts_model.data_model import Model, Project, Task
 
 tasks_root_path = "/api/v1/tasks"
 
+
 @pytest.fixture(scope="function")
 def task_fixture(db: SQLAlchemy) -> Task:
     """Test task fixture"""
@@ -21,6 +22,7 @@ def task_fixture(db: SQLAlchemy) -> Task:
     db.session.commit()
     return task
 
+
 def test_get_tasks(client: FlaskClient, task_fixture: Task) -> None:
     """
     Test response of GET /tasks
@@ -31,6 +33,7 @@ def test_get_tasks(client: FlaskClient, task_fixture: Task) -> None:
     response = client.get(tasks_root_path)
     assert response.status_code == 200
     assert len(response.json) == len(all_tasks)
+
 
 @mock.patch(
     "api.routes.task.get_task_template_by_id",
@@ -48,7 +51,7 @@ def test_post_task(client: FlaskClient, task_fixture: Task) -> None:
             "model_id": task_fixture.model_id,
             "name": "Task test post",
             "parent_task_id": task_fixture.id,
-            "template_id": 0
+            "template_id": 0,
         },
     )
 
@@ -63,10 +66,23 @@ def test_post_task(client: FlaskClient, task_fixture: Task) -> None:
             "model_id": task_fixture.model_id,
             "name": "Task test post",
             "parent_task_id": task_fixture.id,
-            "template_id": 0
+            "template_id": 0,
         },
     )
     assert response.status_code == 409
+
+    # Test subtasks intserstion
+    response = client.post(
+        tasks_root_path,
+        json={
+            "model_id": task_fixture.model_id,
+            "name": "Task with subtask",
+            "parent_task_id": task_fixture.id,
+            "template_id": 0,
+        },
+    )
+
+    assert response.status_code == 201
 
 
 def test_get_one_task(client: FlaskClient, db: SQLAlchemy, task_fixture: Task) -> None:
