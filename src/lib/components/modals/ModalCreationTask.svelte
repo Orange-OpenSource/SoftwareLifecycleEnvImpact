@@ -4,11 +4,12 @@
 	import { createEventDispatcher, onMount } from 'svelte';
 
 	/* Bound var */
-	export let task_id: any;
-	export let CURRENT_MODEL_ID: any;
-	export let templates: any;
+	export let selectedModel;
+	export let parent_task_id: any;
 
-	const dispatch = createEventDispatcher();
+
+	export let templates = []
+
 
 	/**
 	 * Create a new task with the given parent.
@@ -23,26 +24,23 @@
 		// @ts-ignore
 		let template_name = input.options[input.selectedIndex].text;
 
-		let newTask = await createTask(CURRENT_MODEL_ID, template_name, parentId, template_id);
+		let newTask = await createTask(selectedModel, template_name, parentId, template_id);
 
 		if (newTask.status === 409) alert('Task already exists on this level');
-		else
-			dispatch('message', {
-				text: 'updateTree'
-			});
+
 	}
 </script>
 
-<button data-bs-toggle="modal" data-bs-target="#modalCreateTask{task_id}" class="btn btn-primary">Add task</button>
+<button data-bs-toggle="modal" data-bs-target="#modalCreateTask{parent_task_id}" class="btn btn-primary">Add task</button>
 
-<ModalComponent details={'CreateTask' + task_id}>
+<ModalComponent details={'CreateTask' + parent_task_id}>
 	<span slot="title">Create new task :</span>
 	<div slot="body">
-		<select id="createTaskInput{task_id}" class="form-select">
+		<select id="createTaskInput{parent_task_id}" class="form-select">
 			{#each templates as template}
 				<option on:click={() => {}} value={template.id}>{template.name}</option>
 			{/each}
 		</select>
 	</div>
-	<button on:click={() => createNewTask(task_id)} data-bs-dismiss="modal" slot="btnsave" type="button" class="btn btn-primary">Create task</button>
+	<button on:click={() => createNewTask(parent_task_id)} data-bs-dismiss="modal" slot="btnsave" type="button" class="btn btn-primary">Create task</button>
 </ModalComponent>

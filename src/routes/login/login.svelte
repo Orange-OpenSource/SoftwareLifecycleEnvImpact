@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { user, getUserDetails } from '../store';
+	import { user, getUserDetails } from '../../../store';
 	import { onDestroy } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/env';

@@ -39,7 +39,7 @@
 					<li class="list-group-item">
 						<div class="card-body d-flex justify-content-center">
 							<div class="d-flex justify-content-between" style="width: 40%;">
-								<a id="redirect{project.id}" sveltekit:prefetch href="/view/{project.id}">{project.name}</a>
+								<a id="redirect{project.id}" sveltekit:prefetch href="/project/{project.id}">{project.name}</a>
 								<div>
 									<ModalRenameProject bind:projects {project} />
 									<button on:click={() => deleteProjectInAPI(project.id)} type="button" class="btn btn-outline-danger btn-sm">Delete</button>

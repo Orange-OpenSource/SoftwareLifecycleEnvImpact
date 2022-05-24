@@ -5,9 +5,11 @@
 
 	/* Bound var */
 	export let task: any;
-	export let tasks: any[];
 	export let classAttribute: string;
-	export let templates: any;
+
+
+	let tasks = []; /*TODO logic to change parent task. Make object draggables ?*/
+	let templates = [] /*TODO retrieve them*/
 
 	const dispatch = createEventDispatcher();
 
@@ -16,10 +18,6 @@
 	 */
 	async function deleteTaskInAPI() {
 		await deleteTask(task.id);
-
-		dispatch('message', {
-			text: 'updateTree'
-		});
 	}
 
 	/**
@@ -27,10 +25,6 @@
 	 */
 	async function updateParent(idParent: any) {
 		await updateParentTask(task.id, idParent);
-
-		dispatch('message', {
-			text: 'updateTree'
-		});
 	}
 
 	/**
@@ -40,10 +34,6 @@
 	 */
 	async function updateTaskInAPI(template: any) {
 		await updateTask(task.id, template.name);
-
-		dispatch('message', {
-			text: 'updateTree'
-		});
 	}
 
 	/**
@@ -73,6 +63,7 @@
 <button on:click|stopPropagation={() => {}} data-bs-toggle="modal" data-bs-target="#modalModifyTask{task.id}" type="button" class="btn btn-outline-primary btn-sm {classAttribute}">Modify</button>
 
 <ModalComponent details={'ModifyTask' + task.id}>
+	<!--
 	<select slot="title" class="form-select">
 		{#each templates as template}
 			<option
@@ -83,6 +74,7 @@
 			>
 		{/each}
 	</select>
+	-->
 	<button slot="btndelete" on:click={deleteTaskInAPI} type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Delete</button>
 
 	<div slot="body">

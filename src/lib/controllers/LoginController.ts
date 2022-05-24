@@ -1,4 +1,4 @@
-import { user } from '../../store';
+import { user } from '../store';
 import { browser } from '$app/env';
 import { goto } from '$app/navigation';
 import { onDestroy } from 'svelte';

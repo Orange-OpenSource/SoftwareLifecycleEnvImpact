@@ -1,4 +1,6 @@
-const endpoint = 'http://90.84.244.180:5001/api/v1/';
+import ModelListSvelte from "$lib/ModelList.svelte";
+
+const endpoint = 'http://127.0.0.1:5000/api/v1/';
 
 /**
  * Create project in API
@@ -90,8 +92,8 @@ export async function updateProject(idProject: any, newName: string) {
  * @param newName 	model new name
  * @returns 		updated model object
  */
-export async function updateModel(idModel: any, newName: string) {
-	const res = await fetch(endpoint + 'models/' + idModel, {
+export async function updateModel(model: any, newName: string) {
+	const res = await fetch(endpoint + 'models/' + model.id, {
 		method: 'PATCH',
 		headers: {
 			'Content-Type': 'application/json',
@@ -109,7 +111,7 @@ export async function updateModel(idModel: any, newName: string) {
 	const json = await res.json();
 
 	if (json.status === 403) alert('Patch format is incorrect');
-	else if (json.status === 404) alert('No model found with this id');
+	else if (json.status === 404) alert('No model found with this id' + model.id);
 
 	return idModel;
 }
@@ -164,7 +166,7 @@ export async function getModelInformations(idModel: any) {
 	const newresponse = await fetch(endpoint + 'models/' + idModel);
 	let res = await newresponse.json();
 
-	if (res.status === 404) alert('No model found with this id');
+	if (res.status === 404) alert('No model found with this id' + model.id);
 
 	return res;
 }
@@ -190,11 +192,12 @@ export async function getTask(idTask: any) {
  * @param idModel 	model id
  * @returns 		list of tasks objects
  */
-export async function getTasksFromModel(idModel: any) {
-	const response = await fetch(endpoint + 'models/' + idModel + '/tasks');
+export async function getTasksFromModel(model: any) {
+	if(model == undefined) return; /*TODO ? */
+	const response = await fetch(endpoint + 'models/' + model.id + '/tasks');
 	let res = await response.json();
 
-	if (res.status === 404) alert('No model found with this id');
+	if (res.status === 404) alert('No model found with this id' + ModelListSvelte.id);
 
 	return res;
 }
@@ -208,7 +211,7 @@ export async function getTasksFromModel(idModel: any) {
  * @param template_id   template id
  * @returns 			the created task object
  */
-export async function createTask(idModel: any, taskName: any, parentTaskId: any, template_id: any) {
+export async function createTask(model: any, taskName: any, parentTaskId: any, template_id: any) {
 	const res = await fetch(endpoint + 'tasks', {
 		method: 'POST',
 		headers: {
@@ -216,7 +219,7 @@ export async function createTask(idModel: any, taskName: any, parentTaskId: any,
 			Accept: 'application/json'
 		},
 		body: JSON.stringify({
-			model_id: idModel,
+			model_id: model.id,
 			name: taskName,
 			parent_task_id: parentTaskId,
 			template_id: +template_id
@@ -364,8 +367,8 @@ export async function updateParentTask(idTask: any, parent_task_id: string) {
  * @param idModel 	model id
  * @returns 		model impact object
  */
-export async function getModelImpact(idModel: any) {
-	const response = await fetch(endpoint + 'models/' + idModel + '/impact');
+export async function getModelImpact(model: any) {
+	const response = await fetch(endpoint + 'models/' + model.id + '/impact');
 	let res = await response.json();
 
 	return res;
@@ -397,7 +400,7 @@ export async function updateResource(idResource: any, value: any) {
 	const json = await res.json();
 
 	if (json.status === 403) alert('Patch format is incorrect');
-	else if (json.status === 404) alert('No model found with this id');
+	else if (json.status === 404) alert('No model found with this id' + model.id);
 
 	return json;
 }
