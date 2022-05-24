@@ -27,23 +27,19 @@
 			await updateModel(selectedModel, newName);
 		}
 	}
-
 </script>
 
 {#if selectedModel == undefined}
 	<div>No model selected</div>
 {:else}
-<div class="row" style="padding : 20px 0px 0px 10px; margin-bottom: 20px;">
-	<span class="col-4">
-		<input class="form-control" id="nameproject" placeholder="Name project" value={selectedModel.name} readonly={!modify} />
-	</span>
+	<div class="row" style="padding : 20px 0px 0px 10px; margin-bottom: 20px;">
+		<span class="col-4">
+			<input class="form-control" id="nameproject" placeholder="Name project" value={selectedModel.name} readonly={!modify} />
+		</span>
 
-	<div class="col-4 form-check form-switch" style="margin:5px 0px 0px 10px;">
-		<input on:click={changeState} class="form-check-input" type="checkbox" id="editmodeSwitch" checked={modify} />
-		<label class="form-check-label" style="width:100px;" for="editmodeSwitch">Editing mode</label>
+		<div class="col-4 form-check form-switch" style="margin:5px 0px 0px 10px;">
+			<input on:click={changeState} class="form-check-input" type="checkbox" id="editmodeSwitch" checked={modify} />
+			<label class="form-check-label" style="width:100px;" for="editmodeSwitch">Editing mode</label>
+		</div>
 	</div>
-</div>
 {/if}
-
-
-

@@ -1,13 +1,13 @@
 <script lang="ts">
-    import { onMount } from "svelte";
-    import { getChart } from '$lib/utils/chartobj';
+	import { onMount } from 'svelte';
+	import { getChart } from '$lib/utils/chartobj';
 	import { Chart, registerables } from 'chart.js';
-	import { getModelImpact } from "$lib/controllers/RequestController";
+	import { getModelImpact } from '$lib/controllers/RequestController';
 
-    /*Bound var*/
-    export let selectedTask;
+	/*Bound var*/
+	export let selectedTask;
 
-    /* Var needed for chartjs */
+	/* Var needed for chartjs */
 	let labels: string[] = [];
 	let data: any[] = [];
 	let ctx: CanvasRenderingContext2D;
@@ -19,9 +19,9 @@
 	/**
 	 * Update the chart with the new data.
 	 */
-     async function updateChart(impact) {
-		 if(selectedTask != undefined){
-			impact = await getModelImpact(selectedTask)
+	async function updateChart(impact) {
+		if (selectedTask != undefined) {
+			impact = await getModelImpact(selectedTask);
 
 			/*
 			labels = [];
@@ -61,17 +61,16 @@
 			labels = labels;
 			data = data;
 			*/
-			labels = ["Test 0", "Test 1", "Test 2", "Test 3", ]
-			data = [Math.random() * 1000, Math.random() * 1000, Math.random() * 1000, Math.random() * 1000, ]
+			labels = ['Test 0', 'Test 1', 'Test 2', 'Test 3'];
+			data = [Math.random() * 1000, Math.random() * 1000, Math.random() * 1000, Math.random() * 1000];
 
 			myChart.data.labels = labels;
 			myChart.data.datasets[0].data = data;
 			myChart.update();
-		 }
+		}
 	}
 
-
-    onMount(async function () {
+	onMount(async function () {
 		if (document.querySelector('div.modal-backdrop.fade.show')) document.querySelector('div.modal-backdrop.fade.show')!.remove(); /*TODO what is this ?*/
 
 		Chart.register(...registerables);
@@ -79,9 +78,8 @@
 		ctx = document.getElementById('myChart').getContext('2d');
 		myChart = getChart(ctx, labels, data);
 	});
-
 </script>
 
 <div>
-    <canvas id="myChart" width="400" height="400" />
+	<canvas id="myChart" width="400" height="400" />
 </div>

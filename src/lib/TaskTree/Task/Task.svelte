@@ -3,18 +3,17 @@
 	import ModalModifyTask from '$lib/TaskTree/Task/ModifyTask.svelte';
 
 	/* Bound var */
-	export let selectedTask
-	export let selectedModel,
+	export let selectedTask;
+	export let selectedModel;
 	export let subtasks: any;
 	export let modify: any;
 	export let parent_task_id: any;
 	export let tasks: any[];
 
-
-    function updateTaskSelected(task) { /*TODO maybe useless ? */
-		selectedTask = task
+	function updateTaskSelected(task) {
+		/*TODO maybe useless ? */
+		selectedTask = task;
 	}
-	
 </script>
 
 {#each subtasks as task}
@@ -24,7 +23,7 @@
 				<span on:click|stopPropagation={() => updateTaskSelected(task)} class="info-name">
 					{task.name}
 					{#if modify}
-						<ModalModifyTask bind:task classAttribute={'btnmodifyparent'}/>
+						<ModalModifyTask bind:task classAttribute={'btnmodifyparent'} />
 					{/if}
 				</span>
 				<svelte:self on:message subtasks={task.subtasks} bind:modify parent_task_id={task.id} {selectedModel} {tasks} />

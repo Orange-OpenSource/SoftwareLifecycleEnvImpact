@@ -2,7 +2,7 @@
 	import { getTasksFromModel } from '$lib/controllers/RequestController';
 	import Task from './Task/Task.svelte';
 	import Header from './Header.svelte';
-	
+
 	/*Bound vars*/
 	export let selectedModel;
 	export let selectedTask;
@@ -29,10 +29,10 @@
 			}
 		}
 	}
-	
+
 	async function updateTree() {
-		rootTask = await getTasksFromModel(selectedModel)
-		if(rootTask != undefined){
+		rootTask = await getTasksFromModel(selectedModel);
+		if (rootTask != undefined) {
 			tasks = [];
 			tasks.push(rootTask);
 			pushEachTaskFromModelInArray(rootTask.subtasks);
@@ -46,15 +46,13 @@
 			}
 		}
 	}
-
 </script>
 
 {#if selectedModel == undefined}
 	No model selected
 {:else}
-	<Header bind:modify {selectedModel}/>
+	<Header bind:modify {selectedModel} />
 	<div class="col scroll">
-		<Task bind:selectedTask bind:modify {selectedModel} {parent_task_id} {subtasks}{tasks} />
+		<Task bind:selectedTask bind:modify {selectedModel} {parent_task_id} {subtasks} {tasks} />
 	</div>
 {/if}
-

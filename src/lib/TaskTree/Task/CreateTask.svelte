@@ -6,9 +6,7 @@
 	export let selectedModel;
 	export let parent_task_id: any;
 
-
-	export let templates = []
-
+	export let templates = [];
 
 	/**
 	 * Create a new task with the given parent.
@@ -24,7 +22,6 @@
 		let newTask = await createTask(selectedModel, template_name, parentId, template_id);
 
 		if (newTask.status === 409) alert('Task already exists on this level');
-
 	}
 </script>
 

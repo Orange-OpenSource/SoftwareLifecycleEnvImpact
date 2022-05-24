@@ -7,9 +7,8 @@
 	export let task: any;
 	export let classAttribute: string;
 
-
 	let tasks = []; /*TODO logic to change parent task. Make object draggables ?*/
-	let templates = [] /*TODO retrieve them*/
+	let templates = []; /*TODO retrieve them*/
 
 	const dispatch = createEventDispatcher();
 

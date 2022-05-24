@@ -1,6 +1,7 @@
 <script>
-	import ProjectList from "$lib/Project/ProjectList.svelte";
+	import ProjectList from '$lib/Project/ProjectList.svelte';
 </script>
+
 <svelte:head>
 	<title>Projects</title>
 </svelte:head>
@@ -9,7 +10,7 @@
 	<div class="row">
 		<div class="col">
 			<h2 class="title">My projects</h2>
-			<ProjectList/>
+			<ProjectList />
 		</div>
 	</div>
 </div>

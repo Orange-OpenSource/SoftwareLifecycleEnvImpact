@@ -191,7 +191,7 @@ export async function getTask(idTask: any) {
  * @returns 		list of tasks objects
  */
 export async function getTasksFromModel(model: any) {
-	if(model == undefined) return; /*TODO ? */
+	if (model == undefined) return; /*TODO ? */
 	const response = await fetch(endpoint + 'models/' + model.id + '/tasks');
 	let res = await response.json();
 

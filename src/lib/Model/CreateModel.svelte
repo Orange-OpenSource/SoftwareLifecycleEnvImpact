@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createModel } from '$lib/controllers/RequestController';
-	import ModalComponent from '$lib/Modal.svelte'
+	import ModalComponent from '$lib/Modal.svelte';
 
 	/* Bound var */
 	export let projectId: string;

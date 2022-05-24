@@ -5,7 +5,7 @@
 	import RenameModel from './RenameModel.svelte';
 
 	export let models;
-    export let projectId;
+	export let projectId;
 
 	/*Bound var*/
 	export let selectedModel;
@@ -35,7 +35,7 @@
 						</span>
 					</div>
 					<div class="d-flex justify-content-center">
-                        <!--
+						<!--
 						<RenameModel bind:model />
                         -->
 						{#if i != 0}
@@ -48,5 +48,5 @@
 		{/each}
 	</div>
 
-    <CreateModel {projectId}/>
+	<CreateModel {projectId} />
 </div>

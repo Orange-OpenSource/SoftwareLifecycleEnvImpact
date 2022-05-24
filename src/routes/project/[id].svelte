@@ -26,7 +26,6 @@
 			compare_screen = true;
 			await tick();
 			splitjs = get2RowsSplitObject(document);
-
 		} else {
 			splitjs.destroy();
 			compare_screen = false;
@@ -44,7 +43,7 @@
 
 		models = await getModels(projectId);
 		selectedModel = models[0];
-		selectedTask = selectedModel.rootTask
+		selectedTask = selectedModel.rootTask;
 
 		splitjs = get3RowsSplitObject(document);
 	});
@@ -58,7 +57,7 @@
 	<div id="split-0">
 		<h2 class="title">My models</h2>
 
-		<ModelList {models} {projectId} bind:selectedModel/>
+		<ModelList {models} {projectId} bind:selectedModel />
 
 		<div class="row d-flex justify-content-evenly">
 			<!--
@@ -70,11 +69,11 @@
 
 	<div id="split-1">
 		<h2 class="title">Tasks</h2>
-		<TaskTree bind:selectedTask {selectedModel}/>
+		<TaskTree bind:selectedTask {selectedModel} />
 	</div>
 
 	<div id="split-2">
 		<h2 class="title">Impact</h2>
-		<Impact {selectedTask}/>
+		<Impact {selectedTask} />
 	</div>
 </div>

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { updateModel } from '$lib/controllers/RequestController';
-	import ModalComponent from '$lib/Modal.svelte'
+	import ModalComponent from '$lib/Modal.svelte';
 
 	/* Bound var */
 	export let model: any;
