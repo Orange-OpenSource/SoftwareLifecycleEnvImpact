@@ -2,12 +2,11 @@
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/env';
 	import { createProject } from '$lib/controllers/RequestController';
-	import ModalComponent from './ModalComponent.svelte';
+	import ModalComponent from '../Modal.svelte';
 
 	let error: string = '';
 
 	async function createNewProject() {
-		// @ts-ignore
 		let name = document.getElementById('createProjectInput').value;
 		let newProject = await createProject(name);
 

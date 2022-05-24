@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { deleteTask, updateParentTask, updateResource, updateTask } from '$lib/controllers/RequestController';
 	import { createEventDispatcher } from 'svelte';
-	import ModalComponent from './ModalComponent.svelte';
+	import ModalComponent from '../../Modal.svelte';
 
 	/* Bound var */
 	export let task: any;
@@ -42,7 +42,6 @@
 	 * @param idResource the selected resource
 	 */
 	async function updateResourceInAPI(idResource: any) {
-		// @ts-ignore
 		await updateResource(idResource, document.getElementById('typeNumber' + idResource).value);
 
 		dispatch('message', {

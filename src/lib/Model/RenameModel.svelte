@@ -1,18 +1,14 @@
 <script lang="ts">
-	import { getModels, updateModel } from '$lib/controllers/RequestController';
-	import ModalComponent from './ModalComponent.svelte';
+	import { updateModel } from '$lib/controllers/RequestController';
+	import ModalComponent from '$lib/Modal.svelte'
 
 	/* Bound var */
 	export let model: any;
-	export let idProject: any;
-	export let LIST_MODELS: any[];
-	export let CURRENT_MODEL_NAME: string;
 
 	/**
 	 * Update the name of the model.
 	 */
 	async function renameModel() {
-		// @ts-ignore
 		let newName = document.getElementById('renameModelInput' + model.id).value;
 		let oldname = model.name;
 
@@ -20,13 +16,11 @@
 
 		if (res.status === 409) {
 			alert('Model already exists');
-		} else {
-			LIST_MODELS = await getModels(idProject);
-
-			if (oldname == CURRENT_MODEL_NAME) CURRENT_MODEL_NAME = newName;
 		}
 	}
 </script>
+
+<button on:click|stopPropagation={() => {}} type="button" data-bs-toggle="modal" data-bs-target="#modalRenameModel{model.id}" class="btn btn-light">Rename</button>
 
 <ModalComponent details={'RenameModel' + model.id}>
 	<span slot="title">Rename model :</span>

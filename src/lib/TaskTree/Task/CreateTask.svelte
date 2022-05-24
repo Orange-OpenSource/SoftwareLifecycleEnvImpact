@@ -1,7 +1,6 @@
 <script lang="ts">
-	import ModalComponent from './ModalComponent.svelte';
+	import ModalComponent from '../../Modal.svelte';
 	import { createTask } from '$lib/controllers/RequestController';
-	import { createEventDispatcher, onMount } from 'svelte';
 
 	/* Bound var */
 	export let selectedModel;
@@ -19,9 +18,7 @@
 	async function createNewTask(parentId: any) {
 		let input = document.getElementById('createTaskInput' + parentId);
 
-		// @ts-ignore
 		let template_id = input.value;
-		// @ts-ignore
 		let template_name = input.options[input.selectedIndex].text;
 
 		let newTask = await createTask(selectedModel, template_name, parentId, template_id);

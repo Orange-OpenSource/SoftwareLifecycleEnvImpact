@@ -1,5 +1,3 @@
-import ModelListSvelte from "$lib/ModelList.svelte";
-
 const endpoint = 'http://127.0.0.1:5000/api/v1/';
 
 /**
@@ -237,8 +235,8 @@ export async function createTask(model: any, taskName: any, parentTaskId: any, t
  * @param project_id 	project id
  * @returns 			200 if successful
  */
-export async function deleteProject(project_id: any) {
-	const res = await fetch(endpoint + 'projects/' + project_id, {
+export async function deleteProject(project: any) {
+	const res = await fetch(endpoint + 'projects/' + project.id, {
 		method: 'DELETE'
 	});
 

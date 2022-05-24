@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getTasksFromModel } from '$lib/controllers/RequestController';
-	import Task from './Task.svelte';
+	import Task from './Task/Task.svelte';
 	import Header from './Header.svelte';
 	
 	/*Bound vars*/
@@ -31,7 +31,6 @@
 	}
 	
 	async function updateTree() {
-		console.log("here")
 		rootTask = await getTasksFromModel(selectedModel)
 		if(rootTask != undefined){
 			tasks = [];

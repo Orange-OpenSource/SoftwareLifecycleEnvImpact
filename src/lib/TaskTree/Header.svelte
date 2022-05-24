@@ -7,7 +7,6 @@
 	export let modify: boolean;
 
 	async function changeState() {
-		// @ts-ignore
 		let state = document.getElementById('editmodeSwitch').checked;
 
 		if (state) enableModifications();
@@ -23,7 +22,6 @@
 	 */
 	async function renameModel() {
 		modify = false;
-		// @ts-ignore
 		let newName = document.getElementById('nameproject').value;
 		if (newName !== selectedModel.name) {
 			await updateModel(selectedModel, newName);

@@ -1,27 +1,19 @@
 <script lang="ts">
 	import { deleteModel, getModels } from '$lib/controllers/RequestController';
-	import ModalComponent from './ModalComponent.svelte';
+	import ModalComponent from '$lib/Modal.svelte'
 
 	/* Bound var */
-	export let CURRENT_MODEL_ID: any;
-	export let CURRENT_MODEL_NAME: string;
 	export let model: any;
-	export let idProject: any;
-	export let LIST_MODELS: any[];
-	export let rootTreeView: any;
 
 	/**
 	 * Delete the current model and update the page without it.
 	 */
 	async function deleteModelInAPI(idModel: any) {
 		await deleteModel(idModel);
-
-		LIST_MODELS = await getModels(idProject);
-		CURRENT_MODEL_ID = LIST_MODELS[0].id;
-		CURRENT_MODEL_NAME = LIST_MODELS[0].name;
-		await rootTreeView.updateTree();
 	}
 </script>
+
+<button on:click|stopPropagation={() => {}} data-bs-toggle="modal" data-bs-target="#modalDeleteModel{model.id}" class="btn btn-light">Delete</button>
 
 <ModalComponent details="DeleteModel{model.id}">
 	<span slot="title">Confirm delete</span>

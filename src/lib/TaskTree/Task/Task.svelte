@@ -1,7 +1,6 @@
 <script lang="ts">
-	import ModalCreationTask from '$lib/components/modals/ModalCreationTask.svelte';
-	import { getModelImpact } from '$lib/controllers/RequestController';
-	import ModalModifyTask from '../components/modals/ModalModifyTask.svelte';
+	import ModalCreationTask from '$lib/TaskTree/Task/CreateTask.svelte';
+	import ModalModifyTask from '$lib/TaskTree/Task/ModifyTask.svelte';
 
 	/* Bound var */
 	export let selectedTask
@@ -13,7 +12,6 @@
 
 
     function updateTaskSelected(task) { /*TODO maybe useless ? */
-		console.log(task)
 		selectedTask = task
 	}
 	

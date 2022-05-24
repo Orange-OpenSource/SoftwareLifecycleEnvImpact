@@ -5,7 +5,7 @@
 	import TaskTree from '$lib/TaskTree/TaskTree.svelte';
 	import { get2RowsSplitObject, get3RowsSplitObject } from '$lib/utils/splitobj';
 	import { getChart } from '$lib/utils/chartobj';
-	import ModelList from '$lib/ModelList.svelte';
+	import ModelList from '$lib/Model/ModelList.svelte';
 	import Impact from '$lib/Impact/Impact.svelte';
 
 	let projectId = $page.params.id; // id of project clicked on (arg in URL "/project/X")
@@ -33,7 +33,6 @@
 			await tick();
 			splitjs = get3RowsSplitObject(document);
 
-			// @ts-ignore
 			ctx = document.getElementById('myChart').getContext('2d');
 			myChart = getChart(ctx, labels, data);
 			await rootTreeView.updateTree();
@@ -59,7 +58,7 @@
 	<div id="split-0">
 		<h2 class="title">My models</h2>
 
-		<ModelList {models} bind:selectedModel/>
+		<ModelList {models} {projectId} bind:selectedModel/>
 
 		<div class="row d-flex justify-content-evenly">
 			<!--
