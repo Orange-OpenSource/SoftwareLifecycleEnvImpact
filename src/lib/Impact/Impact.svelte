@@ -13,20 +13,14 @@
 	let ctx: CanvasRenderingContext2D;
 	let myChart: Chart;
 
-	/*Update chart when selected task is updated*/
-	$: {
-		if(selectedTask !== undefined){
-			getModelImpact(selectedTask).then(
-				res => updateChart(res)
-			)
-		}
-	}
-
+	/*Trigger update when selected task is updated*/
+	$: selectedTask, updateChart();
 
 	/**
 	 * Update the chart with the new data.
 	 */
      async function updateChart(impact) {
+		impact = await getModelImpact(selectedTask)
 		/*
 		labels = [];
 		data = [];

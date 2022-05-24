@@ -12,16 +12,8 @@
 	let rootTask, parent_task_id: any;
 	let subtasks = [];
 
-	/*Update tree when selected model is updated*/
-	$: {
-		if(selectedModel !== undefined){
-			getTasksFromModel(selectedModel).then(
-				res => rootTask = res
-			).then(
-				updateTree()
-			)
-		}
-	}
+	/*Trigger update when selected model is updated*/
+	$: selectedModel, updateTree();
 
 	/**
 	 * Put each task from one model into an array.
@@ -38,7 +30,9 @@
 		}
 	}
 	
-	function updateTree() {
+	async function updateTree() {
+		console.log("here")
+		rootTask = await getTasksFromModel(selectedModel)
 		if(rootTask != undefined){
 			tasks = [];
 			tasks.push(rootTask);
