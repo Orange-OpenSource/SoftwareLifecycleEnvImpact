@@ -1,11 +1,11 @@
-<script lang="ts">
+<script>
 	import { deleteTask, updateParentTask, updateResource, updateTask } from '$lib/controllers/RequestController';
 	import { createEventDispatcher } from 'svelte';
 	import ModalComponent from '../../Modal.svelte';
 
 	/* Bound var */
-	export let task: any;
-	export let classAttribute: string;
+	export let task;
+	export let classAttribute;
 
 	let tasks = []; /*TODO logic to change parent task. Make object draggables ?*/
 	let templates = []; /*TODO retrieve them*/
@@ -22,7 +22,7 @@
 	/**
 	 * Update the parent of task.id to idParent.
 	 */
-	async function updateParent(idParent: any) {
+	async function updateParent(idParent) {
 		await updateParentTask(task.id, idParent);
 	}
 
@@ -31,7 +31,7 @@
 	 *
 	 * @param template the selected template
 	 */
-	async function updateTaskInAPI(template: any) {
+	async function updateTaskInAPI(template) {
 		await updateTask(task.id, template.name);
 	}
 
@@ -40,7 +40,7 @@
 	 *
 	 * @param idResource the selected resource
 	 */
-	async function updateResourceInAPI(idResource: any) {
+	async function updateResourceInAPI(idResource) {
 		await updateResource(idResource, document.getElementById('typeNumber' + idResource).value);
 
 		dispatch('message', {
@@ -53,7 +53,7 @@
 	 *
 	 * @param parentTask the parent task.
 	 */
-	function isParent(parentTask: { id: any }) {
+	function isParent(parentTask) {
 		return task.parent_task_id === parentTask.id;
 	}
 </script>

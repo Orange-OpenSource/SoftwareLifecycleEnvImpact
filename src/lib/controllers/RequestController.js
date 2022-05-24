@@ -6,7 +6,7 @@ const endpoint = 'http://127.0.0.1:5000/api/v1/';
  * @param nameProject 	name of the project
  * @returns 			the created project object
  */
-export async function createProject(nameProject: any) {
+export async function createProject(nameProject) {
 	const res = await fetch(endpoint + 'projects', {
 		method: 'POST',
 		headers: {
@@ -32,7 +32,7 @@ export async function createProject(nameProject: any) {
  * @param idProject project id associated to model
  * @returns 		the created model object
  */
-export async function createModel(nameModel: string, idProject: any) {
+export async function createModel(nameModel, idProject) {
 	const res = await fetch(endpoint + 'models', {
 		method: 'POST',
 		headers: {
@@ -59,7 +59,7 @@ export async function createModel(nameModel: string, idProject: any) {
  * @param newName 		project new name
  * @returns 			updated project object
  */
-export async function updateProject(idProject: any, newName: string) {
+export async function updateProject(idProject, newName) {
 	const res = await fetch(endpoint + 'projects/' + idProject, {
 		method: 'PATCH',
 		headers: {
@@ -90,7 +90,7 @@ export async function updateProject(idProject: any, newName: string) {
  * @param newName 	model new name
  * @returns 		updated model object
  */
-export async function updateModel(model: any, newName: string) {
+export async function updateModel(model, newName) {
 	const res = await fetch(endpoint + 'models/' + model.id, {
 		method: 'PATCH',
 		headers: {
@@ -115,37 +115,12 @@ export async function updateModel(model: any, newName: string) {
 }
 
 /**
- * Get all projects from API
- *
- * @returns list of projects objects
- */
-export async function getProjects() {
-	const response = await fetch(endpoint + 'projects');
-	return await response.json();
-}
-
-/**
- * Get base model from specific project in API
- *
- * @param idProject project id
- * @returns 		base model id
- */
-export async function getOriginalModelId(idProject: any) {
-	const response = await fetch(endpoint + 'projects/' + idProject);
-	let res = await response.json();
-
-	if (res.status === '404') alert('No project found with this id');
-
-	return res.models[0];
-}
-
-/**
  * Get all models from specific project in API
  *
  * @param idProject project id
  * @returns 		list of models objects
  */
-export async function getModels(idProject: any) {
+export async function getModels(idProject) {
 	const newresponse = await fetch(endpoint + 'projects/' + idProject);
 	let res = await newresponse.json();
 
@@ -160,7 +135,7 @@ export async function getModels(idProject: any) {
  * @param idModel	model id
  * @returns 		model informations
  */
-export async function getModelInformations(idModel: any) {
+export async function getModelInformations(idModel) {
 	const newresponse = await fetch(endpoint + 'models/' + idModel);
 	let res = await newresponse.json();
 
@@ -175,7 +150,7 @@ export async function getModelInformations(idModel: any) {
  * @param idTask 	task id
  * @returns 		task object
  */
-export async function getTask(idTask: any) {
+export async function getTask(idTask) {
 	const response = await fetch(endpoint + 'tasks/' + idTask);
 	let res = await response.json();
 
@@ -190,7 +165,7 @@ export async function getTask(idTask: any) {
  * @param idModel 	model id
  * @returns 		list of tasks objects
  */
-export async function getTasksFromModel(model: any) {
+export async function getTasksFromModel(model) {
 	if (model == undefined) return; /*TODO ? */
 	const response = await fetch(endpoint + 'models/' + model.id + '/tasks');
 	let res = await response.json();
@@ -209,7 +184,7 @@ export async function getTasksFromModel(model: any) {
  * @param template_id   template id
  * @returns 			the created task object
  */
-export async function createTask(model: any, taskName: any, parentTaskId: any, template_id: any) {
+export async function createTask(model, taskName, parentTaskId, template_id) {
 	const res = await fetch(endpoint + 'tasks', {
 		method: 'POST',
 		headers: {
@@ -235,7 +210,7 @@ export async function createTask(model: any, taskName: any, parentTaskId: any, t
  * @param project_id 	project id
  * @returns 			200 if successful
  */
-export async function deleteProject(project: any) {
+export async function deleteProject(project) {
 	const res = await fetch(endpoint + 'projects/' + project.id, {
 		method: 'DELETE'
 	});
@@ -253,7 +228,7 @@ export async function deleteProject(project: any) {
  * @param model_id 		model id
  * @returns 			200 if successful
  */
-export async function deleteModel(model_id: any) {
+export async function deleteModel(model_id) {
 	const res = await fetch(endpoint + 'models/' + model_id, {
 		method: 'DELETE'
 	});
@@ -272,7 +247,7 @@ export async function deleteModel(model_id: any) {
  * @param task_id 	task id
  * @returns 		200 if successful
  */
-export async function deleteTask(task_id: any) {
+export async function deleteTask(task_id) {
 	const res = await fetch(endpoint + 'tasks/' + task_id, {
 		method: 'DELETE'
 	});
@@ -304,7 +279,7 @@ export async function getTemplates() {
  * @param newName 	new name
  * @returns 		the updated task object
  */
-export async function updateTask(idTask: any, newName: string) {
+export async function updateTask(idTask, newName) {
 	const res = await fetch(endpoint + 'tasks/' + idTask, {
 		method: 'PATCH',
 		headers: {
@@ -335,7 +310,7 @@ export async function updateTask(idTask: any, newName: string) {
  * @param parent_task_id 	parent task id
  * @returns 				the updated task object
  */
-export async function updateParentTask(idTask: any, parent_task_id: string) {
+export async function updateParentTask(idTask, parent_task_id) {
 	const res = await fetch(endpoint + 'tasks/' + idTask, {
 		method: 'PATCH',
 		headers: {
@@ -365,7 +340,7 @@ export async function updateParentTask(idTask: any, parent_task_id: string) {
  * @param idModel 	model id
  * @returns 		model impact object
  */
-export async function getModelImpact(model: any) {
+export async function getModelImpact(model) {
 	const response = await fetch(endpoint + 'models/' + model.id + '/impact');
 	let res = await response.json();
 
@@ -379,7 +354,7 @@ export async function getModelImpact(model: any) {
  * @param value 		resource value
  * @returns 			resource object
  */
-export async function updateResource(idResource: any, value: any) {
+export async function updateResource(idResource, value) {
 	const res = await fetch(endpoint + 'resource/' + idResource, {
 		method: 'PATCH',
 		headers: {

@@ -1,10 +1,10 @@
-<script lang="ts">
+<script>
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/env';
 	import { createProject } from '$lib/controllers/RequestController';
 	import ModalComponent from '../Modal.svelte';
 
-	let error: string = '';
+	let error = '';
 
 	async function createNewProject() {
 		let name = document.getElementById('createProjectInput').value;
@@ -13,7 +13,7 @@
 		if (newProject.status === 409) {
 			error = 'Project already exists';
 		} else {
-			document.querySelector('div.modal-backdrop.fade.show')!.remove();
+			document.querySelector('div.modal-backdrop.fade.show').remove();
 
 			if (browser) goto('/view/' + newProject.id);
 		}

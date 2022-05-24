@@ -1,5 +1,6 @@
 <script>
-	import { getLastUpdate } from '$lib/utils/dates';
+import { getLastUpdate } from '$lib/utils';
+
 	import CreateModel from './CreateModel.svelte';
 	import DeleteModel from './DeleteModel.svelte';
 	import RenameModel from './RenameModel.svelte';

@@ -1,9 +1,9 @@
-<script lang="ts">
+<script>
 	import { updateModel } from '$lib/controllers/RequestController';
 	import ModalComponent from '$lib/Modal.svelte';
 
 	/* Bound var */
-	export let model: any;
+	export let model;
 
 	/**
 	 * Update the name of the model.

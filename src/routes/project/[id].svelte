@@ -1,12 +1,11 @@
-<script lang="ts">
+<script>
 	import { page } from '$app/stores';
 	import { onMount, tick } from 'svelte';
 	import { getModels } from '$lib/controllers/RequestController';
 	import TaskTree from '$lib/TaskTree/TaskTree.svelte';
-	import { get2RowsSplitObject, get3RowsSplitObject } from '$lib/utils/splitobj';
-	import { getChart } from '$lib/utils/chartobj';
 	import ModelList from '$lib/Model/ModelList.svelte';
 	import Impact from '$lib/Impact/Impact.svelte';
+	import { get2RowsSplitObject, get3RowsSplitObject } from '$lib/utils';
 
 	let projectId = $page.params.id; // id of project clicked on (arg in URL "/project/X")
 
@@ -15,7 +14,7 @@
 	let models = [];
 
 	/*TODO remove*/
-	let splitjs: any; // Splitjs object
+	let splitjs; // Splitjs object
 
 	/**
 	 * Switch to comparaison screen or goes back to initial screen
@@ -39,7 +38,7 @@
 	}
 
 	onMount(async function () {
-		if (document.querySelector('div.modal-backdrop.fade.show')) document.querySelector('div.modal-backdrop.fade.show')!.remove();
+		if (document.querySelector('div.modal-backdrop.fade.show')) document.querySelector('div.modal-backdrop.fade.show').remove();
 
 		models = await getModels(projectId);
 		selectedModel = models[0];

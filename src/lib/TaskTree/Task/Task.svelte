@@ -1,14 +1,14 @@
-<script lang="ts">
+<script>
 	import ModalCreationTask from '$lib/TaskTree/Task/CreateTask.svelte';
 	import ModalModifyTask from '$lib/TaskTree/Task/ModifyTask.svelte';
 
 	/* Bound var */
 	export let selectedTask;
 	export let selectedModel;
-	export let subtasks: any;
-	export let modify: any;
-	export let parent_task_id: any;
-	export let tasks: any[];
+	export let subtasks;
+	export let modify;
+	export let parent_task_id;
+	export let tasks;
 
 	function updateTaskSelected(task) {
 		/*TODO maybe useless ? */

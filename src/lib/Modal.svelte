@@ -1,5 +1,5 @@
-<script lang="ts">
-	export let details: any;
+<script>
+	export let details;
 </script>
 
 <div on:click|stopPropagation={() => {}} class="modal fade" id="modal{details}" tabindex="-1" aria-labelledby="modalLabel{details}" aria-hidden="true">

@@ -1,14 +1,14 @@
-<script lang="ts">
-	import { deleteModel, getModels } from '$lib/controllers/RequestController';
+<script>
+	import { deleteModel } from '$lib/controllers/RequestController';
 	import ModalComponent from '$lib/Modal.svelte';
 
 	/* Bound var */
-	export let model: any;
+	export let model;
 
 	/**
 	 * Delete the current model and update the page without it.
 	 */
-	async function deleteModelInAPI(idModel: any) {
+	async function deleteModelInAPI(idModel) {
 		await deleteModel(idModel);
 	}
 </script>

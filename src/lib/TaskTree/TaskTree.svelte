@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import { getTasksFromModel } from '$lib/controllers/RequestController';
 	import Task from './Task/Task.svelte';
 	import Header from './Header.svelte';
@@ -7,9 +7,9 @@
 	export let selectedModel;
 	export let selectedTask;
 
-	let modify: boolean = false; // true if modifications are allowed (when "editing mode" is checked)
-	let tasks: any[] = [];
-	let rootTask, parent_task_id: any;
+	let modify = false; // true if modifications are allowed (when "editing mode" is checked)
+	let tasks = [];
+	let rootTask, parent_task_id;
 	let subtasks = [];
 
 	/*Trigger update when selected model is updated*/
@@ -20,7 +20,7 @@
 	 *
 	 * @param array the array to put the tasks into.
 	 */
-	function pushEachTaskFromModelInArray(array: any) {
+	function pushEachTaskFromModelInArray(array) {
 		for (let i = 0; i < array.length; i++) {
 			tasks.push(array[i]);
 			tasks = tasks;

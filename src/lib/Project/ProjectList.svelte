@@ -1,9 +1,10 @@
-<script lang="ts">
+<script>
 	import { onMount } from 'svelte';
-	import { deleteProject, getProjects } from '$lib/controllers/RequestController';
+	import { deleteProject } from '$lib/controllers/RequestController';
 	import CreateProject from '$lib/Project/CreateProject.svelte';
 	import RenameProject from '$lib/Project/RenameProject.svelte';
-	import { getCreationDate } from '$lib/utils/dates';
+	import { getCreationDate } from '$lib/utils';
+	import { get } from '$lib/api';
 
 	let projects = [];
 
@@ -12,13 +13,12 @@
 	 *
 	 * @param project_id
 	 */
-	async function deleteProjectInAPI(project: any) {
+	async function deleteProjectInAPI(project) {
 		await deleteProject(project);
-		projects = await getProjects();
 	}
 
 	onMount(async function () {
-		projects = await getProjects();
+		projects = await get('projects')
 	});
 </script>
 
@@ -30,7 +30,7 @@
 					<div class="d-flex justify-content-between" style="width: 40%;">
 						<a id="redirect{project.id}" sveltekit:prefetch href="/project/{project.id}">{project.name}</a>
 						<div>
-							<RenameProject bind:projects {project} />
+							<RenameProject {project} />
 							<button on:click={() => deleteProjectInAPI(project)} type="button" class="btn btn-outline-danger btn-sm">Delete</button>
 						</div>
 					</div>

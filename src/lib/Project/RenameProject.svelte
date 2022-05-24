@@ -1,10 +1,9 @@
-<script lang="ts">
-	import { getProjects, updateProject } from '$lib/controllers/RequestController';
+<script>
+	import {updateProject } from '$lib/controllers/RequestController';
 	import ModalComponent from '../Modal.svelte';
 
 	/* Bound var */
-	export let project: any;
-	export let projects: any[] = [];
+	export let project;
 
 	/**
 	 * Rename project within the id "project.id".
@@ -12,7 +11,6 @@
 	async function renameProject() {
 		let newName = document.getElementById('createProjectInput' + project.id).value;
 		await updateProject(project.id, newName);
-		projects = await getProjects();
 	}
 </script>
 

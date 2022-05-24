@@ -1,10 +1,10 @@
-<script lang="ts">
-	import { getModels, updateModel } from '$lib/controllers/RequestController';
+<script>
+	import { updateModel } from '$lib/controllers/RequestController';
 
-	export let selectedModel: any;
+	export let selectedModel;
 
 	/* Bound var */
-	export let modify: boolean;
+	export let modify;
 
 	async function changeState() {
 		let state = document.getElementById('editmodeSwitch').checked;

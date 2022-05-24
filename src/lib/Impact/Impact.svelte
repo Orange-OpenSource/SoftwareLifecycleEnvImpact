@@ -1,17 +1,17 @@
-<script lang="ts">
+<script>
 	import { onMount } from 'svelte';
-	import { getChart } from '$lib/utils/chartobj';
 	import { Chart, registerables } from 'chart.js';
 	import { getModelImpact } from '$lib/controllers/RequestController';
+import { getChart } from '$lib/utils';
 
 	/*Bound var*/
 	export let selectedTask;
 
 	/* Var needed for chartjs */
-	let labels: string[] = [];
-	let data: any[] = [];
-	let ctx: CanvasRenderingContext2D;
-	let myChart: Chart;
+	let labels = [];
+	let data = [];
+	let ctx;
+	let myChart;
 
 	/*Trigger update when selected task is updated*/
 	$: selectedTask, updateChart();
@@ -27,12 +27,12 @@
 			labels = [];
 			data = [];
 
-			let dict: any = {};
+			let dict = {};
 
 			*/
 			/* Run recursively through tree to get all task id and their corresponding impact in dictionary */
 			/*
-			function pushEachTaskAndImpactIntoDict(array: any) {
+			function pushEachTaskAndImpactIntoDict(array) {
 				dict[array.task.id] = array.environmental_impact;
 
 				for (let i = 0; i < array.subtasks_impacts.length; i++) pushEachTaskAndImpactIntoDict(array.subtasks_impacts[i]);
@@ -71,7 +71,7 @@
 	}
 
 	onMount(async function () {
-		if (document.querySelector('div.modal-backdrop.fade.show')) document.querySelector('div.modal-backdrop.fade.show')!.remove(); /*TODO what is this ?*/
+		if (document.querySelector('div.modal-backdrop.fade.show')) document.querySelector('div.modal-backdrop.fade.show').remove(); /*TODO what is this ?*/
 
 		Chart.register(...registerables);
 

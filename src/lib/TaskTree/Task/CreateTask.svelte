@@ -1,10 +1,10 @@
-<script lang="ts">
+<script>
 	import ModalComponent from '../../Modal.svelte';
 	import { createTask } from '$lib/controllers/RequestController';
 
 	/* Bound var */
 	export let selectedModel;
-	export let parent_task_id: any;
+	export let parent_task_id;
 
 	export let templates = [];
 
@@ -13,7 +13,7 @@
 	 *
 	 * @param parentId The parent id of the new task.
 	 */
-	async function createNewTask(parentId: any) {
+	async function createNewTask(parentId) {
 		let input = document.getElementById('createTaskInput' + parentId);
 
 		let template_id = input.value;

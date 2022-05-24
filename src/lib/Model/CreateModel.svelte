@@ -1,9 +1,9 @@
-<script lang="ts">
+<script>
 	import { createModel } from '$lib/controllers/RequestController';
 	import ModalComponent from '$lib/Modal.svelte';
 
 	/* Bound var */
-	export let projectId: string;
+	export let projectId;
 
 	/**
 	 * Create a new model and set the treeview to the new model.
