@@ -1,105 +1,13 @@
-html,
-body {
-	position: relative;
-	width: 100%;
-	height: 100%;
-}
-
-body {
-	color: #333;
-	margin: 0;
-	padding: 0px;
-	box-sizing: border-box;
-	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
-}
-
-main,
-body > div {
-	height: 100%;
-}
-
-a {
-	color: black;
-	text-decoration: none;
-}
-
-a:hover {
-	color: black;
-	text-decoration: underline;
-}
-
-a:visited {
-	color: black;
-}
-
-label {
-	display: block;
-}
-
-input,
-button,
-select,
-textarea {
-	font-family: inherit;
-	font-size: inherit;
-	-webkit-padding: 0.4em 0;
-	padding: 0.4em;
-	margin: 0 0 0.5em 0;
-	box-sizing: border-box;
-	border: 1px solid #ccc;
-	border-radius: 2px;
-}
-
-input:disabled {
-	color: #ccc;
-}
-
-button {
-	color: #333;
-	background-color: #f4f4f4;
-	outline: none;
-}
-
-button:disabled {
-	color: #999;
-}
-
-button:not(:disabled):active {
-	background-color: #ddd;
-}
-
-button:focus {
-	border-color: #666;
-}
-
 main {
 	text-align: center;
 	padding: 0;
-	max-width: 240px;
 	margin: 0 auto;
 	height: 100%;
 }
 
-@media (min-width: 640px) {
-	main {
-		max-width: none;
-	}
-}
-
-.container {
-	max-width: 100% !important;
-	height: 90% !important;
-	max-height: 90% !important;
-}
-
-.border-right {
-	border-right: 1px solid #ddd;
-}
-
-.border-left {
-	border-left: 1px solid #ddd;
-}
-
+/*
+Tree properties
+*/
 div.tree {
 	padding: 50px 0px 0px 96px;
 	position: relative;
@@ -178,20 +86,9 @@ span.addtask {
 	left: 225px;
 }
 
-div.scroll {
-	overflow: auto;
-	white-space: nowrap;
-	padding-bottom: 2px;
-}
-
-h2.title {
-	margin: 20px 0px 20px 0px;
-	font-weight: normal;
-}
-
-.underline-on-hover:hover {
-	text-decoration: underline;
-}
+/*
+Split.js related properties
+*/
 
 .split {
 	display: flex;
@@ -208,25 +105,4 @@ h2.title {
 .gutter.gutter-horizontal {
 	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
 	cursor: col-resize;
-}
-
-.model-content {
-	margin-bottom: 0px;
-	border-bottom: 1px solid rgba(0, 0, 0, 0.125) !important;
-}
-
-.model-content:last-child {
-	border-bottom: none !important;
-}
-
-.icon-grey {
-	color: grey;
-	width: 28px;
-	height: 28px;
-}
-
-.icon-red {
-	color: #dc3545;
-	width: 28px;
-	height: 28px;
 }

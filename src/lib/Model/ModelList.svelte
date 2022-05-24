@@ -23,7 +23,7 @@
 <div>
 	<div class="list-group list-group-flush" style="margin-bottom : 5px;">
 		{#each models as model, i}
-			<button type="button" class="list-group-item list-group-item-action model-content" on:click|stopPropagation={() => updateModelSelected(model)} style="padding-bottom: 20px">
+			<button type="button" class="list-group-item list-group-item-action" on:click|stopPropagation={() => updateModelSelected(model)} style="padding-bottom: 20px">
 				<div class="card-body d-flex justify-content-between" style="padding-bottom:0px">
 					<div>
 						<input on:click={updateComparaison} type="checkbox" class="modelsInput" value={model.id} name={model.id} />
