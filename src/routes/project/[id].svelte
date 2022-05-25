@@ -1,11 +1,11 @@
 <script>
 	import { page } from '$app/stores';
 	import { onMount, tick } from 'svelte';
-	import { getModels } from '$lib/controllers/RequestController';
 	import TaskTree from '$lib/TaskTree/TaskTree.svelte';
 	import ModelList from '$lib/Model/ModelList.svelte';
 	import Impact from '$lib/Impact/Impact.svelte';
 	import { get2RowsSplitObject, get3RowsSplitObject } from '$lib/utils';
+import { get } from '$lib/api';
 
 	let projectId = $page.params.id; // id of project clicked on (arg in URL "/project/X")
 
@@ -40,11 +40,14 @@
 	onMount(async function () {
 		if (document.querySelector('div.modal-backdrop.fade.show')) document.querySelector('div.modal-backdrop.fade.show').remove();
 
-		models = await getModels(projectId);
-		selectedModel = models[0];
-		selectedTask = selectedModel.rootTask;
-
-		splitjs = get3RowsSplitObject(document);
+		const res = await get('projects/'+projectId+'/models')
+		if (res.status === '404') alert('No project found with this id');
+		else{
+			models = res
+			selectedModel = models[0];
+			selectedTask = selectedModel.rootTask;
+			splitjs = get3RowsSplitObject(document);
+		}
 	});
 </script>
 

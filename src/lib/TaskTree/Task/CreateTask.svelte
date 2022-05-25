@@ -1,12 +1,11 @@
 <script>
 	import ModalComponent from '../../Modal.svelte';
-	import { createTask } from '$lib/controllers/RequestController';
+	import { post } from '$lib/api';
 
 	/* Bound var */
 	export let selectedModel;
 	export let parent_task_id;
-
-	export let templates = [];
+	export let taskTemplates;
 
 	/**
 	 * Create a new task with the given parent.
@@ -19,9 +18,14 @@
 		let template_id = input.value;
 		let template_name = input.options[input.selectedIndex].text;
 
-		let newTask = await createTask(selectedModel, template_name, parentId, template_id);
+		const res = await post('tasks', {
+			model_id: selectedModel.id,
+			name: template_name,
+			parent_task_id: parentId,
+			template_id: +template_id
+		})
 
-		if (newTask.status === 409) alert('Task already exists on this level');
+		if (res.status === 409) alert('Task already exists on this level');
 	}
 </script>
 
@@ -31,7 +35,7 @@
 	<span slot="title">Create new task :</span>
 	<div slot="body">
 		<select id="createTaskInput{parent_task_id}" class="form-select">
-			{#each templates as template}
+			{#each taskTemplates as template}
 				<option on:click={() => {}} value={template.id}>{template.name}</option>
 			{/each}
 		</select>

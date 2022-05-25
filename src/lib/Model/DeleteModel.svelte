@@ -1,5 +1,5 @@
 <script>
-	import { deleteModel } from '$lib/controllers/RequestController';
+	import { del } from '$lib/api';
 	import ModalComponent from '$lib/Modal.svelte';
 
 	/* Bound var */
@@ -8,8 +8,11 @@
 	/**
 	 * Delete the current model and update the page without it.
 	 */
-	async function deleteModelInAPI(idModel) {
-		await deleteModel(idModel);
+	async function deleteModel(model) {
+		const res = await del('models/'+model.id)
+		
+		if (res.status === 404) alert('No model project with this id');
+		else if (res.status === 403) alert('Cannot delete the root model of a project');
 	}
 </script>
 
@@ -20,5 +23,5 @@
 
 	<span slot="body">Are you sure you want to delete <strong>{model.name}</strong> ?</span>
 
-	<button on:click|stopPropagation={() => deleteModelInAPI(model.id)} slot="btnsave" type="button" data-bs-dismiss="modal" class="btn btn-danger">Delete</button>
+	<button on:click|stopPropagation={() => deleteModel(model)} slot="btnsave" type="button" data-bs-dismiss="modal" class="btn btn-danger">Delete</button>
 </ModalComponent>

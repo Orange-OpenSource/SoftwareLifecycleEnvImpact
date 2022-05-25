@@ -1,6 +1,4 @@
 <script>
-	import { updateModel } from '$lib/controllers/RequestController';
-
 	export let selectedModel;
 
 	/* Bound var */
@@ -23,9 +21,7 @@
 	async function renameModel() {
 		modify = false;
 		let newName = document.getElementById('nameproject').value;
-		if (newName !== selectedModel.name) {
-			await updateModel(selectedModel, newName);
-		}
+		/*TODO let this one or on the side, not both*/
 	}
 </script>
 

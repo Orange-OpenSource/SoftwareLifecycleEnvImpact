@@ -1,7 +1,7 @@
 <script>
-	import { getTasksFromModel } from '$lib/controllers/RequestController';
 	import Task from './Task/Task.svelte';
 	import Header from './Header.svelte';
+import { get, post } from '$lib/api';
 
 	/*Bound vars*/
 	export let selectedModel;
@@ -31,18 +31,23 @@
 	}
 
 	async function updateTree() {
-		rootTask = await getTasksFromModel(selectedModel);
-		if (rootTask != undefined) {
-			tasks = [];
-			tasks.push(rootTask);
-			pushEachTaskFromModelInArray(rootTask.subtasks);
-			tasks = tasks;
+		if(selectedModel != undefined){
+			const res = await get('models/'+selectedModel.id+'/tasks')
 
-			parent_task_id = rootTask.id;
-			subtasks = rootTask.subtasks;
+			if (res.status === 404) alert('No model found with this id' + selectedModel.id);
+			else {
+				rootTask = res
+				tasks = [];
+				tasks.push(rootTask);
+				pushEachTaskFromModelInArray(rootTask.subtasks);
+				tasks = tasks;
 
-			if (subtasks.length === 0) {
-				modify = true;
+				parent_task_id = rootTask.id;
+				subtasks = rootTask.subtasks;
+
+				if (subtasks.length === 0) {
+					modify = true;
+				}
 			}
 		}
 	}

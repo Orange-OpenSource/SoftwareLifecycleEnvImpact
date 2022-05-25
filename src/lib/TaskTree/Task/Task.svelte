@@ -1,6 +1,9 @@
 <script>
-	import ModalCreationTask from '$lib/TaskTree/Task/CreateTask.svelte';
-	import ModalModifyTask from '$lib/TaskTree/Task/ModifyTask.svelte';
+import { get } from '$lib/api';
+
+	import CreateTask from '$lib/TaskTree/Task/CreateTask.svelte';
+	import ModifyTask from '$lib/TaskTree/Task/ModifyTask.svelte';
+import { onMount } from 'svelte';
 
 	/* Bound var */
 	export let selectedTask;
@@ -10,10 +13,16 @@
 	export let parent_task_id;
 	export let tasks;
 
+	let taskTemplates = []
+
 	function updateTaskSelected(task) {
 		/*TODO maybe useless ? */
 		selectedTask = task;
 	}
+
+	onMount(async function () {
+		taskTemplates = await get('tasktemplates')
+	});
 </script>
 
 {#each subtasks as task}
@@ -23,7 +32,7 @@
 				<span on:click|stopPropagation={() => updateTaskSelected(task)} class="info-name">
 					{task.name}
 					{#if modify}
-						<ModalModifyTask bind:task classAttribute={'btnmodifyparent'} />
+						<ModifyTask {taskTemplates} bind:task classAttribute={'btnmodifyparent'} />
 					{/if}
 				</span>
 				<svelte:self on:message subtasks={task.subtasks} bind:modify parent_task_id={task.id} {selectedModel} {tasks} />
@@ -32,10 +41,10 @@
 			<div class="raw nochildmodify">
 				<span on:click|stopPropagation={() => updateTaskSelected(task)} class="info-name">
 					{task.name}
-					<ModalModifyTask on:message bind:task classAttribute={'btnmodify'} />
+					<ModifyTask {taskTemplates} on:message bind:task classAttribute={'btnmodify'} />
 				</span>
 				<span class="addtask">
-					<ModalCreationTask on:message bind:selectedModel bind:task_id={task.id} />
+					<CreateTask {taskTemplates} on:message bind:selectedModel bind:task_id={task.id} />
 				</span>
 			</div>
 		{:else}
@@ -49,6 +58,6 @@
 {/each}
 {#if modify}
 	<div class="tree">
-		<ModalCreationTask on:message {selectedModel} {parent_task_id} />
+		<CreateTask on:message {taskTemplates} {selectedModel} {parent_task_id} />
 	</div>
 {/if}

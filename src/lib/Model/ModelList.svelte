@@ -36,9 +36,9 @@ import { getLastUpdate } from '$lib/utils';
 						</span>
 					</div>
 					<div class="d-flex justify-content-center">
-						<!--
+						
 						<RenameModel bind:model />
-                        -->
+                        
 						{#if i != 0}
 							<DeleteModel bind:model />
 						{/if}

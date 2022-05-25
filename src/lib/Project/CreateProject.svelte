@@ -1,21 +1,23 @@
 <script>
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/env';
-	import { createProject } from '$lib/controllers/RequestController';
 	import ModalComponent from '../Modal.svelte';
+	import { post } from '$lib/api';
 
 	let error = '';
 
 	async function createNewProject() {
-		let name = document.getElementById('createProjectInput').value;
-		let newProject = await createProject(name);
+		let nameProject = document.getElementById('createProjectInput').value;
 
-		if (newProject.status === 409) {
-			error = 'Project already exists';
+		const res = await post('projects', {
+			name: nameProject
+		})
+		if (res.status === '409') {
+			alert('Project exists already');
 		} else {
 			document.querySelector('div.modal-backdrop.fade.show').remove();
 
-			if (browser) goto('/view/' + newProject.id);
+			if (browser) goto('/projects/' + res.id); /*TODO useful ? */
 		}
 	}
 </script>

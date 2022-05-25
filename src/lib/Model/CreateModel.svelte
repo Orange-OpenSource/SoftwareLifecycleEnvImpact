@@ -1,5 +1,6 @@
 <script>
-	import { createModel } from '$lib/controllers/RequestController';
+import { post } from '$lib/api';
+
 	import ModalComponent from '$lib/Modal.svelte';
 
 	/* Bound var */
@@ -9,9 +10,12 @@
 	 * Create a new model and set the treeview to the new model.
 	 */
 	async function createNewModel() {
-		let name = document.getElementById('createModelInput').value;
+		let nameModel = document.getElementById('createModelInput').value;
 
-		let res = await createModel(name, projectId);
+		const res = await post('models', {
+			name: nameModel,
+			project_id: +projectId,
+		})
 
 		if (res.status === 409) {
 			alert('Model already exists');

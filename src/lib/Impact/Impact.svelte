@@ -1,7 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
 	import { Chart, registerables } from 'chart.js';
-	import { getModelImpact } from '$lib/controllers/RequestController';
 import { getChart } from '$lib/utils';
 
 	/*Bound var*/
@@ -21,7 +20,9 @@ import { getChart } from '$lib/utils';
 	 */
 	async function updateChart(impact) {
 		if (selectedTask != undefined) {
-			impact = await getModelImpact(selectedTask);
+			/*impact = await getModelImpact(selectedTask);*/
+			/*TODO route get impacts*/
+			
 
 			/*
 			labels = [];

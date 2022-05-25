@@ -1,25 +1,17 @@
 <script>
 	import { onMount } from 'svelte';
-	import { deleteProject } from '$lib/controllers/RequestController';
 	import CreateProject from '$lib/Project/CreateProject.svelte';
 	import RenameProject from '$lib/Project/RenameProject.svelte';
 	import { getCreationDate } from '$lib/utils';
 	import { get } from '$lib/api';
+	import DeleteProject from './DeleteProject.svelte';
 
 	let projects = [];
-
-	/**
-	 * Delete the project in API and update page without it.
-	 *
-	 * @param project_id
-	 */
-	async function deleteProjectInAPI(project) {
-		await deleteProject(project);
-	}
 
 	onMount(async function () {
 		projects = await get('projects')
 	});
+
 </script>
 
 <div>
@@ -31,7 +23,7 @@
 						<a id="redirect{project.id}" sveltekit:prefetch href="/project/{project.id}">{project.name}</a>
 						<div>
 							<RenameProject {project} />
-							<button on:click={() => deleteProjectInAPI(project)} type="button" class="btn btn-outline-danger btn-sm">Delete</button>
+							<DeleteProject {project} />
 						</div>
 					</div>
 				</div>

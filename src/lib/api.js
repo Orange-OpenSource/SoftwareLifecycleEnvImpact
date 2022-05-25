@@ -1,6 +1,6 @@
 const base = 'http://127.0.0.1:5000/api/v1';
 
-async function send({ method, path, data }) {
+async function send({ method, path, data=''}) {
 	const opts = { method, headers: {} };
 
 	if (data) {
@@ -25,19 +25,22 @@ async function send({ method, path, data }) {
 		});
 }
 
-export function get(path) {
-    console.log("here")
+export async function get(path) {
 	return send({ method: 'GET', path });
 }
 
-export function del(path) {
+export async function del(path) {
 	return send({ method: 'DELETE', path });
 }
 
-export function post(path, data) {
+export async function post(path, data) {
 	return send({ method: 'POST', path, data });
 }
 
-export function put(path, data) {
+export async function put(path, data) {
 	return send({ method: 'PUT', path, data });
+}
+
+export async function patch(path, data) {
+	return send({ method: 'PATCH', path, data });
 }

@@ -1,5 +1,5 @@
 <script>
-	import { updateModel } from '$lib/controllers/RequestController';
+	import { patch } from '$lib/api';
 	import ModalComponent from '$lib/Modal.svelte';
 
 	/* Bound var */
@@ -10,13 +10,16 @@
 	 */
 	async function renameModel() {
 		let newName = document.getElementById('renameModelInput' + model.id).value;
-		let oldname = model.name;
 
-		let res = await updateModel(model.id, newName);
+		const res = patch('models/' + model.id, [{
+			op: 'replace',
+			path: '/name',
+			value: newName,
+		}])
 
-		if (res.status === 409) {
-			alert('Model already exists');
-		}
+		if (res.status === 403) alert('Patch format is incorrect');
+		else if (res.status === 404) alert('No model found with this id' + model.id);
+		else if (res.status === 409) {alert('Model already exists');}
 	}
 </script>
 

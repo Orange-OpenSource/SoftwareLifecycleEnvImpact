@@ -1,16 +1,22 @@
 <script>
-	import {updateProject } from '$lib/controllers/RequestController';
+	import { patch } from '$lib/api';
 	import ModalComponent from '../Modal.svelte';
 
 	/* Bound var */
 	export let project;
 
-	/**
-	 * Rename project within the id "project.id".
-	 */
 	async function renameProject() {
 		let newName = document.getElementById('createProjectInput' + project.id).value;
-		await updateProject(project.id, newName);
+
+		const res = await patch('projects/' + project.id, [{
+			op: 'replace',
+			path: '/name',
+			value: newName,
+		}])
+
+		if (res.status === 403) alert('Patch format is incorrect');
+		else if (res.status === 404) alert('No project found with this id ' + project.id);
+		else if (res.status === 409) {alert('Project already exists');}
 	}
 </script>
 
