@@ -28,12 +28,10 @@ import { getLastUpdate } from '$lib/utils';
 				<div class="card-body d-flex justify-content-between" style="padding-bottom:0px">
 					<div>
 						<input on:click={updateComparaison} type="checkbox" class="modelsInput" value={model.id} name={model.id} />
-						<span class="underline-on-hover">
-							{model.name}
+						{model.name}
 							{#if i == 0}
 								<strong>(default)</strong>
 							{/if}
-						</span>
 					</div>
 					<div class="d-flex justify-content-center">
 						

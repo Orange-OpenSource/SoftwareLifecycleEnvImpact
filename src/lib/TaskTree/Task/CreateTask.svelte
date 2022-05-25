@@ -18,11 +18,14 @@
 		let template_id = input.value;
 		let template_name = input.options[input.selectedIndex].text;
 
+		console.log(template_id)
+		console.log(parseInt(template_id))
+
 		const res = await post('tasks', {
 			model_id: selectedModel.id,
 			name: template_name,
 			parent_task_id: parentId,
-			template_id: +template_id
+			template_id: parseInt(template_id)
 		})
 
 		if (res.status === 409) alert('Task already exists on this level');
@@ -35,6 +38,7 @@
 	<span slot="title">Create new task :</span>
 	<div slot="body">
 		<select id="createTaskInput{parent_task_id}" class="form-select">
+			<option disabled selected value> -- Templates -- </option>
 			{#each taskTemplates as template}
 				<option on:click={() => {}} value={template.id}>{template.name}</option>
 			{/each}
