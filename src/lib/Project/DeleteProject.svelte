@@ -3,12 +3,17 @@
 	import ModalComponent from '$lib/Modal.svelte';
 
 	/* Bound var */
+	export let projects;
+
 	export let project;
 
 	async function deleteProject(project) {
         const res = await del('projects/'+project.id)
 		
         if (res.status === 404) alert('No project found with this id '+project.id);
+		else{
+			projects = projects.filter(p => p.id != project.id);
+		}
 	}
 </script>
 

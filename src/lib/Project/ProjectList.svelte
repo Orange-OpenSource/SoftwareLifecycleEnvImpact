@@ -22,8 +22,8 @@
 					<div class="d-flex justify-content-between" style="width: 40%;">
 						<a id="redirect{project.id}" sveltekit:prefetch href="/project/{project.id}">{project.name}</a>
 						<div>
-							<RenameProject {project} />
-							<DeleteProject {project} />
+							<RenameProject bind:project />
+							<DeleteProject bind:projects {project} />
 						</div>
 					</div>
 				</div>

@@ -35,16 +35,16 @@ import { onMount } from 'svelte';
 						<ModifyTask {taskTemplates} bind:task classAttribute={'btnmodifyparent'} />
 					{/if}
 				</span>
-				<svelte:self on:message subtasks={task.subtasks} bind:modify parent_task_id={task.id} {selectedModel} {tasks} />
+				<svelte:self subtasks={task.subtasks} bind:modify parent_task_id={task.id} {selectedModel} {tasks} />
 			</div>
 		{:else if modify}
 			<div class="raw nochildmodify">
 				<span on:click|stopPropagation={() => updateTaskSelected(task)} class="info-name">
 					{task.name}
-					<ModifyTask {taskTemplates} on:message bind:task classAttribute={'btnmodify'} />
+					<ModifyTask {taskTemplates} bind:task classAttribute={'btnmodify'} />
 				</span>
 				<span class="addtask">
-					<CreateTask {taskTemplates} on:message bind:selectedModel bind:task_id={task.id} />
+					<CreateTask {taskTemplates} bind:selectedModel bind:task_id={task.id} />
 				</span>
 			</div>
 		{:else}
@@ -58,6 +58,6 @@ import { onMount } from 'svelte';
 {/each}
 {#if modify}
 	<div class="tree">
-		<CreateTask on:message {taskTemplates} {selectedModel} {parent_task_id} />
+		<CreateTask {taskTemplates} {selectedModel} {parent_task_id} />
 	</div>
 {/if}

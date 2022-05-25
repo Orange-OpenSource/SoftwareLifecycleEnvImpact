@@ -1,5 +1,5 @@
 <script>
-import { getLastUpdate } from '$lib/utils';
+	import { getLastUpdate } from '$lib/utils';
 
 	import CreateModel from './CreateModel.svelte';
 	import DeleteModel from './DeleteModel.svelte';
@@ -22,27 +22,33 @@ import { getLastUpdate } from '$lib/utils';
 </script>
 
 <div>
-	<div class="list-group list-group-flush" style="margin-bottom : 5px;">
+	<div class="list-group">
 		{#each models as model, i}
-			<button type="button" class="list-group-item list-group-item-action" on:click|stopPropagation={() => updateModelSelected(model)} style="padding-bottom: 20px">
-				<div class="card-body d-flex justify-content-between" style="padding-bottom:0px">
-					<div>
-						<input on:click={updateComparaison} type="checkbox" class="modelsInput" value={model.id} name={model.id} />
-						{model.name}
-							{#if i == 0}
-								<strong>(default)</strong>
-							{/if}
+			<button type="button" class="list-group-item list-group-item-action" on:click|stopPropagation={() => updateModelSelected(model)}>
+				<div class="row">
+					<div class="col align-self-center">
+						<input type="checkbox" class="form-check-input" value={model.id} name={model.id} />
 					</div>
-					<div class="d-flex justify-content-center">
-						
-						<RenameModel bind:model />
-                        
-						{#if i != 0}
-							<DeleteModel bind:model />
-						{/if}
+					<div class="col-10">
+						<div class="row">
+							<div class="col">
+								<h5 class="mb-1">
+									{model.name}
+									{#if i == 0}
+										<strong>(default)</strong>
+									{/if}
+								</h5>
+								<small>{getLastUpdate(model)}</small>
+							</div>
+							<div class="col-9">
+									<RenameModel bind:model />
+									{#if i != 0}
+										<DeleteModel bind:models {model} />
+									{/if}
+							</div>
+						</div>
 					</div>
 				</div>
-				<span class="d-flex align-items-start" style="color:grey; font-size : 12px">Last modified : {getLastUpdate(model)}</span>
 			</button>
 		{/each}
 	</div>

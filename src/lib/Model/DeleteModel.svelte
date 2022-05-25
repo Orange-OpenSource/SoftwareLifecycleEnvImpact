@@ -3,6 +3,8 @@
 	import ModalComponent from '$lib/Modal.svelte';
 
 	/* Bound var */
+	export let models;
+
 	export let model;
 
 	/**
@@ -13,6 +15,9 @@
 		
 		if (res.status === 404) alert('No model project with this id');
 		else if (res.status === 403) alert('Cannot delete the root model of a project');
+		else{
+			models = models.filter(m => m.id != model.id);
+		}
 	}
 </script>
 

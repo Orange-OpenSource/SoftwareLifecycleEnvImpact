@@ -17,6 +17,9 @@
 		if (res.status === 403) alert('Patch format is incorrect');
 		else if (res.status === 404) alert('No project found with this id ' + project.id);
 		else if (res.status === 409) {alert('Project already exists');}
+		else{
+			project.name = newName
+		}
 	}
 </script>
 

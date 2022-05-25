@@ -58,15 +58,7 @@ import { get } from '$lib/api';
 <div class="split">
 	<div id="split-0">
 		<h2 class="title">My models</h2>
-
 		<ModelList {models} {projectId} bind:selectedModel />
-
-		<div class="row d-flex justify-content-evenly">
-			<!--
-			<svelte:component this={ModalCreationModel} bind:CURRENT_MODEL_ID bind:CURRENT_MODEL_NAME bind:rootTreeView bind:modify bind:idProject bind:models />
-			<button on:click={comparePage} type="button" class="col-5 btn btn-outline-primary">Compare models</button>
-			-->
-		</div>
 	</div>
 
 	<div id="split-1">

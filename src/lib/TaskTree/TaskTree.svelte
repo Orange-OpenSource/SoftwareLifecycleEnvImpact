@@ -53,11 +53,13 @@ import { get, post } from '$lib/api';
 	}
 </script>
 
-{#if selectedModel == undefined}
+<div class="col">
+	{#if selectedModel == undefined}
 	No model selected
 {:else}
 	<Header bind:modify {selectedModel} />
 	<div class="col scroll">
-		<Task bind:selectedTask bind:modify {selectedModel} {parent_task_id} {subtasks} {tasks} />
+		<Task bind:selectedTask {modify} {selectedModel} {parent_task_id} {subtasks} {tasks} />
 	</div>
 {/if}
+</div>

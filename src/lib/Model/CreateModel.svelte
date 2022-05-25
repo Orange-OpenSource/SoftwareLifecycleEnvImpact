@@ -25,6 +25,8 @@ import { post } from '$lib/api';
 	}
 </script>
 
+
+
 <button data-bs-toggle="modal" data-bs-target="#modalCreateModel" type="button" class="col-5 btn btn-light">Add model</button>
 
 <ModalComponent details={'CreateModel'}>

@@ -20,6 +20,9 @@
 		if (res.status === 403) alert('Patch format is incorrect');
 		else if (res.status === 404) alert('No model found with this id' + model.id);
 		else if (res.status === 409) {alert('Model already exists');}
+		else{
+			model.name = newName
+		}
 	}
 </script>
 
