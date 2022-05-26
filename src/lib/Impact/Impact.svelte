@@ -1,7 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
 	import { Chart, registerables } from 'chart.js';
-import { getChart } from '$lib/utils';
 
 	/*Bound var*/
 	export let selectedTask;
@@ -69,6 +68,31 @@ import { getChart } from '$lib/utils';
 			myChart.data.datasets[0].data = data;
 			myChart.update();
 		}
+	}
+	
+	/**
+	 * Returns a pie chart filled with `labels` and `data`.
+	 *
+	 * @param ctx		the canvas context
+	 * @param labels 	the labels
+	 * @param data		the data
+	 * @returns 		the pie Chart object
+	 */
+	export function getChart(ctx, labels, data) {
+		return new Chart(ctx, {
+			type: 'pie',
+			data: {
+				labels: labels,
+				datasets: [
+					{
+						label: 'My First Dataset',
+						data: data,
+						backgroundColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(255, 205, 86)', 'rgb(153, 102, 255)', 'rgb(75, 192, 192)'],
+						hoverOffset: 4
+					}
+				]
+			}
+		});
 	}
 
 	onMount(async function () {

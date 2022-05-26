@@ -3,7 +3,7 @@ import { get } from '$lib/api';
 
 	import CreateTask from '$lib/TaskTree/Task/CreateTask.svelte';
 	import ModifyTask from '$lib/TaskTree/Task/ModifyTask.svelte';
-import { onMount } from 'svelte';
+	import { onMount } from 'svelte';
 
 	/* Bound var */
 	export let selectedTask;

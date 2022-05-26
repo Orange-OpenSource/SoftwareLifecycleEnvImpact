@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import CreateProject from '$lib/Project/CreateProject.svelte';
 	import RenameProject from '$lib/Project/RenameProject.svelte';
-	import { getCreationDate } from '$lib/utils';
+	import { getLastUpdate } from '$lib/utils';
 	import { get } from '$lib/api';
 	import DeleteProject from './DeleteProject.svelte';
 
@@ -27,7 +27,7 @@
 						</div>
 					</div>
 				</div>
-				<span class="d-flex justify-content-center" style="color:grey; font-size : 12px">Created at : {getCreationDate(project.created_at)}</span>
+				<span class="d-flex justify-content-center" style="color:grey; font-size : 12px">{getLastUpdate(project)}</span>
 			</li>
 		{/each}
 	</ul>
