@@ -15,14 +15,10 @@
 		/*TODO maybe useless ? */
 		selectedModel = model;
 	}
-
-	function updateComparaison() {
-		/*TODO comparison function/route*/
-	}
 </script>
 
 <div>
-	<div class="list-group">
+	<div class="list-group list-group-flush">
 		{#each models as model, i}
 			<button type="button" class="list-group-item list-group-item-action" on:click|stopPropagation={() => updateModelSelected(model)}>
 				<div class="row">

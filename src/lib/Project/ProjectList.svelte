@@ -15,20 +15,25 @@
 </script>
 
 <div>
-	<ul class="list-group list-group-flush" style="margin-bottom : 5px;">
+	<ul class="list-group list-group-flush">
 		{#each projects as project}
-			<li class="list-group-item">
-				<div class="card-body d-flex justify-content-center">
-					<div class="d-flex justify-content-between" style="width: 40%;">
-						<a id="redirect{project.id}" sveltekit:prefetch href="/project/{project.id}">{project.name}</a>
-						<div>
-							<RenameProject bind:project />
-							<DeleteProject bind:projects {project} />
-						</div>
+			<div class="list-group-item list-group-item-action">
+				<div class="row">
+					<div class="col">
+						<a id="redirect{project.id}" sveltekit:prefetch href="/project/{project.id}">
+							<h5 class="mb-1">
+								{project.name}
+							</h5>
+							<small>{getLastUpdate(project)}</small>
+						</a>
+					</div>
+	
+					<div class="col">
+						<RenameProject bind:project />
+						<DeleteProject bind:projects {project} />
 					</div>
 				</div>
-				<span class="d-flex justify-content-center" style="color:grey; font-size : 12px">{getLastUpdate(project)}</span>
-			</li>
+			</div>
 		{/each}
 	</ul>
 

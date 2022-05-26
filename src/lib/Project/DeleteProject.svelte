@@ -17,7 +17,7 @@
 	}
 </script>
 
-<button on:click|stopPropagation={() => {}} data-bs-toggle="modal" data-bs-target="#modalDeleteProject{project.id}" class="btn btn-light">Delete</button>
+<button data-bs-toggle="modal" data-bs-target="#modalDeleteProject{project.id}" class="btn btn-light">Delete</button>
 
 <ModalComponent details="DeleteProject{project.id}">
 	<span slot="title">Confirm delete</span>

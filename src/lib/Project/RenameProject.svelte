@@ -23,7 +23,7 @@
 	}
 </script>
 
-<button data-bs-toggle="modal" data-bs-target="#modalRenameProject{project.id}" type="button" class="btn btn-outline-secondary btn-sm">Rename</button>
+<button data-bs-toggle="modal" data-bs-target="#modalRenameProject{project.id}" type="button" class="btn btn-light">Rename</button>
 
 <ModalComponent details={'RenameProject' + project.id}>
 	<span slot="title">Rename project :</span>
