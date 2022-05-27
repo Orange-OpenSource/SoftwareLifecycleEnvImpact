@@ -9,9 +9,11 @@
 
 	let projectId = $page.params.id; // id of project clicked on (arg in URL "/project/X")
 
+	let project;
+
+
 	let selectedModel;
 	let selectedTask;
-	let models = [];
 
 	function updateSplit(){
 		Split(['#split-0', '#split-1', '#split-2'], {
@@ -35,11 +37,11 @@
 	onMount(async function () {
 		if (document.querySelector('div.modal-backdrop.fade.show')) document.querySelector('div.modal-backdrop.fade.show').remove();
 
-		const res = await get('projects/'+projectId+'/models')
+		const res = await get('projects/'+projectId)
 		if (res.status === '404') alert('No project found with this id');
 		else{
-			models = res
-			selectedModel = models[0];
+			project = res
+			selectedModel = project.models[0];
 			selectedTask = selectedModel.rootTask;
 			updateSplit()
 		}
@@ -53,7 +55,7 @@
 <div class="split">
 	<div id="split-0">
 		<h2 class="title">My models</h2>
-		<ModelList {models} {projectId} bind:selectedModel />
+		<ModelList bind:selectedModel bind:project />
 	</div>
 
 	<div id="split-1">

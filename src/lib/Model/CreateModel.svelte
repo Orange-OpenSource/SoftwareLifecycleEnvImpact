@@ -4,7 +4,7 @@ import { post } from '$lib/api';
 	import ModalComponent from '$lib/Modal.svelte';
 
 	/* Bound var */
-	export let projectId;
+	export let project;
 
 	/**
 	 * Create a new model and set the treeview to the new model.
@@ -14,18 +14,17 @@ import { post } from '$lib/api';
 
 		const res = await post('models', {
 			name: nameModel,
-			project_id: +projectId,
+			project_id: project.id,
 		})
 
 		if (res.status === 409) {
 			alert('Model already exists');
 		} else {
 			document.getElementById('createModelInput').value = '';
+			project.models.push(res)
 		}
 	}
 </script>
-
-
 
 <button data-bs-toggle="modal" data-bs-target="#modalCreateModel" type="button" class="col-5 btn btn-light">Add model</button>
 

@@ -5,11 +5,9 @@
 	import DeleteModel from './DeleteModel.svelte';
 	import RenameModel from './RenameModel.svelte';
 
-	export let models;
-	export let projectId;
-
-	/*Bound var*/
+	/*Bound vars*/
 	export let selectedModel;
+	export let project;
 
 	function updateModelSelected(model) {
 		/*TODO maybe useless ? */
@@ -17,37 +15,39 @@
 	}
 </script>
 
-<div>
-	<div class="list-group list-group-flush">
-		{#each models as model, i}
-			<button type="button" class="list-group-item list-group-item-action" on:click|stopPropagation={() => updateModelSelected(model)}>
-				<div class="row">
-					<div class="col align-self-center">
-						<input type="checkbox" class="form-check-input" value={model.id} name={model.id} />
-					</div>
-					<div class="col-10">
-						<div class="row">
-							<div class="col">
-								<h5 class="mb-1">
-									{model.name}
-									{#if i == 0}
-										<strong>(default)</strong>
-									{/if}
-								</h5>
-								<small>{getLastUpdate(model)}</small>
-							</div>
-							<div class="col-9">
-									<RenameModel bind:model />
-									{#if i != 0}
-										<DeleteModel bind:models {model} />
-									{/if}
+{#if project != undefined}
+	<div>
+		<div class="list-group list-group-flush">
+			{#each project.models as model, i}
+				<button type="button" class="list-group-item list-group-item-action" on:click|stopPropagation={() => updateModelSelected(model)}>
+					<div class="row">
+						<div class="col align-self-center">
+							<input type="checkbox" class="form-check-input" value={model.id} name={model.id} />
+						</div>
+						<div class="col-10">
+							<div class="row">
+								<div class="col">
+									<h5 class="mb-1">
+										{model.name}
+										{#if i == 0}
+											<strong>(default)</strong>
+										{/if}
+									</h5>
+									<small>{getLastUpdate(model)}</small>
+								</div>
+								<div class="col-9">
+										<RenameModel bind:model />
+										{#if i != 0}
+											<DeleteModel {model} />
+										{/if}
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-			</button>
-		{/each}
+				</button>
+			{/each}
+		</div>
+		<CreateModel bind:project />
 	</div>
+{/if}
 
-	<CreateModel {projectId} />
-</div>

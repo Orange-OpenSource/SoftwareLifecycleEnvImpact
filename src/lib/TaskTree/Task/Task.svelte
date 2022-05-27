@@ -10,8 +10,7 @@
 	export let selectedModel;
 	export let modify;
 	export let parentTask;
-
-	let taskTemplates = []
+	export let taskTemplates;
 
 	function updateTaskSelected(task) {
 		/*TODO maybe useless ? */
@@ -21,10 +20,6 @@
 	function isLeaf(task){
 		return task.subtasks.length === 0
 	}
-
-	onMount(async function () {
-		taskTemplates = await get('tasktemplates')
-	});
 </script>
 
 <!--Only display subtasks for the root task, not the task itself-->
@@ -32,7 +27,7 @@
 	<div class="tree">
 		{#if isLeaf(task)}
 			{#if modify}
-				<div class="raw nochildmodify">
+				<div class="nochildmodify">
 					<span on:click|stopPropagation={() => updateTaskSelected(task)} class="info-name">
 						{task.name}
 						<ModifyTask {taskTemplates} bind:task={task} classAttribute={'btnmodify'} />
@@ -57,7 +52,7 @@
 					{/if}
 				</span>
 				{#each task.subtasks as subtask}
-					<svelte:self bind:task={subtask} bind:selectedTask {modify} {selectedModel} parentTask={task}/>
+					<svelte:self bind:task={subtask} bind:selectedTask {modify} {selectedModel} parentTask={task} {taskTemplates}/>
 				{/each}
 				{#if modify}
 					<div class="tree">
@@ -69,7 +64,7 @@
 	</div>
 {:else}
 	{#each task.subtasks as subtask}
-		<svelte:self bind:task={subtask} bind:selectedTask {modify} {selectedModel} parentTask={task}/>
+		<svelte:self bind:task={subtask} bind:selectedTask {selectedModel} {modify} parentTask={task} {taskTemplates}/>
 	{/each}
 	{#if modify}
 		<div class="tree">

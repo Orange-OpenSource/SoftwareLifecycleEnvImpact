@@ -2,6 +2,7 @@
 	import Task from './Task/Task.svelte';
 	import Header from './Header.svelte';
 	import { get } from '$lib/api';
+	import { onMount } from 'svelte';
 
 	/*Bound vars*/
 	export let selectedModel;
@@ -9,6 +10,7 @@
 
 	let modify = false; // true if modifications are allowed (when "editing mode" is checked)
 	let rootTask;
+	let taskTemplates;
 
 	/*Trigger update when selected model is updated*/
 	$: selectedModel, updateTree();
@@ -30,6 +32,10 @@
 			}
 		}
 	}
+
+	onMount(async function () {
+		taskTemplates = await get('tasktemplates')
+	});
 </script>
 
 <div class="col">
@@ -38,7 +44,7 @@
 {:else if rootTask != undefined}
 	<Header bind:modify {selectedModel} />
 	<div class="col scroll">
-		<Task bind:task={rootTask} bind:selectedTask {modify} {selectedModel} parentTask={rootTask}/>
+		<Task bind:task={rootTask} bind:selectedTask {modify} {selectedModel} parentTask={rootTask} {taskTemplates}/>
 	</div>
 {/if}
 </div>
