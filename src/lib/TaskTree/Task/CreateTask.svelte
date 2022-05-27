@@ -3,46 +3,42 @@
 	import { post } from '$lib/api';
 
 	/* Bound var */
+	export let parentTask;
+
 	export let selectedModel;
-	export let parent_task_id;
 	export let taskTemplates;
 
-	/**
-	 * Create a new task with the given parent.
-	 *
-	 * @param parentId The parent id of the new task.
-	 */
-	async function createNewTask(parentId) {
-		let input = document.getElementById('createTaskInput' + parentId);
+	let selectedTemplate;
 
-		let template_id = input.value;
-		let template_name = input.options[input.selectedIndex].text;
+	async function handleSubmit(){
+		console.log(parentTask)
+		if(selectedTemplate != null){
+			const res = await post('tasks', {
+				model_id: selectedModel.id,
+				name: selectedTemplate.name,
+				parent_task_id: parentTask.id,
+				template_id: selectedTemplate.id
+			})
 
-		console.log(template_id)
-		console.log(parseInt(template_id))
-
-		const res = await post('tasks', {
-			model_id: selectedModel.id,
-			name: template_name,
-			parent_task_id: parentId,
-			template_id: parseInt(template_id)
-		})
-
-		if (res.status === 409) alert('Task already exists on this level');
+			if (res.status === 409) alert('Task already exists on this level');
+			else{
+				parentTask.subtasks.push(res)
+			}
+		}
 	}
 </script>
 
-<button data-bs-toggle="modal" data-bs-target="#modalCreateTask{parent_task_id}" class="btn btn-primary">Add task</button>
+<button data-bs-toggle="modal" data-bs-target="#modalCreateTask{parentTask.id}" class="btn btn-primary">Add task</button>
 
-<ModalComponent details={'CreateTask' + parent_task_id}>
+<ModalComponent details={'CreateTask' + parentTask.id}>
 	<span slot="title">Create new task :</span>
-	<div slot="body">
-		<select id="createTaskInput{parent_task_id}" class="form-select">
-			<option disabled selected value> -- Templates -- </option>
+	<form slot="body" on:submit|preventDefault={handleSubmit}>
+		<select id="templateSelect" class="form-select" bind:value={selectedTemplate}>
+			<option value={null} disabled selected class="form-check-input"> -- Templates -- </option>
 			{#each taskTemplates as template}
-				<option on:click={() => {}} value={template.id}>{template.name}</option>
+				<option value={template}>{template.name}</option>
 			{/each}
 		</select>
-	</div>
-	<button on:click={() => createNewTask(parent_task_id)} data-bs-dismiss="modal" slot="btnsave" type="button" class="btn btn-primary">Create task</button>
+		<button data-bs-dismiss="modal" type="submit" class="btn btn-primary">Create task</button>
+	</form>
 </ModalComponent>

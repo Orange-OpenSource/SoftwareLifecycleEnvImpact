@@ -17,7 +17,7 @@
 		} else {
 			document.querySelector('div.modal-backdrop.fade.show').remove();
 
-			if (browser) goto('/projects/' + res.id); /*TODO useful ? */
+			if (browser) goto('/project/' + res.id); /*TODO useful ? */
 		}
 	}
 </script>

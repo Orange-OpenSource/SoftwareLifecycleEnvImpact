@@ -13,6 +13,9 @@
 	/*Trigger update when selected model is updated*/
 	$: selectedModel, updateTree();
 
+	/*Trigger update when rootask (including its subtasks) is updated*/
+	$: rootTask, updateTree();
+
 	async function updateTree() {
 		if(selectedModel != undefined){
 			const res = await get('models/'+selectedModel.id+'/tasks')
@@ -35,7 +38,7 @@
 {:else if rootTask != undefined}
 	<Header bind:modify {selectedModel} />
 	<div class="col scroll">
-		<Task bind:task={rootTask} bind:selectedTask {modify} {selectedModel} parentTaskId={rootTask.id}/>
+		<Task bind:task={rootTask} bind:selectedTask {modify} {selectedModel} parentTask={rootTask}/>
 	</div>
 {/if}
 </div>

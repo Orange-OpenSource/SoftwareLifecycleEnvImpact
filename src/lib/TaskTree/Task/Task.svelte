@@ -9,7 +9,7 @@
 	export let selectedTask;
 	export let selectedModel;
 	export let modify;
-	export let parentTaskId;
+	export let parentTask;
 
 	let taskTemplates = []
 
@@ -27,39 +27,54 @@
 	});
 </script>
 
-<div class="tree">
-	{#if isLeaf(task)}
-		{#if modify}
-			<div class="raw nochildmodify">
-				<span on:click|stopPropagation={() => updateTaskSelected(task)} class="info-name">
-					{task.name}
-					<ModifyTask {taskTemplates} bind:task={task} classAttribute={'btnmodify'} />
-				</span>
-				<span class="addtask">
-					<CreateTask {taskTemplates} {selectedModel} parent_task_id={parentTaskId} />
-				</span>
-			</div>
+<!--Only display subtasks for the root task, not the task itself-->
+{#if task.parent_task_id != null}
+	<div class="tree">
+		{#if isLeaf(task)}
+			{#if modify}
+				<div class="raw nochildmodify">
+					<span on:click|stopPropagation={() => updateTaskSelected(task)} class="info-name">
+						{task.name}
+						<ModifyTask {taskTemplates} bind:task={task} classAttribute={'btnmodify'} />
+					</span>
+					<span class="addtask">
+						<CreateTask  bind:parentTask={task} {taskTemplates} {selectedModel}/>
+					</span>
+				</div>
+			{:else}
+				<div class="raw">
+					<span on:click|stopPropagation={() => updateTaskSelected(task)} class="info-name">
+						{task.name}
+					</span>
+				</div>
+				{/if}
 		{:else}
 			<div class="raw">
 				<span on:click|stopPropagation={() => updateTaskSelected(task)} class="info-name">
 					{task.name}
+					{#if modify}
+						<ModifyTask {taskTemplates} bind:task={task} classAttribute={'btnmodifyparent'} />
+					{/if}
 				</span>
-			</div>
-			{/if}
-	{:else}
-		<div class="raw">
-			<span on:click|stopPropagation={() => updateTaskSelected(task)} class="info-name">
-				{task.name}
+				{#each task.subtasks as subtask}
+					<svelte:self bind:task={subtask} bind:selectedTask {modify} {selectedModel} parentTask={task}/>
+				{/each}
 				{#if modify}
-					<ModifyTask {taskTemplates} bind:task={task} classAttribute={'btnmodifyparent'} />
+					<div class="tree">
+						<CreateTask bind:parentTask={task} {taskTemplates} {selectedModel} />
+					</div>
 				{/if}
-			</span>
-			{#each task.subtasks as subtask}
-				<svelte:self bind:task={subtask} bind:selectedTask {modify} {selectedModel} parentTaskId={task.id}/>
-			{/each}
-			<div class="tree">
-				<CreateTask {taskTemplates} {selectedModel} parent_task_id={parentTaskId} />
-			</div>
-		</div> 
+			</div> 
+		{/if}
+	</div>
+{:else}
+	{#each task.subtasks as subtask}
+		<svelte:self bind:task={subtask} bind:selectedTask {modify} {selectedModel} parentTask={task}/>
+	{/each}
+	{#if modify}
+		<div class="tree">
+			<CreateTask bind:parentTask={parentTask} {taskTemplates} {selectedModel}  />
+		</div>
 	{/if}
-</div>
+{/if}
+
