@@ -15,10 +15,8 @@
 	/*Trigger update when selected model is updated*/
 	$: selectedModel, updateTree();
 
-	/*Trigger update when rootask (including its subtasks) is updated*/
-	$: rootTask, updateTree();
-
 	async function updateTree() {
+		modify=false;
 		if(selectedModel != undefined){
 			const res = await get('models/'+selectedModel.id+'/tasks')
 
