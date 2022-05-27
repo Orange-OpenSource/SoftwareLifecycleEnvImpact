@@ -76,15 +76,24 @@ class AggregatedImpactSchema(Schema):
 
     @post_dump
     def translate_quantities(self, in_data, **kwargs) -> dict[str, str]:  # type: ignore
-        """Translate pint quantities to str before serialization, and ImpactIndicator to its string values"""
+        """Translate pint quantities to str before serialization"""
         out_data: dict[str, str] = {}
         for impact_indicator_name in in_data["impacts"]:
-            impact_enum = ImpactIndicator[
-                impact_indicator_name.replace("ImpactIndicator.", "")
-            ]
-            out_data[impact_enum.value] = str(in_data["impacts"][impact_indicator_name])
+            out_data[impact_indicator_name.replace("ImpactIndicator.", "")] = str(in_data["impacts"][impact_indicator_name])
         return out_data
 
+class TaskImpact(Schema):
+    def __init__(
+        self,
+        task,
+        task_impact: AggregatedImpact,
+    ):
+        self.task = task
+        self.task_impact = task_impact
+
+class TaskImpactSchema(Schema):
+    task = fields.Nested("TaskSchema")
+    task_impact = fields.Nested("AggregatedImpactSchema")
 
 ##############################
 # AggregatedImpactByResource #

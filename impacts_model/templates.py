@@ -5,12 +5,13 @@ from typing import List, Optional
 
 import yaml
 from marshmallow import fields, Schema
+
+from impacts_model.impact_sources import impact_source_factory, ImpactSource
+
+
 ####################
 # ResourceTemplate #
 ####################
-from prompt_toolkit.cache import memoized
-
-from impacts_model.impact_sources import impact_source_factory, ImpactSource
 
 
 class ResourceTemplate:
@@ -94,7 +95,6 @@ class TaskTemplateSchema(Schema):
     subtasks = fields.Nested("TaskTemplateSchema", many=True)
 
 
-@memoized
 def get_tasks_templates() -> List[TaskTemplate]:  # TODO improve naming clash with route
     """
     Load and return all TaskTemplate from files
@@ -106,7 +106,6 @@ def get_tasks_templates() -> List[TaskTemplate]:  # TODO improve naming clash wi
     return tasks_template
 
 
-@memoized
 def get_task_template_by_id(template_id: int) -> Optional[TaskTemplate]:
     """
     Search in task templates and reurn the one corresponding to an id, if it exits

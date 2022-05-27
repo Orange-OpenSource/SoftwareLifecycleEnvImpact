@@ -1,9 +1,9 @@
 from impacts_model.data_model import db, Model, Project, Resource, Task
 
 projects = [
-    {"id": 0, "name": "Project 0"},
-    {"id": 1, "name": "Project 1"},
-    {"id": 2, "name": "Real project"},
+    {"id": 0, "name": "Project 0", "base_model_id": 0},
+    {"id": 1, "name": "Project 1", "base_model_id": 2},
+    {"id": 2, "name": "Real project", "base_model_id": 4},
 ]
 
 models = [
@@ -116,7 +116,11 @@ def reset_db() -> None:
         db.session.add(r)
 
     for project in projects:
-        p = Project(id=project.get("id"), name=project.get("name"))
+        p = Project(
+            id=project.get("id"),
+            name=project.get("name"),
+            base_model_id=project.get("base_model_id"),
+        )
         db.session.add(p)
 
     for model in models:

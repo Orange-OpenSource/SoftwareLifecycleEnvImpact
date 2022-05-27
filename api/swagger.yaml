@@ -385,6 +385,28 @@ paths:
         200:
           description: Sucessfully read task impacts
           schema:
+            $ref: '#/definitions/TaskImpact'
+        404:
+          description: No task found with this id
+
+  /tasks/{task_id}/subtasksimpacts:
+    parameters:
+      - name: task_id
+        in: path
+        description: Id of the task to get the subtasks impacts from
+        type: integer
+        required: true
+    get:
+      operationId: api.routes.task.get_task_subtasks_impacts
+      tags:
+        - Task
+        - Impact
+      summary: Read a task subtasks impacts
+      description: Read a task subtasks impacts
+      responses:
+        200:
+          description: Sucessfully read task subtasks's impacts
+          schema:
             $ref: '#/definitions/AggregatedImpact'
         404:
           description: No task found with this id
@@ -662,6 +684,16 @@ definitions:
           "Raw materials": "0 tonne_mips",
           "Water depletion": "0 cubic_meter"
         }
+
+    TaskImpact:
+      type: object
+      properties:
+        task:
+          $ref: '#/definitions/Task'
+        aggregated_impact:
+          type: object
+          $ref: '#/definitions/AggregatedImpact'
+
 
     EnvironmentalImpactTree:
       type: object

@@ -192,7 +192,6 @@ class TaskSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
     subtasks = Nested("TaskSchema", many=True)
     resources = Nested(ResourceSchema, many=True)
 
-
 class Model(db.Model):  # type: ignore
     """
     Table Model representing one possibility for a project with a tree of tasks

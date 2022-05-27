@@ -4,7 +4,7 @@ import jsonpatch
 from flask import abort, request
 
 from impacts_model.data_model import db, Model, Resource, Task, TaskSchema
-from impacts_model.impacts import AggregatedImpactSchema
+from impacts_model.impacts import TaskImpact, TaskImpactSchema
 from impacts_model.templates import get_task_template_by_id, TaskTemplate
 
 
@@ -70,9 +70,24 @@ def get_task_impacts(task_id: int):
     task = Task.query.filter(Task.id == task_id).one_or_none()
 
     if task is not None:
-        environmental_impact = task.get_environmental_impact()
-        schema = AggregatedImpactSchema()
-        return schema.dump(environmental_impact)
+        task_impact = TaskImpact(task, task.get_environmental_impact())
+        schema = TaskImpactSchema()
+        return schema.dump(task_impact)
+    else:
+        return abort(
+            404,
+            "No task found for Id: {task_id}".format(task_id=task_id),
+        )
+
+def get_task_subtasks_impacts(task_id: int):
+    task = Task.query.filter(Task.id == task_id).one_or_none()
+
+    if task is not None:
+        impacts_list = []
+        for subtask in task.subtasks:
+            impacts_list.append(TaskImpact(subtask, subtask.get_environmental_impact()))
+        schema = TaskImpactSchema(many=True)
+        return schema.dump(impacts_list)
     else:
         return abort(
             404,
@@ -118,9 +133,6 @@ def insert_task_db(new_task: Task, template_id: int):
                 value=100,
             )
         )
-
-    for subtask in task_template.subtasks:
-        insert_task_db(subtask)
 
     db.session.add(new_task)
     db.session.commit()
