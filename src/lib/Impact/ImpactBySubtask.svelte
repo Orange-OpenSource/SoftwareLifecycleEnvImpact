@@ -18,7 +18,6 @@
             data = []
 
             for (const item of impactBySubtask){
-                console.log("label", item.task.name)
                 labels.push(item.task.name)
                 let quantity = item.task_impact.CLIMATE_CHANGE.replace(" kg_co2e","")
                 data.push(quantity)

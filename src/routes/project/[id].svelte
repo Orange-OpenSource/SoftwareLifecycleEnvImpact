@@ -15,22 +15,31 @@
 	let selectedModel;
 	let selectedTask;
 
+	$: selectedModel, updateSelectedTask()
+
+	function updateSelectedTask(){
+		/*Select a model root task as selected task to display the complete model impacts*/
+		if(selectedModel != undefined){
+			selectedTask = selectedModel.root_task;
+		}
+	}
+
 	function updateSplit(){
 		Split(['#split-0', '#split-1', '#split-2'], {
-				sizes: [25, 50, 25],
-				minSize: 0,
-				snapOffset: 150,
-				onDrag: function () {
-					for (let i = 0; i < 3; i++) {
-						let element = document.getElementById('split-' + i);
-						if (element.offsetWidth === 0) {
-							element.style.visibility = 'hidden';
-						} else {
-							element.style.visibility = 'visible';
-						}
+			sizes: [25, 50, 25],
+			minSize: 0,
+			snapOffset: 150,
+			onDrag: function () {
+				for (let i = 0; i < 3; i++) {
+					let element = document.getElementById('split-' + i);
+					if (element.offsetWidth === 0) {
+						element.style.visibility = 'hidden';
+					} else {
+						element.style.visibility = 'visible';
 					}
 				}
-			})
+			}
+		})
 	}
 
 
@@ -42,7 +51,6 @@
 		else{
 			project = res
 			selectedModel = project.models[0];
-			selectedTask = selectedModel.rootTask;
 			updateSplit()
 		}
 	});
@@ -63,8 +71,8 @@
 		<TaskTree bind:selectedTask {selectedModel} />
 	</div>
 
-	<div id="split-2" class="col align-items-start">
+	<div id="split-2" class="col ">
 		<h2 class="title">Impact</h2>
-		<Impact {selectedTask} />
+		<Impact bind:selectedTask />
 	</div>
 </div>

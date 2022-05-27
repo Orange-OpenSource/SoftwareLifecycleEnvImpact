@@ -10,8 +10,6 @@
 	let impactBySubtask
 
 
-
-
 	/*Trigger update when selected task is updated*/
 	$: selectedTask, updateImpacts();
 
