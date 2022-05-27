@@ -11,7 +11,6 @@
 	let selectedTemplate;
 
 	async function handleSubmit(){
-		console.log(parentTask)
 		if(selectedTemplate != null){
 			const res = await post('tasks', {
 				model_id: selectedModel.id,

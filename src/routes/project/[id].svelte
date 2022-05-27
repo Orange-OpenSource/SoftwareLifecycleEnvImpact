@@ -63,7 +63,7 @@
 		<TaskTree bind:selectedTask {selectedModel} />
 	</div>
 
-	<div id="split-2">
+	<div id="split-2" class="col align-items-start">
 		<h2 class="title">Impact</h2>
 		<Impact {selectedTask} />
 	</div>
