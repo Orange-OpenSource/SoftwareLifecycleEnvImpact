@@ -9,9 +9,58 @@ flask run
 ```
 Use `flask run --host=0.0.0.0 --port=5001` on the server.
 
+Th swagger UI should be at `http://127.0.0.1:5000/api/v1/ui/`
 # Architecture
 
-Project -> Model -> Task -> Resource -> Impacts -> ImpactIndicator
+```plantuml
+
+@startuml
+package API {
+class Config
+
+
+package routes {}
+package utils {}
+
+package BDD <<Database>>{
+class Project
+class Model
+class Task
+class Resource
+}
+
+}
+
+package impacts_model {
+
+class ImpactSource
+
+package quantities{}
+package Impact{
+class ImpactIndicator
+class EnvironmentalImpact
+class EnvironmentalImpactTree
+}
+
+package templates <<Rectangle>> {
+package data {}
+class TaskTemplate
+class ResourceTemplate
+}
+}
+
+Project "1" *-- "*" Model
+Model "1" *-- "*" Task
+Task "1" *-- "*" Resource
+
+EnvironmentalImpact -- ImpactIndicator 
+EnvironmentalImpactTree  "1" *-- "*" EnvironmentalImpact
+
+Resource -- ResourceTemplate : type
+
+@enduml
+```
+
 
 ## API
 - Swagger
