@@ -18,7 +18,7 @@
 		else if (res.status === 404) alert('No project found with this id ' + project.id);
 		else if (res.status === 409) {alert('Project already exists');}
 		else{
-			project.name = newName
+			project.name = res.name
 		}
 	}
 </script>

@@ -15,7 +15,7 @@
 	}
 
 	async function updateTask(template) {
-		const res = patch('tasks/'+task.id, [
+		const res = await patch('tasks/'+task.id, [
 			{
 				op: 'replace',
 				path: '/name',
@@ -24,12 +24,14 @@
 		])
 
 		if (res.status === 403) alert('Patch format is incorrect');
-		else if (res.status === 404) alert('No task found with this id');
+		else if (res.status === 404) alert('No task found with this id'){
+			task.name = res.name
+		}
 	}
 
 	async function updateResource(resource){
 		const newValue = document.getElementById('typeNumber' + resource.id).value
-		const res = patch('resource/' + resource.id,[
+		const res = await patch('resource/' + resource.id,[
 			{
 				op: 'replace',
 				path: '/value',
@@ -37,8 +39,13 @@
 			}
 		])
 
+		console.log(res)
+
 		if (res.status === 403) alert('Patch format is incorrect');
 		else if (res.status === 404) alert('No resource found with this id' + resource.id);
+		else{
+			resource.value = res.value
+		}
 
 	}
 </script>

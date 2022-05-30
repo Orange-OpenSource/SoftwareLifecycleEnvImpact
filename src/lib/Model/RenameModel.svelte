@@ -11,7 +11,7 @@
 	async function renameModel() {
 		let newName = document.getElementById('renameModelInput' + model.id).value;
 
-		const res = patch('models/' + model.id, [{
+		const res = await patch('models/' + model.id, [{
 			op: 'replace',
 			path: '/name',
 			value: newName,
@@ -21,7 +21,7 @@
 		else if (res.status === 404) alert('No model found with this id' + model.id);
 		else if (res.status === 409) {alert('Model already exists');}
 		else{
-			model.name = newName
+			model.name = res.name
 		}
 	}
 </script>
