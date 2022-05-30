@@ -230,6 +230,7 @@ class ModelSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
         include_fk = True
         sqla_session = db.session
 
+    root_task = Nested("TaskSchema")
     tasks = Nested("TaskSchema", many=True)
 
 

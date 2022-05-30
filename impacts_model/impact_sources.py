@@ -15,7 +15,7 @@ from impacts_model.quantities.quantities import (
     KG_SBE,
     MOL_HPOS,
     PRIMARY_MJ,
-    TONNE_MIPS,
+    Q_, TONNE_MIPS,
     WATT_HOUR,
     YEAR,
 )
@@ -356,7 +356,7 @@ class StorageImpactSource(ImpactSource):
             kwh_day * self.registry.electricity_mix
         )  # consumption co2 emissions
         co2_total: KG_CO2E = consumption_co2 + amortization_day
-        return co2_total
+        return Q_(co2_total.magnitude, KG_CO2E) # TODO improve computation, do not cast
 
 
 class ServerImpactSource(ImpactSource):

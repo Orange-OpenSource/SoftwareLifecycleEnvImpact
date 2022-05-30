@@ -1,16 +1,10 @@
 from impacts_model.data_model import db, Model, Project, Resource, Task
 
 projects = [
-    {"id": 0, "name": "Project 0", "base_model_id": 0},
-    {"id": 1, "name": "Project 1", "base_model_id": 2},
     {"id": 2, "name": "Real project", "base_model_id": 4},
 ]
 
 models = [
-    {"id": 0, "name": "Model 0", "project_id": 0, "root_task_id": 0},
-    {"id": 1, "name": "Model 1", "project_id": 0, "root_task_id": 0},
-    {"id": 2, "name": "Model 2", "project_id": 1, "root_task_id": 0},
-    {"id": 3, "name": "Model 3", "project_id": 1, "root_task_id": 0},
     {"id": 4, "name": "Real project model 1", "project_id": 2, "root_task_id": 3},
 ]
 

@@ -7,6 +7,8 @@ ureg = UnitRegistry()
 ureg.load_definitions(_os.path.join(abspath, "model.pint"))
 ureg.add_context(Context("test"))
 
+Q_ = ureg.Quantity
+
 ############
 # ALISASES #
 ############
