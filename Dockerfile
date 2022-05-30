@@ -33,5 +33,4 @@ RUN npm audit fix
 # copy built SvelteKit app to /app
 COPY --from=0 /app/build ./
 
-EXPOSE 8080
 CMD ["node", "./index.js"]
