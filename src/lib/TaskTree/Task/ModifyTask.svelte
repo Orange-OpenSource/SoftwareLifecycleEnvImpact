@@ -24,7 +24,8 @@
 		])
 
 		if (res.status === 403) alert('Patch format is incorrect');
-		else if (res.status === 404) alert('No task found with this id'){
+		else if (res.status === 404) alert('No task found with this id')
+		else {
 			task.name = res.name
 		}
 	}
@@ -38,8 +39,6 @@
 				value: newValue
 			}
 		])
-
-		console.log(res)
 
 		if (res.status === 403) alert('Patch format is incorrect');
 		else if (res.status === 404) alert('No resource found with this id' + resource.id);
@@ -74,7 +73,7 @@
 					<label class="input-group-text" for="typeNumber">{resource.name}</label>
 					<input style="margin : 0px;" type="number" id="typeNumber{resource.id}" class="form-control" value={resource.value} />
 					<button on:click={() => updateResource(resource)} style="margin : 0px;" class="btn btn-outline-secondary" type="button">Save</button>
-				</div>
+				</div> TODO FROM HERE PASSER EN FORME POUR QUE L4IMAPCT SUPDATE APRES MODIFICATION RESOURCE
 			{/each}
 		</div>
 	</ModalComponent>
