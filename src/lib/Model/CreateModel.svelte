@@ -22,6 +22,8 @@ import { post } from '$lib/api';
 		} else {
 			document.getElementById('createModelInput').value = '';
 			project.models.push(res)
+			/*Redondant assignment to force Svelte to update components*/
+			project.models = project.models
 		}
 	}
 </script>

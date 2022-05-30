@@ -22,6 +22,8 @@
 			if (res.status === 409) alert('Task already exists on this level');
 			else{
 				parentTask.subtasks.push(res)
+				/*Redondant assignment to force Svelte to update components*/
+				parentTask.subtasks = parentTask.subtasks
 			}
 		}
 	}
