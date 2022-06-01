@@ -3,12 +3,13 @@
 	import ResourceList from './Resource/ResourceList.svelte';
 	import DeleteTask from './DeleteTask.svelte';
 
-	/* Bound var */
+	/* Bound vars */
 	export let task;
 	export let selectedTask;
-	export let selectedModel;
-	export let modify;
 	export let parentTask;
+
+	export let modify;
+	export let selectedModel;
 	export let taskTemplates;
 
 	function updateTaskSelected(task) {
@@ -39,7 +40,7 @@
 				{/if}
 				{#if modify}
 					<div class="d-flex justify-content-end">
-						<DeleteTask bind:task={task}/>
+						<DeleteTask bind:parentTask={parentTask} task={task}/>
 						<CreateTask bind:parentTask={task} {taskTemplates} {selectedModel} />
 					</div>
 				{/if}
@@ -48,6 +49,6 @@
 	{/if}
 
 	{#each task.subtasks as subtask}
-		<svelte:self bind:task={subtask} bind:selectedTask {modify} {selectedModel} parentTask={task} {taskTemplates}/>
+		<svelte:self bind:task={subtask} bind:selectedTask bind:parentTask={task} {modify} {selectedModel} {taskTemplates}/>
 	{/each}
 </div>

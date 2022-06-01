@@ -3,6 +3,8 @@
 	import ModalComponent from '$lib/Modal.svelte';
 
 	/* Bound var */
+	export let parentTask
+
 	export let task;
 
 	async function deleteTask() {
@@ -10,6 +12,11 @@
 
 		if (res.status === 404) alert('No task with this id');
 		else if (res.status === 403) alert('Cannot delete the root task of a model');
+		else{
+			parentTask.subtasks = parentTask.subtasks.filter(s => s.id != task.id);
+			/*Redondant assignment to force Svelte to update components*/
+			parentTask.subtasks = parentTask.subtasks
+		}
 	}
 </script>
 
