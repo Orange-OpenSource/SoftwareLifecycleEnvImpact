@@ -6,16 +6,15 @@ main {
 }
 
 /*
-Tree properties
+TaskTree properties
 */
-div.tree {
-	padding: 50px 0px 0px 96px;
+div.task {
+	padding: 50px 0px 0px 90px;
 	position: relative;
 	text-align: start;
-	line-height: 300%;
 }
 
-div.tree:before {
+div.task:before {
 	content: '';
 	position: absolute;
 	top: 10px;
@@ -25,7 +24,7 @@ div.tree:before {
 	height: 100%;
 }
 
-div.tree:after {
+div.task:after {
 	content: '';
 	position: absolute;
 	border-top: 2px dashed #a2a5b5;
@@ -34,16 +33,16 @@ div.tree:after {
 	width: 60px;
 }
 
-div.tree:last-child:before {
+div.task:last-child:before {
 	top: 16px;
 	height: 63px;
 }
 
-.nochildmodify {
+.row-modify-leaf {
 	position: relative;
 }
 
-.nochildmodify:after {
+.row-modify-leaf:after {
 	content: '';
 	position: absolute;
 	border-top: 2px dashed #a2a5b5;
@@ -52,44 +51,29 @@ div.tree:last-child:before {
 	width: 50px;
 }
 
-span.info-name {
+.btn-task-tile {
 	background-color: #ececece1;
 	border-radius: 3px;
 	border: none;
 	padding: 10px 20px 10px 20px;
 	-webkit-box-shadow: 5px 5px 3px -6px #000000;
 	box-shadow: 5px 5px 3px -6px #000000;
-	width: 200px;
+	/*width: 200px;
 	height: 90px;
 	display: inline-block;
-	text-align: center;
+	text-align: center;*/
 }
 
-span.addtask {
+.btn-add-task-leaf {
 	content: '';
 	position: absolute;
 	left: 270px;
 	top: 8px;
 }
 
-.btnmodify {
-	content: '';
-	position: absolute;
-	top: 55px;
-	left: 130px;
-}
-
-.btnmodifyparent {
-	content: '';
-	position: absolute;
-	top: 105px;
-	left: 225px;
-}
-
 /*
 Split.js related properties
 */
-
 .split {
 	display: flex;
 	flex-direction: row;
