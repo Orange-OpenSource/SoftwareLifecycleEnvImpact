@@ -3,8 +3,9 @@ import { post } from '$lib/api';
 
 	import ModalComponent from '$lib/Modal.svelte';
 
-	/* Bound var */
+	/* Bound vars */
 	export let project;
+	export let selectedModel;
 
 	let modelName;
 
@@ -20,6 +21,7 @@ import { post } from '$lib/api';
 			} else {
 				modelName = ''
 				project.models.push(res)
+				selectedModel = res
 				/*Redondant assignment to force Svelte to update components*/
 				project.models = project.models
 			}
