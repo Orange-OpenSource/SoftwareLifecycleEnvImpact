@@ -4,19 +4,15 @@
 	import ModalComponent from '../Modal.svelte';
 	import { post } from '$lib/api';
 
-	let error = '';
+	let projectName;
 
 	async function createNewProject() {
-		let nameProject = document.getElementById('createProjectInput').value;
-
 		const res = await post('projects', {
-			name: nameProject
+			name: projectName
 		})
-		if (res.status === '409') {
+		if (res.status === 409) {
 			alert('Project exists already');
 		} else {
-			document.querySelector('div.modal-backdrop.fade.show').remove();
-
 			if (browser) goto('/project/' + res.id); /*TODO useful ? */
 		}
 	}
@@ -26,13 +22,9 @@
 
 <ModalComponent details={'Create'}>
 	<span slot="title">Create new project</span>
-	<div slot="body">
-		<input id="createProjectInput" placeholder="Project name" required />
-		{#if error}
-			<div id="error_message" class="text-danger">
-				<small>{error}</small>
-			</div>
-		{/if}
-	</div>
-	<button slot="btnsave" on:click={createNewProject} type="button" class="btn btn-primary">Create project</button>
+	<form slot="body" on:submit|preventDefault={createNewProject}>
+		<input id="createProjectInput" placeholder="Project name" required bind:value={projectName}/>
+		<button data-bs-dismiss="modal" type="submit" class="btn btn-primary">Create project</button>
+	</form>
+	
 </ModalComponent>

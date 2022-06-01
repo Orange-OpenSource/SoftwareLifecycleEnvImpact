@@ -24,10 +24,12 @@
 </script>
 
 {#if task.resources != null}
-    {#each task.resources as resource}
-        <div class="row input-group mb-3">
-            <label class="input-group-text" for="typeNumber">{resource.name}</label>
-            <input type="number" id="typeNumber{resource.id}" class="form-control" readonly={!modify} value={resource.value} on:change={() => updateResource(resource)} on:click|stopPropagation={() => {}}/>
-        </div>
-    {/each}
+	<form>
+		{#each task.resources as resource}
+			<div class="form-group">
+				<label class="input-group-text" for="typeNumber">{resource.name}</label>
+				<input type="number" id="typeNumber{resource.id}" class="form-control" readonly={!modify} value={resource.value} on:change={() => updateResource(resource)} on:click|stopPropagation={() => {}}/>
+			</div>
+		{/each}
+	</form>
 {/if}

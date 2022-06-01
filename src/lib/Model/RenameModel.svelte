@@ -1,16 +1,14 @@
 <script>
 	import { patch } from '$lib/api';
+import Modal from '$lib/Modal.svelte';
 	import ModalComponent from '$lib/Modal.svelte';
 
 	/* Bound var */
 	export let model;
 
-	/**
-	 * Update the name of the model.
-	 */
-	async function renameModel() {
-		let newName = document.getElementById('renameModelInput' + model.id).value;
+	let newName = model.name
 
+	async function renameModel() {
 		const res = await patch('models/' + model.id, [{
 			op: 'replace',
 			path: '/name',
@@ -30,8 +28,9 @@
 
 <ModalComponent details={'RenameModel' + model.id}>
 	<span slot="title">Rename model :</span>
-	<div slot="body">
-		<input id="renameModelInput{model.id}" placeholder="Model new name" value={model.name} required />
-	</div>
-	<button slot="btnsave" data-bs-dismiss="modal" on:click={renameModel} type="button" class="btn btn-primary">Rename project</button>
+	<form slot="body" on:submit|preventDefault={renameModel}>
+		<input id="renameModelInput{model.id}" placeholder="Model new name" bind:value={newName} required />
+		<button data-bs-dismiss="modal" type="submit" class="btn btn-primary">Rename model</button>
+	</form>
+	
 </ModalComponent>
