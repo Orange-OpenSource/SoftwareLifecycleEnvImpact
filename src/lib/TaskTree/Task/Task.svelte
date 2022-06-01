@@ -12,18 +12,20 @@
 	export let selectedModel;
 	export let taskTemplates;
 
-	function updateTaskSelected(task) {
-		/*TODO maybe useless ? */
-		selectedTask = task;
+	function isLeafOrRootTaskAndEmpty(task){
+		/*Allow to only display an "Add task" button as a leaf 
+		for the root task if does not contain any task*/
+		if(task.parent_task_id != null) return true
+		return task.parent_task_id == null && task.subtasks.length == 0
 	}
 
 </script>
 
-<div class="{task.parent_task_id != null ? 'task' :''}">
+<div class="{isLeafOrRootTaskAndEmpty(task) ? 'task' :''}">
 	<!--Only display subtasks for the root task, not the task itself-->
 	{#if task.parent_task_id != null}
 		<!--Highlight border if task selected-->
-		<div on:click|stopPropagation={() => updateTaskSelected(task)} class="card w-25 {task === selectedTask ? 'border-primary' : ''}" style="min-width: 18rem;">
+		<div on:click|stopPropagation={() => selectedTask = task} class="card w-25 {task === selectedTask ? 'border-primary' : ''}" style="min-width: 18rem;">
 			<div class="card-body">
 				<!--
 				{#if modify}
@@ -48,7 +50,11 @@
 		</div>
 	{/if}
 
-	{#each task.subtasks as subtask}
-		<svelte:self bind:task={subtask} bind:selectedTask bind:parentTask={task} {modify} {selectedModel} {taskTemplates}/>
-	{/each}
+	{#if task.subtasks.length > 0}
+		{#each task.subtasks as subtask}
+			<svelte:self bind:task={subtask} bind:selectedTask bind:parentTask={task} {modify} {selectedModel} {taskTemplates}/>
+		{/each}
+	{:else if task.parent_task_id == null}
+		<CreateTask bind:parentTask={task} {taskTemplates} {selectedModel} />
+	{/if}
 </div>
