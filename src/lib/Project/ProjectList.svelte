@@ -9,7 +9,12 @@
 	let projects = [];
 
 	onMount(async function () {
-		projects = await get('projects')
+		const res = await get('projects')
+		if (res.status === 404) alert('Cannot retrieve projects');
+		else {
+			projects = res
+		}
+
 	});
 
 </script>
