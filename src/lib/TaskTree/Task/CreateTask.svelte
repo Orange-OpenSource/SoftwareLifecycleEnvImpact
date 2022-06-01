@@ -29,7 +29,7 @@
 	}
 </script>
 
-<button data-bs-toggle="modal" data-bs-target="#modalCreateTask{parentTask.id}" class="btn btn-primary">Add task</button>
+<button data-bs-toggle="modal" data-bs-target="#modalCreateTask{parentTask.id}" class="btn btn-sm btn-primary">Add task</button>
 
 {#if taskTemplates != undefined}
 	<ModalComponent details={'CreateTask' + parentTask.id}>

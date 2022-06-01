@@ -13,7 +13,7 @@
 	}
 </script>
 
-<button on:click|stopPropagation={() => {}} data-bs-toggle="modal" data-bs-target="#modalDeleteTask{task.id}" class="btn btn-light">Delete</button>
+<button on:click|stopPropagation={() => {}} data-bs-toggle="modal" data-bs-target="#modalDeleteTask{task.id}" class="btn btn-sm btn-light">Delete</button>
 
 <ModalComponent details="DeleteTask{task.id}">
 	<span slot="title">Confirm delete</span>

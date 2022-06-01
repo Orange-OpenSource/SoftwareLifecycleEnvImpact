@@ -15,13 +15,14 @@
 		/*TODO maybe useless ? */
 		selectedTask = task;
 	}
+
 </script>
 
 <div class="{task.parent_task_id != null ? 'task' :''}">
 	<!--Only display subtasks for the root task, not the task itself-->
 	{#if task.parent_task_id != null}
-		<div on:click|stopPropagation={() => updateTaskSelected(task)} class="card btn-task-tile w-50">
-			<div class="card-body">
+		<div on:click|stopPropagation={() => updateTaskSelected(task)} class="card w-25 btn-task-tile" style="min-width: 275px;">
+			<div class="card-body col">
 				<div class="row">
 					{#if modify}
 						<input type="text" value={task.name} class="form-control" style="font-size:1.2em; font-weight:bolder;">
@@ -29,11 +30,9 @@
 						<h3 class="card-title">{task.name}</h3>
 					{/if}
 				</div>
-
-				<ResourceList resources={task.resources} {modify}/>
-
+				<ResourceList bind:task={task} {modify}/>
 				{#if modify}
-					<div class="row">
+					<div>
 						<DeleteTask bind:task={task}/>
 						<CreateTask bind:parentTask={task} {taskTemplates} {selectedModel} />
 					</div>
