@@ -438,8 +438,37 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Resource'
+    post:
+      operationId: api.routes.resource.create_resource
+      tags:
+        - Resource
+      description: Create a new resource
+      parameters:
+        - name: resource
+          in: body
+          description: Resource to create
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name of the resource
+              task_id:
+                type: integer
+                description: Id of the task to create the resource in
+              template_id:
+                type: integer
+                description: Id of the template to create from
+      responses:
+        201:
+          description: Sucessfully created Resource
+          schema:
+            $ref: '#/definitions/Resource'
+        409:
+          description: Resource exists already
 
-  /resource/{resource_id}:
+  /resources/{resource_id}:
     parameters:
       - name: resource_id
         in: path
@@ -480,6 +509,19 @@ paths:
           description: Patch format is incorrect
         404:
           description: No resource with this id
+    delete:
+      operationId: api.routes.resource.delete_resource
+      tags:
+        - Resource
+      summary: Delete a resource
+      description: Delete a resource
+      responses:
+        200:
+          description: Successfully deleted resource
+          schema:
+            $ref: '#/definitions/Resource'
+        404:
+          description: No resource with this id
 
   /resources/{resource_id}/impacts:
     parameters:
@@ -500,6 +542,19 @@ paths:
           schema:
             $ref: '#/definitions/AggregatedImpact'
 
+  /resourcetemplates:
+    get:
+      operationId: api.routes.resource_template.get_resource_templates
+      tags:
+        - ResourceTemplate
+      summary: Get all resource templates
+      responses:
+        200:
+          description: List of resource templates
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ResourceTemplate'
 
   /debug/reset:
     get:
@@ -664,6 +719,19 @@ definitions:
           type: string
           format: date
           description: Last update date of the resource
+
+    ResourceTemplate:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+          description: Unique identifier
+        name:
+          type: string
+          description: Name of the resource
 
     AggregatedImpact:
       type: object

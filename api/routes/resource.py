@@ -5,6 +5,7 @@ from flask import abort, request
 
 from impacts_model.data_model import db, Resource, ResourceSchema
 from impacts_model.impacts import AggregatedImpactSchema
+from impacts_model.templates import get_resource_template_by_id, ResourceTemplate
 
 
 def get_resources() -> Any:
@@ -16,6 +17,44 @@ def get_resources() -> Any:
 
     resource_schema = ResourceSchema(many=True)
     return resource_schema.dump(resources)
+
+def create_resource(resource: dict[str, Any]) -> Any:
+    """
+    POST /resources/
+
+    :param resource: resource to create
+    :return: the resource inserted with its id
+    """
+    name = resource.get("name")
+    task_id = resource.get("task_id")
+    template_id = resource.get("template_id")
+
+    existing_task = (
+        Resource.query.filter(Resource.name == name)
+            .filter(Resource.task_id == task_id)
+            .one_or_none()
+    )
+
+    if existing_task is None:
+        resource_template: ResourceTemplate = get_resource_template_by_id(template_id)
+
+        resource = Resource(
+            name=name,
+            task_id=task_id,  #TODO check if this task exitst
+            type=resource_template.name,
+            value=100,
+        )
+        db.session.add(resource)
+        db.session.commit()
+
+        schema = ResourceSchema()
+        data = schema.dump(resource)
+        return data, 201
+    else:
+        return abort(
+            409,
+            "Resource {resource} exists already".format(resource=name),
+        )
 
 
 def get_resource(resource_id: int) -> Any:
@@ -66,11 +105,30 @@ def update_resource(resource_id: int) -> Any:
         )
 
 
+def delete_resource(resource_id: int) -> Any:
+    """
+    DELETE /resources/<resource_id>
+    :param resource_id: the id of the resource to delete
+    :return: 200 if the resource exists and is deleted, 404 else
+    """
+    resource = Resource.query.filter(Resource.id == resource_id).one_or_none()
+
+    if resource is not None:
+        db.session.delete(resource)
+        db.session.commit()
+        return 200
+    else:
+        return abort(
+            404,
+            "No resource found for Id: {resource_id}".format(resource_id=resource_id),
+        )
+
+
 def get_resource_impacts(resource_id: int):
     resource = Resource.query.filter(Resource.id == resource_id).one_or_none()
 
     if resource is not None:
-        environmental_impact = get_resource_environmental_impact(resource)
+        environmental_impact = resource.get_environmental_impact()
         schema = AggregatedImpactSchema()
         return schema.dump(environmental_impact)
     else:

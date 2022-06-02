@@ -14,7 +14,7 @@ db = SQLAlchemy()
 ma = FlaskMarshmallow()
 
 
-class Resource(db.Model):  # type: ignore
+class Resource(db.Model):  # type: ignore # TODO resource should have a unit
     """
     Resource object and table with a name, a type and a value. Only for a task
     The type represents the name of the ResourceTemplate to retrieve model values for computation
@@ -27,7 +27,7 @@ class Resource(db.Model):  # type: ignore
     task_id = db.Column(db.Integer, db.ForeignKey("task.id"), nullable=False)
 
     type = db.Column(db.String, nullable=False)
-    value = db.Column(db.Integer)
+    value = db.Column(db.Integer) # TODO maybe should never be null ?
 
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())

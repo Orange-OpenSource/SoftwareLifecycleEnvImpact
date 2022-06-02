@@ -21,16 +21,16 @@ class ResourceTemplate:
     """
 
     def __init__(self, name: str):
-        self.name = name
+        self.name = name.replace(".yaml", "")
         self.impact_sources = self._load_impacts()
 
     def _load_impacts(self) -> List[ImpactSource]:
         """
         Load the list of impact_sources from the corresponding Resource file
         """
-        name = self.name.replace(".yaml", "")
-        with open("impacts_model/data/resources/" + name + ".yaml", "r") as stream:
+        with open("impacts_model/data/resources/" + self.name + ".yaml", "r") as stream:
             data_loaded = yaml.safe_load(stream)
+            self.id = data_loaded["id"]
             impacts_list = []
             for impact_name in data_loaded["impact_factors"]:
                 impacts_list.append(impact_source_factory(impact_name))
@@ -39,7 +39,7 @@ class ResourceTemplate:
 
 class ResourceTemplateSchema(Schema):
     """Marshmallow schema to serialize a ResourceTemplate object"""
-
+    id = fields.Integer()
     name = fields.String()
 
 
@@ -54,8 +54,8 @@ class TaskTemplate:
     """
 
     def __init__(
-        self,
-        name: str,
+            self,
+            name: str,
     ):
         """
         Define a task with a name, resources and subtasks
@@ -98,7 +98,6 @@ class TaskTemplateSchema(Schema):
 def get_tasks_templates() -> List[TaskTemplate]:  # TODO improve naming clash with route
     """
     Load and return all TaskTemplate from files
-    Memoized function to avoid loading from files at each call
     """
     tasks_template = []
     for filename in os.listdir("impacts_model/data/tasks"):
@@ -109,10 +108,30 @@ def get_tasks_templates() -> List[TaskTemplate]:  # TODO improve naming clash wi
 def get_task_template_by_id(template_id: int) -> Optional[TaskTemplate]:
     """
     Search in task templates and reurn the one corresponding to an id, if it exits
-    Memoized function to avoid loading from files at each call
     :param template_id: id of the TaskTemplate to retrieve
     :return: TaskTemplate if it exists with id, or None
     """
     return [x for x in get_tasks_templates() if x.id == template_id][
+        0
+    ]  # TODO bad solution to create associated resource
+
+
+def get_resources_templates() -> List[ResourceTemplate]:
+    """
+    Load and return all ResourceTemplate from files
+    Memoized function to avoid loading from files at each call
+    """
+    resources_template = []
+    for filename in os.listdir("impacts_model/data/resources"):
+        resources_template.append(ResourceTemplate(filename))
+    return resources_template
+
+def get_resource_template_by_id(template_id: int) -> Optional[ResourceTemplate]:
+    """
+    Search in resource templates and reurn the one corresponding to an id, if it exits
+    :param template_id: id of the ResourceTemplate to retrieve
+    :return: ResourceTemplate if it exists with id, or None
+    """
+    return [x for x in get_resources_templates() if x.id == template_id][
         0
     ]  # TODO bad solution to create associated resource

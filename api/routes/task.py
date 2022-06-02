@@ -122,7 +122,7 @@ def delete_task(task_id: int) -> Any:
         )
 
 
-def insert_task_db(new_task: Task, template_id: int):
+def insert_task_db(new_task: Task, template_id: int): # TODO remove from here
     task_template: TaskTemplate = get_task_template_by_id(template_id)
 
     for resource_template in task_template.resources:
@@ -142,7 +142,7 @@ def create_task(task: dict[str, Any]) -> Any:
     """
     POST /tasks/
 
-    :param task: task to merge_aggregated_impact
+    :param task: task to add
     :return: the task inserted with its id
     """
     name = task.get("name")
