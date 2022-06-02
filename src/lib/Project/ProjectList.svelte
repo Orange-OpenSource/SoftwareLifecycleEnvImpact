@@ -14,7 +14,6 @@
 		else {
 			projects = res
 		}
-
 	});
 
 </script>

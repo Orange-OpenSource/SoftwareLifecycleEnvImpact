@@ -18,7 +18,7 @@
 	<!--Do not display the root task as a nomrmal one but only its subtasks-->
 	{#if task.parent_task_id != null}
 		<!--Highlight border if task selected-->
-		<div on:click|stopPropagation={() => selectedTask = task} class="card w-25 {task === selectedTask ? 'border-primary' : ''}" style="min-width: 18rem;">
+		<div on:click|stopPropagation={() => selectedTask = task} class="card {task === selectedTask ? 'border-primary' : ''}" style="min-width: 18rem;">
 			<div class="card-body">
 				<!--
 				{#if modify}
