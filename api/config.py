@@ -15,6 +15,7 @@ class ProdConfig(Config):
 
     FLASK_ENV = "production"
     SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "database.db")
+    DEBUG = False
 
 
 class DevelopmentConfig(Config):

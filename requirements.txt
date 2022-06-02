@@ -10,3 +10,4 @@ flask-marshmallow==0.14.0
 Flask-SQLAlchemy==2.5.1
 marshmallow-sqlalchemy==0.28.0
 connexion[swagger-ui]==2.13.1
+gunicorn==20.1.0
