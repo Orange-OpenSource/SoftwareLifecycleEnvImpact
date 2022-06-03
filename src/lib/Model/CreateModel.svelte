@@ -3,27 +3,28 @@ import { post } from '$lib/api';
 
 	import ModalComponent from '$lib/Modal.svelte';
 
-	/* Bound var */
+	/* Bound vars */
 	export let project;
+	export let selectedModel;
 
-	/**
-	 * Create a new model and set the treeview to the new model.
-	 */
-	async function createNewModel() {
-		let nameModel = document.getElementById('createModelInput').value;
+	let modelName;
 
-		const res = await post('models', {
-			name: nameModel,
-			project_id: project.id,
-		})
+	async function createModel(){
+		if(modelName != undefined && modelName != ''){
+			const res = await post('models', {
+				name: modelName,
+				project_id: project.id,
+			})
 
-		if (res.status === 409) {
-			alert('Model already exists');
-		} else {
-			document.getElementById('createModelInput').value = '';
-			project.models.push(res)
-			/*Redondant assignment to force Svelte to update components*/
-			project.models = project.models
+			if (res.status === 409) {
+				alert('Model already exists');
+			} else {
+				modelName = ''
+				project.models.push(res)
+				selectedModel = res
+				/*Redondant assignment to force Svelte to update components*/
+				project.models = project.models
+			}
 		}
 	}
 </script>
@@ -32,8 +33,9 @@ import { post } from '$lib/api';
 
 <ModalComponent details={'CreateModel'}>
 	<span slot="title">Create new model</span>
-	<div slot="body">
-		<input id="createModelInput" placeholder="Model name" required />
-	</div>
-	<button slot="btnsave" data-bs-dismiss="modal" on:click={createNewModel} type="button" class="btn btn-primary">Create model</button>
+	<form slot="body" on:submit|preventDefault={createModel}>
+		<input id="createModelInput" placeholder="Model name" required bind:value={modelName}/>
+		<button data-bs-dismiss="modal" type="submit" class="btn btn-primary">Create model</button>
+	</form>
+	
 </ModalComponent>

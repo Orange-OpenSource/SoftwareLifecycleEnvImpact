@@ -9,24 +9,20 @@
 	export let selectedModel;
 	export let project;
 
-	function updateModelSelected(model) {
-		/*TODO maybe useless ? */
-		selectedModel = model;
-	}
 </script>
 
 {#if project != undefined}
 	<div>
 		<div class="list-group list-group-flush">
 			{#each project.models as model, i}
-				<button type="button" class="list-group-item list-group-item-action" on:click|stopPropagation={() => updateModelSelected(model)}>
+				<button type="button" class="list-group-item list-group-item-action link" on:click|stopPropagation={() => selectedModel = model}>
 					<div class="row">
 						<div class="col align-self-center">
 							<input type="checkbox" class="form-check-input" value={model.id} name={model.id} />
 						</div>
 						<div class="col-10">
 							<div class="row">
-								<div class="col">
+								<div class="col {selectedModel === model ? 'text-primary' : ''}">
 									<h5 class="mb-1">
 										{model.name}
 										{#if i == 0}
@@ -38,7 +34,7 @@
 								<div class="col-9">
 										<RenameModel bind:model />
 										{#if i != 0}
-											<DeleteModel {model} />
+											<DeleteModel bind:models={project.models} {model} />
 										{/if}
 								</div>
 							</div>
@@ -47,7 +43,7 @@
 				</button>
 			{/each}
 		</div>
-		<CreateModel bind:project />
+		<CreateModel bind:project bind:selectedModel/>
 	</div>
 {/if}
 

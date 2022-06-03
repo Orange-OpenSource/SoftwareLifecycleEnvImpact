@@ -5,9 +5,9 @@
 	/* Bound var */
 	export let project;
 
-	async function renameProject() {
-		let newName = document.getElementById('createProjectInput' + project.id).value;
+	let newName = project.name
 
+	async function renameProject() {
 		const res = await patch('projects/' + project.id, [{
 			op: 'replace',
 			path: '/name',
@@ -27,6 +27,8 @@
 
 <ModalComponent details={'RenameProject' + project.id}>
 	<span slot="title">Rename project :</span>
-	<input slot="body" id="createProjectInput{project.id}" placeholder="Project new name" value={project.name} required />
-	<button slot="btnsave" on:click={renameProject} type="button" data-bs-dismiss="modal" class="btn btn-primary">Rename project</button>
+	<form slot="body" on:submit|preventDefault={renameProject}>
+		<input id="renameProjectInput{project.id}" placeholder="Project new name" bind:value={newName} required />
+		<button data-bs-dismiss="modal" type="submit" class="btn btn-primary">Rename project</button>
+	</form>
 </ModalComponent>

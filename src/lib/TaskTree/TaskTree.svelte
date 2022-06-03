@@ -32,7 +32,11 @@
 	}
 
 	onMount(async function () {
-		taskTemplates = await get('tasktemplates')
+		const res = await get('tasktemplates')
+		if (res.status === 404) alert('Cannot retrieve task templates' + selectedModel.id);
+		else{
+			taskTemplates = res
+		}
 	});
 </script>
 

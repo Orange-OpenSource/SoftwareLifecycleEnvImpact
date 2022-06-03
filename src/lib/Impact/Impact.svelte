@@ -26,15 +26,9 @@
 			else {
 				impactBySubtask = res
 			}
-
 		}
 	}
-	
-
-
 </script>
 
 <ImpactByIndicator {impactByIndicator}/>
 <ImpactBySubtask {impactBySubtask}/>
-
-
