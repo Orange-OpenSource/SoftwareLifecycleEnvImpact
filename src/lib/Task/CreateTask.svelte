@@ -1,7 +1,6 @@
 <script>
-	import ModalComponent from '../../Modal.svelte';
 	import { post } from '$lib/api';
-
+	import Modal from '../Modal.svelte'
 	/* Bound var */
 	export let parentTask;
 
@@ -32,7 +31,7 @@
 <button data-bs-toggle="modal" data-bs-target="#modalCreateTask{parentTask.id}" class="btn btn-primary">Add task</button>
 
 {#if taskTemplates != undefined}
-	<ModalComponent details={'CreateTask' + parentTask.id}>
+	<Modal details={'CreateTask' + parentTask.id}>
 		<span slot="title">Create new task :</span>
 		<form slot="body" on:submit|preventDefault={handleSubmit}>
 			<select id="templateSelect" class="form-select" bind:value={selectedTemplate}>
@@ -43,5 +42,5 @@
 			</select>
 			<button data-bs-dismiss="modal" type="submit" class="btn btn-primary">Create task</button>
 		</form>
-	</ModalComponent>
+	</Modal>
 {/if}

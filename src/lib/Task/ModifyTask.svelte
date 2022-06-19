@@ -1,7 +1,6 @@
 <script>
 	import { del, patch } from '$lib/api';
-	import ModalComponent from '../../Modal.svelte';
-	import ResourceList from './Resource/ResourceList.svelte';
+	import ResourceList from '../Resource/ResourceList.svelte';
 
 	/* Bound var */
 	export let task;

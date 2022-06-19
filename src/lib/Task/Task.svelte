@@ -1,6 +1,6 @@
 <script>
-	import CreateTask from '$lib/TaskTree/Task/CreateTask.svelte';
-	import ResourceList from './Resource/ResourceList.svelte';
+	import ResourceList from '../Resource/ResourceList.svelte';
+	import CreateTask from './CreateTask.svelte';
 	import DeleteTask from './DeleteTask.svelte';
 
 	/* Bound vars */

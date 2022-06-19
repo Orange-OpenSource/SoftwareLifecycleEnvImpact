@@ -1,8 +1,8 @@
 <script>
-	import Task from './Task/Task.svelte';
 	import Header from './Header.svelte';
 	import { get } from '$lib/api';
 	import { onMount } from 'svelte';
+	import Task from '../Task/Task.svelte';
 
 	/*Bound vars*/
 	export let selectedModel;
