@@ -2,6 +2,7 @@
 	import ResourceList from '../Resource/ResourceList.svelte';
 	import CreateTask from './CreateTask.svelte';
 	import DeleteTask from './DeleteTask.svelte';
+import RenameTask from './RenameTask.svelte';
 
 	/* Bound vars */
 	export let task;
@@ -20,12 +21,13 @@
 		<!--Highlight border if task selected-->
 		<div on:click|stopPropagation={() => selectedTask = task} class="card {task === selectedTask ? 'border-primary' : ''}" style="min-width: 18rem;">
 			<div class="card-body">
-				<!--
-				{#if modify}
-					<input type="text" value={task.name} class="form-control" style="font-size:1.2em; font-weight:bolder;">
-				{:else}-->
+				<div class="d-flex">
 					<h5 class="card-title">{task.name}</h5>
-				<!--{/if}-->
+					{#if modify}
+						<RenameTask bind:task/>
+					{/if}
+				</div>
+
 				{#if task.resources.length > 0}
 					<h6 class="card-subtitle mb-2 text-muted">Resources: </h6>
 

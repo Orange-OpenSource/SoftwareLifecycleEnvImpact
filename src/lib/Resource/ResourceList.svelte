@@ -32,7 +32,7 @@ import AddResource from './AddResource.svelte';
 				<div class="d-flex w-100 justify-content-between align-items-center">
 					<div>
 						<label class="input-group-text" for="typeNumber">{resource.name}</label>
-						<input type="number" id="typeNumber{resource.id}" class="form-control" readonly={!modify} value={resource.value} on:change={() => updateResource(resource)} on:click|stopPropagation={() => {}}/>
+						<input type="number" id="typeNumber{resource.id}" class="form-control" readonly={!modify} value={resource.value} min=0 on:change={() => updateResource(resource)} on:click|stopPropagation={() => {}}/>
 					</div>
 					
 					{#if modify}
