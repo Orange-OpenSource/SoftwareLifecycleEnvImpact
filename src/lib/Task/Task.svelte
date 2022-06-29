@@ -2,7 +2,7 @@
 	import ResourceList from '../Resource/ResourceList.svelte';
 	import CreateTask from './CreateTask.svelte';
 	import DeleteTask from './DeleteTask.svelte';
-import RenameTask from './RenameTask.svelte';
+	import RenameTask from './RenameTask.svelte';
 
 	/* Bound vars */
 	export let task;

@@ -1,11 +1,12 @@
 <script>
 	import { patch } from '$lib/api';
-	import ModalComponent from '../Modal.svelte';
+	import Modal from '../Modal.svelte';
 
 	/* Bound var */
 	export let project;
 
 	let newName = project.name
+	let showModal = false
 
 	async function renameProject() {
 		const res = await patch('projects/' + project.id, [{
@@ -19,16 +20,17 @@
 		else if (res.status === 409) {alert('Project already exists');}
 		else{
 			project.name = res.name
+			showModal = false;
 		}
 	}
 </script>
 
-<button data-bs-toggle="modal" data-bs-target="#modalRenameProject{project.id}" type="button" class="btn btn-light">Rename</button>
+<button on:click|stopPropagation={() => showModal = true} type="button" class="btn btn-light">Rename</button>
 
-<ModalComponent details={'RenameProject' + project.id}>
+<Modal bind:showModal>
 	<span slot="title">Rename project :</span>
 	<form slot="body" on:submit|preventDefault={renameProject}>
 		<input id="renameProjectInput{project.id}" placeholder="Project new name" bind:value={newName} required />
-		<button data-bs-dismiss="modal" type="submit" class="btn btn-primary">Rename project</button>
+		<button type="submit" class="btn btn-primary">Rename project</button>
 	</form>
-</ModalComponent>
+</Modal>

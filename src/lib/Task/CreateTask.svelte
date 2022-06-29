@@ -8,6 +8,7 @@
 	export let taskTemplates;
 
 	let selectedTemplate;
+	let showModal = false;
 
 	async function handleSubmit(){
 		if(selectedTemplate != null){
@@ -23,15 +24,16 @@
 				parentTask.subtasks.push(res)
 				/*Redondant assignment to force Svelte to update components*/
 				parentTask.subtasks = parentTask.subtasks
+				showModal = false
 			}
 		}
 	}
 </script>
 
-<button data-bs-toggle="modal" data-bs-target="#modalCreateTask{parentTask.id}" class="btn btn-primary">Add task</button>
+<button on:click|stopPropagation={() => showModal = true} class="btn btn-primary">Add task</button>
 
 {#if taskTemplates != undefined}
-	<Modal details={'CreateTask' + parentTask.id}>
+	<Modal bind:showModal>
 		<span slot="title">Create new task :</span>
 		<form slot="body" on:submit|preventDefault={handleSubmit}>
 			<select id="templateSelect" class="form-select" bind:value={selectedTemplate}>
@@ -40,7 +42,7 @@
 					<option value={template}>{template.name}</option>
 				{/each}
 			</select>
-			<button data-bs-dismiss="modal" type="submit" class="btn btn-primary">Create task</button>
+			<button type="submit" class="btn btn-primary">Create task</button>
 		</form>
 	</Modal>
 {/if}

@@ -5,12 +5,18 @@
     /*Bound var*/
     export let task
 
+    let error = undefined
+	let showModal = false
+
     let resourceTemplates = getResourceTemplate()
     let selectedTemplate;
 
+
     async function getResourceTemplate() {
+        error = undefined
         const res = await get('resourcetemplates')
-		if (res.status === 404) throw new Error('Cannot retrieve resource templates');
+		if (res.status === 404) 
+            error = 'Cannot retrieve resource templates'
 		else {
 			return res
 		}
@@ -18,25 +24,30 @@
     
     async function handleSubmit(){
 		if(selectedTemplate != null){
+            error = undefined
 			const res = await post('resources', {
                 name: selectedTemplate.name,
                 task_id: task.id,
                 template_id: selectedTemplate.id,
 			})
 
-			if (res.status === 409) alert('Resource already exist');
-			else{
-				task.resources.push(res)
+            if(res.status == undefined){
+                task.resources.push(res)
 				/*Redondant assignment to force Svelte to update components*/
 				task.resources = task.resources
-			}
+                showModal = false
+            }  else if (res.status === 409){
+                error = 'Resource already exist'
+            } else {
+                error = res.status + ' error'
+            }
 		}
 	}
 </script>
 
-<input on:click|stopPropagation={() => {}} data-bs-toggle="modal" data-bs-target="#modalCreateResource{task.id}" type="image" src="/add.svg" width="25" height="25" alt="Bin" loading="lazy"/>
+<input on:click={() => showModal = true} type="image" src="/add.svg" width="25" height="25" alt="Bin" loading="lazy"/>
 
-<Modal details={'CreateResource' + task.id}>
+<Modal bind:showModal>
     <span slot="title">Create new resource :</span>
     <form slot="body" on:submit|preventDefault={handleSubmit}>
         {#await resourceTemplates}
@@ -51,7 +62,11 @@
         {:catch error}
             <p style="color: red">{error.message}</p>
         {/await}
+
+        {#if error != undefined}
+            <p style="color: red">{error}</p>
+        {/if}
         
-        <button data-bs-dismiss="modal" type="submit" class="btn btn-primary">Create resource</button>
+        <button type="submit" data-dismiss="modal" class="btn btn-primary">Create resource</button>
     </form>
 </Modal>

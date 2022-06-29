@@ -1,12 +1,13 @@
 <script>
 import { post } from '$lib/api';
 
-	import ModalComponent from '$lib/Modal.svelte';
+	import Modal from '$lib/Modal.svelte';
 
 	/* Bound vars */
 	export let project;
 	export let selectedModel;
 
+	let showModal = false;
 	let modelName;
 
 	async function createModel(){
@@ -24,18 +25,19 @@ import { post } from '$lib/api';
 				selectedModel = res
 				/*Redondant assignment to force Svelte to update components*/
 				project.models = project.models
+				showModal = false
 			}
 		}
 	}
 </script>
 
-<button data-bs-toggle="modal" data-bs-target="#modalCreateModel" type="button" class="col-5 btn btn-light">Add model</button>
+<button on:click|stopPropagation={() => showModal = true} type="button" class="col-5 btn btn-light">Add model</button>
 
-<ModalComponent details={'CreateModel'}>
+<Modal bind:showModal>
 	<span slot="title">Create new model</span>
 	<form slot="body" on:submit|preventDefault={createModel}>
 		<input id="createModelInput" placeholder="Model name" required bind:value={modelName}/>
-		<button data-bs-dismiss="modal" type="submit" class="btn btn-primary">Create model</button>
+		<button type="submit" class="btn btn-primary">Create model</button>
 	</form>
 	
-</ModalComponent>
+</Modal>

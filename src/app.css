@@ -91,7 +91,7 @@ Split.js related properties
 	cursor: col-resize;
 }
 
-/*Fix for modal flickering when inside*/
+/*Fix for modal flickering when triggered from inside list group*/
 .list-group-item, .list-group-item:hover{
 	z-index: auto;
 }

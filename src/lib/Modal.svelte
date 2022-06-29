@@ -1,23 +1,32 @@
 <script>
-	export let details;
+	/*Bound var*/
+	export let showModal;
 </script>
 
-<div on:click|stopPropagation={() => {}} class="modal fade" id="modal{details}" tabindex="-1" aria-labelledby="modalLabel{details}" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered">
-		<div class="modal-content">
-			<div class="modal-header">
-				<div class="w-100 d-flex justify-content-between">
-					<h5 class="modal-title" id="modalLabel{details}"><slot name="title" /></h5>
-					<slot name="btndelete" />
+{#if showModal}
+  <div class="modal" id="sampleModal" tabindex="-1" role="dialog" aria-labelledby="sampleModalLabel" aria-hidden={false}>
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<div class="w-100 d-flex justify-content-between">
+						<h5 class="modal-title"><slot name="title" /></h5>
+						<slot name="btndelete" />
+					</div>
+					<button type="button" class="btn-close" on:click|stopPropagation={() => showModal = false} aria-label="Close" />
 				</div>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" />
-			</div>
-			<div class="modal-body">
-				<slot name="body" />
-			</div>
-			<div class="modal-footer">
-				<slot name="btnsave" />
+				<div class="modal-body">
+					<slot name="body" />
+				</div>
+				<div class="modal-footer">
+					<slot name="btnsave" />
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
+{/if}
+
+<style>
+  .modal {
+    display: block;
+  }
+</style>

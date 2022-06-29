@@ -1,12 +1,12 @@
 <script>
 	import { patch } from '$lib/api';
-import Modal from '$lib/Modal.svelte';
-	import ModalComponent from '$lib/Modal.svelte';
+	import Modal from '$lib/Modal.svelte';
 
 	/* Bound var */
 	export let model;
 
 	let newName = model.name
+	let showModal = false;
 
 	async function renameModel() {
 		const res = await patch('models/' + model.id, [{
@@ -20,17 +20,18 @@ import Modal from '$lib/Modal.svelte';
 		else if (res.status === 409) {alert('Model already exists');}
 		else{
 			model.name = res.name
+			showModal = false;
 		}
 	}
 </script>
 
-<button on:click|stopPropagation={() => {}} type="button" data-bs-toggle="modal" data-bs-target="#modalRenameModel{model.id}" class="btn btn-light">Rename</button>
+<button on:click|stopPropagation={() => showModal = true} type="button" class="btn btn-light">Rename</button>
 
-<ModalComponent details={'RenameModel' + model.id}>
+<Modal bind:showModal>
 	<span slot="title">Rename model :</span>
 	<form slot="body" on:submit|preventDefault={renameModel}>
 		<input id="renameModelInput{model.id}" placeholder="Model new name" bind:value={newName} required />
-		<button data-bs-dismiss="modal" type="submit" class="btn btn-primary">Rename model</button>
+		<button type="submit" class="btn btn-primary">Rename model</button>
 	</form>
 	
-</ModalComponent>
+</Modal>

@@ -1,11 +1,12 @@
 <script>
 	import { del } from '$lib/api';
-	import ModalComponent from '$lib/Modal.svelte';
+	import Modal from '$lib/Modal.svelte';
 
 	/*Bound var*/
 	export let models;
 
 	export let model;
+	export let showModal;
 
 	async function deleteModel(model) {
 		const res = await del('models/'+model.id)
@@ -14,16 +15,17 @@
 		else if (res.status === 403) alert('Cannot delete the root model of a project');
 		else{
 			models = models.filter(m => m.id != model.id);
+			showModal = false
 		}
 	}
 </script>
 
-<button on:click|stopPropagation={() => {}} data-bs-toggle="modal" data-bs-target="#modalDeleteModel{model.id}" class="btn btn-light">Delete</button>
+<button on:click|stopPropagation={() => showModal = true} class="btn btn-light">Delete</button>
 
-<ModalComponent details="DeleteModel{model.id}">
+<Modal bind:showModal>
 	<span slot="title">Confirm delete</span>
 
 	<span slot="body">Are you sure you want to delete <strong>{model.name}</strong> ?</span>
 
-	<button on:click|stopPropagation={() => deleteModel(model)} slot="btnsave" type="button" data-bs-dismiss="modal" class="btn btn-danger">Delete</button>
-</ModalComponent>
+	<button on:click|stopPropagation={() => deleteModel(model)} slot="btnsave" type="button" class="btn btn-danger">Delete</button>
+</Modal>
