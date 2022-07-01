@@ -15,7 +15,7 @@
 	async function updateImpacts() {
 		if (selectedTask != undefined) {
 			let res = await get('tasks/'+selectedTask.id+'/impacts')
-
+			/*TODO: bad solution, why two requests ?*/
 			if (res.status === 404) alert('No task found with this id' + selectedTask.id);
 			else {
 				impactByIndicator = res

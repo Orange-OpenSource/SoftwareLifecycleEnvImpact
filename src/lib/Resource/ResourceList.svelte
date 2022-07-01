@@ -7,6 +7,8 @@ import AddResource from './AddResource.svelte';
     export let task
     export let modify
 
+	let error = ''
+
 	async function updateResource(resource){
 		const newValue = document.getElementById('typeNumber' + resource.id).value
 		const res = await patch('resource/' + resource.id,[
@@ -17,11 +19,21 @@ import AddResource from './AddResource.svelte';
 			}
 		])
 
-		if (res.status === 403) alert('Patch format is incorrect');
-		else if (res.status === 404) alert('No resource found with this id' + resource.id);
-		else{
-			resource.value = res.value
-		}
+		error = '' 
+		switch (res.status) {
+            case undefined:
+				resource.value = res.value
+				break;
+			case 403:
+				error = 'Patch format is incorrect'
+				break;
+            case 404:
+                error = 'No resource found with this id' + resource.id
+				break;
+            default:
+                error = res.status + ' error'
+				break;
+        }
 	}
 </script>
 
@@ -41,6 +53,9 @@ import AddResource from './AddResource.svelte';
 				</div>
 			</li>
 			{#if modify}
+				{#if error != ''}
+					<p style="color: red">{error}</p>
+				{/if}
 				<li class="list-group-item d-flex align-items-center flex-row-reverse">
 					<AddResource bind:task={task}/>
 				</li>

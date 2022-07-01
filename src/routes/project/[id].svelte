@@ -11,9 +11,9 @@
 
 	let project;
 
-
 	let selectedModel;
 	let selectedTask;
+	let error = ''
 
 	$: selectedModel, updateSelectedTask()
 
@@ -42,17 +42,25 @@
 		})
 	}
 
-
 	onMount(async function () {
 		if (document.querySelector('div.modal-backdrop.fade.show')) document.querySelector('div.modal-backdrop.fade.show').remove();
 
 		const res = await get('projects/'+projectId)
-		if (res.status === '404') alert('No project found with this id');
-		else{
-			project = res
-			selectedModel = project.models[0];
-			updateSplit()
-		}
+
+		error = '' 
+		switch (res.status) {
+            case undefined:
+				project = res
+				selectedModel = project.models[0];
+				updateSplit()
+				break;
+            case 404:
+                error = 'No project found with this id'
+				break;
+            default:
+                error = res.status + ' error'
+				break;
+        }
 	});
 </script>
 
@@ -61,6 +69,9 @@
 </svelte:head>
 
 <div class="split">
+	{#if error != ''}
+		<p style="color: red">{error}</p>
+	{/if}
 	<div id="split-0">
 		<h2 class="title">My models</h2>
 		<ModelList bind:selectedModel bind:project />

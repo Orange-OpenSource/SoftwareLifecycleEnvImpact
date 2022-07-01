@@ -5,44 +5,49 @@
     /*Bound var*/
     export let task
 
-    let error = undefined
+    let error = ''
 	let showModal = false
 
     let resourceTemplates = getResourceTemplate()
     let selectedTemplate;
 
-
     async function getResourceTemplate() {
-        error = undefined
+        error = ''
         const res = await get('resourcetemplates')
-		if (res.status === 404) 
-            error = 'Cannot retrieve resource templates'
-		else {
-			return res
-		}
+        switch (res.status) {
+            case undefined:
+                return res
+            case 404:
+                error = 'Cannot retrieve resource templates'
+            default:
+                error = res.status + ' error'
+        }
     }
     
     async function handleSubmit(){
 		if(selectedTemplate != null){
-            error = undefined
+            error = ''
 			const res = await post('resources', {
                 name: selectedTemplate.name,
                 task_id: task.id,
                 template_id: selectedTemplate.id,
 			})
-
-            if(res.status == undefined){
-                task.resources.push(res)
-				/*Redondant assignment to force Svelte to update components*/
-				task.resources = task.resources
-                showModal = false
-            }  else if (res.status === 409){
-                error = 'Resource already exist'
-            } else {
-                error = res.status + ' error'
+            switch (res.status) {
+                case undefined:
+                    task.resources.push(res)
+                    /*Redondant assignment to force Svelte to update components*/
+                    task.resources = task.resources
+                    showModal = false
+                    break;
+                case 409:
+                    error = 'Resource already exist'
+                    break;
+                default:
+                    error = res.status + ' error'
+                    break;
             }
 		}
-	}
+	} /*TODO regarder pourquoi deux fois error et regarder */
 </script>
 
 <input on:click={() => showModal = true} type="image" src="/add.svg" width="25" height="25" alt="Bin" loading="lazy"/>
@@ -63,7 +68,7 @@
             <p style="color: red">{error.message}</p>
         {/await}
 
-        {#if error != undefined}
+        {#if error != ''}
             <p style="color: red">{error}</p>
         {/if}
         

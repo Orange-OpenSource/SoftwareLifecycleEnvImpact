@@ -8,14 +8,22 @@
 	export let project;
 
 	let showModal = false;
+	let error = ''
 
 	async function deleteProject(project) {
         const res = await del('projects/'+project.id)
-		
-        if (res.status === 404) alert('No project found with this id '+project.id);
-		else{
-			projects = projects.filter(p => p.id != project.id);
-			showModal = false
+
+		switch (res.status) {
+			case undefined:
+				projects = projects.filter(p => p.id != project.id);
+				showModal = false
+				break;
+			case 404:
+				error = 'No project found with this id '+project.id
+				break;
+			default:
+				error = res.status + ' error'
+				break;
 		}
 	}
 </script>
@@ -26,6 +34,10 @@
 	<span slot="title">Confirm delete</span>
 
 	<span slot="body">Are you sure you want to delete <strong>{project.name}</strong> ?</span>
+
+	{#if error != ''}
+		<p style="color: red">{error}</p>
+	{/if}
 
 	<button on:click|stopPropagation={() => deleteProject(project)} slot="btnsave" type="button" class="btn btn-danger">Delete</button>
 </Modal>

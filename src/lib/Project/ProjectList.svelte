@@ -6,19 +6,31 @@
 	import { get } from '$lib/api';
 	import DeleteProject from './DeleteProject.svelte';
 
-	let projects = [];
+	let projects = []; /*TODO make retrieval async*/
+	let error = '';
 
 	onMount(async function () {
 		const res = await get('projects')
-		if (res.status === 404) alert('Cannot retrieve projects');
-		else {
-			projects = res
-		}
+		error = '' 
+		switch (res.status) {
+            case undefined:
+                projects = res
+				break;
+            case 404:
+                error = 'Cannot retrieve projects'
+				break;
+            default:
+                error = res.status + ' error'
+				break;
+        }
 	});
 
 </script>
 
 <div>
+	{#if error != ''}
+		<p style="color: red">{error}</p>
+	{/if}
 	<ul class="list-group list-group-flush">
 		{#each projects as project}
 			<div class="list-group-item list-group-item-action">

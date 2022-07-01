@@ -7,6 +7,7 @@
 
 	let newName = model.name
 	let showModal = false;
+	let error = ''
 
 	async function renameModel() {
 		const res = await patch('models/' + model.id, [{
@@ -14,13 +15,23 @@
 			path: '/name',
 			value: newName,
 		}])
-
-		if (res.status === 403) alert('Patch format is incorrect');
-		else if (res.status === 404) alert('No model found with this id' + model.id);
-		else if (res.status === 409) {alert('Model already exists');}
-		else{
-			model.name = res.name
-			showModal = false;
+		switch (res.status) {
+			case undefined:
+				model.name = res.name
+				showModal = false;
+				break;
+			case 403:
+				error = 'Patch format is incorrect'
+				break;
+			case 404:
+				error = 'No model found with this id' + model.id
+				break;
+			case 409:
+				error = 'Model already exists'
+				break;
+			default:
+				error = res.status + ' error'
+				break;
 		}
 	}
 </script>
@@ -31,6 +42,11 @@
 	<span slot="title">Rename model :</span>
 	<form slot="body" on:submit|preventDefault={renameModel}>
 		<input id="renameModelInput{model.id}" placeholder="Model new name" bind:value={newName} required />
+
+		{#if error != ''}
+			<p style="color: red">{error}</p>
+		{/if}
+
 		<button type="submit" class="btn btn-primary">Rename model</button>
 	</form>
 	

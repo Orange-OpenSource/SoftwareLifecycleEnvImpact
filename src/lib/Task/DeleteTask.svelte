@@ -6,20 +6,31 @@
 	export let parentTask
 
 	export let task;
+	let error = '';
 
 	let showModal = false;
 
 	async function deleteTask() {
 		const res = await del('tasks/'+task.id)
 
-		if (res.status === 404) alert('No task with this id');
-		else if (res.status === 403) alert('Cannot delete the root task of a model');
-		else{
-			parentTask.subtasks = parentTask.subtasks.filter(s => s.id != task.id);
-			/*Redondant assignment to force Svelte to update components*/
-			parentTask.subtasks = parentTask.subtasks
-			showModal = false;
-		}
+		error = '' 
+		switch (res.status) {
+            case undefined:
+				parentTask.subtasks = parentTask.subtasks.filter(s => s.id != task.id);
+				/*Redondant assignment to force Svelte to update components*/
+				parentTask.subtasks = parentTask.subtasks
+				showModal = false;
+				break;
+			case 403:
+				error = 'Cannot delete the root task of a model'
+				break;
+            case 404:
+                error = 'No task with this id'
+				break;
+            default:
+                error = res.status + ' error'
+				break;
+        }
 	}
 </script>
 
@@ -29,6 +40,10 @@
 	<span slot="title">Confirm delete</span>
 
 	<span slot="body">Are you sure you want to delete <strong>{task.name}</strong> ?</span>
+
+	{#if error != ''}
+		<p style="color: red">{error}</p>
+	{/if}
 
 	<button on:click|stopPropagation={() => deleteTask()} slot="btnsave" type="button" class="btn btn-danger">Delete</button>
 </Modal>

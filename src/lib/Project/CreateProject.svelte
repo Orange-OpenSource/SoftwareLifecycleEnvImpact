@@ -6,16 +6,23 @@
 
 	let projectName;
 	let showModal = false;
+	let error = '';
 
 	async function createNewProject() {
 		const res = await post('projects', {
 			name: projectName
 		})
-		if (res.status === 409) {
-			alert('Project exists already');
-		} else {
-			showModal = false
-			if (browser) goto('/project/' + res.id); /*TODO useful ? */
+		switch (res.status) {
+			case undefined:
+				showModal = false
+				if (browser) goto('/project/' + res.id); /*TODO useful ? */
+				break;
+			case 409:
+				error = 'Project already exist'
+				break;
+			default:
+				error = res.status + ' error'
+				break;
 		}
 	}
 </script>
@@ -26,6 +33,9 @@
 	<span slot="title">Create new project</span>
 	<form slot="body" on:submit|preventDefault={createNewProject}>
 		<input id="createProjectInput" placeholder="Project name" required bind:value={projectName}/>
+        {#if error != ''}
+            <p style="color: red">{error}</p>
+        {/if}
 		<button type="submit" class="btn btn-primary">Create project</button>
 	</form>
 </Modal>

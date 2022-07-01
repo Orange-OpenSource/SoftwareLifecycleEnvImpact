@@ -8,14 +8,23 @@
     export let resource
     
     let showModal = false
+    let error = ''
 
     async function deleteResource(resource){
         const res = await del('resources/'+resource.id)
-        
-        if (res.status === 404) alert('No resource found with this id '+resource.id);
-        else{
-            task.resources = task.resources.filter(r => r.id != resource.id);
-            showModal = false;
+
+        error = '' 
+		switch (res.status) {
+            case undefined:
+                task.resources = task.resources.filter(r => r.id != resource.id);
+                showModal = false;
+				break;
+            case 404:
+                error = 'No resource found with this id '+resource.id
+				break;
+            default:
+                error = res.status + ' error'
+				break;
         }
     }
 </script>
@@ -26,6 +35,10 @@
 	<span slot="title">Confirm delete</span>
 
 	<span slot="body">Are you sure you want to delete <strong>{resource.name}</strong> ?</span>
+    
+    {#if error != ''}
+        <p style="color: red">{error}</p>
+    {/if}
 
 	<button on:click|stopPropagation={() => deleteResource(resource)} slot="btnsave" type="button" class="btn btn-danger">Delete</button>
 </Modal>

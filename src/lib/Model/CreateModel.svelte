@@ -1,6 +1,5 @@
 <script>
-import { post } from '$lib/api';
-
+	import { post } from '$lib/api';
 	import Modal from '$lib/Modal.svelte';
 
 	/* Bound vars */
@@ -9,6 +8,7 @@ import { post } from '$lib/api';
 
 	let showModal = false;
 	let modelName;
+	let error = ''
 
 	async function createModel(){
 		if(modelName != undefined && modelName != ''){
@@ -17,16 +17,22 @@ import { post } from '$lib/api';
 				project_id: project.id,
 			})
 
-			if (res.status === 409) {
-				alert('Model already exists');
-			} else {
-				modelName = ''
-				project.models.push(res)
-				selectedModel = res
-				/*Redondant assignment to force Svelte to update components*/
-				project.models = project.models
-				showModal = false
-			}
+			switch (res.status) {
+                case undefined:
+					modelName = ''
+					project.models.push(res)
+					selectedModel = res
+					/*Redondant assignment to force Svelte to update components*/
+					project.models = project.models
+					showModal = false
+                    break;
+                case 409:
+                    error = 'Model already exist'
+                    break;
+                default:
+                    error = res.status + ' error'
+                    break;
+            }
 		}
 	}
 </script>
@@ -37,6 +43,11 @@ import { post } from '$lib/api';
 	<span slot="title">Create new model</span>
 	<form slot="body" on:submit|preventDefault={createModel}>
 		<input id="createModelInput" placeholder="Model name" required bind:value={modelName}/>
+
+		{#if error != ''}
+			<p style="color: red">{error}</p>
+		{/if}
+
 		<button type="submit" class="btn btn-primary">Create model</button>
 	</form>
 	

@@ -10,6 +10,8 @@
 	let selectedTemplate;
 	let showModal = false;
 
+	let error = '';
+
 	async function handleSubmit(){
 		if(selectedTemplate != null){
 			const res = await post('tasks', {
@@ -19,12 +21,20 @@
 				template_id: selectedTemplate.id
 			})
 
-			if (res.status === 409) alert('Task already exists on this level');
-			else{
-				parentTask.subtasks.push(res)
-				/*Redondant assignment to force Svelte to update components*/
-				parentTask.subtasks = parentTask.subtasks
-				showModal = false
+			error = '' 
+			switch (res.status) {
+				case undefined:
+					parentTask.subtasks.push(res)
+					/*Redondant assignment to force Svelte to update components*/
+					parentTask.subtasks = parentTask.subtasks
+					showModal = false
+					break;
+				case 409:
+					error = 'Task already exists on this level'
+					break;
+				default:
+					error = res.status + ' error'
+					break;
 			}
 		}
 	}
@@ -42,6 +52,9 @@
 					<option value={template}>{template.name}</option>
 				{/each}
 			</select>
+			{#if error != ''}
+				<p style="color: red">{error}</p>
+			{/if}
 			<button type="submit" class="btn btn-primary">Create task</button>
 		</form>
 	</Modal>

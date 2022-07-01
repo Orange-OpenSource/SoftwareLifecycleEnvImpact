@@ -8,6 +8,7 @@
 	let showModal = false;
 
 	let newName = task.name
+	let error = '';
 	
 	async function renameTask(template) {
 		const res = await patch('tasks/'+task.id, [
@@ -17,12 +18,23 @@
 				value: newName
 			}
 		])
-		if (res.status === 403) alert('Patch format is incorrect');
-		else if (res.status === 404) alert('No task found with this id')
-		else {
+
+		error = '' 
+		switch (res.status) {
+            case undefined:
 			task.name = res.name
 			showModal = false
-		}
+				break;
+			case 403:
+				error = 'Patch format is incorrect'
+				break;
+            case 404:
+                error = 'No task found with this id'
+				break;
+            default:
+                error = res.status + ' error'
+				break;
+        }
 	}
 </script>
 
@@ -32,6 +44,9 @@
 	<span slot="title">Rename task</span>
 	<form slot="body" on:submit|preventDefault={renameTask}>
 		<input id="renameTask" placeholder="Task name" required bind:value={newName}/>
+		{#if error != ''}
+			<p style="color: red">{error}</p>
+		{/if}
 		<button type="submit" class="btn btn-primary">Rename task</button>
 	</form>
 </Modal>
