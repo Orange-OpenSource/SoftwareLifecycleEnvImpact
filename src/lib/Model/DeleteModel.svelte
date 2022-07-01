@@ -6,8 +6,8 @@
 	export let models;
 
 	export let model;
-	export let showModal;
 
+	let showModal;
 	let error = ''
 
 	async function deleteModel(model) {

@@ -56,7 +56,7 @@
     <span slot="title">Create new resource :</span>
     <form slot="body" on:submit|preventDefault={handleSubmit}>
         {#await resourceTemplates}
-            <p>Loading resource templates</p>
+            <div class="spinner-border" role="status"/>
         {:then resourceTemplates}
             <select class="form-select" bind:value={selectedTemplate}>
                 <option value={null} disabled selected class="form-check-input"> -- Templates -- </option>

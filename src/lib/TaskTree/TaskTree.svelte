@@ -1,7 +1,6 @@
 <script>
 	import Header from './Header.svelte';
 	import { get } from '$lib/api';
-	import { onMount } from 'svelte';
 	import Task from '../Task/Task.svelte';
 
 	/*Bound vars*/
@@ -10,7 +9,7 @@
 
 	let modify = false; // true if modifications are allowed (when "editing mode" is checked)
 	let rootTask;
-	let taskTemplates;
+	let taskTemplates = retrieveTaskTemplates();
 	let error = ''
 
 	/*Trigger update when selected model is updated*/
@@ -40,33 +39,36 @@
 		}
 	}
 
-	onMount(async function () {
+	async function retrieveTaskTemplates(){
 		const res = await get('tasktemplates')
-		error = '' 
 		switch (res.status) {
 			case undefined:
 				taskTemplates = res
 				break;
 			case 404:
-				error = 'Cannot retrieve task templates' + selectedModel.id
-				break;
+				throw new Error('Cannot retrieve task templates' + selectedModel.id)
 			default:
-				error = res.status + ' error'
-				break;
+				throw new Error(res.status + ' error')
 		}
-	});
+	}
 </script>
 
 <div class="col">
-	{#if error != ''}
-		<p style="color: red">{error}</p>
-	{/if}
-	{#if selectedModel == undefined}
-		No model selected
-	{:else if rootTask != undefined}
-		<Header bind:modify {selectedModel} />
-		<div class="col scroll">
-			<Task bind:task={rootTask} bind:selectedTask {modify} {selectedModel} parentTask={rootTask} {taskTemplates}/>
-		</div>
-	{/if}
+	{#await taskTemplates}
+		<div class="spinner-border" role="status"/>
+	{:then}
+		{#if error != ''}
+			<p style="color: red">{error}</p>
+		{/if}
+		{#if selectedModel == undefined}
+			No model selected
+		{:else if rootTask != undefined}
+			<Header bind:modify {selectedModel} />
+			<div class="col scroll">
+				<Task bind:task={rootTask} bind:selectedTask {modify} {selectedModel} parentTask={rootTask} {taskTemplates}/>
+			</div>
+		{/if}
+	{:catch error}
+		<p style="color: red">{error.message}</p>
+	{/await}
 </div>

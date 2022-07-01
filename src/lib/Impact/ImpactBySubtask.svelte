@@ -61,7 +61,7 @@
 
 		Chart.register(...registerables);
 
-		ctx = document.getElementById('myChart').getContext('2d');
+		ctx = document.getElementById('myChart').getContext('2d'); /*TODO investigate*/
 		myChart = getChart(ctx, labels, data);
 	});
 </script>

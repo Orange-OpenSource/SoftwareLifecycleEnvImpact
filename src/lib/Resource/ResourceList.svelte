@@ -10,7 +10,7 @@ import AddResource from './AddResource.svelte';
 	let error = ''
 
 	async function updateResource(resource){
-		const newValue = document.getElementById('typeNumber' + resource.id).value
+		const newValue = document.getElementById('typeNumber' + resource.id).value /*TODO remove this put svelte logic in place*/
 		const res = await patch('resource/' + resource.id,[
 			{
 				op: 'replace',

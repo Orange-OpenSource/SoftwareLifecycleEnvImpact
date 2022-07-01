@@ -1,19 +1,18 @@
 <script>
 	import { page } from '$app/stores';
-	import { onMount, tick } from 'svelte';
 	import TaskTree from '$lib/TaskTree/TaskTree.svelte';
 	import ModelList from '$lib/Model/ModelList.svelte';
 	import Impact from '$lib/Impact/Impact.svelte';
 	import { get } from '$lib/api';
 	import Split from 'split.js';
+import { onMount } from 'svelte';
 
 	let projectId = $page.params.id; // id of project clicked on (arg in URL "/project/X")
 
-	let project;
+	let project = retrieveProject();
 
 	let selectedModel;
 	let selectedTask;
-	let error = ''
 
 	$: selectedModel, updateSelectedTask()
 
@@ -42,25 +41,24 @@
 		})
 	}
 
-	onMount(async function () {
-		if (document.querySelector('div.modal-backdrop.fade.show')) document.querySelector('div.modal-backdrop.fade.show').remove();
-
+	async function retrieveProject() {
 		const res = await get('projects/'+projectId)
 
-		error = '' 
 		switch (res.status) {
-            case undefined:
+			case undefined:
 				project = res
 				selectedModel = project.models[0];
 				updateSplit()
 				break;
-            case 404:
-                error = 'No project found with this id'
-				break;
-            default:
-                error = res.status + ' error'
-				break;
-        }
+			case 404:
+				throw new Error('No project found with this id')
+			default:
+				throw new Error(res.status + ' error')
+		}
+	}
+
+	onMount(async function () {
+		if (document.querySelector('div.modal-backdrop.fade.show')) document.querySelector('div.modal-backdrop.fade.show').remove();
 	});
 </script>
 
@@ -69,21 +67,24 @@
 </svelte:head>
 
 <div class="split">
-	{#if error != ''}
-		<p style="color: red">{error}</p>
-	{/if}
-	<div id="split-0">
-		<h2 class="title">My models</h2>
-		<ModelList bind:selectedModel bind:project />
-	</div>
+	{#await project}
+		<div class="spinner-border" role="status"/>
+	{:then}
+		<div id="split-0">
+			<h2 class="title">My models</h2>
+			<ModelList bind:selectedModel bind:project />
+		</div>
 
-	<div id="split-1">
-		<h2 class="title">Tasks</h2>
-		<TaskTree bind:selectedTask {selectedModel} />
-	</div>
+		<div id="split-1">
+			<h2 class="title">Tasks</h2>
+			<TaskTree bind:selectedTask {selectedModel} />
+		</div>
 
-	<div id="split-2">
-		<h2 class="title">Impact</h2>
-		<Impact bind:selectedTask />
-	</div>
+		<div id="split-2">
+			<h2 class="title">Impact</h2>
+			<Impact bind:selectedTask />
+		</div>
+	{:catch error}
+		<p style="color: red">{error.message}</p>
+	{/await}
 </div>
