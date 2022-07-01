@@ -1,4 +1,6 @@
-# stage build
+###############
+# STAGE BUILD #
+###############
 FROM node:16-alpine
 
 WORKDIR /app
@@ -15,8 +17,9 @@ RUN npm audit fix
 # build SvelteKit app
 RUN npm run build
 
-
-# stage run
+#############
+# STAGE RUN #
+#############
 FROM node:16-alpine
 
 WORKDIR /app
