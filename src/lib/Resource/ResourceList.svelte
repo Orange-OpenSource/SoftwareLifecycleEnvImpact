@@ -56,9 +56,11 @@ import AddResource from './AddResource.svelte';
 				{#if error != ''}
 					<p style="color: red">{error}</p>
 				{/if}
-				<li class="list-group-item d-flex align-items-center flex-row-reverse">
-					<AddResource bind:task={task}/>
-				</li>
+				{#if resource == task.resources[task.resources.length - 1]}
+					<li class="list-group-item d-flex align-items-center flex-row-reverse">
+						<AddResource bind:task={task}/>
+					</li>
+				{/if}
 			{/if}
 		{/each}
 	</ul>

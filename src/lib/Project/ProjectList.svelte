@@ -4,27 +4,29 @@
 	import { getLastUpdate } from '$lib/utils';
 	import { get } from '$lib/api';
 	import DeleteProject from './DeleteProject.svelte';
+	import { onMount } from 'svelte';
 
-	let projects = retrieveProjects()
+	let projects
+	let error
 
-	async function retrieveProjects() {
+	onMount(async () => {
 		const res = await get('projects')
 		switch (res.status) {
             case undefined:
                 projects = res
 				break;
             case 404:
-				throw new Error('Cannot retrieve projects')
+				error =  new Error('Cannot retrieve projects')
             default:
-				throw new Error(res.status + ' error')
+				error = new Error(res.status + ' error')
         }
-	}
+  });
 </script>
 
 <div>
-	{#await projects}
-		<div class="spinner-border" role="status"/>
-	{:then}
+	{#if error}
+		<p style="color: red">{error.message}</p>
+	{:else if projects}
 		<ul class="list-group list-group-flush">
 			{#each projects as project}
 				<div class="list-group-item list-group-item-action">
@@ -46,9 +48,9 @@
 				</div>
 			{/each}
 		</ul>
-	{:catch error}
-		<p style="color: red">{error.message}</p>
-	{/await}
-	
+	{:else}
+		<div class="spinner-border" role="status"/>
+	{/if}
+
 	<CreateProject />
 </div>
