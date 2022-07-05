@@ -1,4 +1,4 @@
-const base = '/api/v1';
+const base = 'http://localhost:5000/api/v1';
 
 async function send({ method, path, data=''}) {
 	const opts = { method, headers: {} };
@@ -13,9 +13,14 @@ async function send({ method, path, data=''}) {
 		opts.headers['Authorization'] = `Token ${token}`;
 	}
     */
+	let res
+	try{
+		res = await fetch(`${base}/${path}`, opts)
+	}catch(e) {
+		return 'Network error'
+	}
 
-	return fetch(`${base}/${path}`, opts)
-		.then((r) => r.text())
+	return res.text()
 		.then((json) => {
 			try {
 				return JSON.parse(json);

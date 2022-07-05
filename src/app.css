@@ -5,6 +5,10 @@ main {
 	height: 100%;
 }
 
+li {
+	text-align: left;
+}
+
 /*
 TaskTree properties
 */
