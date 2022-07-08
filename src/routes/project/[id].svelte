@@ -5,14 +5,18 @@
 	import Impact from '$lib/Impact/Impact.svelte';
 	import { get } from '$lib/api';
 	import Split from 'split.js';
-import { onMount } from 'svelte';
+	import { onMount } from 'svelte';
 
 	let projectId = $page.params.id; // id of project clicked on (arg in URL "/project/X")
 
-	let project = retrieveProject();
+	let project
 
 	let selectedModel;
 	let selectedTask;
+
+	let splitjs;
+
+	let error
 
 	$: selectedModel, updateSelectedTask()
 
@@ -24,7 +28,7 @@ import { onMount } from 'svelte';
 	}
 
 	function updateSplit(){
-		Split(['#split-0', '#split-1', '#split-2'], {
+		splitjs = Split(['#split-0', '#split-1', '#split-2'], {
 			sizes: [25, 50, 25],
 			minSize: 0,
 			snapOffset: 150,
@@ -51,14 +55,15 @@ import { onMount } from 'svelte';
 				updateSplit()
 				break;
 			case 404:
-				throw new Error('No project found with this id')
+				error = new Error('No project found with this id')
 			default:
-				throw new Error(res.status + ' error')
+				error = new Error(res.status + ' error')
 		}
 	}
 
 	onMount(async function () {
 		if (document.querySelector('div.modal-backdrop.fade.show')) document.querySelector('div.modal-backdrop.fade.show').remove();
+		retrieveProject();
 	});
 </script>
 
@@ -66,25 +71,23 @@ import { onMount } from 'svelte';
 	<title>Models</title>
 </svelte:head>
 
+{#if error}
+	<p style="color: red">{error.message}</p>
+{/if}
+
 <div class="split">
-	{#await project}
-		<div class="spinner-border" role="status"/>
-	{:then}
-		<div id="split-0">
-			<h2 class="title">My models</h2>
-			<ModelList bind:selectedModel bind:project />
-		</div>
+	<div id="split-0">
+		<h2 class="title">My models</h2>
+		<ModelList bind:selectedModel bind:project />
+	</div>
 
-		<div id="split-1">
-			<h2 class="title">Tasks</h2>
-			<TaskTree bind:selectedTask {selectedModel} />
-		</div>
+	<div id="split-1">
+		<h2 class="title">Tasks</h2>
+		<TaskTree bind:selectedTask {selectedModel} />
+	</div>
 
-		<div id="split-2">
-			<h2 class="title">Impact</h2>
-			<Impact bind:selectedTask />
-		</div>
-	{:catch error}
-		<p style="color: red">{error.message}</p>
-	{/await}
+	<div id="split-2">
+		<h2 class="title">Impact</h2>
+		<Impact bind:selectedTask />
+	</div>
 </div>
