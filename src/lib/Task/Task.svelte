@@ -12,7 +12,6 @@
 	export let modify;
 	export let selectedModel;
 	export let taskTemplates;
-
 </script>
 
 <div class="{task.parent_task_id != null ? 'task' :''}">
@@ -32,7 +31,7 @@
 					<h6 class="card-subtitle mb-2 text-muted">Resources: </h6>
 
 					<div class="card-text">
-						<ResourceList bind:task={task} {modify}/>
+						<ResourceList bind:task {modify}/>
 					</div>
 				{/if}
 				{#if modify}
