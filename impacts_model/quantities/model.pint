@@ -2,7 +2,7 @@ cubic_meter = meter ** 3 = m3
 kg_co2e = kilogram
 kg_Sbe = kilogram
 mol_Hpos = mol
-disease_incidence = mol
+disease_incidence = []
 kg_Bq_u235e = becquerel * kg
 electronic_waste = tonne
 primary_MJ = J * 1e6
