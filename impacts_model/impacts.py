@@ -82,19 +82,6 @@ class AggregatedImpactSchema(Schema):
             out_data[impact_indicator_name.replace("ImpactIndicator.", "")] = str(in_data["impacts"][impact_indicator_name])
         return out_data
 
-class TaskImpact(Schema):
-    def __init__(
-        self,
-        task,
-        task_impact: AggregatedImpact,
-    ):
-        self.task = task
-        self.task_impact = task_impact
-
-class TaskImpactSchema(Schema):
-    task = fields.Nested("TaskSchema")
-    task_impact = fields.Nested("AggregatedImpactSchema")
-
 ##############################
 # AggregatedImpactByResource #
 ##############################
