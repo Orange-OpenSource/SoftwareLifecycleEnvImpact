@@ -18,8 +18,7 @@
             data = []
 
             for (const item of impactBySubtask){
-                if(item.task.name != undefined && item.task_impact.CLIMATE_CHANGE != undefined){
-                    labels.push(item.task.name)
+                if(item.task_impact.CLIMATE_CHANGE != undefined){
                     let quantity = item.task_impact.CLIMATE_CHANGE.replace(" kg_co2e","")
                     data.push(quantity)
                 }

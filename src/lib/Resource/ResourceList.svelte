@@ -11,7 +11,7 @@ import AddResource from './AddResource.svelte';
 
 	async function updateResource(resource){
 		const newValue = document.getElementById('typeNumber' + resource.id).value /*TODO remove this put svelte logic in place*/
-		const res = await patch('resource/' + resource.id,[
+		const res = await patch('resources/' + resource.id,[
 			{
 				op: 'replace',
 				path: '/value',
@@ -44,7 +44,7 @@ import AddResource from './AddResource.svelte';
 				<div class="d-flex w-100 justify-content-between align-items-center">
 					<div>
 						<label class="input-group-text" for="typeNumber">{resource.name}</label>
-						<input type="number" id="typeNumber{resource.id}" class="form-control" readonly={!modify} value={resource.value} min=0 on:change={() => updateResource(resource)} on:click|stopPropagation={() => {}}/>
+						<input type="number" id="typeNumber{resource.id}" class="form-control" readonly={!modify} value={resource.value} min=0 on:change={() => updateResource(resource)} on:click={() => {}}/>
 					</div>
 					
 					{#if modify}

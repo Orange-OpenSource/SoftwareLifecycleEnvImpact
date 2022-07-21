@@ -20,7 +20,7 @@
 		<!--Highlight border if task selected-->
 		<div on:click|stopPropagation={() => selectedTask = task} class="card {task === selectedTask ? 'border-primary' : ''}" style="min-width: 18rem;">
 			<div class="card-body">
-				<div class="d-flex">
+				<div class="d-flex justify-content-between">
 					<h5 class="card-title">{task.name}</h5>
 					{#if modify}
 						<RenameTask bind:task/>
