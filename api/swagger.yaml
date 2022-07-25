@@ -244,25 +244,6 @@ paths:
         404:
           description: No model found with this id
 
-  /models/{model_id}/impact:
-    parameters:
-      - name: model_id
-        in: path
-        description: Id of the model to get the impact_sources from
-        type: integer
-        required: true
-    get:
-      operationId: api.routes.model.get_impacts
-      tags:
-        - Model
-        - Impact
-      summary: Get model impact
-      responses:
-        200:
-          description: Impacts
-          schema:
-            $ref: '#/definitions/EnvironmentalImpactTree'
-
   /tasks:
     get:
       operationId: api.routes.task.get_tasks
@@ -742,17 +723,3 @@ definitions:
         resources:
           type: object
           $ref: '#/definitions/AggregatedImpact'
-
-    EnvironmentalImpactTree:
-      type: object
-      properties:
-        task:
-          type: object
-          $ref: '#/definitions/Task'
-        environmental_impact:
-          type: object
-          $ref: '#/definitions/AggregatedImpact'
-        subtasks_impacts:
-          type: array
-          items:
-            $ref: '#/definitions/AggregatedImpact' # TODO check if not another EnvironmentalImpactTree

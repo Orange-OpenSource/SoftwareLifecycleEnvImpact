@@ -10,7 +10,7 @@ from pint import Quantity
 
 from impacts_model.data_model import Model, Project, Resource, Task
 from impacts_model.impact_sources import ImpactSource
-from impacts_model.impacts import EnvironmentalImpactTree, ImpactIndicator
+from impacts_model.impacts import ImpactIndicator
 from impacts_model.quantities.quantities import (
     CUBIC_METER,
     DISEASE_INCIDENCE,
@@ -148,39 +148,6 @@ def test_get_task_impact_list(
         ImpactIndicator.PRIMARY_ENERGY: 0 * PRIMARY_MJ,
         ImpactIndicator.RAW_MATERIALS: 0 * TONNE_MIPS,
     }
-
-
-@mock.patch(
-    "impacts_model.templates.ResourceTemplate._load_impacts",
-    MagicMock(return_value=[ImpactSource(1000 * KG_CO2E)]),
-)
-def test_get_task_environmental_impact_tree(task_fixture_with_subtask: Task) -> None:
-    """
-    Test return value of get_impact_quantity is in form of TaskImpact
-    """
-    impact = task_fixture_with_subtask.get_environmental_impact_tree()
-    assert isinstance(impact, EnvironmentalImpactTree)
-
-    assert impact.task == task_fixture_with_subtask
-    # Assert that climate change is correct for the complete task
-    assert (
-        impact.task_impact.impacts[ImpactIndicator.CLIMATE_CHANGE]
-        == task_fixture_with_subtask.get_environmental_impact().impacts[
-            ImpactIndicator.CLIMATE_CHANGE
-        ]
-    )
-
-    # Assert that climate change is correct for the subtask
-    subtask = task_fixture_with_subtask.subtasks[0]
-    assert (
-        impact.subtasks_impacts[0].task_impact.impacts[
-            ImpactIndicator.CLIMATE_CHANGE
-        ]
-        == subtask.get_environmental_impact().impacts[ImpactIndicator.CLIMATE_CHANGE]
-    )
-
-    # Todo test also resource impact
-
 
 @mock.patch(
     "impacts_model.templates.ResourceTemplate._load_impacts",

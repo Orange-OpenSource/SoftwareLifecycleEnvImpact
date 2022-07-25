@@ -39,7 +39,6 @@ package quantities{}
 package Impact{
 class ImpactIndicator
 class EnvironmentalImpact
-class EnvironmentalImpactTree
 }
 
 package templates <<Rectangle>> {
@@ -54,7 +53,6 @@ Model "1" *-- "*" Task
 Task "1" *-- "*" Resource
 
 EnvironmentalImpact -- ImpactIndicator 
-EnvironmentalImpactTree  "1" *-- "*" EnvironmentalImpact
 
 Resource -- ResourceTemplate : type
 
@@ -88,7 +86,6 @@ Resource -- ResourceTemplate : type
 	- Niveau task:
 		- Aggregated object with all impacts
 		- Quantity for one ImpactIndicator
-		- EnvironmentalImpactTree object with all impacts and those of its subtasks
 		- ResourcesEnvironmentalImpact object, EnvironmentalImpact per resource type
 	- Niveau resource:
 		- AggregatedImpact object with all impacts

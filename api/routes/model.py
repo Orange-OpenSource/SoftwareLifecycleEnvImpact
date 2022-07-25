@@ -5,7 +5,6 @@ from flask import abort, request
 
 from api.routes.task import get_task
 from impacts_model.data_model import db, Model, ModelSchema, Project, Task
-from impacts_model.impacts import EnvironmentalImpactTreeSchema
 
 
 def get_models() -> Any:
@@ -110,26 +109,6 @@ def get_tasks(model_id: int) -> Any:
             404,
             "No model found for Id: {model_id}".format(model_id=model_id),
         )
-
-
-def get_impacts(model_id: int) -> Any: # TODO used ?
-    """
-    GET /models/{model_id}/impact
-    :param model_id: id of the model to get the impact
-    :return: All impact_sources computed for a model
-    """
-    model = Model.query.filter(Model.id == model_id).one_or_none()
-
-    if model is not None:
-        impact_tree = model.root_task.get_environmental_impact_tree()
-        schema = EnvironmentalImpactTreeSchema()
-        return schema.dump(impact_tree)
-    else:
-        return abort(
-            404,
-            "No model found for Id: {model_id}".format(model_id=model_id),
-        )
-
 
 def create_model(model: dict[str, Any]) -> Any:
     """

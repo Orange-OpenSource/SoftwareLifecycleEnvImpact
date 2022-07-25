@@ -6,7 +6,7 @@ from marshmallow_sqlalchemy.fields import Nested
 from pint import Quantity
 from sqlalchemy import func
 
-from impacts_model.impacts import (AggregatedImpact, AggregatedImpactByResource, EnvironmentalImpactTree,
+from impacts_model.impacts import (AggregatedImpact, AggregatedImpactByResource,
                                    ImpactIndicator)
 from impacts_model.templates import ResourceTemplate
 
@@ -127,19 +127,6 @@ class Task(db.Model):  # type: ignore
             impacts_list.append(subtask.get_environmental_impact())
         return impacts_list
 
-    def get_environmental_impact_tree(self) -> EnvironmentalImpactTree: # TODO check if used and useful
-        """
-        Get a Task complete Environmental impact via an AggregatedImpact object as well as those of its subtasks
-        Returns an EnvironmentalTree object
-        :return: an EnvironmentImpactTree object with all the task environmental impacts
-        """
-        return EnvironmentalImpactTree(
-            task=self,
-            task_impact=self.get_environmental_impact(),
-            resources_impact=self.get_impact_by_resource_type(),
-            subtasks_impacts=[s.get_environmental_impact_tree() for s in self.subtasks],
-        )
-
     def get_indicator_impact(self, indicator: ImpactIndicator) -> Quantity[Any]:
         """
         Compute and return a Task impact for a given ImpactIndicator
@@ -165,20 +152,20 @@ class Task(db.Model):  # type: ignore
 
         for r in self.resources:
             impacts_to_add = r.get_environmental_impact()
-            if r.type in result.impacts:
-                result.impacts[r.type].merge_aggregated_impact(impacts_to_add)
+            if r.type in result:
+                result[r.type].merge_aggregated_impact(impacts_to_add)
             else:
-                result.impacts[r.type] = impacts_to_add
+                result[r.type] = impacts_to_add
 
         for s in self.subtasks:
             subtasks_impacts = s.get_impact_by_resource_type()
-            for resource_type in subtasks_impacts.impacts:
-                if resource_type in result.impacts:
-                    result.impacts[resource_type].merge_aggregated_impact(
-                        subtasks_impacts.impacts[resource_type]
+            for resource_type in subtasks_impacts:
+                if resource_type in result:
+                    result[resource_type].merge_aggregated_impact(
+                        subtasks_impacts[resource_type]
                     )
                 else:
-                    result.impacts[resource_type] = subtasks_impacts.impacts[resource_type]
+                    result[resource_type] = subtasks_impacts[resource_type]
 
         return result
 
