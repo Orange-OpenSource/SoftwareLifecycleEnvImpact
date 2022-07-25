@@ -4,7 +4,7 @@ import jsonpatch
 from flask import abort, request
 
 from impacts_model.data_model import db, Model, Resource, Task, TaskSchema
-from impacts_model.impacts import AggregatedImpactSchema
+from impacts_model.impacts import AggregatedImpactSchema, TaskImpact, TaskImpactSchema
 from impacts_model.templates import get_task_template_by_id, TaskTemplate
 
 
@@ -66,12 +66,16 @@ def update_task(task_id: int) -> Any:
         )
 
 
-def get_task_impacts(task_id: int):
+def get_task_impacts(task_id: int): # TODO update test
     task = Task.query.filter(Task.id == task_id).one_or_none()
 
     if task is not None:
-        task_impact = TaskImpact(task.get_environmental_impact())
-        schema = TaskImpactSchema() # TODO class TaskImpact useless
+        task_impact = TaskImpact(
+            task.get_environmental_impact(),
+            task.get_subtasks_impact(),
+            task.get_impact_by_resource_type()
+        )
+        schema = TaskImpactSchema()
         return schema.dump(task_impact)
     else:
         return abort(

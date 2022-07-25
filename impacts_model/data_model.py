@@ -118,7 +118,16 @@ class Task(db.Model):  # type: ignore
 
         return environmental_impact
 
-    def get_environmental_impact_tree(self) -> EnvironmentalImpactTree:
+
+    def get_subtasks_impact(self) -> List[AggregatedImpact]:
+        # TODO test comment
+        # TODO add task id
+        impacts_list = []
+        for subtask in self.subtasks:
+            impacts_list.append(subtask.get_environmental_impact())
+        return impacts_list
+
+    def get_environmental_impact_tree(self) -> EnvironmentalImpactTree: # TODO check if used and useful
         """
         Get a Task complete Environmental impact via an AggregatedImpact object as well as those of its subtasks
         Returns an EnvironmentalTree object
@@ -152,24 +161,24 @@ class Task(db.Model):  # type: ignore
         :param task: task to get the impact from
         :return: AggregatedImpactByResource object, with AggregatedImpact objects by resource type
         """
-        result: AggregatedImpactByResource = {}
+        result = AggregatedImpactByResource()
 
         for r in self.resources:
             impacts_to_add = r.get_environmental_impact()
-            if r.type in result:
-                result[r.type].merge_aggregated_impact(impacts_to_add)
+            if r.type in result.impacts:
+                result.impacts[r.type].merge_aggregated_impact(impacts_to_add)
             else:
-                result[r.type] = impacts_to_add
+                result.impacts[r.type] = impacts_to_add
 
         for s in self.subtasks:
             subtasks_impacts = s.get_impact_by_resource_type()
-            for resource_type in subtasks_impacts:
-                if resource_type in result:
-                    result[resource_type].merge_aggregated_impact(
-                        subtasks_impacts[resource_type]
+            for resource_type in subtasks_impacts.impacts:
+                if resource_type in result.impacts:
+                    result.impacts[resource_type].merge_aggregated_impact(
+                        subtasks_impacts.impacts[resource_type]
                     )
                 else:
-                    result[resource_type] = subtasks_impacts[resource_type]
+                    result.impacts[resource_type] = subtasks_impacts.impacts[resource_type]
 
         return result
 

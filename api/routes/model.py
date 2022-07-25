@@ -112,7 +112,7 @@ def get_tasks(model_id: int) -> Any:
         )
 
 
-def get_impacts(model_id: int) -> Any:
+def get_impacts(model_id: int) -> Any: # TODO used ?
     """
     GET /models/{model_id}/impact
     :param model_id: id of the model to get the impact

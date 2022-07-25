@@ -78,18 +78,44 @@ class AggregatedImpactSchema(Schema):
     def translate_quantities(self, in_data, **kwargs) -> dict[str, str]:  # type: ignore
         """Translate pint quantities to str before serialization"""
         out_data: dict[str, str] = {}
-        for impact_indicator_name in in_data["impacts"]:
-            out_data[impact_indicator_name.replace("ImpactIndicator.", "")] = str(in_data["impacts"][impact_indicator_name])
+        if "impacts" in in_data:
+            for impact_indicator_name in in_data["impacts"]:
+                out_data[impact_indicator_name.replace("ImpactIndicator.", "")] = str(in_data["impacts"][impact_indicator_name])
         return out_data
+
+class TaskImpact:
+    def __init__(
+        self,
+        task_impact: AggregatedImpact,
+        subtasks: List[AggregatedImpact],
+        resources: AggregatedImpactByResource
+    ):
+        self.task_impact = task_impact
+        self.subtasks = subtasks
+        self.resources = resources
+
+class TaskImpactSchema(Schema):
+    task_impact = fields.Nested("AggregatedImpactSchema")
+    subtasks = fields.Nested("AggregatedImpactSchema", many=True)
+    resources = fields.Nested("AggregatedImpactByResourceSchema")
 
 ##############################
 # AggregatedImpactByResource #
 ##############################
-AggregatedImpactByResource = dict[str, AggregatedImpact]
+
+class AggregatedImpactByResource:
+    def __init__(self, impacts: dict[str, AggregatedImpact] = None) -> None:
+        self.impacts: dict[str, AggregatedImpact] = (
+            impacts if impacts is not None else {}
+        )
+
+class AggregatedImpactByResourceSchema(Schema):
+    impacts = fields.Dict(keys=fields.Str(), values=fields.Nested("AggregatedImpactSchema"))
+
 ###########################
 # EnvironmentalImpactTree #
 ###########################
-class EnvironmentalImpactTree:
+class EnvironmentalImpactTree: # TODO is this useful ?
     """
     Represent a complete tree of task with impact for each task and its children
     """
