@@ -87,7 +87,9 @@
 	</div>
 
 	<div id="split-2">
-		<h2 class="title">Impact</h2>
-		<Impact bind:selectedTask />
+		<div class="sticky-top">
+			<h2 class="title">Impact</h2>
+			<Impact bind:selectedTask />
+		</div>
 	</div>
 </div>

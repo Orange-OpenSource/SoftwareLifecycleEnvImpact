@@ -18,8 +18,8 @@
             data = []
 
             for (const item of impactBySubtask){
-                if(item.task_impact.CLIMATE_CHANGE != undefined){
-                    let quantity = item.task_impact.CLIMATE_CHANGE.replace(" kg_co2e","")
+                if(item.CLIMATE_CHANGE != undefined){
+                    let quantity = item.CLIMATE_CHANGE.replace(" kg_co2e","")
                     data.push(quantity)
                 }
             }
@@ -65,9 +65,7 @@
 	});
 </script>
 
-    <h5>By subtask</h5>
-
-    <div>
-        <canvas id="myChart" width="400" height="400" />
-    </div>
+<div>
+	<canvas id="myChart" width="400" height="400" />
+</div>
 
