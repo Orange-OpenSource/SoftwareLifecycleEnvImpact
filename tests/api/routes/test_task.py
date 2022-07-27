@@ -163,3 +163,12 @@ def test_delete_task(client: FlaskClient, db: SQLAlchemy, task_fixture: Task) ->
     # Test no task 404
     response = client.delete(tasks_root_path + "/" + str(task_fixture.id))
     assert response.status_code == 404
+
+def test_get_task_impacts(client: FlaskClient, db: SQLAlchemy, task_fixture: Task) -> None:
+    """
+    Test response of GET /tasks/<id>/impacts
+    :param client: flask client fixture
+    :param db: SQLAlchemy database fixture
+    :param task_fixture: Task fixture
+    """
+    # TODO

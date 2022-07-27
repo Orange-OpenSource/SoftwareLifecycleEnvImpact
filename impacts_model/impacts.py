@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Any, List
+from typing import Any
 
 from marshmallow import fields, post_dump, Schema
 from pint import Quantity
@@ -88,18 +88,21 @@ class AggregatedImpactSchema(Schema):
 class TaskImpact:
     def __init__(
             self,
+            task_id: int,
             task_impact: AggregatedImpact,
-            subtasks: List[AggregatedImpact],
+            subtasks: dict[int, AggregatedImpact],
             resources: AggregatedImpactByResource
     ):
+        self.task_id = task_id
         self.task_impact = task_impact
         self.subtasks = subtasks
         self.resources = resources
 
 
 class TaskImpactSchema(Schema):
+    task_id = fields.Integer()
     task_impact = fields.Nested("AggregatedImpactSchema")
-    subtasks = fields.Nested("AggregatedImpactSchema", many=True)
+    subtasks = fields.Dict(keys=fields.Integer(), values=fields.Nested("AggregatedImpactSchema"))
     resources = fields.Dict(keys=fields.Str(), values=fields.Nested("AggregatedImpactSchema"))
 
 

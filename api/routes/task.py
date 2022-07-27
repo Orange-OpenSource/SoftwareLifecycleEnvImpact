@@ -67,10 +67,17 @@ def update_task(task_id: int) -> Any:
 
 
 def get_task_impacts(task_id: int): # TODO update test
+    """
+    GET /tasks/<task_id>/impacts
+    Get a task environmental impact
+    :param task_id: the id of the task to get the impact
+    :return: TaskImpact if task exist, 404 else
+    """
     task = Task.query.filter(Task.id == task_id).one_or_none()
 
     if task is not None:
         task_impact = TaskImpact(
+            task_id,
             task.get_environmental_impact(),
             task.get_subtasks_impact(),
             task.get_impact_by_resource_type()

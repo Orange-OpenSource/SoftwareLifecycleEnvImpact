@@ -3,7 +3,7 @@ from typing import Any
 import jsonpatch
 from flask import abort, request
 
-from impacts_model.data_model import db, Resource, ResourceSchema
+from impacts_model.data_model import db, Resource, ResourceSchema, Task
 from impacts_model.impacts import AggregatedImpactSchema
 from impacts_model.templates import get_resource_template_by_id, ResourceTemplate
 
@@ -29,18 +29,22 @@ def create_resource(resource: dict[str, Any]) -> Any:
     task_id = resource.get("task_id")
     template_id = resource.get("template_id")
 
-    existing_task = (
+    existing_resource = (
         Resource.query.filter(Resource.name == name)
             .filter(Resource.task_id == task_id)
             .one_or_none()
     )
+    existing_task = (
+        Task.query.filter(Task.id == task_id)
+            .one_or_none()
+    )
 
-    if existing_task is None:
+    if existing_resource is None and existing_task is not None:
         resource_template: ResourceTemplate = get_resource_template_by_id(template_id)
 
         resource = Resource(
             name=name,
-            task_id=task_id,  #TODO check if this task exitst
+            task_id=task_id,
             type=resource_template.name,
             value=100,
         )

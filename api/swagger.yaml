@@ -721,5 +721,7 @@ definitions:
           type: object
           $ref: '#/definitions/AggregatedImpact'
         resources:
-          type: object
-          $ref: '#/definitions/AggregatedImpact'
+          type: string
+          additionalProperties:
+            type: object
+            $ref: '#/definitions/AggregatedImpact'
