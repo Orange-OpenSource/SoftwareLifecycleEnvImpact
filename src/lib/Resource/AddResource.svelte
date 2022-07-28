@@ -47,7 +47,7 @@
                     break;
             }
 		}
-	} /*TODO regarder pourquoi deux fois error et regarder */
+	} /*TODO regarder pourquoi deux fois error*/
 </script>
 
 <input on:click={() => showModal = true} type="image" src="/add.svg" width="25" height="25" alt="Bin" loading="lazy"/>

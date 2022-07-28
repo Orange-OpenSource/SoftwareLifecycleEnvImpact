@@ -15,7 +15,7 @@
 		switch (res.status) {
 			case undefined:
 				showModal = false
-				if (browser) goto('/project/' + res.id); /*TODO useful ? */
+				if (browser) goto('/project/' + res.id);
 				break;
 			case 409:
 				error = 'Project already exist'

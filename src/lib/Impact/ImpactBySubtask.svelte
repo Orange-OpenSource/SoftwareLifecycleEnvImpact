@@ -2,70 +2,80 @@
     import { onMount } from 'svelte';
 	import { Chart, registerables } from 'chart.js';
 
-    export let impactBySubtask;
+    export let impactBySubtask = undefined;
+	
+	/*Bound var*/
+	export let selectedTask = undefined;
 
-    /* Var needed for chartjs */
-	let labels = [];
-	let data = [];
-	let ctx;
-	let myChart;
+	let pieCanvas;
+
+	let chart;
+	let chartLabels = []; /*chartjs require a separated array of labels*/
+	let chartData = [];
 
     $: impactBySubtask, updateChart()
 
     async function updateChart(){
-        if(impactBySubtask != undefined){
-            labels = []
-            data = []
+        if(chart != undefined && impactBySubtask != undefined && selectedTask != undefined){
+			/*Clear chart data*/
+            chartLabels = []
+            chartData = []
 
-            for (const item of impactBySubtask){
-                if(item.CLIMATE_CHANGE != undefined){
-                    let quantity = item.CLIMATE_CHANGE.replace(" kg_co2e","")
-                    data.push(quantity)
+			for (const [task_id, impact] of Object.entries(impactBySubtask)) {
+				/*Retrieve task object from its id*/
+				let task = selectedTask.subtasks.find(s => s.id == task_id)
+
+				chartLabels.push(task.name)
+				if(impact["Climate change"] != undefined){
+					/**For each task push it with its associated impact*/
+                    chartData.push({
+						'task': task,
+						'impact':impact["Climate change"].value
+					})
                 }
-            }
+			}
 
-            myChart.data.labels = labels;
-            myChart.data.datasets[0].data = data;
-            myChart.update();
+			/*Redundant assignement for chartjs to see the updates*/
+            chart.data.labels = chartLabels;
+            chart.data.datasets[0].data = chartData;
+            chart.update();
         }
     }
 
-    /**
-	 * Returns a pie chart filled with `labels` and `data`.
-	 *
-	 * @param ctx		the canvas context
-	 * @param labels 	the labels
-	 * @param data		the data
-	 * @returns 		the pie Chart object
-	 */
-	export function getChart(ctx, labels, data) {
-		return new Chart(ctx, {
+	onMount(async function () {
+		/*Chart config*/
+		Chart.register(...registerables);
+		let ctx = pieCanvas.getContext('2d');
+
+		chart = new Chart(ctx, {
 			type: 'pie',
 			data: {
-				labels: labels,
+				labels: chartLabels,
 				datasets: [
 					{
-						label: 'My First Dataset',
-						data: data,
+						data: chartData,
 						backgroundColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(255, 205, 86)', 'rgb(153, 102, 255)', 'rgb(75, 192, 192)'],
 						hoverOffset: 4
 					}
 				]
-			}
-		});
-	}
-
-	onMount(async function () {
-		if (document.querySelector('div.modal-backdrop.fade.show')) document.querySelector('div.modal-backdrop.fade.show').remove(); /*TODO what is this ?*/
-
-		Chart.register(...registerables);
-
-		ctx = document.getElementById('myChart').getContext('2d'); /*TODO investigate*/
-		myChart = getChart(ctx, labels, data);
+			},
+			options: {
+                    'onClick' : function (_, item) {
+						if(item[0]){
+							/*Click on pie part select corresponding task*/
+							selectedTask = chartData[item[0].index].task
+						}
+                    },
+					parsing: {
+						/*using property impact of object to get co2 to display*/
+						key: 'impact',
+					}
+                }
+		})
 	});
 </script>
 
 <div>
-	<canvas id="myChart" width="400" height="400" />
+	<canvas bind:this={pieCanvas} id="myChart" width="400" height="400" />
 </div>
 

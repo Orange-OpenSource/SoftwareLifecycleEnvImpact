@@ -4,8 +4,8 @@
 	import Task from '../Task/Task.svelte';
 
 	/*Bound vars*/
-	export let selectedModel;
-	export let selectedTask;
+	export let selectedModel = undefined;
+	export let selectedTask = undefined;
 
 	let modify = false; // true if modifications are allowed (when "editing mode" is checked)
 	let rootTask;

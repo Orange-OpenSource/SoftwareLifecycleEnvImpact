@@ -1,6 +1,6 @@
 <script>
 	/*Bound var*/
-	export let showModal;
+	export let showModal = undefined;
 </script>
 
 {#if showModal}

@@ -1,17 +1,25 @@
 <script>
     export let impactByIndicator;
-</script>
-{#if impactByIndicator != undefined}
 
+    let entries = undefined
+
+    $: impactByIndicator, updateEntries()
+
+    function updateEntries(){
+        if (impactByIndicator != undefined){
+            entries = Object.entries(impactByIndicator)
+        }
+    }
+</script>
+
+{#if entries != undefined}
     <ul>
-        <li>Acidification: {impactByIndicator.ACIDIFICATION}</li>
-        <li>Climate change: {impactByIndicator.CLIMATE_CHANGE}</li>
-        <li>Electronic waste: {impactByIndicator.ELECTRONIC_WASTE}</li>
-        <li>Fine particles: {impactByIndicator.FINE_PARTICLES}</li>
-        <li>Ionizing radiations: {impactByIndicator.IONIZING_RADIATIONS}</li>
-        <li>Primary energy: {impactByIndicator.PRIMARY_ENERGY}</li>
-        <li>Raw materials: {impactByIndicator.RAW_MATERIALS}</li>
-        <li>Resource depletion: {impactByIndicator.RESOURCE_DEPLETION}</li>
-        <li>Water depletion: {impactByIndicator.WATER_DEPLETION}</li>
+        {#each entries as [key, impact]}
+            {#if impact.value != 0}
+                <li>
+                    {key}: <b>{impact.value}</b> {impact.unit}
+                </li>
+            {/if}
+        {/each}
     </ul>
 {/if}

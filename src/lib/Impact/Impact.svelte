@@ -5,7 +5,7 @@
 	import ImpactByResource from './ImpactByResource.svelte';
 
 	/*Bound var*/
-	export let selectedTask;
+	export let selectedTask = undefined;
 
 	let impactByIndicator
 	let impactBySubtask
@@ -19,22 +19,20 @@
 			let res = await get('tasks/'+selectedTask.id+'/impacts')
 			if (res.status === 404) alert('No task found with this id' + selectedTask.id);
 			else {
-				console.log('res')
-				console.log(res)
 				impactByIndicator = res.task_impact
 				impactBySubtask = res.subtasks
-				impactByResource = res.resources.impacts
+				impactByResource = res.resources
 			}
 		}
 	}
 </script>
 
-
-<h5>By indicator</h5>
 <ImpactByIndicator {impactByIndicator}/>
 
-<h5>By subtask</h5>
-<ImpactBySubtask {impactBySubtask}/>
+{#if selectedTask != undefined && selectedTask.subtasks.length != 0}
+	<h5>Subtask</h5>
+	<ImpactBySubtask bind:selectedTask {impactBySubtask}/>
+{/if}
 
-<h5>By resource</h5>
+<h5>Resources</h5>
 <ImpactByResource {impactByResource}/>

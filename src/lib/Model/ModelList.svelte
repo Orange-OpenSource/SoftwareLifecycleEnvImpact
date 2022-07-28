@@ -6,8 +6,8 @@
 	import RenameModel from './RenameModel.svelte';
 
 	/*Bound vars*/
-	export let selectedModel;
-	export let project;
+	export let selectedModel = undefined;
+	export let project = undefined;
 
 </script>
 
