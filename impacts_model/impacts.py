@@ -22,6 +22,10 @@ class ImpactIndicator(str, Enum):
     PRIMARY_ENERGY = "Primary energy consumption"
     RAW_MATERIALS = "Raw materials"
 
+    def __str__(self):
+        """Allow for Marshmallow to serialize the value, not the name"""
+        return self.value
+
 
 #######################
 # AggregatedImpact #
@@ -75,13 +79,21 @@ class AggregatedImpactSchema(Schema):
     impacts = fields.Dict(keys=fields.Str(), values=fields.Str())
 
     @post_dump
-    def translate_quantities(self, in_data, **kwargs) -> dict[str, str]:  # type: ignore
-        """Translate pint quantities to str before serialization"""
-        out_data: dict[str, str] = {}
+    def translate_quantities(self, in_data, **kwargs) -> dict[str, dict[str, float | str]]:  # type: ignore
+        """Translate pint quantities to dict before serialization, example for one ImpactIndicator entry:
+        {
+            'value': 12421.4213,
+            'unit': "KG_CO2E",
+        }
+        """
+        out_data: dict[str, dict[str, float | str]] = {}
         if "impacts" in in_data:
             for impact_indicator_name in in_data["impacts"]:
-                out_data[impact_indicator_name.replace("ImpactIndicator.", "")] = str(
-                    in_data["impacts"][impact_indicator_name])
+                split = str(in_data["impacts"][impact_indicator_name]).split()
+                out_data[impact_indicator_name.replace("ImpactIndicator.", "")] = {
+                    'value': round(float(split[0]), 2),
+                    'unit': split[1],
+                }
         return out_data
 
 

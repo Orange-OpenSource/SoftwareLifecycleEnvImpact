@@ -27,7 +27,7 @@ class Resource(db.Model):  # type: ignore # TODO resource should have a unit
     task_id = db.Column(db.Integer, db.ForeignKey("task.id"), nullable=False)
 
     type = db.Column(db.String, nullable=False)
-    value = db.Column(db.Integer) # TODO maybe should never be null ?
+    value = db.Column(db.Integer)  # TODO maybe should never be null ?
 
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
@@ -118,13 +118,11 @@ class Task(db.Model):  # type: ignore
 
         return environmental_impact
 
-
-    def get_subtasks_impact(self) -> List[AggregatedImpact]:
+    def get_subtasks_impact(self) -> dict[int, AggregatedImpact]:
         # TODO test comment
-        # TODO add task id
-        impacts_list = []
+        impacts_list = {}
         for subtask in self.subtasks:
-            impacts_list.append(subtask.get_environmental_impact())
+            impacts_list[subtask.id] = subtask.get_environmental_impact()
         return impacts_list
 
     def get_indicator_impact(self, indicator: ImpactIndicator) -> Quantity[Any]:
@@ -187,6 +185,7 @@ class TaskSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
 
     subtasks = Nested("TaskSchema", many=True)
     resources = Nested(ResourceSchema, many=True)
+
 
 class Model(db.Model):  # type: ignore
     """
