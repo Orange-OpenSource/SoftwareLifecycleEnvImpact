@@ -14,4 +14,4 @@ COPY ./api /app/api
 COPY ./impacts_model /app/impacts_model
 
 # Run Flask command
-CMD ["gunicorn", "-b", "0.0.0.0:5000", "api.server:create_app()"]
+CMD ["gunicorn", "-b", "0.0.0.0:5001", "api.server:create_app()"]
