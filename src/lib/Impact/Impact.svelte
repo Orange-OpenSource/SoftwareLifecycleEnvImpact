@@ -1,38 +1,40 @@
-<script>
-	import { get } from '$lib/api';
+<script lang="ts">
 	import ImpactByIndicator from './ImpactByIndicator.svelte';
 	import ImpactBySubtask from './ImpactBySubtask.svelte';
 	import ImpactByResource from './ImpactByResource.svelte';
+	import type { Task } from 'src/model/task';
+	import { getTaskImpact } from '$lib/api/task';
+	import type { TaskImpact } from 'src/model/taskImpact';
 
 	/*Bound var*/
-	export let selectedTask = undefined;
+	export let selectedTask: Task;
 
-	let impactByIndicator
-	let impactBySubtask
-	let impactByResource
+	let impactPromise: Promise<TaskImpact>;
 
 	/*Trigger update when selected task is updated*/
 	$: selectedTask, updateImpacts();
 
 	async function updateImpacts() {
 		if (selectedTask != undefined) {
-			let res = await get('tasks/'+selectedTask.id+'/impacts')
-			if (res.status === 404) alert('No task found with this id' + selectedTask.id);
-			else {
-				impactByIndicator = res.task_impact
-				impactBySubtask = res.subtasks
-				impactByResource = res.resources
-			}
+			impactPromise = getTaskImpact(selectedTask).then()
 		}
 	}
 </script>
 
-<ImpactByIndicator {impactByIndicator}/>
+{#await impactPromise}
+	<div class="spinner-border" role="status" />
+{:then impact}
+	{#if impact != undefined}
+		<ImpactByIndicator impact={impact.task_impact} />
 
-{#if selectedTask != undefined && selectedTask.subtasks.length != 0}
-	<h5>Subtask</h5>
-	<ImpactBySubtask bind:selectedTask {impactBySubtask}/>
-{/if}
+		{#if selectedTask != undefined && selectedTask.subtasks.length != 0}
+			<h5>Subtask</h5>
+			<ImpactBySubtask {selectedTask} impactBySubtask={impact.subtasks} />
+		{/if}
 
-<h5>Resources</h5>
-<ImpactByResource {impactByResource}/>
+		<h5>Resources</h5>
+		<ImpactByResource impactByResource={impact.resources} />
+	{/if}
+{:catch error}
+	<p style="color: red">{error.message}</p>
+{/await}

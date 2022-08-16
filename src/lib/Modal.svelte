@@ -1,10 +1,10 @@
-<script>
+<script lang="ts">
 	/*Bound var*/
-	export let showModal = undefined;
+	export let showModal: boolean;
 </script>
 
 {#if showModal}
-  <div class="modal" id="sampleModal" tabindex="-1" role="dialog" aria-labelledby="sampleModalLabel" aria-hidden={false}>
+	<div class="modal" id="sampleModal" tabindex="-1" role="dialog" aria-labelledby="sampleModalLabel" aria-hidden={false}>
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -12,7 +12,7 @@
 						<h5 class="modal-title"><slot name="title" /></h5>
 						<slot name="btndelete" />
 					</div>
-					<button type="button" class="btn-close" on:click|stopPropagation={() => showModal = false} aria-label="Close" />
+					<button type="button" class="btn-close" on:click|stopPropagation={() => (showModal = false)} aria-label="Close" />
 				</div>
 				<div class="modal-body">
 					<slot name="body" />
@@ -26,7 +26,7 @@
 {/if}
 
 <style>
-  .modal {
-    display: block;
-  }
+	.modal {
+		display: block;
+	}
 </style>

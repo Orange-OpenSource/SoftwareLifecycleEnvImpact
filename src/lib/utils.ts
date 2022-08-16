@@ -1,11 +1,14 @@
+import type { Model } from 'src/model/model';
+import type { Project } from 'src/model/project';
+
 /**
  * Returns the last updated date (or creation date if null).
  *
  * @param model the model or project with `created_at` and `updated_at` fields.
  * @returns 	the date under format : DD/MM/YYYY XX:XX
  */
- export function getLastUpdate(model) {
-	let date;
+export function getLastUpdate(model: Model | Project) {
+	let date: Date;
 
 	if (model.updated_at) {
 		date = new Date(model.updated_at);

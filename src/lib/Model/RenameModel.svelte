@@ -1,42 +1,23 @@
-<script>
-	import { patch } from '$lib/api';
+<script lang="ts">
+	import { renameModelRequest } from '$lib/api/model';
 	import Modal from '$lib/Modal.svelte';
+	import type { Model } from 'src/model/model';
 
 	/* Bound var */
-	export let model;
+	export let model: Model;
 
-	let newName = model.name
+	let newName = model.name;
 	let showModal = false;
-	let error = ''
+	let error = '';
 
 	async function renameModel() {
-		const res = await patch('models/' + model.id, [{
-			op: 'replace',
-			path: '/name',
-			value: newName,
-		}])
-		switch (res.status) {
-			case undefined:
-				model.name = res.name
-				showModal = false;
-				break;
-			case 403:
-				error = 'Patch format is incorrect'
-				break;
-			case 404:
-				error = 'No model found with this id' + model.id
-				break;
-			case 409:
-				error = 'Model already exists'
-				break;
-			default:
-				error = res.status + ' error'
-				break;
-		}
+		const res = await renameModelRequest(model, newName);
+		model.name = res.name;
+		showModal = false;
 	}
 </script>
 
-<button on:click|stopPropagation={() => showModal = true} type="button" class="btn btn-light">Rename</button>
+<button on:click|stopPropagation={() => (showModal = true)} type="button" class="btn btn-light">Rename</button>
 
 <Modal bind:showModal>
 	<span slot="title">Rename model :</span>
@@ -49,5 +30,4 @@
 
 		<button type="submit" class="btn btn-primary">Rename model</button>
 	</form>
-	
 </Modal>

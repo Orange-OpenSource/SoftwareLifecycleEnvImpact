@@ -1,48 +1,31 @@
-<script>
-	import { patch } from '$lib/api';
+<script lang="ts">
+	import { renameProjectRequest } from '$lib/api/project';
+	import type { Project } from 'src/model/models';
 	import Modal from '../Modal.svelte';
 
 	/* Bound var */
-	export let project;
+	export let project: Project;
 
-	let newName = project.name
-	let showModal = false
+	let newName = project.name;
+	let showModal = false;
 
-	let error = ''
+	let error = '';
 
 	async function renameProject() {
-		const res = await patch('projects/' + project.id, [{
-			op: 'replace',
-			path: '/name',
-			value: newName,
-		}])
+		const res = await renameProjectRequest(project, newName);
 
-		switch (res.status) {
-			case undefined:
-				project.name = res.name
-				showModal = false;
-				break;
-			case 403:
-				error = 'Patch format is incorrect'
-				break;
-			case 404:
-				error = 'No project found with this id ' + project.id
-			case 409:
-				error = 'Project already exists'
-			default:
-				error = res.status + ' error'
-				break;
-		}
+		project.name = res.name;
+		showModal = false;
 	}
 </script>
 
-<button on:click|stopPropagation={() => showModal = true} type="button" class="btn btn-light">Rename</button>
+<button on:click|stopPropagation={() => (showModal = true)} type="button" class="btn btn-light">Rename</button>
 
 <Modal bind:showModal>
 	<span slot="title">Rename project :</span>
 	<form slot="body" on:submit|preventDefault={renameProject}>
 		<input id="renameProjectInput{project.id}" placeholder="Project new name" bind:value={newName} required />
-		
+
 		{#if error != ''}
 			<p style="color: red">{error}</p>
 		{/if}

@@ -1,48 +1,40 @@
-<script>
-	import { post } from '$lib/api';
-	import Modal from '../Modal.svelte'
+<script lang="ts">
+	import { createTask } from '$lib/api/task';
+import { getTaskTemplates } from '$lib/api/task_templates';
+	import type { Model } from 'src/model/model';
+	import type { Task } from 'src/model/task';
+	import type { TaskTemplate } from 'src/model/taskTemplate';
+	import Modal from '../Modal.svelte';
+
 	/* Bound var */
-	export let parentTask;
+	export let parentTask: Task;
 
-	export let selectedModel;
-	export let taskTemplates;
+	export let selectedModel: Model;
 
-	let selectedTemplate;
+	let taskTemplates = getTaskTemplates();
+	let selectedTemplate: TaskTemplate;
 	let showModal = false;
 
 	let error = '';
 
-	async function handleSubmit(){
-		if(selectedTemplate != null){
-			const res = await post('tasks', {
-				model_id: selectedModel.id,
-				name: selectedTemplate.name,
-				parent_task_id: parentTask.id,
-				template_id: selectedTemplate.id
-			})
+	async function handleSubmit() {
+		if (selectedTemplate != null) {
+			await createTask(selectedModel.id, selectedTemplate.name, parentTask.id, selectedTemplate.id);
 
-			error = '' 
-			switch (res.status) {
-				case undefined:
-					parentTask.subtasks.push(res)
-					/*Redondant assignment to force Svelte to update components*/
-					parentTask.subtasks = parentTask.subtasks
-					showModal = false
-					break;
-				case 409:
-					error = 'Task already exists on this level'
-					break;
-				default:
-					error = res.status + ' error'
-					break;
-			}
+			/*TODO delete from parent task subtasks*/
+			//parentTask.subtasks.push(res)
+			/*Redondant assignment to force Svelte to update components*/
+			//parentTask.subtasks = parentTask.subtasks
+			showModal = false;
 		}
 	}
 </script>
 
-<button on:click|stopPropagation={() => showModal = true} class="btn btn-primary">Add task</button>
+<button on:click|stopPropagation={() => (showModal = true)} class="btn btn-primary">Add task</button>
 
-{#if taskTemplates != undefined}
+{#await taskTemplates}
+	<div class="spinner-border" role="status" />
+{:then taskTemplates}
 	<Modal bind:showModal>
 		<span slot="title">Create new task :</span>
 		<form slot="body" on:submit|preventDefault={handleSubmit}>
@@ -58,4 +50,6 @@
 			<button type="submit" class="btn btn-primary">Create task</button>
 		</form>
 	</Modal>
-{/if}
+{:catch error}
+	<p style="color: red">{error.message}</p>
+{/await}

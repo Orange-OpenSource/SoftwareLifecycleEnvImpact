@@ -96,6 +96,7 @@ Split.js related properties
 }
 
 /*Fix for modal flickering when triggered from inside list group*/
-.list-group-item, .list-group-item:hover{
+.list-group-item,
+.list-group-item:hover {
 	z-index: auto;
 }

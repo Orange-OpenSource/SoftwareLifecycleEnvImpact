@@ -1,40 +1,27 @@
-<script>
-    import { del } from '$lib/api';
+<script lang="ts">
+	import { deleteTaskRequest } from '$lib/api/task';
 	import Modal from '$lib/Modal.svelte';
+	import type { Task } from 'src/model/task';
 
 	/* Bound var */
-	export let parentTask
-
-	export let task;
+	export let parentTask: Task /*TODO delete from parent task*/
+	export let task: Task;
+	
 	let error = '';
 
 	let showModal = false;
 
 	async function deleteTask() {
-		const res = await del('tasks/'+task.id)
-
-		error = '' 
-		switch (res.status) {
-            case undefined:
-				parentTask.subtasks = parentTask.subtasks.filter(s => s.id != task.id);
-				/*Redondant assignment to force Svelte to update components*/
-				parentTask.subtasks = parentTask.subtasks
-				showModal = false;
-				break;
-			case 403:
-				error = 'Cannot delete the root task of a model'
-				break;
-            case 404:
-                error = 'No task with this id'
-				break;
-            default:
-                error = res.status + ' error'
-				break;
-        }
+		await deleteTaskRequest(task);
+		/*TODO update parent list*/
+		//parentTask.subtasks = parentTask.subtasks.filter(s => s.id != task.id);
+		/*Redondant assignment to force Svelte to update components*/
+		parentTask.subtasks = parentTask.subtasks
+		showModal = false;
 	}
 </script>
 
-<button on:click|stopPropagation={() => showModal = true}  class="btn btn-light">Delete</button>
+<button on:click|stopPropagation={() => (showModal = true)} class="btn btn-light">Delete</button>
 
 <Modal bind:showModal>
 	<span slot="title">Confirm delete</span>

@@ -1,34 +1,37 @@
-<script>
-    import { del } from '$lib/api';
+<script lang="ts">
+	import { del } from '$lib/api/api';
 	import Modal from '$lib/Modal.svelte';
+	import type { Project } from 'src/model/models';
 
 	/* Bound var */
-	export let projects;
+	/*TODO delete from projects list*/
+	//export let projects: Promise<Project[]>;
 
-	export let project;
+	export let project: Project;
 
 	let showModal = false;
-	let error = ''
+	let error = '';
 
-	async function deleteProject(project) {
-        const res = await del('projects/'+project.id)
+	async function deleteProject(projectToDelete: Project) {
+		const res = await del('projects/' + projectToDelete.id);
 
 		switch (res.status) {
 			case undefined:
-				projects = projects.filter(p => p.id != project.id);
-				showModal = false
+				/*TODO delete project from list*/
+				//projects = projects.filter(p => p.id != projectToDelete.id);
+				showModal = false;
 				break;
 			case 404:
-				error = 'No project found with this id '+project.id
+				error = 'No project found with this id ' + project.id;
 				break;
 			default:
-				error = res.status + ' error'
+				error = res.status + ' error';
 				break;
 		}
 	}
 </script>
 
-<button on:click|stopPropagation={() => showModal = true}  class="btn btn-light">Delete</button>
+<button on:click|stopPropagation={() => (showModal = true)} class="btn btn-light">Delete</button>
 
 <Modal bind:showModal>
 	<span slot="title">Confirm delete</span>

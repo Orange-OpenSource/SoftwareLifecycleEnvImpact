@@ -1,25 +1,27 @@
-<script>
-    export let impactByIndicator;
+<script lang="ts">
+	import type { AggregatedImpact } from 'src/model/impact';
+	export let impact: AggregatedImpact;
 
-    let entries = undefined
+	let entries: [string, any][];
 
-    $: impactByIndicator, updateEntries()
+	$: impact, updateEntries();
 
-    function updateEntries(){
-        if (impactByIndicator != undefined){
-            entries = Object.entries(impactByIndicator)
-        }
-    }
+	function updateEntries() {
+		if (impact != undefined) {
+			entries = Object.entries(impact);
+		}
+	}
 </script>
 
 {#if entries != undefined}
-    <ul>
-        {#each entries as [key, impact]}
-            {#if impact.value != 0}
-                <li>
-                    {key}: <b>{impact.value}</b> {impact.unit}
-                </li>
-            {/if}
-        {/each}
-    </ul>
+	<ul>
+		{#each entries as [key, impact]}
+			{#if impact.value != 0}
+				<li>
+					{key}: <b>{impact.value}</b>
+					{impact.unit}
+				</li>
+			{/if}
+		{/each}
+	</ul>
 {/if}
