@@ -14,7 +14,7 @@ export async function updateResourceRequest(resource: Resource, newValue: string
 	});
 }
 
-export async function addResourceRequest(name: string, taskId: number, templateId: number){
+export async function addResourceRequest(name: string, taskId: number, templateId: number) {
 	const res = await post('resources', {
 		name: name,
 		task_id: taskId,

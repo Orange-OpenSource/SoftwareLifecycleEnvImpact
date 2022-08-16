@@ -9,5 +9,5 @@ export interface TaskImpact {
 
 export type ResourcesImpact = Record<ResourceName, AggregatedImpact>;
 export type SubtasksImpact = Record<Id, AggregatedImpact>;
-export type Id = string
-export type ResourceName = string
+export type Id = string;
+export type ResourceName = string;

@@ -6,7 +6,7 @@ async function send(method: string, path: string, data = '') {
 	opts.headers = {
 		'Content-Type': 'application/json'
 	};
-	if(method != 'GET'){
+	if (method != 'GET') {
 		opts.body = JSON.stringify(data);
 	}
 

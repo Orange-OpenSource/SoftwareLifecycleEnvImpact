@@ -1,31 +1,32 @@
 {
-  "name": "pji",
-  "version": "0.0.1",
-  "scripts": {
-    "dev": "vite dev",
-    "build": "vite build",
-    "package": "svelte-kit package",
-    "preview": "vite preview",
-    "check": "svelte-check --tsconfig ./tsconfig.json",
-    "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
-    "lint": "prettier --check --plugin-search-dir=. . && eslint .",
-    "format": "prettier --write --plugin-search-dir=. ."
-  },
-  "devDependencies": {
-    "@playwright/test": "^1.25.0",
-    "@rollup/plugin-typescript": "^8.3.4",
-    "@sveltejs/adapter-static": "next",
-    "@sveltejs/kit": "next",
-    "@tsconfig/svelte": "^3.0.0",
-    "@types/bootstrap": "^5.2.2",
-    "chart.js": "^3.9.1",
-    "split-grid": "^1.0.11",
-    "split.js": "^1.6.5",
-    "svelte-check": "^2.8.0",
-    "svelte-icons": "^2.1.0",
-    "svelte-preprocess": "^4.10.7",
-    "tslib": "^2.4.0",
-    "typescript": "^4.7.4"
-  },
-  "type": "module"
+	"name": "pji",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"package": "svelte-kit package",
+		"preview": "vite preview",
+		"check": "svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
+		"lint": "prettier --check --plugin-search-dir=. . && eslint .",
+		"format": "prettier --write --plugin-search-dir=. ."
+	},
+	"devDependencies": {
+		"@playwright/test": "^1.25.0",
+		"@rollup/plugin-typescript": "^8.3.4",
+		"@sveltejs/adapter-static": "next",
+		"@sveltejs/kit": "next",
+		"@tsconfig/svelte": "^3.0.0",
+		"@types/bootstrap": "^5.2.2",
+		"chart.js": "^3.9.1",
+		"prettier": "2.7.1",
+		"split-grid": "^1.0.11",
+		"split.js": "^1.6.5",
+		"svelte-check": "^2.8.0",
+		"svelte-icons": "^2.1.0",
+		"svelte-preprocess": "^4.10.7",
+		"tslib": "^2.4.0",
+		"typescript": "^4.7.4"
+	},
+	"type": "module"
 }
