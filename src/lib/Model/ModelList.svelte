@@ -35,7 +35,7 @@
 								<div class="col-9">
 									<RenameModel bind:model />
 									{#if i != 0}
-										<DeleteModel {model} />
+										<DeleteModel {model} bind:models={project.models}/>
 									{/if}
 								</div>
 							</div>

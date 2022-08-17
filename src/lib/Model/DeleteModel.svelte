@@ -1,34 +1,20 @@
 <script lang="ts">
-	import { del } from '$lib/api/api';
+	import { deleteModelRequest } from '$lib/api/model';
 	import Modal from '$lib/Modal.svelte';
 	import type { Model } from 'src/model/model';
 
-	/* TODO update models when one is deleted */
 	/*Bound var*/
-	//export let models: Model[];
+	export let models: Model[];
 
 	export let model: Model;
 
 	let showModal: boolean;
 	let error = '';
 
-	async function deleteModel(model: Model) {
-		const res = await del('models/' + model.id);
-
-		switch (res.status) {
-			case undefined:
-				//models = models.filter(m => m.id != model.id);
-				showModal = false;
-				break;
-			case 404:
-				error = 'No model project with this id';
-				break;
-			case 403:
-				error = 'Cannot delete the root model of a project';
-			default:
-				error = res.status + ' error';
-				break;
-		}
+	async function deleteModel() {
+		const res = await deleteModelRequest(model);
+		models = models.filter(m => m.id != model.id);
+		showModal = false;
 	}
 </script>
 
@@ -43,5 +29,5 @@
 		<p style="color: red">{error}</p>
 	{/if}
 
-	<button on:click|stopPropagation={() => deleteModel(model)} slot="btnsave" type="button" class="btn btn-danger">Delete</button>
+	<button on:click|stopPropagation={() => deleteModel()} slot="btnsave" type="button" class="btn btn-danger">Delete</button>
 </Modal>
