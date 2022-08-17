@@ -1,14 +1,14 @@
 import { patch, post } from '$lib/api/api';
+import type { PatchDocument } from 'src/model/patchDocument';
 import type { Resource } from 'src/model/resource';
 
 export async function updateResourceRequest(resource: Resource, newValue: string): Promise<Resource> {
-	const res = await patch('resources/' + resource.id, [
-		{
-			op: 'replace',
-			path: '/value',
-			value: newValue
-		}
-	]);
+	const patchDocument: PatchDocument = {
+		op: 'replace',
+		path: '/value',
+		value: newValue
+	};
+	const res = await patch('resources/' + resource.id, patchDocument);
 	return res.text().then((json: string) => {
 		return JSON.parse(json);
 	});

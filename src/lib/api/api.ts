@@ -1,6 +1,8 @@
+import type { PatchDocument } from 'src/model/patchDocument';
+
 const base = 'http://127.0.0.1:5000/api/v1';
 
-async function send(method: string, path: string, data = '') {
+async function send(method: string, path: string, data: any = undefined) {
 	const opts: RequestInit = { method, headers: {} };
 	opts.method = method;
 	opts.headers = {
@@ -34,6 +36,6 @@ export async function put(path: string, data: any) {
 	return send('PUT', path, data);
 }
 
-export async function patch(path: string, data: any) {
+export async function patch(path: string, data: PatchDocument) {
 	return send('PATCH', path, data);
 }

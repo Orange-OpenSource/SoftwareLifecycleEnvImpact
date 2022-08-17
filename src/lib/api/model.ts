@@ -1,5 +1,6 @@
 import { get, patch, post } from '$lib/api/api';
 import type { Model } from 'src/model/model';
+import type { PatchDocument } from 'src/model/patchDocument';
 import type { Task } from 'src/model/task';
 
 export async function getModelTasksRequest(modelId: number): Promise<Task> {
@@ -20,13 +21,12 @@ export async function createModelRequest(name: string, project_id: number): Prom
 }
 
 export async function renameModelRequest(model: Model, newName: string) {
-	const res = await patch('models/' + model.id, [
-		{
-			op: 'replace',
-			path: '/name',
-			value: newName
-		}
-	]);
+	const patchDocument: PatchDocument = {
+		op: OpEnum.Replace,
+		path: '/name',
+		value: newName
+	};
+	const res = await patch('models/' + model.id, patchDocument);
 	return res.text().then((json: string) => {
 		return JSON.parse(json);
 	});

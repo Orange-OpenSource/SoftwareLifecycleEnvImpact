@@ -6,7 +6,7 @@ export interface PatchDocument {
 	/**
 	 * The operation to be performed
 	 */
-	op: PatchDocument.OpEnum;
+	op: OpEnum;
 	/**
 	 * A JSON-Pointer
 	 */
@@ -16,14 +16,5 @@ export interface PatchDocument {
 	 */
 	value: string;
 }
-export namespace PatchDocument {
-	export type OpEnum = 'merge' | 'remove' | 'replace' | 'move' | 'copy' | 'test';
-	export const OpEnum = {
-		MergeAggregatedImpact: 'merge' as OpEnum,
-		Remove: 'remove' as OpEnum,
-		Replace: 'replace' as OpEnum,
-		Move: 'move' as OpEnum,
-		Copy: 'copy' as OpEnum,
-		Test: 'test' as OpEnum
-	};
-}
+
+export type OpEnum = 'merge' | 'remove' | 'replace' | 'move' | 'copy' | 'test';

@@ -1,4 +1,5 @@
 import { get, patch, post } from '$lib/api/api';
+import type { PatchDocument } from 'src/model/patchDocument';
 import type { Project } from 'src/model/project';
 
 export async function getProjectsRequest(): Promise<Project[]> {
@@ -25,13 +26,12 @@ export async function createProjectRequest(name: string): Promise<Project> {
 }
 /*TODO toutes les fonctions qui finissent par request nom pas ouf */
 export async function renameProjectRequest(project: Project, name: string): Promise<Project> {
-	const res = await patch('projects/' + project.id, [
-		{
-			op: 'replace',
-			path: '/name',
-			value: name
-		}
-	]);
+	const patchDocument: PatchDocument = {
+		op: OpEnum.Replace,
+		path: '/name',
+		value: name
+	};
+	const res = await patch('projects/' + project.id, patchDocument);
 	return res.text().then((json: string) => {
 		return JSON.parse(json);
 	});

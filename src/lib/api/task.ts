@@ -1,15 +1,15 @@
 import { del, get, patch, post } from '$lib/api/api';
 import type { TaskImpact } from 'src/model/impacts';
+import type { PatchDocument } from 'src/model/patchDocument';
 import type { Task } from 'src/model/task';
 
 export async function renameTaskRequest(task: Task, newName: string): Promise<Task> {
-	const res = await patch('tasks/' + task.id, [
-		{
-			op: 'replace',
-			path: '/name',
-			value: newName
-		}
-	]);
+	const patchDocument: PatchDocument = {
+		op: OpEnum.Replace,
+		path: '/name',
+		value: newName
+	};
+	const res = await patch('tasks/' + task.id, patchDocument);
 	return res.text().then((json: string) => {
 		return JSON.parse(json);
 	});

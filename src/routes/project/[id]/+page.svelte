@@ -57,7 +57,6 @@
 	}
 
 	onMount(async function () {
-		if (document.querySelector('div.modal-backdrop.fade.show')) document.querySelector('div.modal-backdrop.fade.show')!.remove(); /*TODO ???*/
 		retrieveProject();
 	});
 </script>
