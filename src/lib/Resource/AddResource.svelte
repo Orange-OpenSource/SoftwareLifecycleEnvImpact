@@ -7,7 +7,6 @@
 	/*Bound var*/
 	export let task: Task;
 
-	let error = '';
 	let showModal = false;
 
 	let resourceTemplates = getResourceTemplatesRequest();
@@ -15,14 +14,13 @@
 
 	async function handleSubmit() {
 		if (selectedTemplate != null) {
-			error = '';
 			const res = await addResourceRequest(selectedTemplate.name, task.id, selectedTemplate.id);
 			task.resources.push(res);
 			/*Redondant assignment to force Svelte to update components*/
 			task.resources = task.resources;
 			showModal = false;
 		}
-	} /*TODO regarder pourquoi deux fois error*/
+	}
 </script>
 
 <input on:click={() => (showModal = true)} type="image" src="/add.svg" width="25" height="25" alt="Bin" loading="lazy" />
@@ -42,10 +40,6 @@
 		{:catch error}
 			<p style="color: red">{error.message}</p>
 		{/await}
-
-		{#if error != ''}
-			<p style="color: red">{error}</p>
-		{/if}
 
 		<button type="submit" data-dismiss="modal" class="btn btn-primary">Create resource</button>
 	</form>

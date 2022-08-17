@@ -12,8 +12,7 @@
 	let error = '';
 
 	async function updateResource(resource: Resource) {
-		const newValue = (<HTMLInputElement>document.getElementById('typeNumber' + resource.id)).value; /*TODO remove this put svelte logic in place*/
-		resource.value = (await updateResourceRequest(resource, newValue)).value;
+		await updateResourceRequest(resource, String(resource.value));
 	}
 </script>
 
@@ -24,7 +23,7 @@
 				<div class="d-flex w-100 justify-content-between align-items-center">
 					<div>
 						<label class="input-group-text" for="typeNumber">{resource.name}</label>
-						<input type="number" id="typeNumber{resource.id}" class="form-control" readonly={!modify} value={resource.value} min="0" on:change={() => updateResource(resource)} on:click={() => {}} />
+						<input type="number" id="typeNumber{resource.id}" class="form-control" readonly={!modify} bind:value={resource.value} min="0" on:change={() => updateResource(resource)} on:click={() => {}} />
 					</div>
 
 					{#if modify}
