@@ -2,7 +2,6 @@
  * A JSONPatch document as defined by RFC 6902
  */
 export interface PatchDocument {
-	/*TODO use in API */
 	/**
 	 * The operation to be performed
 	 */

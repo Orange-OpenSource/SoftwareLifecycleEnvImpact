@@ -24,7 +24,7 @@ export async function createProjectRequest(name: string): Promise<Project> {
 		return JSON.parse(json);
 	});
 }
-/*TODO toutes les fonctions qui finissent par request nom pas ouf */
+
 export async function renameProjectRequest(project: Project, name: string): Promise<Project> {
 	const patchDocument: PatchDocument = {
 		op: OpEnum.Replace,

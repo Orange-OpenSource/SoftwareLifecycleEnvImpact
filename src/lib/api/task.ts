@@ -5,7 +5,7 @@ import type { Task } from 'src/model/task';
 
 export async function renameTaskRequest(task: Task, newName: string): Promise<Task> {
 	const patchDocument: PatchDocument = {
-		op: OpEnum.Replace,
+		op: 'replace',
 		path: '/name',
 		value: newName
 	};

@@ -11,8 +11,8 @@
 	let newName = task.name;
 
 	async function renameTask() {
-		await renameTaskRequest(task, newName);
-		/*TODO update task name*/
+		const res = await renameTaskRequest(task, newName);
+		task.name = res.name
 		showModal = false;
 	}
 </script>

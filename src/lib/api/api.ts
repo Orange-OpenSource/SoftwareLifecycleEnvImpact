@@ -37,5 +37,5 @@ export async function put(path: string, data: any) {
 }
 
 export async function patch(path: string, data: PatchDocument) {
-	return send('PATCH', path, data);
+	return send('PATCH', path, [data]); // Json patch has to be in an array
 }
