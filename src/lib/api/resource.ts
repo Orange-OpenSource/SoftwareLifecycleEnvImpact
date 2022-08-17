@@ -1,4 +1,4 @@
-import { patch, post } from '$lib/api/api';
+import { del, patch, post } from '$lib/api/api';
 import type { PatchDocument } from 'src/model/patchDocument';
 import type { Resource } from 'src/model/resource';
 
@@ -20,6 +20,13 @@ export async function addResourceRequest(name: string, taskId: number, templateI
 		task_id: taskId,
 		template_id: templateId
 	});
+	return res.text().then((json: string) => {
+		return JSON.parse(json);
+	});
+}
+
+export async function deleteResourceRequest(resource: Resource): Promise<Resource> {
+	const res = await del('resources/' + resource.id);
 	return res.text().then((json: string) => {
 		return JSON.parse(json);
 	});

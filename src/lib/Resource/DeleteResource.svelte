@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { del } from '$lib/api/api';
+import { deleteResourceRequest } from '$lib/api/resource';
 	import Modal from '$lib/Modal.svelte';
 	import type { Resource } from 'src/model/resource';
 	import type { Task } from 'src/model/task';
@@ -13,23 +14,9 @@
 	let error = '';
 
 	async function deleteResource() {
-		const res = await del('resources/' + resource.id);
-
-		error = '';
-		switch (res.status) {
-			case undefined:
-				/*TODO update resourceslist*/
-				/*task.resources = task.resources.filter(r => r.id != resource.id);*/
-				task.resources = task.resources; // TODO remove
-				showModal = false;
-				break;
-			case 404:
-				error = 'No resource found with this id ' + resource.id;
-				break;
-			default:
-				error = res.status + ' error';
-				break;
-		}
+		await deleteResourceRequest(resource);
+		task.resources = task.resources.filter(r => r.id != resource.id);
+		showModal = false;
 	}
 </script>
 
