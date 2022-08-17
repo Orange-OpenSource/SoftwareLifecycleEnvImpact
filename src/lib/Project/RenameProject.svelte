@@ -2,6 +2,7 @@
 	import { renameProjectRequest } from '$lib/api/project';
 	import type { Project } from 'src/model/project';
 	import Modal from '../Modal.svelte';
+	import Error from '$lib/Error.svelte';
 
 	/* Bound var */
 	export let project: Project;
@@ -11,11 +12,17 @@
 
 	let error = '';
 
-	async function renameProject() {
-		const res = await renameProjectRequest(project, newName);
+	$: showModal, error = '' //Clean error message when closing modal
 
-		project.name = res.name;
-		showModal = false;
+	async function renameProject() {
+		error = ''
+		try{
+			const res = await renameProjectRequest(project, newName);
+			project.name = res.name;
+			showModal = false;
+		}catch(e: any){
+			error = e.message
+		} 
 	}
 </script>
 
@@ -26,8 +33,8 @@
 	<form slot="body" on:submit|preventDefault={renameProject}>
 		<input id="renameProjectInput{project.id}" placeholder="Project new name" bind:value={newName} required />
 
-		{#if error != ''}
-			<p style="color: red">{error}</p>
+		{#if error}
+			<Error message={error} />
 		{/if}
 		<button type="submit" class="btn btn-primary">Rename project</button>
 	</form>

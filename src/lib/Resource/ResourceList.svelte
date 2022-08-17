@@ -4,6 +4,7 @@
 	import type { Task } from 'src/model/task';
 	import AddResource from './AddResource.svelte';
 	import DeleteResource from './DeleteResource.svelte';
+	import Error from '$lib/Error.svelte';
 
 	/*Bound var*/
 	export let task: Task;
@@ -12,7 +13,11 @@
 	let error = '';
 
 	async function updateResource(resource: Resource) {
-		await updateResourceRequest(resource, String(resource.value));
+		try{
+			await updateResourceRequest(resource, String(resource.value));
+		}catch(e: any){
+			error = e.message
+		} 
 	}
 </script>
 
@@ -41,8 +46,8 @@
 				</div>
 			</li>
 			{#if modify}
-				{#if error != ''}
-					<p style="color: red">{error}</p>
+				{#if error}
+					<Error message={error} />
 				{/if}
 				{#if resource == task.resources[task.resources.length - 1]}
 					<li class="list-group-item d-flex align-items-center flex-row-reverse">

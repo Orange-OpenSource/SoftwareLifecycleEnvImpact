@@ -2,19 +2,27 @@
 	import { deleteModelRequest } from '$lib/api/model';
 	import Modal from '$lib/Modal.svelte';
 	import type { Model } from 'src/model/model';
+	import Error from '$lib/Error.svelte';
 
 	/*Bound var*/
 	export let models: Model[];
 
 	export let model: Model;
 
-	let showModal: boolean;
+	let showModal = false;
 	let error = '';
 
+	$: showModal, error = '' //Clean error message when closing modal
+
 	async function deleteModel() {
-		await deleteModelRequest(model);
-		models = models.filter((m) => m.id != model.id);
-		showModal = false;
+		error = ''
+		try{
+			await deleteModelRequest(model);
+			models = models.filter((m) => m.id != model.id);
+			showModal = false;
+		}catch(e:any){
+			error = e.message
+		}
 	}
 </script>
 
@@ -25,8 +33,8 @@
 
 	<span slot="body">Are you sure you want to delete <strong>{model.name}</strong> ?</span>
 
-	{#if error != ''}
-		<p style="color: red">{error}</p>
+	{#if error}
+		<Error message={error} />
 	{/if}
 
 	<button on:click|stopPropagation={() => deleteModel()} slot="btnsave" type="button" class="btn btn-danger">Delete</button>

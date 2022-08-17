@@ -10,22 +10,28 @@
 	/* Bound var */
 	export let parentTask: Task;
 
-	export let selectedModel: Model;
+	export let selectedModel: Model; 
 
 	let taskTemplates = getTaskTemplatesRequest();
 	let selectedTemplate: TaskTemplate;
 	let showModal = false;
 
 	let error = '';
+	$: showModal, error = '' //Clean error message when closing modal
 
 	async function handleSubmit() {
-		if (selectedTemplate != null) {
-			const res = await createTaskRequest(selectedModel.id, selectedTemplate.name, parentTask.id, selectedTemplate.id);
-			parentTask.subtasks.push(res);
-			/*Redondant assignment to force Svelte to update components*/
-			parentTask.subtasks = parentTask.subtasks;
-			showModal = false;
-		}
+		error = ''
+		try{
+			if (selectedTemplate != null) {
+				const res = await createTaskRequest(selectedModel.id, selectedTemplate.name, parentTask.id, selectedTemplate.id);
+				parentTask.subtasks.push(res);
+				/*Redondant assignment to force Svelte to update components*/
+				parentTask.subtasks = parentTask.subtasks;
+				showModal = false;
+			}
+		}catch(e: any){
+			error = e.message
+		} 
 	}
 </script>
 
@@ -43,8 +49,8 @@
 					<option value={template}>{template.name}</option>
 				{/each}
 			</select>
-			{#if error != ''}
-				<p style="color: red">{error}</p>
+			{#if error}
+				<Error message={error} />
 			{/if}
 			<button type="submit" class="btn btn-primary">Create task</button>
 		</form>

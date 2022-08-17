@@ -3,6 +3,7 @@
 	import Modal from '$lib/Modal.svelte';
 	import type { Resource } from 'src/model/resource';
 	import type { Task } from 'src/model/task';
+	import Error from '$lib/Error.svelte';
 
 	/*Bound var*/
 	export let task: Task;
@@ -12,10 +13,17 @@
 	let showModal = false;
 	let error = '';
 
+	$: showModal, error = '' //Clean error message when closing modal
+
 	async function deleteResource() {
-		await deleteResourceRequest(resource);
-		task.resources = task.resources.filter((r) => r.id != resource.id);
-		showModal = false;
+		error = ''
+		try{
+			await deleteResourceRequest(resource);
+			task.resources = task.resources.filter((r) => r.id != resource.id);
+			showModal = false;
+		}catch(e: any){
+			error = e.message
+		} 
 	}
 </script>
 
@@ -26,8 +34,8 @@
 
 	<span slot="body">Are you sure you want to delete <strong>{resource.name}</strong> ?</span>
 
-	{#if error != ''}
-		<p style="color: red">{error}</p>
+	{#if error}
+		<Error message={error} />
 	{/if}
 
 	<button on:click|stopPropagation={() => deleteResource()} slot="btnsave" type="button" class="btn btn-danger">Delete</button>

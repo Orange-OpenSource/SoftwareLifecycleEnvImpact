@@ -2,6 +2,7 @@
 	import { deleteProjectRequest } from '$lib/api/project';
 	import Modal from '$lib/Modal.svelte';
 	import type { Project } from 'src/model/project';
+	import Error from '$lib/Error.svelte';
 
 	/* Bound var */
 	export let projects: Project[];
@@ -11,10 +12,17 @@
 	let showModal = false;
 	let error = '';
 
+	$: showModal, error = '' //Clean error message when closing modal
+
 	async function deleteProject() {
-		await deleteProjectRequest(project);
-		projects = projects.filter((p) => p.id != project.id);
-		showModal = false;
+		error = ''
+		try{
+			await deleteProjectRequest(project);
+			projects = projects.filter((p) => p.id != project.id);
+			showModal = false;
+		}catch(e: any){
+			error = e.message
+		}
 	}
 </script>
 
@@ -25,8 +33,8 @@
 
 	<span slot="body">Are you sure you want to delete <strong>{project.name}</strong> ?</span>
 
-	{#if error != ''}
-		<p style="color: red">{error}</p>
+	{#if error}
+		<Error message={error} />
 	{/if}
 
 	<button on:click|stopPropagation={() => deleteProject()} slot="btnsave" type="button" class="btn btn-danger">Delete</button>

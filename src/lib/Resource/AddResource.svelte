@@ -14,13 +14,21 @@
 	let resourceTemplates = getResourceTemplatesRequest();
 	let selectedTemplate: TaskTemplate;
 
+	let error=''
+	$: showModal, error = '' //Clean error message when closing modal
+
 	async function handleSubmit() {
-		if (selectedTemplate != null) {
-			const res = await addResourceRequest(selectedTemplate.name, task.id, selectedTemplate.id);
-			task.resources.push(res);
-			/*Redondant assignment to force Svelte to update components*/
-			task.resources = task.resources;
-			showModal = false;
+		error = ''
+		try{
+			if (selectedTemplate != null) {
+				const res = await addResourceRequest(selectedTemplate.name, task.id, selectedTemplate.id);
+				task.resources.push(res);
+				/*Redondant assignment to force Svelte to update components*/
+				task.resources = task.resources;
+				showModal = false;
+			}
+		}catch(e: any){
+			error = e.message
 		}
 	}
 </script>
@@ -42,6 +50,10 @@
 		{:catch error}
 			<Error message={error.message} />
 		{/await}
+
+		{#if error}
+			<Error message={error} />
+		{/if}
 
 		<button type="submit" data-dismiss="modal" class="btn btn-primary">Create resource</button>
 	</form>

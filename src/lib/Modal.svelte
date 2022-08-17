@@ -1,6 +1,10 @@
 <script lang="ts">
 	/*Bound var*/
 	export let showModal: boolean;
+
+	function close(){
+		showModal = false
+	}
 </script>
 
 {#if showModal}
@@ -12,10 +16,11 @@
 						<h5 class="modal-title"><slot name="title" /></h5>
 						<slot name="btndelete" />
 					</div>
-					<button type="button" class="btn-close" on:click|stopPropagation={() => (showModal = false)} aria-label="Close" />
+					<button type="button" class="btn-close" on:click|stopPropagation={close} aria-label="Close" />
 				</div>
 				<div class="modal-body">
 					<slot name="body" />
+					<slot name="error" />
 				</div>
 				<div class="modal-footer">
 					<slot name="btnsave" />

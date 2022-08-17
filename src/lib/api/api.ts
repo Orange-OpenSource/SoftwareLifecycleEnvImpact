@@ -17,7 +17,10 @@ async function send(method: string, path: string, data: any = undefined) {
 		opts.headers['Authorization'] = `Token ${token}`;
 	}
 	*/
-	return await fetch(`${base}/${path}`, opts);
+	const res =  await fetch(`${base}/${path}`, opts);
+	if (!res.ok)
+		throw new Error((await res.json())['detail'])
+	return res
 }
 
 export async function get(path: string) {
