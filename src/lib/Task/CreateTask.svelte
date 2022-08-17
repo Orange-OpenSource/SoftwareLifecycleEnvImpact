@@ -5,6 +5,7 @@
 	import type { Task, TaskTemplate } from 'src/model/task';
 	import Modal from '../Modal.svelte';
 	import Error from '$lib/Error.svelte'
+import Spinner from '$lib/Spinner.svelte';
 
 	/* Bound var */
 	export let parentTask: Task;
@@ -31,7 +32,7 @@
 <button on:click|stopPropagation={() => (showModal = true)} class="btn btn-primary">Add task</button>
 
 {#await taskTemplates}
-	<div class="spinner-border" role="status" />
+	<Spinner/>
 {:then taskTemplates}
 	<Modal bind:showModal>
 		<span slot="title">Create new task :</span>

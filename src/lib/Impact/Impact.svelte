@@ -6,6 +6,7 @@
 	import { getTaskImpact } from '$lib/api/task';
 	import type { TaskImpact } from 'src/model/impacts';
 	import Error from '$lib/Error.svelte';
+import Spinner from '$lib/Spinner.svelte';
 
 	/*Bound var*/
 	export let selectedTask: Task;
@@ -23,7 +24,7 @@
 </script>
 
 {#await impactPromise}
-	<div class="spinner-border" role="status" />
+	<Spinner/>
 {:then impact}
 	{#if impact != undefined}
 		<ImpactByIndicator impact={impact.task_impact} />

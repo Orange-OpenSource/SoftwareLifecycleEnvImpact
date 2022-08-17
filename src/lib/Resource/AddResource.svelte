@@ -4,6 +4,7 @@
 	import type { Task, TaskTemplate } from 'src/model/task';
 	import { addResourceRequest } from '$lib/api/resource';
 	import Error from '$lib/Error.svelte'
+import Spinner from '$lib/Spinner.svelte';
 
 	/*Bound var*/
 	export let task: Task;
@@ -30,7 +31,7 @@
 	<span slot="title">Create new resource :</span>
 	<form slot="body" on:submit|preventDefault={handleSubmit}>
 		{#await resourceTemplates}
-			<div class="spinner-border" role="status" />
+			<Spinner/>
 		{:then resourceTemplates}
 			<select class="form-select" bind:value={selectedTemplate}>
 				<option value={null} disabled selected class="form-check-input"> -- Templates -- </option>

@@ -10,6 +10,7 @@
 	import type { Project } from 'src/model/project';
 	import { getProjectRequest } from '$lib/api/project';
 	import Error from '$lib/Error.svelte'
+import Spinner from '$lib/Spinner.svelte';
 
 	let projectId = $page.params.id; // id of project clicked on (arg in URL "/project/X")
 
@@ -67,7 +68,7 @@
 </svelte:head>
 
 {#await projectPromise}
-	<div class="spinner-border" role="status" />
+	<Spinner/>
 {:then project}
 	<div class="split">
 		<div id="split-0">

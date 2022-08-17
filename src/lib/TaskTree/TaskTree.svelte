@@ -5,6 +5,7 @@
 	import type { Task } from 'src/model/task';
 	import type { Model } from 'src/model/model';
 	import Error from '$lib/Error.svelte'
+import Spinner from '$lib/Spinner.svelte';
 
 	/*Bound vars*/
 	export let selectedModel: Model;
@@ -32,7 +33,7 @@
 
 <div class="col">
 	{#await rootTaskPromise}
-		<div class="spinner-border" role="status" />
+		<Spinner/>
 	{:then rootTask}
 		{#if selectedModel == undefined}
 			No model selected

@@ -7,6 +7,7 @@
 	import DeleteProject from './DeleteProject.svelte';
 	import type { Project } from 'src/model/project';
 	import ErrorComponent from '$lib/Error.svelte'
+import Spinner from '$lib/Spinner.svelte';
 
 	let projects: Project[];
 	let error: string;
@@ -48,7 +49,7 @@
 			</div>
 		{/each}
 	{:else}
-		<div class="spinner-border" role="status" />
+		<Spinner/>
 	{/if}
 	<CreateProject />
 </div>
