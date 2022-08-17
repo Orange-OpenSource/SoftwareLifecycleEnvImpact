@@ -19,7 +19,7 @@
 			project.models!.push(res);
 			selectedModel = res;
 			/*Redondant assignment to force Svelte to update components*/
-			project.models = project.models
+			project.models = project.models;
 			showModal = false;
 		}
 	}

@@ -4,8 +4,8 @@
 	import TaskComponent from '$lib/Task/Task.svelte';
 	import type { Task } from 'src/model/task';
 	import type { Model } from 'src/model/model';
-	import Error from '$lib/Error.svelte'
-import Spinner from '$lib/Spinner.svelte';
+	import Error from '$lib/Error.svelte';
+	import Spinner from '$lib/Spinner.svelte';
 
 	/*Bound vars*/
 	export let selectedModel: Model;
@@ -33,7 +33,7 @@ import Spinner from '$lib/Spinner.svelte';
 
 <div class="col">
 	{#await rootTaskPromise}
-		<Spinner/>
+		<Spinner />
 	{:then rootTask}
 		{#if selectedModel == undefined}
 			No model selected
@@ -44,6 +44,6 @@ import Spinner from '$lib/Spinner.svelte';
 			</div>
 		{/if}
 	{:catch error}
-		<Error message={error.message}/>
+		<Error message={error.message} />
 	{/await}
 </div>

@@ -6,8 +6,8 @@
 	import { getLastUpdate } from '$lib/utils';
 	import DeleteProject from './DeleteProject.svelte';
 	import type { Project } from 'src/model/project';
-	import ErrorComponent from '$lib/Error.svelte'
-import Spinner from '$lib/Spinner.svelte';
+	import ErrorComponent from '$lib/Error.svelte';
+	import Spinner from '$lib/Spinner.svelte';
 
 	let projects: Project[];
 	let error: string;
@@ -16,7 +16,7 @@ import Spinner from '$lib/Spinner.svelte';
 		/**
 		 * Cannot use svelte promise logic as result cannot be binded to component
 		 * (projects to delete project from list here)
-		*/
+		 */
 		try {
 			projects = await getProjectsRequest();
 		} catch (e: any) {
@@ -27,7 +27,7 @@ import Spinner from '$lib/Spinner.svelte';
 
 <div>
 	{#if error}
-		<ErrorComponent message={error}/>
+		<ErrorComponent message={error} />
 	{:else if projects}
 		{#each projects as project}
 			<div class="list-group-item list-group-item-action">
@@ -43,13 +43,13 @@ import Spinner from '$lib/Spinner.svelte';
 
 					<div class="col">
 						<RenameProject bind:project />
-						<DeleteProject bind:projects={projects} {project} />
+						<DeleteProject bind:projects {project} />
 					</div>
 				</div>
 			</div>
 		{/each}
 	{:else}
-		<Spinner/>
+		<Spinner />
 	{/if}
 	<CreateProject />
 </div>

@@ -13,7 +13,7 @@
 
 	async function deleteProject() {
 		await deleteProjectRequest(project);
-		projects = projects.filter(p => p.id != project.id);
+		projects = projects.filter((p) => p.id != project.id);
 		showModal = false;
 	}
 </script>

@@ -14,7 +14,7 @@
 
 	async function deleteTask() {
 		await deleteTaskRequest(task);
-		parentTask.subtasks = parentTask.subtasks.filter(s => s.id != task.id);
+		parentTask.subtasks = parentTask.subtasks.filter((s) => s.id != task.id);
 		/*Redondant assignment to force Svelte to update components*/
 		parentTask.subtasks = parentTask.subtasks;
 		showModal = false;

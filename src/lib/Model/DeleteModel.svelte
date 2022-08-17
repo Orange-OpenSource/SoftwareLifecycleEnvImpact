@@ -13,7 +13,7 @@
 
 	async function deleteModel() {
 		await deleteModelRequest(model);
-		models = models.filter(m => m.id != model.id);
+		models = models.filter((m) => m.id != model.id);
 		showModal = false;
 	}
 </script>

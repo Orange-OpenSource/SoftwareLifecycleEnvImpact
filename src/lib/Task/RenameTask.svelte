@@ -12,7 +12,7 @@
 
 	async function renameTask() {
 		const res = await renameTaskRequest(task, newName);
-		task.name = res.name
+		task.name = res.name;
 		showModal = false;
 	}
 </script>

@@ -23,7 +23,16 @@
 				<div class="d-flex w-100 justify-content-between align-items-center">
 					<div>
 						<label class="input-group-text" for="typeNumber">{resource.name}</label>
-						<input type="number" id="typeNumber{resource.id}" class="form-control" readonly={!modify} bind:value={resource.value} min="0" on:change={() => updateResource(resource)} on:click={() => {}} />
+						<input
+							type="number"
+							id="typeNumber{resource.id}"
+							class="form-control"
+							readonly={!modify}
+							bind:value={resource.value}
+							min="0"
+							on:change={() => updateResource(resource)}
+							on:click={() => {}}
+						/>
 					</div>
 
 					{#if modify}

@@ -14,7 +14,7 @@
 
 	async function deleteResource() {
 		await deleteResourceRequest(resource);
-		task.resources = task.resources.filter(r => r.id != resource.id);
+		task.resources = task.resources.filter((r) => r.id != resource.id);
 		showModal = false;
 	}
 </script>

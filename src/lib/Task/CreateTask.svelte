@@ -4,8 +4,8 @@
 	import type { Model } from 'src/model/model';
 	import type { Task, TaskTemplate } from 'src/model/task';
 	import Modal from '../Modal.svelte';
-	import Error from '$lib/Error.svelte'
-import Spinner from '$lib/Spinner.svelte';
+	import Error from '$lib/Error.svelte';
+	import Spinner from '$lib/Spinner.svelte';
 
 	/* Bound var */
 	export let parentTask: Task;
@@ -21,9 +21,9 @@ import Spinner from '$lib/Spinner.svelte';
 	async function handleSubmit() {
 		if (selectedTemplate != null) {
 			const res = await createTaskRequest(selectedModel.id, selectedTemplate.name, parentTask.id, selectedTemplate.id);
-			parentTask.subtasks.push(res)
+			parentTask.subtasks.push(res);
 			/*Redondant assignment to force Svelte to update components*/
-			parentTask.subtasks = parentTask.subtasks
+			parentTask.subtasks = parentTask.subtasks;
 			showModal = false;
 		}
 	}
@@ -32,7 +32,7 @@ import Spinner from '$lib/Spinner.svelte';
 <button on:click|stopPropagation={() => (showModal = true)} class="btn btn-primary">Add task</button>
 
 {#await taskTemplates}
-	<Spinner/>
+	<Spinner />
 {:then taskTemplates}
 	<Modal bind:showModal>
 		<span slot="title">Create new task :</span>
@@ -50,5 +50,5 @@ import Spinner from '$lib/Spinner.svelte';
 		</form>
 	</Modal>
 {:catch error}
-	<Error message={error.message}/>
+	<Error message={error.message} />
 {/await}

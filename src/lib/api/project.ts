@@ -37,7 +37,7 @@ export async function renameProjectRequest(project: Project, name: string): Prom
 	});
 }
 
-export async function deleteProjectRequest(project: Project): Promise<Project>{
+export async function deleteProjectRequest(project: Project): Promise<Project> {
 	const res = await del('projects/' + project.id);
 	return res.text().then((json: string) => {
 		return JSON.parse(json);
