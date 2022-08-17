@@ -4,7 +4,8 @@
 	import type { Task } from 'src/model/task';
 
 	/* Bound var */
-	export let parentTask: Task; /*TODO delete from parent task*/
+	export let parentTask: Task;
+
 	export let task: Task;
 
 	let error = '';
@@ -13,8 +14,7 @@
 
 	async function deleteTask() {
 		await deleteTaskRequest(task);
-		/*TODO update parent list*/
-		//parentTask.subtasks = parentTask.subtasks.filter(s => s.id != task.id);
+		parentTask.subtasks = parentTask.subtasks.filter(s => s.id != task.id);
 		/*Redondant assignment to force Svelte to update components*/
 		parentTask.subtasks = parentTask.subtasks;
 		showModal = false;

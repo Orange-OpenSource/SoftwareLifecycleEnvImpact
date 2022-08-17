@@ -38,7 +38,7 @@
 				{/if}
 				{#if modify}
 					<div class="d-flex justify-content-end">
-						<DeleteTask {task} {parentTask} />
+						<DeleteTask {task} bind:parentTask />
 						<CreateTask bind:parentTask={task} {selectedModel} />
 					</div>
 				{/if}
