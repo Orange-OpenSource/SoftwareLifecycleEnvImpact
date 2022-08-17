@@ -18,12 +18,10 @@
 
 	async function handleSubmit() {
 		if (selectedTemplate != null) {
-			await createTaskRequest(selectedModel.id, selectedTemplate.name, parentTask.id, selectedTemplate.id);
-
-			/*TODO delete from parent task subtasks*/
-			//parentTask.subtasks.push(res)
+			const res = await createTaskRequest(selectedModel.id, selectedTemplate.name, parentTask.id, selectedTemplate.id);
+			parentTask.subtasks.push(res)
 			/*Redondant assignment to force Svelte to update components*/
-			//parentTask.subtasks = parentTask.subtasks
+			parentTask.subtasks = parentTask.subtasks
 			showModal = false;
 		}
 	}
