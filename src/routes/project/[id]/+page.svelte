@@ -9,6 +9,7 @@
 	import type { Model } from 'src/model/model';
 	import type { Project } from 'src/model/project';
 	import { getProjectRequest } from '$lib/api/project';
+	import Error from '$lib/Error.svelte'
 
 	let projectId = $page.params.id; // id of project clicked on (arg in URL "/project/X")
 
@@ -87,5 +88,5 @@
 		</div>
 	</div>
 {:catch error}
-	<p style="color: red">{error.message}</p>
+	<Error message={error.message}/>
 {/await}

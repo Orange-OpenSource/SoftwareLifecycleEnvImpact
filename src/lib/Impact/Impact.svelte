@@ -5,6 +5,7 @@
 	import type { Task } from 'src/model/task';
 	import { getTaskImpact } from '$lib/api/task';
 	import type { TaskImpact } from 'src/model/impacts';
+	import Error from '$lib/Error.svelte';
 
 	/*Bound var*/
 	export let selectedTask: Task;
@@ -36,5 +37,5 @@
 		<ImpactByResource impactByResource={impact.resources} />
 	{/if}
 {:catch error}
-	<p style="color: red">{error.message}</p>
+	<Error message={error.message}/>
 {/await}

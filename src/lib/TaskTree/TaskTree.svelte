@@ -4,6 +4,7 @@
 	import TaskComponent from '$lib/Task/Task.svelte';
 	import type { Task } from 'src/model/task';
 	import type { Model } from 'src/model/model';
+	import Error from '$lib/Error.svelte'
 
 	/*Bound vars*/
 	export let selectedModel: Model;
@@ -42,6 +43,6 @@
 			</div>
 		{/if}
 	{:catch error}
-		<p style="color: red">{error.message}</p>
+		<Error message={error.message}/>
 	{/await}
 </div>

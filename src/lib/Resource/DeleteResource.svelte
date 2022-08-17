@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { del } from '$lib/api/api';
-import { deleteResourceRequest } from '$lib/api/resource';
+	import { deleteResourceRequest } from '$lib/api/resource';
 	import Modal from '$lib/Modal.svelte';
 	import type { Resource } from 'src/model/resource';
 	import type { Task } from 'src/model/task';

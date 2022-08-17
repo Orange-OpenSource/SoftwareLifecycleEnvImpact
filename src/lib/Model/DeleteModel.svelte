@@ -12,7 +12,7 @@
 	let error = '';
 
 	async function deleteModel() {
-		const res = await deleteModelRequest(model);
+		await deleteModelRequest(model);
 		models = models.filter(m => m.id != model.id);
 		showModal = false;
 	}

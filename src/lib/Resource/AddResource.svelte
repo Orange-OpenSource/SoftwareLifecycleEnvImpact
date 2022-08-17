@@ -3,6 +3,7 @@
 	import { getResourceTemplatesRequest } from '$lib/api/resourceTemplates';
 	import type { Task, TaskTemplate } from 'src/model/task';
 	import { addResourceRequest } from '$lib/api/resource';
+	import Error from '$lib/Error.svelte'
 
 	/*Bound var*/
 	export let task: Task;
@@ -38,7 +39,7 @@
 				{/each}
 			</select>
 		{:catch error}
-			<p style="color: red">{error.message}</p>
+			<Error message={error.message}/>
 		{/await}
 
 		<button type="submit" data-dismiss="modal" class="btn btn-primary">Create resource</button>

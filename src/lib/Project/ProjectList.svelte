@@ -6,9 +6,10 @@
 	import { getLastUpdate } from '$lib/utils';
 	import DeleteProject from './DeleteProject.svelte';
 	import type { Project } from 'src/model/project';
+	import ErrorComponent from '$lib/Error.svelte'
 
 	let projects: Project[];
-	let error: Error;
+	let error: string;
 
 	onMount(async () => {
 		/**
@@ -17,15 +18,15 @@
 		*/
 		try {
 			projects = await getProjectsRequest();
-		} catch (e) {
-			error = Error(e);
+		} catch (e: any) {
+			error = e.message;
 		}
 	});
 </script>
 
 <div>
 	{#if error}
-		<p style="color: red">{error.message}</p>
+		<ErrorComponent message={error}/>
 	{:else if projects}
 		{#each projects as project}
 			<div class="list-group-item list-group-item-action">

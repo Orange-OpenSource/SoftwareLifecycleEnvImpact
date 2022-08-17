@@ -4,6 +4,7 @@
 	import type { Model } from 'src/model/model';
 	import type { Task, TaskTemplate } from 'src/model/task';
 	import Modal from '../Modal.svelte';
+	import Error from '$lib/Error.svelte'
 
 	/* Bound var */
 	export let parentTask: Task;
@@ -48,5 +49,5 @@
 		</form>
 	</Modal>
 {:catch error}
-	<p style="color: red">{error.message}</p>
+	<Error message={error.message}/>
 {/await}
