@@ -17,11 +17,9 @@
 			const res = await createModelRequest(modelName, project.id);
 			modelName = '';
 			project.models!.push(res);
-			selectedModel = selectedModel; //TODO remove replace by result
-			//selectedModel = res;
+			selectedModel = res;
 			/*Redondant assignment to force Svelte to update components*/
-			//project.models = project.models
-			/*TODO add to models before*/
+			project.models = project.models
 			showModal = false;
 		}
 	}
