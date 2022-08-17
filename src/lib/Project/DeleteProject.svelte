@@ -1,33 +1,21 @@
 <script lang="ts">
 	import { del } from '$lib/api/api';
+import { deleteProjectRequest } from '$lib/api/project';
 	import Modal from '$lib/Modal.svelte';
 	import type { Project } from 'src/model/project';
 
 	/* Bound var */
-	/*TODO delete from projects list*/
-	//export let projects: Promise<Project[]>;
+	export let projects: Project[];
 
 	export let project: Project;
 
 	let showModal = false;
 	let error = '';
 
-	async function deleteProject(projectToDelete: Project) {
-		const res = await del('projects/' + projectToDelete.id);
-
-		switch (res.status) {
-			case undefined:
-				/*TODO delete project from list*/
-				//projects = projects.filter(p => p.id != projectToDelete.id);
-				showModal = false;
-				break;
-			case 404:
-				error = 'No project found with this id ' + project.id;
-				break;
-			default:
-				error = res.status + ' error';
-				break;
-		}
+	async function deleteProject() {
+		await deleteProjectRequest(project);
+		projects = projects.filter(p => p.id != project.id);
+		showModal = false;
 	}
 </script>
 
@@ -42,5 +30,5 @@
 		<p style="color: red">{error}</p>
 	{/if}
 
-	<button on:click|stopPropagation={() => deleteProject(project)} slot="btnsave" type="button" class="btn btn-danger">Delete</button>
+	<button on:click|stopPropagation={() => deleteProject()} slot="btnsave" type="button" class="btn btn-danger">Delete</button>
 </Modal>

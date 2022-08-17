@@ -1,4 +1,4 @@
-import { get, patch, post } from '$lib/api/api';
+import { del, get, patch, post } from '$lib/api/api';
 import type { PatchDocument } from 'src/model/patchDocument';
 import type { Project } from 'src/model/project';
 
@@ -32,6 +32,13 @@ export async function renameProjectRequest(project: Project, name: string): Prom
 		value: name
 	};
 	const res = await patch('projects/' + project.id, patchDocument);
+	return res.text().then((json: string) => {
+		return JSON.parse(json);
+	});
+}
+
+export async function deleteProjectRequest(project: Project): Promise<Project>{
+	const res = await del('projects/' + project.id);
 	return res.text().then((json: string) => {
 		return JSON.parse(json);
 	});
