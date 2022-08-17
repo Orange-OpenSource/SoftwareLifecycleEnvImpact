@@ -4,7 +4,7 @@
 	import ImpactByResource from './ImpactByResource.svelte';
 	import type { Task } from 'src/model/task';
 	import { getTaskImpact } from '$lib/api/task';
-	import type { TaskImpact } from 'src/model/taskImpact';
+	import type { TaskImpact } from 'src/model/impacts';
 
 	/*Bound var*/
 	export let selectedTask: Task;
@@ -16,7 +16,7 @@
 
 	async function updateImpacts() {
 		if (selectedTask != undefined) {
-			impactPromise = getTaskImpact(selectedTask).then()
+			impactPromise = getTaskImpact(selectedTask).then();
 		}
 	}
 </script>

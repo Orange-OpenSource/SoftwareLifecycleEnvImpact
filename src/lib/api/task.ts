@@ -1,6 +1,6 @@
 import { del, get, patch, post } from '$lib/api/api';
+import type { TaskImpact } from 'src/model/impacts';
 import type { Task } from 'src/model/task';
-import type { TaskImpact } from 'src/model/taskImpact';
 
 export async function renameTaskRequest(task: Task, newName: string): Promise<Task> {
 	const res = await patch('tasks/' + task.id, [
@@ -29,7 +29,7 @@ export async function deleteTaskRequest(task: Task): Promise<Task> {
 	});
 }
 
-export async function createTask(model_id: number, name: string, parent_task_id: number, template_id: number): Promise<Task> {
+export async function createTaskRequest(model_id: number, name: string, parent_task_id: number, template_id: number): Promise<Task> {
 	const res = await post('tasks', {
 		model_id: model_id,
 		name: name,

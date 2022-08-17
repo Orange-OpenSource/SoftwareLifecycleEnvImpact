@@ -1,7 +1,5 @@
 <script lang="ts">
-	import type { AggregatedImpact } from 'src/model/impact';
-	import type { ResourcesImpact } from 'src/model/taskImpact';
-
+	import type { AggregatedImpact, ResourcesImpact } from 'src/model/impacts';
 	import ImpactByIndicator from './ImpactByIndicator.svelte';
 
 	export let impactByResource: ResourcesImpact;

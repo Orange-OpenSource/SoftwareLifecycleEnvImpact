@@ -4,9 +4,9 @@
 	import type { Task } from 'src/model/task';
 
 	/* Bound var */
-	export let parentTask: Task /*TODO delete from parent task*/
+	export let parentTask: Task; /*TODO delete from parent task*/
 	export let task: Task;
-	
+
 	let error = '';
 
 	let showModal = false;
@@ -16,7 +16,7 @@
 		/*TODO update parent list*/
 		//parentTask.subtasks = parentTask.subtasks.filter(s => s.id != task.id);
 		/*Redondant assignment to force Svelte to update components*/
-		parentTask.subtasks = parentTask.subtasks
+		parentTask.subtasks = parentTask.subtasks;
 		showModal = false;
 	}
 </script>

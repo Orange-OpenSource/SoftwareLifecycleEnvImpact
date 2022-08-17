@@ -2,7 +2,7 @@ import { get, patch, post } from '$lib/api/api';
 import type { Model } from 'src/model/model';
 import type { Task } from 'src/model/task';
 
-export async function getModelTasks(modelId: number): Promise<Task> {
+export async function getModelTasksRequest(modelId: number): Promise<Task> {
 	const res = await get('models/' + modelId + '/tasks');
 	return res.text().then((json: string) => {
 		return JSON.parse(json);

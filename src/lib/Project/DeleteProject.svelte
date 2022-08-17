@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { del } from '$lib/api/api';
 	import Modal from '$lib/Modal.svelte';
-	import type { Project } from 'src/model/models';
+	import type { Project } from 'src/model/project';
 
 	/* Bound var */
 	/*TODO delete from projects list*/

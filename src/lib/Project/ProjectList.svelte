@@ -1,12 +1,12 @@
-<script >
-	import { getProjects } from '$lib/api/project';
+<script>
+	import { getProjectsRequest } from '$lib/api/project';
 
 	import CreateProject from '$lib/Project/CreateProject.svelte';
 	import RenameProject from '$lib/Project/RenameProject.svelte';
 	import { getLastUpdate } from '$lib/utils';
 	import DeleteProject from './DeleteProject.svelte';
 
-	let projects = getProjects();
+	let projects = getProjectsRequest();
 </script>
 
 <div>

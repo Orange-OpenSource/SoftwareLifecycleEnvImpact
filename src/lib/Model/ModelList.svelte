@@ -46,7 +46,6 @@
 		{:else}
 			No model
 		{/if}
-
 	</div>
-	<CreateModel bind:project={project} bind:selectedModel={selectedModel} />
+	<CreateModel bind:project bind:selectedModel />
 </div>

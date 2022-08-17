@@ -8,7 +8,7 @@
 
 	let showModal = false;
 
-	let newName = task.name
+	let newName = task.name;
 
 	async function renameTask() {
 		await renameTaskRequest(task, newName);

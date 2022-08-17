@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { Chart, registerables } from 'chart.js';
 	import type { Task } from 'src/model/task';
-	import type { SubtasksImpact } from 'src/model/taskImpact';
+	import type { SubtasksImpact } from 'src/model/impacts';
 
 	export let impactBySubtask: SubtasksImpact;
 
@@ -72,7 +72,7 @@
 				}
 			}
 		});
-		updateChart()
+		updateChart();
 	});
 </script>
 

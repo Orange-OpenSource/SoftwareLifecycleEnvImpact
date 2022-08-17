@@ -1,9 +1,8 @@
 <script lang="ts">
-	import { createTask } from '$lib/api/task';
-import { getTaskTemplates } from '$lib/api/task_templates';
+	import { createTaskRequest } from '$lib/api/task';
+	import { getTaskTemplatesRequest } from '$lib/api/taskTemplates';
 	import type { Model } from 'src/model/model';
-	import type { Task } from 'src/model/task';
-	import type { TaskTemplate } from 'src/model/taskTemplate';
+	import type { Task, TaskTemplate } from 'src/model/task';
 	import Modal from '../Modal.svelte';
 
 	/* Bound var */
@@ -11,7 +10,7 @@ import { getTaskTemplates } from '$lib/api/task_templates';
 
 	export let selectedModel: Model;
 
-	let taskTemplates = getTaskTemplates();
+	let taskTemplates = getTaskTemplatesRequest();
 	let selectedTemplate: TaskTemplate;
 	let showModal = false;
 
@@ -19,7 +18,7 @@ import { getTaskTemplates } from '$lib/api/task_templates';
 
 	async function handleSubmit() {
 		if (selectedTemplate != null) {
-			await createTask(selectedModel.id, selectedTemplate.name, parentTask.id, selectedTemplate.id);
+			await createTaskRequest(selectedModel.id, selectedTemplate.name, parentTask.id, selectedTemplate.id);
 
 			/*TODO delete from parent task subtasks*/
 			//parentTask.subtasks.push(res)

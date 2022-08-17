@@ -1,8 +1,7 @@
 <script lang="ts">
 	import Modal from '$lib/Modal.svelte';
-	import { getResourceTemplates } from '$lib/api/resource_templates';
-	import type { TaskTemplate } from 'src/model/taskTemplate';
-	import type { Task } from 'src/model/task';
+	import { getResourceTemplatesRequest } from '$lib/api/resourceTemplates';
+	import type { Task, TaskTemplate } from 'src/model/task';
 	import { addResourceRequest } from '$lib/api/resource';
 
 	/*Bound var*/
@@ -11,17 +10,13 @@
 	let error = '';
 	let showModal = false;
 
-	let resourceTemplates = getResourceTemplates();
+	let resourceTemplates = getResourceTemplatesRequest();
 	let selectedTemplate: TaskTemplate;
 
 	async function handleSubmit() {
 		if (selectedTemplate != null) {
 			error = '';
-			const res = await addResourceRequest(
-				selectedTemplate.name,
-				task.id,
-				selectedTemplate.id
-			)
+			const res = await addResourceRequest(selectedTemplate.name, task.id, selectedTemplate.id);
 			task.resources.push(res);
 			/*Redondant assignment to force Svelte to update components*/
 			task.resources = task.resources;

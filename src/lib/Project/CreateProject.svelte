@@ -2,14 +2,14 @@
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/env';
 	import Modal from '../Modal.svelte';
-	import { createProject } from '$lib/api/project';
+	import { createProjectRequest } from '$lib/api/project';
 
 	let projectName: string;
 	let showModal = false;
 	let error = '';
 
 	async function createNewProject() {
-		const res = await createProject(projectName);
+		const res = await createProjectRequest(projectName);
 		showModal = false;
 		if (browser) goto('/project/' + res.id);
 	}

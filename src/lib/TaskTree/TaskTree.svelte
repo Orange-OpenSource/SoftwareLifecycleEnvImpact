@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Header from './Header.svelte';
-	import { getModelTasks } from '$lib/api/model';
+	import { getModelTasksRequest } from '$lib/api/model';
 	import TaskComponent from '$lib/Task/Task.svelte';
 	import type { Task } from 'src/model/task';
 	import type { Model } from 'src/model/model';
@@ -18,7 +18,7 @@
 	async function updateTree() {
 		modify = false;
 		if (selectedModel != undefined) {
-			rootTaskPromise = getModelTasks(selectedModel.id).then((res) => {
+			rootTaskPromise = getModelTasksRequest(selectedModel.id).then((res) => {
 				/* Switch on modify if ther is no task in the model*/
 				if (res.subtasks.length === 0) {
 					modify = true;
@@ -38,7 +38,7 @@
 		{:else if rootTask != undefined}
 			<Header bind:modify {selectedModel} />
 			<div class="col scroll">
-				<TaskComponent task={rootTask} bind:selectedTask {modify} {selectedModel} parentTask={rootTask}/>
+				<TaskComponent task={rootTask} bind:selectedTask {modify} {selectedModel} parentTask={rootTask} />
 			</div>
 		{/if}
 	{:catch error}

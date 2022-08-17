@@ -11,13 +11,13 @@
 	let showModal = false;
 	let modelName: string;
 	let error = '';
-	
+
 	async function createModel() {
 		if (modelName != undefined && modelName != '') {
 			const res = await createModelRequest(modelName, project.id);
 			modelName = '';
-			project.models!.push(res)
-			selectedModel = selectedModel //TODO remove replace by result
+			project.models!.push(res);
+			selectedModel = selectedModel; //TODO remove replace by result
 			//selectedModel = res;
 			/*Redondant assignment to force Svelte to update components*/
 			//project.models = project.models

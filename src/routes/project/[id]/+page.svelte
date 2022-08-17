@@ -8,7 +8,7 @@
 	import type { Task } from 'src/model/task';
 	import type { Model } from 'src/model/model';
 	import type { Project } from 'src/model/project';
-	import { getProject } from '$lib/api/project';
+	import { getProjectRequest } from '$lib/api/project';
 
 	let projectId = $page.params.id; // id of project clicked on (arg in URL "/project/X")
 
@@ -35,7 +35,7 @@
 			onDrag: function () {
 				for (let i = 0; i < 3; i++) {
 					let element = document.getElementById('split-' + i);
-					if(element != null){
+					if (element != null) {
 						if (element.offsetWidth === 0) {
 							element.style.visibility = 'hidden';
 						} else {
@@ -44,16 +44,16 @@
 					}
 				}
 			}
-		})
+		});
 	}
 
 	async function retrieveProject() {
-		projectPromise = getProject(projectId).then((res) => {
-			if(res.models != null){
+		projectPromise = getProjectRequest(projectId).then((res) => {
+			if (res.models != null) {
 				selectedModel = res.models[0];
 			}
 			return res;
-		})
+		});
 	}
 
 	onMount(async function () {

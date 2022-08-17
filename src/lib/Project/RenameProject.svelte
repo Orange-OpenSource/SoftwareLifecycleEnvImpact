@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { renameProjectRequest } from '$lib/api/project';
-	import type { Project } from 'src/model/models';
+	import type { Project } from 'src/model/project';
 	import Modal from '../Modal.svelte';
 
 	/* Bound var */

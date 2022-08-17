@@ -5,7 +5,7 @@
 	import type { Task } from 'src/model/task';
 
 	/*Bound var*/
-	export let task: Task
+	export let task: Task;
 
 	export let resource: Resource;
 
@@ -20,7 +20,7 @@
 			case undefined:
 				/*TODO update resourceslist*/
 				/*task.resources = task.resources.filter(r => r.id != resource.id);*/
-				task.resources = task.resources // TODO remove
+				task.resources = task.resources; // TODO remove
 				showModal = false;
 				break;
 			case 404:

@@ -1,5 +1,6 @@
 <script lang="ts">
-	import type { AggregatedImpact } from 'src/model/impact';
+	import type { AggregatedImpact } from 'src/model/impacts';
+
 	export let impact: AggregatedImpact;
 
 	let entries: [string, any][];

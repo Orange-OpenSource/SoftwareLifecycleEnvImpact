@@ -1,4 +1,4 @@
-<script >
+<script>
 	import ProjectList from '$lib/Project/ProjectList.svelte';
 </script>
 
