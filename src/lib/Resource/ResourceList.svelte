@@ -13,11 +13,11 @@
 	let error = '';
 
 	async function updateResource(resource: Resource) {
-		try{
+		try {
 			await updateResourceRequest(resource, String(resource.value));
-		}catch(e: any){
-			error = e.message
-		} 
+		} catch (e: any) {
+			error = e.message;
+		}
 	}
 </script>
 

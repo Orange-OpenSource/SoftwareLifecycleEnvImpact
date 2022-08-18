@@ -11,16 +11,16 @@
 	let showModal = false;
 	let error = '';
 
-	$: showModal, error = '' //Clean error message when closing modal
+	$: showModal, (error = ''); //Clean error message when closing modal
 
 	async function renameModel() {
-		error = ''
-		try{
+		error = '';
+		try {
 			const res = await renameModelRequest(model, newName);
 			model.name = res.name;
 			showModal = false;
-		}catch(e: any){
-			error = e.message
+		} catch (e: any) {
+			error = e.message;
 		}
 	}
 </script>

@@ -12,17 +12,17 @@
 
 	let error = '';
 
-	$: showModal, error = '' //Clean error message when closing modal
+	$: showModal, (error = ''); //Clean error message when closing modal
 
 	async function renameProject() {
-		error = ''
-		try{
+		error = '';
+		try {
 			const res = await renameProjectRequest(project, newName);
 			project.name = res.name;
 			showModal = false;
-		}catch(e: any){
-			error = e.message
-		} 
+		} catch (e: any) {
+			error = e.message;
+		}
 	}
 </script>
 

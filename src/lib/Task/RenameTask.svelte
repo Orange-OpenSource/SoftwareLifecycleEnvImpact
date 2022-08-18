@@ -11,16 +11,16 @@
 	let error = '';
 	let newName = task.name;
 
-	$: showModal, error = '' //Clean error message when closing modal
+	$: showModal, (error = ''); //Clean error message when closing modal
 
 	async function renameTask() {
-		error = ''
-		try{
+		error = '';
+		try {
 			const res = await renameTaskRequest(task, newName);
 			task.name = res.name;
 			showModal = false;
-		}catch(e: any){
-			error = e.message
+		} catch (e: any) {
+			error = e.message;
 		}
 	}
 </script>

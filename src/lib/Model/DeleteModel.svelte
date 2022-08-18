@@ -12,16 +12,16 @@
 	let showModal = false;
 	let error = '';
 
-	$: showModal, error = '' //Clean error message when closing modal
+	$: showModal, (error = ''); //Clean error message when closing modal
 
 	async function deleteModel() {
-		error = ''
-		try{
+		error = '';
+		try {
 			await deleteModelRequest(model);
 			models = models.filter((m) => m.id != model.id);
 			showModal = false;
-		}catch(e:any){
-			error = e.message
+		} catch (e: any) {
+			error = e.message;
 		}
 	}
 </script>

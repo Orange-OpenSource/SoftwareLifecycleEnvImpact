@@ -14,12 +14,12 @@
 	let resourceTemplates = getResourceTemplatesRequest();
 	let selectedTemplate: TaskTemplate;
 
-	let error=''
-	$: showModal, error = '' //Clean error message when closing modal
+	let error = '';
+	$: showModal, (error = ''); //Clean error message when closing modal
 
 	async function handleSubmit() {
-		error = ''
-		try{
+		error = '';
+		try {
 			if (selectedTemplate != null) {
 				const res = await addResourceRequest(selectedTemplate.name, task.id, selectedTemplate.id);
 				task.resources.push(res);
@@ -27,8 +27,8 @@
 				task.resources = task.resources;
 				showModal = false;
 			}
-		}catch(e: any){
-			error = e.message
+		} catch (e: any) {
+			error = e.message;
 		}
 	}
 </script>

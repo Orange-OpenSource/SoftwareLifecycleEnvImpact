@@ -3,7 +3,7 @@
 	import Modal from '$lib/Modal.svelte';
 	import type { Task } from 'src/model/task';
 	import Error from '$lib/Error.svelte';
-	
+
 	/* Bound var */
 	export let parentTask: Task;
 
@@ -12,19 +12,19 @@
 	let showModal = false;
 
 	let error = '';
-	$: showModal, error = '' //Clean error message when closing modal
+	$: showModal, (error = ''); //Clean error message when closing modal
 
 	async function deleteTask() {
-		error = ''
-		try{
+		error = '';
+		try {
 			await deleteTaskRequest(task);
 			parentTask.subtasks = parentTask.subtasks.filter((s) => s.id != task.id);
 			/*Redondant assignment to force Svelte to update components*/
 			parentTask.subtasks = parentTask.subtasks;
 			showModal = false;
-		}catch(e: any){
-			error = e.message
-		} 
+		} catch (e: any) {
+			error = e.message;
+		}
 	}
 </script>
 

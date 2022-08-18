@@ -10,16 +10,16 @@
 	export let selectedModel: Model;
 
 	let showModal = false;
-	
+
 	let modelName: string;
 	let error = '';
 
-	$: showModal, error = '' //Clean error message when closing modal
+	$: showModal, (error = ''); //Clean error message when closing modal
 
 	async function createModel() {
 		if (modelName != undefined && modelName != '') {
-			error = ''
-			try{
+			error = '';
+			try {
 				const res = await createModelRequest(modelName, project.id);
 				modelName = '';
 				project.models!.push(res);
@@ -27,8 +27,8 @@
 				/*Redondant assignment to force Svelte to update components*/
 				project.models = project.models;
 				showModal = false;
-			}catch(e: any){
-				error = e.message
+			} catch (e: any) {
+				error = e.message;
 			}
 		}
 	}

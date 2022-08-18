@@ -12,16 +12,16 @@
 	let showModal = false;
 	let error = '';
 
-	$: showModal, error = '' //Clean error message when closing modal
+	$: showModal, (error = ''); //Clean error message when closing modal
 
 	async function deleteProject() {
-		error = ''
-		try{
+		error = '';
+		try {
 			await deleteProjectRequest(project);
 			projects = projects.filter((p) => p.id != project.id);
 			showModal = false;
-		}catch(e: any){
-			error = e.message
+		} catch (e: any) {
+			error = e.message;
 		}
 	}
 </script>

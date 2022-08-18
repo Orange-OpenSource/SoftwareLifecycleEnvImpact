@@ -2,8 +2,8 @@
 	/*Bound var*/
 	export let showModal: boolean;
 
-	function close(){
-		showModal = false
+	function close() {
+		showModal = false;
 	}
 </script>
 

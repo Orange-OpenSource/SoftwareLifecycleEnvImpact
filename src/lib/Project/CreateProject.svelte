@@ -9,17 +9,17 @@
 	let showModal = false;
 	let error = '';
 
-	$: showModal, error = '' //Clean error message when closing modal
+	$: showModal, (error = ''); //Clean error message when closing modal
 
 	async function createNewProject() {
-		error = ''
-		try{
+		error = '';
+		try {
 			const res = await createProjectRequest(projectName);
 			showModal = false;
 			if (browser) goto('/project/' + res.id);
-		}catch(e: any){
-			error = e.message
-		} 
+		} catch (e: any) {
+			error = e.message;
+		}
 	}
 </script>
 

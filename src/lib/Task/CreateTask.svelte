@@ -10,18 +10,18 @@
 	/* Bound var */
 	export let parentTask: Task;
 
-	export let selectedModel: Model; 
+	export let selectedModel: Model;
 
 	let taskTemplates = getTaskTemplatesRequest();
 	let selectedTemplate: TaskTemplate;
 	let showModal = false;
 
 	let error = '';
-	$: showModal, error = '' //Clean error message when closing modal
+	$: showModal, (error = ''); //Clean error message when closing modal
 
 	async function handleSubmit() {
-		error = ''
-		try{
+		error = '';
+		try {
 			if (selectedTemplate != null) {
 				const res = await createTaskRequest(selectedModel.id, selectedTemplate.name, parentTask.id, selectedTemplate.id);
 				parentTask.subtasks.push(res);
@@ -29,9 +29,9 @@
 				parentTask.subtasks = parentTask.subtasks;
 				showModal = false;
 			}
-		}catch(e: any){
-			error = e.message
-		} 
+		} catch (e: any) {
+			error = e.message;
+		}
 	}
 </script>
 

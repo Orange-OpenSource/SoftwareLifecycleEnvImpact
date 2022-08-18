@@ -2,7 +2,7 @@ import type { PatchDocument } from 'src/model/patchDocument';
 
 const base = 'http://127.0.0.1:5000/api/v1';
 
-async function send(method: string, path: string, data: any = undefined) {
+async function send(method: string, path: string, data: unknown = undefined) {
 	const opts: RequestInit = { method, headers: {} };
 	opts.method = method;
 	opts.headers = {
@@ -17,10 +17,9 @@ async function send(method: string, path: string, data: any = undefined) {
 		opts.headers['Authorization'] = `Token ${token}`;
 	}
 	*/
-	const res =  await fetch(`${base}/${path}`, opts);
-	if (!res.ok)
-		throw new Error((await res.json())['detail'])
-	return res
+	const res = await fetch(`${base}/${path}`, opts);
+	if (!res.ok) throw new Error((await res.json())['detail']);
+	return res;
 }
 
 export async function get(path: string) {
@@ -31,11 +30,11 @@ export async function del(path: string) {
 	return send('DELETE', path);
 }
 
-export async function post(path: string, data: any) {
+export async function post(path: string, data: unknown) {
 	return send('POST', path, data);
 }
 
-export async function put(path: string, data: any) {
+export async function put(path: string, data: unknown) {
 	return send('PUT', path, data);
 }
 

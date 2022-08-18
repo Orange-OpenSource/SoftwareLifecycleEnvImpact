@@ -13,17 +13,17 @@
 	let showModal = false;
 	let error = '';
 
-	$: showModal, error = '' //Clean error message when closing modal
+	$: showModal, (error = ''); //Clean error message when closing modal
 
 	async function deleteResource() {
-		error = ''
-		try{
+		error = '';
+		try {
 			await deleteResourceRequest(resource);
 			task.resources = task.resources.filter((r) => r.id != resource.id);
 			showModal = false;
-		}catch(e: any){
-			error = e.message
-		} 
+		} catch (e: any) {
+			error = e.message;
+		}
 	}
 </script>
 
