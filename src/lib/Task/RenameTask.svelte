@@ -32,7 +32,7 @@
 	<form slot="body" on:submit|preventDefault={renameTask}>
 		<input id="renameTask" placeholder="Task name" required bind:value={newName} />
 		{#if error}
-			<Error message={error} />
+			<Error message={error} slot="error"/>
 		{/if}
 		<button type="submit" class="btn btn-primary">Rename task</button>
 	</form>

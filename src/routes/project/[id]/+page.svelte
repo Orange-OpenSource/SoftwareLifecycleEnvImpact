@@ -89,5 +89,5 @@
 		</div>
 	</div>
 {:catch error}
-	<Error message={error.message} />
+	<Error message={error.message} slot="error"/>
 {/await}

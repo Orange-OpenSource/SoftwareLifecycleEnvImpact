@@ -34,7 +34,7 @@
 		<input id="renameProjectInput{project.id}" placeholder="Project new name" bind:value={newName} required />
 
 		{#if error}
-			<Error message={error} />
+			<Error message={error} slot="error"/>
 		{/if}
 		<button type="submit" class="btn btn-primary">Rename project</button>
 	</form>

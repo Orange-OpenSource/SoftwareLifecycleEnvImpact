@@ -30,7 +30,7 @@
 	<form slot="body" on:submit|preventDefault={createNewProject}>
 		<input id="createProjectInput" placeholder="Project name" required bind:value={projectName} />
 		{#if error}
-			<Error message={error} />
+			<Error message={error} slot="error"/>
 		{/if}
 		<button type="submit" class="btn btn-primary">Create project</button>
 	</form>

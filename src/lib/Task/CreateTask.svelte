@@ -50,7 +50,7 @@
 				{/each}
 			</select>
 			{#if error}
-				<Error message={error} />
+				<Error message={error} slot="error"/>
 			{/if}
 			<button type="submit" class="btn btn-primary">Create task</button>
 		</form>

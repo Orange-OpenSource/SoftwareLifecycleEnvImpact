@@ -35,7 +35,7 @@
 	<span slot="body">Are you sure you want to delete <strong>{resource.name}</strong> ?</span>
 
 	{#if error}
-		<Error message={error} />
+		<Error message={error} slot="error"/>
 	{/if}
 
 	<button on:click|stopPropagation={() => deleteResource()} slot="btnsave" type="button" class="btn btn-danger">Delete</button>
