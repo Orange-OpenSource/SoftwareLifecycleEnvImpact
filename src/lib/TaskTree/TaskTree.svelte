@@ -44,6 +44,6 @@
 			</div>
 		{/if}
 	{:catch error}
-		<Error message={error.message} slot="error"/>
+		<Error message={error.message} slot="error" />
 	{/await}
 </div>

@@ -34,7 +34,7 @@
 	<span slot="body">Are you sure you want to delete <strong>{model.name}</strong> ?</span>
 
 	{#if error}
-		<Error message={error} slot="error"/>
+		<Error message={error} slot="error" />
 	{/if}
 
 	<button on:click|stopPropagation={() => deleteModel()} slot="btnsave" type="button" class="btn btn-danger">Delete</button>

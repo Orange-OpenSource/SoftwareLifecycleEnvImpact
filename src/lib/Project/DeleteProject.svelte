@@ -34,7 +34,7 @@
 	<span slot="body">Are you sure you want to delete <strong>{project.name}</strong> ?</span>
 
 	{#if error}
-		<Error message={error} slot="error"/>
+		<Error message={error} slot="error" />
 	{/if}
 
 	<button on:click|stopPropagation={() => deleteProject()} slot="btnsave" type="button" class="btn btn-danger">Delete</button>

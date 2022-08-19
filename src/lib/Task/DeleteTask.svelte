@@ -36,7 +36,7 @@
 	<span slot="body">Are you sure you want to delete <strong>{task.name}</strong> ?</span>
 
 	{#if error}
-		<Error message={error} slot="error"/>
+		<Error message={error} slot="error" />
 	{/if}
 
 	<button on:click|stopPropagation={() => deleteTask()} slot="btnsave" type="button" class="btn btn-danger">Delete</button>

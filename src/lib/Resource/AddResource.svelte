@@ -48,11 +48,11 @@
 				{/each}
 			</select>
 		{:catch error}
-			<Error message={error.message} slot="error"/>
+			<Error message={error.message} slot="error" />
 		{/await}
 
 		{#if error}
-			<Error message={error} slot="error"/>
+			<Error message={error} slot="error" />
 		{/if}
 
 		<button type="submit" data-dismiss="modal" class="btn btn-primary">Create resource</button>

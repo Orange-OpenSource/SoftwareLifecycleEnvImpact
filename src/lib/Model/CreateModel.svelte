@@ -41,7 +41,7 @@
 	<form slot="body" on:submit|preventDefault={createModel}>
 		<input id="createModelInput" placeholder="Model name" required bind:value={modelName} />
 		{#if error}
-			<Error message={error} slot="error"/>
+			<Error message={error} slot="error" />
 		{/if}
 		<button type="submit" class="btn btn-primary">Create model</button>
 	</form>
