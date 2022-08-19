@@ -10,7 +10,7 @@ TESTDB = "test.db"
 # TEST_DATABASE_URI = 'sqlite:///' + TESTDB_PATH
 
 
-@pytest.fixture(name="app", scope="session")
+@pytest.fixture(name="app")
 def app(request) -> Flask:
     """Session-wide test `Flask` application."""
     app_fixture = create_app("TEST")
@@ -26,7 +26,17 @@ def app(request) -> Flask:
     return app_fixture
 
 
-@pytest.fixture(name="db", scope="session")
+@pytest.fixture()
+def client(app):
+    return app.test_client()
+
+
+@pytest.fixture()
+def runner(app):
+    return app.test_cli_runner()
+
+
+@pytest.fixture(name="db")
 def db(app, request) -> SQLAlchemy:
     """Session-wide test database."""
 
@@ -40,7 +50,7 @@ def db(app, request) -> SQLAlchemy:
     return _db
 
 
-@pytest.fixture(name="session", scope="function")
+@pytest.fixture(name="session")
 def session(db, request):
     """Creates a new database session for a test."""
     connection = db.engine.connect()

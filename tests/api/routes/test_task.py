@@ -48,7 +48,6 @@ def test_post_task(client: FlaskClient, task_fixture: Task) -> None:
     response = client.post(
         tasks_root_path,
         json={
-            "model_id": task_fixture.model_id,
             "name": "Task test post",
             "parent_task_id": task_fixture.id,
             "template_id": 0,
@@ -63,7 +62,6 @@ def test_post_task(client: FlaskClient, task_fixture: Task) -> None:
     response = client.post(
         tasks_root_path,
         json={
-            "model_id": task_fixture.model_id,
             "name": "Task test post",
             "parent_task_id": task_fixture.id,
             "template_id": 0,
@@ -75,7 +73,6 @@ def test_post_task(client: FlaskClient, task_fixture: Task) -> None:
     response = client.post(
         tasks_root_path,
         json={
-            "model_id": task_fixture.model_id,
             "name": "Task with subtask",
             "parent_task_id": task_fixture.id,
             "template_id": 0,
@@ -145,7 +142,7 @@ def test_delete_task(client: FlaskClient, db: SQLAlchemy, task_fixture: Task) ->
     """
 
     # Test to delete root task
-    model = Model.query.filter(Model.id == task_fixture.model_id).one_or_none()
+    model = Model.query.filter(Model.root_task_id == task_fixture.id).one_or_none()
     model.root_task = task_fixture
     response = client.delete(tasks_root_path + "/" + str(task_fixture.id))
     assert response.status_code == 403
