@@ -22,7 +22,7 @@ class Config
 package routes {}
 package utils {}
 
-package BDD <<Database>>{
+package BDD <<Database>>{ 
 class Project
 class Model
 class Task

@@ -11,3 +11,6 @@ Flask-SQLAlchemy==2.5.1
 marshmallow-sqlalchemy==0.28.0
 connexion[swagger-ui]==2.13.1
 gunicorn==20.1.0
+black==22.6.0 
+mypy==0.971
+pylint==2.14.5

@@ -1,0 +1,8 @@
+{
+    "python.linting.pylintPath": "${workspaceFolder}/.venv/bin/pylint",
+    "cSpell.words": [
+        "backref",
+        "onupdate",
+        "primaryjoin"
+    ]
+}
