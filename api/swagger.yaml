@@ -221,6 +221,26 @@ paths:
         404:
           description: No model project with this id
 
+  /models/{model_id}/copy:
+    parameters:
+      - name: model_id
+        in: path
+        description: Id of the model to copy
+        type: integer
+        required: true
+    post:
+      operationId: api.routes.model.duplicate_model
+      tags:
+        - Model
+      description: Create a new model by duplicating another
+      responses:
+        201:
+          description: Successfully created model
+          schema:
+            $ref: '#/definitions/Model'
+        404:
+          description: No model found with this id
+
   /models/{model_id}/tasks:
     parameters:
       - name: model_id

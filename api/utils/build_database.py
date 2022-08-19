@@ -9,23 +9,75 @@ models = [
 ]
 
 tasks = [
-    {"id": 0, "name": "Task 1", "task_type_id": 0, "model_id": 0},
-    {"id": 1, "name": "Task 2", "parent_task_id": 0, "model_id": 0},
-    {"id": 2, "name": "Task 3", "parent_task_id": 0, "model_id": 0},
-    {"id": 3, "name": "Real project", "model_id": 4},
-    {"id": 4, "name": "Build", "parent_task_id": 3, "model_id": 4},
-    {"id": 5, "name": "Implementation", "parent_task_id": 4, "model_id": 4},
-    {"id": 6, "name": "Development", "parent_task_id": 5, "model_id": 4},
-    {"id": 7, "name": "Design", "parent_task_id": 5, "model_id": 4},
-    {"id": 8, "name": "Specifications", "parent_task_id": 4, "model_id": 4},
-    {"id": 9, "name": "Management", "parent_task_id": 4, "model_id": 4},
-    {"id": 10, "name": "Run", "parent_task_id": 3, "model_id": 4},
-    {"id": 11, "name": "Maintenance", "parent_task_id": 10, "model_id": 4},
-    {"id": 12, "name": "Hosting", "parent_task_id": 10, "model_id": 4},
-    {"id": 13, "name": "Compute", "parent_task_id": 11, "model_id": 4},
-    {"id": 14, "name": "Storage", "parent_task_id": 11, "model_id": 4},
-    {"id": 15, "name": "Network", "parent_task_id": 11, "model_id": 4},
-    {"id": 16, "name": "Usage", "parent_task_id": 10, "model_id": 4},
+    {
+        "id": 0,
+        "name": "Task 1",
+        "task_type_id": 0,
+    },
+    {"id": 1, "name": "Task 2", "parent_task_id": 0},
+    {"id": 2, "name": "Task 3", "parent_task_id": 0},
+    {"id": 3, "name": "Real project"},
+    {
+        "id": 4,
+        "name": "Build",
+        "parent_task_id": 3,
+    },
+    {
+        "id": 5,
+        "name": "Implementation",
+        "parent_task_id": 4,
+    },
+    {"id": 6, "name": "Development", "parent_task_id": 5},
+    {
+        "id": 7,
+        "name": "Design",
+        "parent_task_id": 5,
+    },
+    {
+        "id": 8,
+        "name": "Specifications",
+        "parent_task_id": 4,
+    },
+    {
+        "id": 9,
+        "name": "Management",
+        "parent_task_id": 4,
+    },
+    {
+        "id": 10,
+        "name": "Run",
+        "parent_task_id": 3,
+    },
+    {
+        "id": 11,
+        "name": "Maintenance",
+        "parent_task_id": 10,
+    },
+    {
+        "id": 12,
+        "name": "Hosting",
+        "parent_task_id": 10,
+    },
+    {
+        "id": 13,
+        "name": "Compute",
+        "parent_task_id": 11,
+    },
+    {
+        "id": 14,
+        "name": "Storage",
+        "parent_task_id": 11,
+    },
+    {
+        "id": 15,
+        "name": "Network",
+        "parent_task_id": 11,
+    },
+    {
+        "id": 16,
+        "name": "Usage",
+        "parent_task_id": 10,
+    },
 ]
 
 """
@@ -131,7 +183,6 @@ def reset_db() -> None:
             id=task.get("id"),
             name=task.get("name"),
             parent_task_id=task.get("parent_task_id"),
-            model_id=task.get("model_id"),
         )
         db.session.add(t)
 

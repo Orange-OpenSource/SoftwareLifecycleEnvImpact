@@ -6,8 +6,11 @@ from marshmallow_sqlalchemy.fields import Nested
 from pint import Quantity
 from sqlalchemy import func
 
-from impacts_model.impacts import (AggregatedImpact, AggregatedImpactByResource,
-                                   ImpactIndicator)
+from impacts_model.impacts import (
+    AggregatedImpact,
+    AggregatedImpactByResource,
+    ImpactIndicator,
+)
 from impacts_model.templates import ResourceTemplate
 
 db = SQLAlchemy()
@@ -21,7 +24,7 @@ class Resource(db.Model):  # type: ignore # TODO resource should have a unit
     """
 
     __tablename__ = "resource"
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String, nullable=False)
 
     task_id = db.Column(db.Integer, db.ForeignKey("task.id"), nullable=False)
@@ -31,6 +34,13 @@ class Resource(db.Model):  # type: ignore # TODO resource should have a unit
 
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
+
+    def copy(self) -> Any:
+        return Resource(
+            name=self.name,
+            type=self.type,
+            value=self.value,
+        )
 
     def get_environmental_impact(self) -> AggregatedImpact:
         """
@@ -88,13 +98,15 @@ class Task(db.Model):  # type: ignore
     """
 
     __tablename__ = "task"
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String, nullable=False)
 
-    model_id = db.Column(db.Integer, db.ForeignKey("model.id"), nullable=False)
+    # model_id = db.Column(db.Integer, db.ForeignKey("model.id"), nullable=False)
 
     parent_task_id = db.Column(db.Integer, db.ForeignKey("task.id"))
-    subtasks = db.relationship("Task", lazy=True)
+    subtasks = db.relationship(
+        "Task", foreign_keys=[parent_task_id], lazy=True, cascade="all"
+    )
 
     resources = db.relationship(
         Resource, backref="task_input", lazy=True, cascade="all"
@@ -102,6 +114,13 @@ class Task(db.Model):  # type: ignore
 
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
+
+    def copy(self) -> Any:
+        return Task(
+            name=self.name,
+            subtasks=[subtask.copy() for subtask in self.subtasks],
+            resources=[resource.copy() for resource in self.resources],
+        )
 
     def get_environmental_impact(self) -> AggregatedImpact:
         """
@@ -192,22 +211,26 @@ class Model(db.Model):  # type: ignore
     Table Model representing one possibility for a project with a tree of tasks
     """
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String, nullable=False)
-
-    tasks = db.relationship(
-        Task, backref="task", lazy=True, primaryjoin=id == Task.model_id, cascade="all"
-    )
 
     root_task_id = db.Column(db.Integer, db.ForeignKey("task.id"))
     root_task = db.relationship(
-        Task, primaryjoin=root_task_id == Task.id, post_update=True, cascade="all"
+        Task, lazy=True, foreign_keys=[root_task_id], cascade="all"
     )
 
     project_id = db.Column(db.Integer, db.ForeignKey("project.id"), nullable=False)
 
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
+
+    def copy(self) -> Any:
+        model = Model(
+            name=self.name,
+            root_task=self.root_task.copy(),
+            project_id=self.project_id,
+        )
+        return model
 
 
 class ModelSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
@@ -234,7 +257,7 @@ class Project(db.Model):  # type: ignore
     Table project which contains multiple models
     """
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String, nullable=False)
     models = db.relationship(
         Model,
