@@ -11,6 +11,7 @@
 	/*Bound vars*/
 	export let selectedModel: Model;
 	export let project: Project;
+	export let selectedModels: Model[];
 </script>
 
 <div>
@@ -20,7 +21,7 @@
 				<button type="button" class="list-group-item list-group-item-action link" on:click|stopPropagation={() => (selectedModel = model)}>
 					<div class="row">
 						<div class="col align-self-center">
-							<input type="checkbox" class="form-check-input" value={model.id} name={String(model.id)} />
+							<input type="checkbox" class="form-check-input" value={model} bind:group={selectedModels} name={String(model.id)} on:click|stopPropagation={() => console.log('hello')} />
 						</div>
 						<div class="col-10">
 							<div class="row">

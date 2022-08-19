@@ -11,16 +11,35 @@
 	import { getProjectRequest } from '$lib/api/project';
 	import Error from '$lib/Error.svelte';
 	import Spinner from '$lib/Spinner.svelte';
+	import ModelComparison from '$lib/Model/ModelsComparison.svelte';
 
 	let projectId = $page.params.id; // id of project clicked on (arg in URL "/project/X")
 
 	let projectPromise: Promise<Project>;
 
 	let selectedModel: Model;
+	let selectedModels: Model[] = [];
 	let selectedTask: Task;
 
+	let split: Split.Instance;
+
+	let compareModels = false;
+
 	$: selectedModel, updateSelectedTask();
-	$: projectPromise, updateSplit(); /*Mandatory to redraw splitjs, do not work in an async context*/
+
+	$: selectedModels, updateComparison();
+
+	$: compareModels,
+		() => {
+			/*Update screen layout to two or three columns if comparison is activated*/
+			if (compareModels) setTwoColumnsSplit();
+			else setThreeColumnsSplit();
+		};
+
+	function updateComparison() {
+		/*Deactivate model comparison if less than two are selected*/
+		if (selectedModels.length < 2) compareModels = false;
+	}
 
 	function updateSelectedTask() {
 		/*Select a model root task as selected task to display the complete model impacts*/
@@ -29,8 +48,30 @@
 		}
 	}
 
-	function updateSplit() {
-		Split(['#split-0', '#split-1', '#split-2'], {
+	function setTwoColumnsSplit() {
+		if (split) split.destroy();
+		split = Split(['#split-0', '#split-1'], {
+			sizes: [25, 75],
+			minSize: 0,
+			snapOffset: 150,
+			onDrag: function () {
+				for (let i = 0; i < 2; i++) {
+					let element = document.getElementById('split-' + i);
+					if (element != null) {
+						if (element.offsetWidth === 0) {
+							element.style.visibility = 'hidden';
+						} else {
+							element.style.visibility = 'visible';
+						}
+					}
+				}
+			}
+		});
+	}
+
+	function setThreeColumnsSplit() {
+		if (split) split.destroy();
+		split = Split(['#split-0', '#split-1', '#split-2'], {
 			sizes: [25, 50, 25],
 			minSize: 0,
 			snapOffset: 150,
@@ -49,6 +90,11 @@
 		});
 	}
 
+	function compareModelsButton() {
+		compareModels = true;
+		setTwoColumnsSplit();
+	}
+
 	async function retrieveProject() {
 		projectPromise = getProjectRequest(projectId).then((res) => {
 			if (res.models != null) {
@@ -58,7 +104,8 @@
 		});
 	}
 
-	onMount(async function () {
+	onMount(function () {
+		setThreeColumnsSplit();
 		retrieveProject();
 	});
 </script>
@@ -73,21 +120,31 @@
 	<div class="split">
 		<div id="split-0">
 			<h2 class="title">My models</h2>
-			<ModelList bind:selectedModel {project} />
+			<ModelList bind:selectedModel bind:selectedModels {project} />
+			{#if selectedModels.length > 1}
+				<button on:click|stopPropagation={compareModelsButton} type="button" class="col-5 btn btn-light">Compare</button>
+			{/if}
 		</div>
 
-		<div id="split-1">
-			<h2 class="title">Tasks</h2>
-			<TaskTree bind:selectedTask {selectedModel} />
-		</div>
-
-		<div id="split-2">
-			<div class="sticky-top">
-				<h2 class="title">Impact</h2>
-				<Impact bind:selectedTask />
+		{#if !compareModels}
+			<div id="split-1">
+				<h2 class="title">Tasks</h2>
+				<TaskTree bind:selectedTask {selectedModel} />
 			</div>
-		</div>
+
+			<div id="split-2">
+				<div class="sticky-top">
+					<h2 class="title">Impact</h2>
+					<Impact bind:selectedTask />
+				</div>
+			</div>
+		{:else}
+			<div id="split-1">
+				<h2 class="title">Compare</h2>
+				<ModelComparison models={selectedModels} />
+			</div>
+		{/if}
 	</div>
 {:catch error}
-	<Error message={error.message} slot="error"/>
+	<Error message={error.message} slot="error" />
 {/await}
