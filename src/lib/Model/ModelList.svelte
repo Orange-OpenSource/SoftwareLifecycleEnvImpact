@@ -5,6 +5,7 @@
 
 	import CreateModel from './CreateModel.svelte';
 	import DeleteModel from './DeleteModel.svelte';
+	import DuplicateModel from './DuplicateModel.svelte';
 	import RenameModel from './RenameModel.svelte';
 
 	/*Bound vars*/
@@ -37,6 +38,7 @@
 									{#if i != 0}
 										<DeleteModel {model} bind:models={project.models} />
 									{/if}
+									<DuplicateModel {model} bind:models={project.models} bind:selectedModel />
 								</div>
 							</div>
 						</div>

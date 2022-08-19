@@ -38,3 +38,10 @@ export async function deleteModelRequest(model: Model): Promise<Model> {
 		return JSON.parse(json);
 	});
 }
+
+export async function duplicateModelRequest(model: Model): Promise<Model> {
+	const res = await post('models/' + model.id + '/copy', '');
+	return res.text().then((json: string) => {
+		return JSON.parse(json);
+	});
+}
