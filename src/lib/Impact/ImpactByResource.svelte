@@ -3,19 +3,11 @@
 	import ImpactByIndicator from './ImpactByIndicator.svelte';
 
 	export let impactByResource: ResourcesImpact;
-	let entries: [string, AggregatedImpact][];
-
-	function updateValues() {
-		if (impactByResource != undefined) {
-			entries = Object.entries(impactByResource);
-		}
-	}
-	$: impactByResource, updateValues();
 </script>
 
 {#if impactByResource != undefined}
 	<ul>
-		{#each entries as [key, value]}
+		{#each Object.entries(impactByResource) as [key, value]}
 			<li>
 				{key}
 				<ImpactByIndicator impact={value} />
