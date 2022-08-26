@@ -8,7 +8,7 @@ export interface Impact {
 	value: number;
 }
 
-export type ImpactName = string;
+export type ImpactName = string; // TODO should have an enum associated
 /**
  * Dict of impacts by impact name
  */
