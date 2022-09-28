@@ -1,0 +1,5 @@
+id: 1
+name: Network
+unit: gb
+impact_factors:
+- NetworkImpactSource

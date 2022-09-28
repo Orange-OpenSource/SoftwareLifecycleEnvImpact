@@ -1,0 +1,6 @@
+id: 10
+name: Specification
+unit: man_days
+resources:
+  - People
+subtasks:

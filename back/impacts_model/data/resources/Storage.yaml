@@ -1,0 +1,5 @@
+id: 4
+name: Storage
+unit: storage_hours
+impact_factors:
+- StorageImpactSource

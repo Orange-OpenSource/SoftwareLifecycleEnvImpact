@@ -1,0 +1,6 @@
+id: 2
+name: Design
+unit: man_days
+resources:
+  - People
+subtasks:

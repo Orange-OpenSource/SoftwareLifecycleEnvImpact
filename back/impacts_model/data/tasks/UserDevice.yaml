@@ -1,0 +1,6 @@
+id: 13
+name: UserDevice
+unit: users_number
+resources:
+  - UserDevice
+subtasks:

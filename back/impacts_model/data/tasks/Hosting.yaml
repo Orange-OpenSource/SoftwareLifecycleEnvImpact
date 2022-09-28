@@ -1,0 +1,7 @@
+id: 4
+name: Hosting
+unit:
+resources:
+subtasks:
+  - Storage
+  - Compute.yaml
