@@ -1,0 +1,1 @@
+<div class="spinner-border" role="status" />
