@@ -1,0 +1,72 @@
+version: "3.8"
+
+services:
+  back:
+    build: ./back
+    volumes:
+      - ./back:/usr/src/app
+    expose:
+      - 5001
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=80"
+      - "traefik.http.routers.modelback.rule=PathPrefix(`/api`)"
+      - "traefik.http.middlewares.serviceheaders.headers.accesscontrolalloworiginlist=*"
+      - "traefik.http.routers.modelback.middlewares=serviceheaders"
+
+  # boaviztapi:
+  #   image: ghcr.io/boavizta/boaviztapi:latest
+  #   volumes:
+  #     - ./boaviztapi:/usr/src/app
+  #   expose:
+  #     - 5000
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.port=80"
+  #     - "traefik.http.routers.boaviztaback.rule=PathPrefix(`/boaviztapi`)"
+  #     - "traefik.http.middlewares.serviceheaders.headers.accesscontrolalloworiginlist=*"
+  #     - "traefik.http.routers.boaviztaback.middlewares=serviceheaders"
+
+  # boaviztapi_front:
+  #   stdin_open: true
+  #   build: ./boaviztapi_front
+  #   volumes:
+  #     - ./boaviztapi_front:/usr/src/app
+  #     - /usr/src/app/node_modules
+  #   expose:
+  #     - 3000
+  #   depends_on:
+  #     - boaviztapi
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.port=80"
+  #     - "traefik.http.routers.boaviztafront.rule=PathPrefix(`/boavizta`)"
+
+  front:
+    stdin_open: true
+    build: ./front
+    volumes:
+      - ./front:/usr/src/app
+      - /usr/src/app/node_modules
+    expose:
+      - 3001
+    depends_on:
+      - back
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=80"
+      - "traefik.http.routers.modelfront.rule=!PathPrefix(`/boaviztapi`) && !PathPrefix(`/api`) && !PathPrefix(`/boavizta`)"
+
+  reverse-proxy:
+    image: "traefik:v2.7"
+    container_name: "traefik"
+    command:
+      # - "--api.insecure=true"
+      - "--providers.docker=true"
+    ports:
+      - "80:80"
+      - "8080:8080"
+      - "5001:5001"
+      - "5000:5000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
