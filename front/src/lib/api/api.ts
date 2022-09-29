@@ -1,6 +1,8 @@
 import type { PatchDocument } from 'src/model/patchDocument';
+import { dev } from '$app/env';
+import { env } from '$env/dynamic/public';
 
-const base = 'http://127.0.0.1:5000/api/v1';
+const base = (dev ? env.PUBLIC_API_DEV_URL + ':' + env.PUBLIC_API_DEV_PORT : '') + '/api/v1';
 
 async function send(method: string, path: string, data: unknown = undefined) {
 	const opts: RequestInit = { method, headers: {} };
