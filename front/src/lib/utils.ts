@@ -31,3 +31,22 @@ export function getLastUpdate(model: Model | Project) {
 		date.getMinutes()
 	);
 }
+
+export function exportJson(data: string, fileName: string) {
+	//Used to generate file only on click
+	if (data == null || !data.length) {
+		return null;
+	}
+
+	const blob = new Blob([data]);
+	const link = document.createElement('a');
+	if (link.download !== undefined) {
+		const url = URL.createObjectURL(blob);
+		link.setAttribute('href', url);
+		link.setAttribute('download', fileName + '.json');
+		link.style.visibility = 'hidden';
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+	}
+}

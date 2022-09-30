@@ -19,7 +19,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Project'
+              $ref: "#/definitions/Project"
 
     post:
       operationId: api.routes.project.create_project
@@ -41,7 +41,28 @@ paths:
         201:
           description: Successfully created project
           schema:
-            $ref: '#/definitions/Project'
+            $ref: "#/definitions/Project"
+        409:
+          description: Project exists already
+
+  /projects/import:
+    post:
+      operationId: api.routes.project.import_project
+      tags:
+        - Project
+      summary: Create a new project
+      parameters:
+        - name: project
+          in: body
+          description: project to create
+          required: True
+          schema:
+            $ref: "#/definitions/Project"
+      responses:
+        201:
+          description: Successfully created project
+          schema:
+            $ref: "#/definitions/Project"
         409:
           description: Project exists already
 
@@ -62,7 +83,7 @@ paths:
         200:
           description: Successfully read project
           schema:
-            $ref: '#/definitions/Project'
+            $ref: "#/definitions/Project"
         404:
           description: No project found with this id
     patch:
@@ -81,7 +102,7 @@ paths:
         200:
           description: Successfully updated project
           schema:
-            $ref: '#/definitions/Project'
+            $ref: "#/definitions/Project"
         403:
           description: Patch format is incorrect
         404:
@@ -96,9 +117,30 @@ paths:
         200:
           description: Successfully deleted project
           schema:
-            $ref: '#/definitions/Project'
+            $ref: "#/definitions/Project"
         404:
           description: No project project with this id
+
+  /projects/{project_id}/export:
+    parameters:
+      - name: project_id
+        in: path
+        description: Id of the project to get
+        type: integer
+        required: true
+    get:
+      operationId: api.routes.project.export_project
+      tags:
+        - Project
+      summary: Export one project to json without id
+      description: Export one project to json without id
+      responses:
+        200:
+          description: Successfully exported project
+          schema:
+            $ref: "#/definitions/Project"
+        404:
+          description: No project found with this id
 
   /projects/{project_id}/models:
     parameters:
@@ -119,7 +161,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Model'
+              $ref: "#/definitions/Model"
         404:
           description: No project found with this id
 
@@ -135,7 +177,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Model'
+              $ref: "#/definitions/Model"
 
     post:
       operationId: api.routes.model.create_model
@@ -160,7 +202,7 @@ paths:
         201:
           description: Successfully created model
           schema:
-            $ref: '#/definitions/Model'
+            $ref: "#/definitions/Model"
         409:
           description: Model exists already
 
@@ -181,7 +223,7 @@ paths:
         200:
           description: Successfully read model
           schema:
-            $ref: '#/definitions/Model'
+            $ref: "#/definitions/Model"
         404:
           description: No model found with this id
     patch:
@@ -191,16 +233,16 @@ paths:
       summary: Update a model
       description: Update a model
       parameters:
-      - name: JsonPatch
-        in: body
-        required: true
-        schema:
-          $ref: "#/definitions/PatchRequest"
+        - name: JsonPatch
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/PatchRequest"
       responses:
         200:
           description: Successfully updated model
           schema:
-            $ref: '#/definitions/Model'
+            $ref: "#/definitions/Model"
         403:
           description: Patch format is incorrect
         404:
@@ -215,7 +257,7 @@ paths:
         200:
           description: Successfully deleted model
           schema:
-            $ref: '#/definitions/Model'
+            $ref: "#/definitions/Model"
         403:
           description: Cannot delete the root model of a project
         404:
@@ -237,7 +279,7 @@ paths:
         201:
           description: Successfully created model
           schema:
-            $ref: '#/definitions/Model'
+            $ref: "#/definitions/Model"
         404:
           description: No model found with this id
 
@@ -260,7 +302,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Task'
+              $ref: "#/definitions/Task"
         404:
           description: No model found with this id
 
@@ -276,7 +318,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Task'
+              $ref: "#/definitions/Task"
 
     post:
       operationId: api.routes.task.create_task
@@ -307,7 +349,7 @@ paths:
         201:
           description: Sucessfully created Task
           schema:
-            $ref: '#/definitions/Task'
+            $ref: "#/definitions/Task"
         409:
           description: Task exists already
 
@@ -328,7 +370,7 @@ paths:
         200:
           description: Sucessfully read task
           schema:
-            $ref: '#/definitions/Task'
+            $ref: "#/definitions/Task"
         404:
           description: No task found with this id
     patch:
@@ -347,7 +389,7 @@ paths:
         200:
           description: Successfully updated task
           schema:
-            $ref: '#/definitions/Task'
+            $ref: "#/definitions/Task"
         403:
           description: Patch format is incorrect
         404:
@@ -362,7 +404,7 @@ paths:
         200:
           description: Successfully deleted task
           schema:
-            $ref: '#/definitions/Task'
+            $ref: "#/definitions/Task"
         403:
           description: Cannot delete the root task of a model
         404:
@@ -386,7 +428,7 @@ paths:
         200:
           description: Sucessfully read task impacts
           schema:
-            $ref: '#/definitions/TaskImpact'
+            $ref: "#/definitions/TaskImpact"
         404:
           description: No task found with this id
 
@@ -402,7 +444,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/TaskTemplate'
+              $ref: "#/definitions/TaskTemplate"
 
   /resources:
     get:
@@ -416,7 +458,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Resource'
+              $ref: "#/definitions/Resource"
     post:
       operationId: api.routes.resource.create_resource
       tags:
@@ -443,7 +485,7 @@ paths:
         201:
           description: Sucessfully created Resource
           schema:
-            $ref: '#/definitions/Resource'
+            $ref: "#/definitions/Resource"
         409:
           description: Resource exists already
 
@@ -464,7 +506,7 @@ paths:
         200:
           description: Sucessfully read resource
           schema:
-            $ref: '#/definitions/Resource'
+            $ref: "#/definitions/Resource"
         404:
           description: No resource found with this id
     patch:
@@ -483,7 +525,7 @@ paths:
         200:
           description: Successfully updated resource
           schema:
-            $ref: '#/definitions/Resource'
+            $ref: "#/definitions/Resource"
         403:
           description: Patch format is incorrect
         404:
@@ -498,7 +540,7 @@ paths:
         200:
           description: Successfully deleted resource
           schema:
-            $ref: '#/definitions/Resource'
+            $ref: "#/definitions/Resource"
         404:
           description: No resource with this id
 
@@ -519,7 +561,7 @@ paths:
         200:
           description: Impacts
           schema:
-            $ref: '#/definitions/AggregatedImpact'
+            $ref: "#/definitions/AggregatedImpact"
 
   /resourcetemplates:
     get:
@@ -533,7 +575,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/ResourceTemplate'
+              $ref: "#/definitions/ResourceTemplate"
 
   /debug/reset:
     get:
@@ -544,204 +586,204 @@ paths:
           description: Database reset status
 
 definitions:
-    PatchRequest:
-      type: array
-      items:
-        $ref: "#/definitions/PatchDocument"
-    PatchDocument:
-      description: A JSONPatch document as defined by RFC 6902
-      required:
-        - "op"
-        - "path"
-      properties:
-        op:
-          type: string
-          description: The operation to be performed
-          enum:
-            - "merge_aggregated_impact"
-            - "remove"
-            - "replace"
-            - "move"
-            - "copy"
-            - "test"
-        path:
-          type: string
-          description: A JSON-Pointer
-        value:
-          type: string
-          description: The value to be used within the operations.
+  PatchRequest:
+    type: array
+    items:
+      $ref: "#/definitions/PatchDocument"
+  PatchDocument:
+    description: A JSONPatch document as defined by RFC 6902
+    required:
+      - "op"
+      - "path"
+    properties:
+      op:
+        type: string
+        description: The operation to be performed
+        enum:
+          - "merge_aggregated_impact"
+          - "remove"
+          - "replace"
+          - "move"
+          - "copy"
+          - "test"
+      path:
+        type: string
+        description: A JSON-Pointer
+      value:
+        type: string
+        description: The value to be used within the operations.
 
-    Project:
-      type: object
-      required:
-        - name
-      properties:
-        id:
-          type: integer
-          description: Unique identifier
-        name:
-          type: string
-          description: Name of the project
-        models:
-          type: array
-          items:
-            $ref: '#/definitions/Model'
-          description: List of the project models
-        created_at:
-          type: string
-          format: date
-          description: Creation date of the task
-        updated_at:
-          type: string
-          format: date
-          description: Last update date of the task
+  Project:
+    type: object
+    required:
+      - name
+    properties:
+      id:
+        type: ["null", integer]
+        description: Unique identifier
+      name:
+        type: string
+        description: Name of the project
+      models:
+        type: array
+        items:
+          $ref: "#/definitions/Model"
+        description: List of the project models
+      created_at:
+        type: ["null", string]
+        format: date
+        description: Creation date of the task
+      updated_at:
+        type: ["null", string]
+        format: date
+        description: Last update date of the task
 
-    Model:
-      type: object
-      required:
-        - name
-        - project_id
-      properties:
-        id:
-          type: integer
-          description: Unique identifier
-        name:
-          type: string
-          description: Name of the model
-        created_at:
-          type: string
-          format: date
-          description: Creation date of the model
-        updated_at:
-          type: string
-          format: date
-          description: Last update date of the model
+  Model:
+    type: object
+    required:
+      - name
+      - project_id
+    properties:
+      id:
+        type: ["null", integer]
+        description: Unique identifier
+      name:
+        type: string
+        description: Name of the model
+      created_at:
+        type: ["null", string]
+        format: date
+        description: Creation date of the model
+      updated_at:
+        type: ["null", string]
+        format: date
+        description: Last update date of the model
 
-    Task:
-      type: object
-      required:
-        - name
-        - type
-      properties:
-        id:
-          type: integer
-          description: Unique identifier
-        name:
-          type: string
-          description: Name of the task
-        resources:
-          type: array
-          items:
-            $ref: '#/definitions/Resource'
-          description: Resources associated to the task
-        subtasks:
-          type: array
-          items:
-            $ref: '#/definitions/Task'
-          description: Subtasks
-        created_at:
-          type: string
-          format: date
-          description: Creation date of the task
-        updated_at:
-          type: string
-          format: date
-          description: Last update date of the task
+  Task:
+    type: object
+    required:
+      - name
+      - type
+    properties:
+      id:
+        type: integer
+        description: Unique identifier
+      name:
+        type: string
+        description: Name of the task
+      resources:
+        type: array
+        items:
+          $ref: "#/definitions/Resource"
+        description: Resources associated to the task
+      subtasks:
+        type: array
+        items:
+          $ref: "#/definitions/Task"
+        description: Subtasks
+      created_at:
+        type: ["null", integer]
+        format: date
+        description: Creation date of the task
+      updated_at:
+        type: ["null", integer]
+        format: date
+        description: Last update date of the task
 
-    TaskTemplate:
-      type: object
-      required:
-        - id
-        - name
-        - unit
-        - resources
-      properties:
-        id:
-          type: integer
-          description: Unique identifier
-        name:
-          type: string
-          description: Name of the task template
-        unit:
-          type: string
-          description: Unit of the task
-        resources:
-          type: array
-          items:
-            $ref: '#/definitions/Resource'
-          description: Resources
+  TaskTemplate:
+    type: object
+    required:
+      - id
+      - name
+      - unit
+      - resources
+    properties:
+      id:
+        type: integer
+        description: Unique identifier
+      name:
+        type: string
+        description: Name of the task template
+      unit:
+        type: string
+        description: Unit of the task
+      resources:
+        type: array
+        items:
+          $ref: "#/definitions/Resource"
+        description: Resources
 
-    Resource:
-      type: object
-      required:
-        - id
-        - name
-        - unit
-      properties:
-        id:
-          type: integer
-          description: Unique identifier
-        name:
-          type: string
-          description: Name of the resource
-        type:
-          type: string
-          description: Type of the resource
-        value:
-          type: integer
-          description: Value of the resource
-        created_at:
-          type: string
-          format: date
-          description: Creation date of the resource
-        updated_at:
-          type: string
-          format: date
-          description: Last update date of the resource
+  Resource:
+    type: object
+    required:
+      - id
+      - name
+      - unit
+    properties:
+      id:
+        type: integer
+        description: Unique identifier
+      name:
+        type: string
+        description: Name of the resource
+      type:
+        type: string
+        description: Type of the resource
+      value:
+        type: integer
+        description: Value of the resource
+      created_at:
+        type: ["null", string]
+        format: date
+        description: Creation date of the resource
+      updated_at:
+        type: ["null", string]
+        format: date
+        description: Last update date of the resource
 
-    ResourceTemplate:
-      type: object
-      required:
-        - id
-        - name
-      properties:
-        id:
-          type: integer
-          description: Unique identifier
-        name:
-          type: string
-          description: Name of the resource
+  ResourceTemplate:
+    type: object
+    required:
+      - id
+      - name
+    properties:
+      id:
+        type: integer
+        description: Unique identifier
+      name:
+        type: string
+        description: Name of the resource
 
-    AggregatedImpact:
-      type: object
-      properties:
-        impacts:
+  AggregatedImpact:
+    type: object
+    properties:
+      impacts:
+        type: object
+        additionalProperties:
+          type: string
+    example:
+      {
+        "Acidification": "0 mol_Hpos",
+        "Climate change": "1522.8450773144025 kg_co2e",
+        "Electronic waste": "0 electronic_waste",
+        "Fine particles": "0 disease_incidence",
+        "Ionizing radiations": "0 kg_Bq_u235e",
+        "Natural resources depletion": "0 kg_Sbe",
+        "Primary energy consumption": "0 primary_MJ",
+        "Raw materials": "0 tonne_mips",
+        "Water depletion": "0 cubic_meter",
+      }
+
+  TaskImpact:
+    type: object
+    properties:
+      task:
+        $ref: "#/definitions/Task"
+      subtasks:
+        type: object
+        $ref: "#/definitions/AggregatedImpact"
+      resources:
+        type: string
+        additionalProperties:
           type: object
-          additionalProperties:
-            type: string
-      example:
-        {
-          "Acidification": "0 mol_Hpos",
-          "Climate change": "1522.8450773144025 kg_co2e",
-          "Electronic waste": "0 electronic_waste",
-          "Fine particles": "0 disease_incidence",
-          "Ionizing radiations": "0 kg_Bq_u235e",
-          "Natural resources depletion": "0 kg_Sbe",
-          "Primary energy consumption": "0 primary_MJ",
-          "Raw materials": "0 tonne_mips",
-          "Water depletion": "0 cubic_meter"
-        }
-
-    TaskImpact:
-      type: object
-      properties:
-        task:
-          $ref: '#/definitions/Task'
-        subtasks:
-          type: object
-          $ref: '#/definitions/AggregatedImpact'
-        resources:
-          type: string
-          additionalProperties:
-            type: object
-            $ref: '#/definitions/AggregatedImpact'
+          $ref: "#/definitions/AggregatedImpact"

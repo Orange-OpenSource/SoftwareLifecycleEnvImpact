@@ -1,5 +1,4 @@
 from typing import Any, List
-
 from flask_marshmallow import Marshmallow as FlaskMarshmallow
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow_sqlalchemy.fields import Nested
@@ -33,7 +32,9 @@ class Resource(db.Model):  # type: ignore # TODO resource should have a unit
     value = db.Column(db.Integer)  # TODO maybe should never be null ?
 
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
-    updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
+    updated_at = db.Column(
+        db.DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
+    )
 
     def copy(self) -> Any:
         return Resource(
@@ -89,6 +90,9 @@ class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
         include_fk = True
         sqla_session = db.session
 
+    id = ma.auto_field(allow_none=True)
+    task_id = ma.auto_field(allow_none=True)
+
 
 class Task(db.Model):  # type: ignore
     """
@@ -113,7 +117,9 @@ class Task(db.Model):  # type: ignore
     )
 
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
-    updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
+    updated_at = db.Column(
+        db.DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
+    )
 
     def copy(self) -> Any:
         return Task(
@@ -202,6 +208,7 @@ class TaskSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
         include_fk = True
         sqla_session = db.session
 
+    id = ma.auto_field(allow_none=True)
     subtasks = Nested("TaskSchema", many=True)
     resources = Nested(ResourceSchema, many=True)
 
@@ -222,7 +229,9 @@ class Model(db.Model):  # type: ignore
     project_id = db.Column(db.Integer, db.ForeignKey("project.id"), nullable=False)
 
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
-    updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
+    updated_at = db.Column(
+        db.DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
+    )
 
     def copy(self) -> Any:
         model = Model(
@@ -248,6 +257,7 @@ class ModelSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
         include_fk = True
         sqla_session = db.session
 
+    id = ma.auto_field(allow_none=True)
     root_task = Nested("TaskSchema")
     tasks = Nested("TaskSchema", many=True)
 
@@ -272,7 +282,14 @@ class Project(db.Model):  # type: ignore
     )
 
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
-    updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
+    updated_at = db.Column(
+        db.DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
+    )
+
+    def copy(self) -> Any:
+        models_copy = [model.copy() for model in self.models]
+        project = Project(name=self.name, models=models_copy, base_model=models_copy[0])
+        return project
 
 
 class ProjectSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
@@ -290,4 +307,6 @@ class ProjectSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
         include_fk = True
         sqla_session = db.session
 
+    id = ma.auto_field(allow_none=True)
+    base_model_id = ma.auto_field(allow_none=True)
     models = Nested("ModelSchema", many=True)

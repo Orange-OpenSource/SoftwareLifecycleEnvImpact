@@ -15,7 +15,7 @@
 
 	let projectId = $page.params.id; // id of project clicked on (arg in URL "/project/X")
 
-	let projectPromise = getProjectRequest(projectId).then((res) => {
+	let projectPromise = getProjectRequest(+projectId).then((res) => {
 		if (res.models != null) {
 			selectedModel = res.models[0];
 		}

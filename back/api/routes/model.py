@@ -97,7 +97,7 @@ def delete_model(model_id: int) -> Any:
         return abort(
             404,
             "No model found for Id: {model_id}".format(model_id=model_id),
-        )
+        )   
 
 
 def get_tasks(model_id: int) -> Any:

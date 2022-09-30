@@ -2,21 +2,35 @@
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/env';
 	import Modal from '../Modal.svelte';
-	import { createProjectRequest } from '$lib/api/project';
+	import { createProjectRequest, importProjectRequest } from '$lib/api/project';
 	import Error from '$lib/Error.svelte';
 
 	let projectName: string;
 	let showModal = false;
 	let error = '';
 
+	let files: FileList;
+
 	$: showModal, (error = ''); //Clean error message when closing modal
 
 	async function createNewProject() {
 		error = '';
 		try {
-			const res = await createProjectRequest(projectName);
+			let res;
+			if (files && files[0]) {
+				console.log('here')
+				var reader = new FileReader();
+				reader.readAsText(files[0], 'UTF-8');
+				reader.onload = async function (event) {
+					if (reader.result != null) {
+						res = await importProjectRequest(reader.result.toString());
+					}
+				};
+			} else {
+				res = await createProjectRequest(projectName);
+			}
 			showModal = false;
-			if (browser) goto('/project/' + res.id);
+			if (browser && res != undefined) goto('/project/' + res.id);
 		} catch (e: any) {
 			error = e.message;
 		}
@@ -32,6 +46,8 @@
 		{#if error}
 			<Error message={error} slot="error" />
 		{/if}
+		<input type="file" accept=".json" bind:files />
+
 		<button type="submit" class="btn btn-primary">Create project</button>
 	</form>
 </Modal>

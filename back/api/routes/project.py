@@ -44,6 +44,19 @@ def get_project(project_id: int) -> Any:
         )
 
 
+def export_project(project_id: int) -> Any:
+    project = Project.query.filter(Project.id == project_id).one_or_none()
+    project_copy = project.copy()
+    if project is not None:
+        project_schema = ProjectSchema()
+        return project_schema.dump(project_copy)
+    else:
+        return abort(
+            404,
+            "No project found for Id: {project_id}".format(project_id=project_id),
+        )
+
+
 def update_project(project_id: int) -> Any:
     """
     PATCH /projects/<project_id>
@@ -127,6 +140,32 @@ def create_project(project: dict[str, Any]) -> Any:
 
         data = schema.dump(new_project)
 
+        return data, 201
+    else:
+        return abort(
+            409,
+            "Project {name} exists already".format(name=name),
+        )
+
+
+def import_project(project: dict[str, Any]) -> Any:
+    """
+    POST /projects/import
+
+    :param project: project to import
+    :return: the project inserted with its id
+    """
+    name = project.get("name")
+
+    existing_project = Project.query.filter(Project.name == name).one_or_none()
+
+    if existing_project is None:
+        schema = ProjectSchema()
+        new_project = schema.load(project)
+
+        db.session.add(new_project)
+        db.session.commit()
+        data = schema.dump(new_project)
         return data, 201
     else:
         return abort(

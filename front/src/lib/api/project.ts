@@ -9,17 +9,29 @@ export async function getProjectsRequest(): Promise<Project[]> {
 	});
 }
 
-export async function getProjectRequest(projectId: string): Promise<Project> {
+export async function getProjectRequest(projectId: number): Promise<Project> {
 	const res = await get('projects/' + projectId);
 	return res.text().then((json: string) => {
 		return JSON.parse(json);
 	});
 }
 
+export async function exportProjectRequest(projectId: number): Promise<string> {
+	const res = await get('projects/' + projectId + '/export');
+	return res.text();
+}
+
 export async function createProjectRequest(name: string): Promise<Project> {
 	const res = await post('projects', {
 		name: name
 	});
+	return res.text().then((json: string) => {
+		return JSON.parse(json);
+	});
+}
+
+export async function importProjectRequest(project: string): Promise<Project> {
+	const res = await post('projects/import', JSON.parse(project));
 	return res.text().then((json: string) => {
 		return JSON.parse(json);
 	});

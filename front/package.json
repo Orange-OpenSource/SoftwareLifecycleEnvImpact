@@ -12,6 +12,7 @@
 		"format": "prettier --write --plugin-search-dir=. ."
 	},
 	"devDependencies": {
+		"@iconify/svelte": "^3.0.0",
 		"@playwright/test": "^1.25.0",
 		"@rollup/plugin-typescript": "^8.3.4",
 		"@sveltejs/adapter-static": "next",

@@ -8,6 +8,7 @@
 	import type { Project } from 'src/model/project';
 	import ErrorComponent from '$lib/Error.svelte';
 	import Spinner from '$lib/Spinner.svelte';
+	import ExportProject from './ExportProject.svelte';
 
 	let projects: Project[];
 	let error: string;
@@ -44,6 +45,7 @@
 					<div class="col">
 						<RenameProject bind:project />
 						<DeleteProject bind:projects {project} />
+						<ExportProject {project} />
 					</div>
 				</div>
 			</div>
