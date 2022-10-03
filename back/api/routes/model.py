@@ -4,7 +4,7 @@ import jsonpatch
 from flask import abort, request
 
 from api.routes.task import get_task
-from impacts_model.data_model import ModelSchema
+from impacts_model.data_model import ModelSchema, db, Project
 from impacts_model.database import (
     retrieve_all_models_db,
     retrieve_model_db,
@@ -97,7 +97,7 @@ def delete_model(model_id: int) -> Any:
         return abort(
             404,
             "No model found for Id: {model_id}".format(model_id=model_id),
-        )   
+        )
 
 
 def get_tasks(model_id: int) -> Any:

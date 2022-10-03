@@ -10,8 +10,6 @@
 	/* Bound var */
 	export let parentTask: Task;
 
-	export let selectedModel: Model;
-
 	let taskTemplates = getTaskTemplatesRequest();
 	let selectedTemplate: TaskTemplate;
 	let showModal = false;
@@ -23,7 +21,7 @@
 		error = '';
 		try {
 			if (selectedTemplate != null) {
-				const res = await createTaskRequest(selectedModel.id, selectedTemplate.name, parentTask.id, selectedTemplate.id);
+				const res = await createTaskRequest(selectedTemplate.name, parentTask.id, selectedTemplate.id);
 				parentTask.subtasks.push(res);
 				/*Redondant assignment to force Svelte to update components*/
 				parentTask.subtasks = parentTask.subtasks;

@@ -29,9 +29,8 @@ export async function deleteTaskRequest(task: Task): Promise<Task> {
 	});
 }
 
-export async function createTaskRequest(model_id: number, name: string, parent_task_id: number, template_id: number): Promise<Task> {
+export async function createTaskRequest(name: string, parent_task_id: number, template_id: number): Promise<Task> {
 	const res = await post('tasks', {
-		model_id: model_id,
 		name: name,
 		parent_task_id: parent_task_id,
 		template_id: template_id

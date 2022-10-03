@@ -66,7 +66,7 @@ def update_task(task_id: int) -> Any:
         )
 
 
-def get_task_impacts(task_id: int): # TODO update test
+def get_task_impacts(task_id: int):  # TODO update test
     """
     GET /tasks/<task_id>/impacts
     Get a task environmental impact
@@ -80,7 +80,7 @@ def get_task_impacts(task_id: int): # TODO update test
             task_id,
             task.get_environmental_impact(),
             task.get_subtasks_impact(),
-            task.get_impact_by_resource_type()
+            task.get_impact_by_resource_type(),
         )
         schema = TaskImpactSchema()
         return schema.dump(task_impact)
@@ -89,6 +89,7 @@ def get_task_impacts(task_id: int): # TODO update test
             404,
             "No task found for Id: {task_id}".format(task_id=task_id),
         )
+
 
 def get_task_subtasks_impacts(task_id: int):
     task = Task.query.filter(Task.id == task_id).one_or_none()
@@ -115,8 +116,8 @@ def delete_task(task_id: int) -> Any:
     task = Task.query.filter(Task.id == task_id).one_or_none()
 
     if task is not None:
-        model = Model.query.filter(Model.id == task.model_id).one_or_none()
-        if task.id == model.root_task_id:
+        model = Model.query.filter(Model.root_task_id == task.id).one_or_none()
+        if model != None:
             return abort(
                 403,
                 "Cannot delete task {task_id} as it is the root of model {model}".format(
@@ -133,7 +134,7 @@ def delete_task(task_id: int) -> Any:
         )
 
 
-def insert_task_db(new_task: Task, template_id: int): # TODO remove from here
+def insert_task_db(new_task: Task, template_id: int):  # TODO remove from here
     task_template: TaskTemplate = get_task_template_by_id(template_id)
 
     for resource_template in task_template.resources:
@@ -158,13 +159,11 @@ def create_task(task: dict[str, Any]) -> Any:
     """
     name = task.get("name")
     parent_task_id = task.get("parent_task_id")
-    model_id = task.get("model_id")
     template_id = task.get("template_id")
 
     existing_task = (
         Task.query.filter(Task.name == name)
         .filter(Task.parent_task_id == parent_task_id)
-        .filter(Task.model_id == model_id)
         .one_or_none()
     )
 

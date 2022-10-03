@@ -39,7 +39,7 @@
 				{#if modify}
 					<div class="d-flex justify-content-end">
 						<DeleteTask {task} bind:parentTask />
-						<CreateTask bind:parentTask={task} {selectedModel} />
+						<CreateTask bind:parentTask={task}/>
 					</div>
 				{/if}
 			</div>
@@ -53,7 +53,7 @@
 	{#if task.parent_task_id == null && modify}
 		<!--For the root task, "Add Task" button as a task in the tree-->
 		<div class="task">
-			<CreateTask bind:parentTask={task} {selectedModel} />
+			<CreateTask bind:parentTask={task} />
 		</div>
 	{/if}
 </div>
