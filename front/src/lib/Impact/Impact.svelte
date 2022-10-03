@@ -18,7 +18,7 @@
 
 	async function updateImpacts() {
 		if (selectedTask != undefined) {
-			impactPromise = getTaskImpact(selectedTask).then();
+			impactPromise = getTaskImpact(selectedTask);
 		}
 	}
 </script>

@@ -34,7 +34,7 @@
 			<div class="list-group-item list-group-item-action">
 				<div class="row">
 					<div class="col">
-						<a id="redirect{project.id}" sveltekit:prefetch href="/project/{project.id}">
+						<a id="redirect{project.id}" href="/project/{project.id}">
 							<h5 class="mb-1">
 								{project.name}
 							</h5>

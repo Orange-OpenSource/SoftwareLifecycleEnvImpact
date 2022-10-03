@@ -89,7 +89,7 @@
 		setTwoColumnsSplit();
 	}
 
-	onMount(function () {
+	onMount(async () => {
 		setThreeColumnsSplit();
 	});
 </script>
@@ -98,37 +98,37 @@
 	<title>Models</title>
 </svelte:head>
 
-{#await projectPromise}
-	<Spinner />
-{:then project}
-	<div class="split">
-		<div id="split-0">
-			<h2 class="title">My models</h2>
+<div class="split">
+	<div id="split-0">
+		<h2 class="title">My models</h2>
+		{#await projectPromise}
+			<Spinner />
+		{:then project}
 			<ModelList bind:selectedModel bind:selectedModels {project} />
 			{#if selectedModels.length > 1}
 				<button on:click|stopPropagation={compareModelsButton} type="button" class="col-5 btn btn-light">Compare</button>
 			{/if}
+		{:catch error}
+			<Error message={error.message} slot="error" />
+		{/await}
+	</div>
+
+	{#if !compareModels}
+		<div id="split-1">
+			<h2 class="title">Tasks</h2>
+			<TaskTree bind:selectedTask {selectedModel} />
 		</div>
 
-		{#if !compareModels}
-			<div id="split-1">
-				<h2 class="title">Tasks</h2>
-				<TaskTree bind:selectedTask {selectedModel} />
+		<div id="split-2">
+			<div class="sticky-top">
+				<h2 class="title">Impact</h2>
+				<Impact bind:selectedTask />
 			</div>
-
-			<div id="split-2">
-				<div class="sticky-top">
-					<h2 class="title">Impact</h2>
-					<Impact bind:selectedTask />
-				</div>
-			</div>
-		{:else}
-			<div id="split-1">
-				<h2 class="title">Compare</h2>
-				<ModelComparison models={selectedModels} />
-			</div>
-		{/if}
-	</div>
-{:catch error}
-	<Error message={error.message} slot="error" />
-{/await}
+		</div>
+	{:else}
+		<div id="split-1">
+			<h2 class="title">Compare</h2>
+			<ModelComparison models={selectedModels} />
+		</div>
+	{/if}
+</div>
