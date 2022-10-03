@@ -16,7 +16,7 @@
 	let selectedTemplate: TaskTemplate;
 	let showModal = false;
 
-	let error = '';
+	let error: string = '';
 	$: showModal, (error = ''); //Clean error message when closing modal
 
 	async function handleSubmit() {
@@ -37,12 +37,12 @@
 
 <button on:click|stopPropagation={() => (showModal = true)} class="btn btn-primary">Add task</button>
 
-{#await taskTemplates}
-	<Spinner />
-{:then taskTemplates}
-	<Modal bind:showModal>
-		<span slot="title">Create new task :</span>
-		<form slot="body" on:submit|preventDefault={handleSubmit}>
+<Modal bind:showModal>
+	<span slot="title">Create new task :</span>
+	<form slot="body" on:submit|preventDefault={handleSubmit}>
+		{#await taskTemplates}
+			<Spinner />
+		{:then taskTemplates}
 			<select id="templateSelect" class="form-select" bind:value={selectedTemplate}>
 				<option value={null} disabled selected class="form-check-input"> -- Templates -- </option>
 				{#each taskTemplates as template}
@@ -50,11 +50,11 @@
 				{/each}
 			</select>
 			{#if error}
-				<Error message={error} slot="error" />
+				<Error message={error} />
 			{/if}
 			<button type="submit" class="btn btn-primary">Create task</button>
-		</form>
-	</Modal>
-{:catch error}
-	<Error message={error.message} />
-{/await}
+		{:catch error}
+			<Error message={error.message} />
+		{/await}
+	</form>
+</Modal>
