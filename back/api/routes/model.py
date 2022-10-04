@@ -58,8 +58,16 @@ def update_model(model_id: int) -> Any:
 
             patch = jsonpatch.JsonPatch(request.json)
             data = patch.apply(data)
-
             model = model_schema.load(data)
+
+            if (
+                Project.query.filter(Project.id == model.project_id)
+                .filter(model in Project.models)
+                .one_or_none()
+                is not None
+            ):
+                return abort(403, "A model with this name already exists")
+
             db.session.commit()
 
             return model_schema.dump(model)
