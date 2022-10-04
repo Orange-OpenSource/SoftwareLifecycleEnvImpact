@@ -29,11 +29,21 @@ export async function deleteTaskRequest(task: Task): Promise<Task> {
 	});
 }
 
-export async function createTaskRequest(name: string, parent_task_id: number, template_id: number): Promise<Task> {
-	const res = await post('tasks', {
+export async function createTaskFromTemplateRequest(name: string, parent_task_id: number, template_id: number): Promise<Task> {
+	const res = await post('tasks/templates', {
 		name: name,
 		parent_task_id: parent_task_id,
 		template_id: template_id
+	});
+	return res.text().then((json: string) => {
+		return JSON.parse(json);
+	});
+}
+
+export async function createTaskRequest(name: string, parent_task_id: number): Promise<Task> {
+	const res = await post('tasks', {
+		name: name,
+		parent_task_id: parent_task_id
 	});
 	return res.text().then((json: string) => {
 		return JSON.parse(json);

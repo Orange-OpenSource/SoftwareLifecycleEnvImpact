@@ -38,7 +38,7 @@
 		{#if selectedModel == undefined}
 			No model selected
 		{:else if rootTask != undefined}
-			<Header bind:modify {selectedModel} />
+			<Header bind:modify bind:selectedTask {selectedModel} />
 			<div class="col scroll">
 				<TaskComponent task={rootTask} bind:selectedTask {modify} {selectedModel} parentTask={rootTask} />
 			</div>

@@ -336,9 +336,47 @@ paths:
               name:
                 type: string
                 description: Name of the task
-              model_id:
+              parent_task_id:
                 type: integer
-                description: Id of the related Model
+                description: Parent task id
+      responses:
+        201:
+          description: Sucessfully created Task
+          schema:
+            $ref: "#/definitions/Task"
+        409:
+          description: Task exists already
+
+  /tasks/templates:
+    get:
+      operationId: api.routes.task_template.get_task_templates
+      tags:
+        - TaskTemplate
+      summary: Get all task templates
+      responses:
+        200:
+          description: List of task templates
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/TaskTemplate"
+    post:
+      operationId: api.routes.task.create_task_from_template
+      tags:
+        - Task
+        - TaskTemplate
+      description: Create a new task from a given template
+      parameters:
+        - name: task
+          in: body
+          description: Task to create
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name of the task
               parent_task_id:
                 type: integer
                 description: Parent task id
@@ -431,20 +469,6 @@ paths:
             $ref: "#/definitions/TaskImpact"
         404:
           description: No task found with this id
-
-  /tasktemplates:
-    get:
-      operationId: api.routes.task_template.get_task_templates
-      tags:
-        - TaskTemplate
-      summary: Get all task templates
-      responses:
-        200:
-          description: List of task templates
-          schema:
-            type: array
-            items:
-              $ref: "#/definitions/TaskTemplate"
 
   /resources:
     get:

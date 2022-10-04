@@ -20,7 +20,7 @@
 	<!--Do not display the root task as a nomrmal one but only its subtasks-->
 	{#if task.parent_task_id != null}
 		<!--Highlight border if task selected-->
-		<div on:click|stopPropagation={() => (selectedTask = task)} class="card {task === selectedTask ? 'border-primary' : ''}" style="min-width: 18rem;">
+		<div on:click|stopPropagation={() => (selectedTask = task)} class="card {task === selectedTask ? 'border-primary' : ''}" style="min-width: 18rem; width: fit-content;">
 			<div class="card-body">
 				<div class="d-flex justify-content-between">
 					<h5 class="card-title">{task.name}</h5>
@@ -29,7 +29,7 @@
 					{/if}
 				</div>
 
-				{#if task.resources.length > 0}
+				{#if task.resources.length > 0 || modify}
 					<h6 class="card-subtitle mb-2 text-muted">Resources:</h6>
 
 					<div class="card-text">
@@ -39,7 +39,7 @@
 				{#if modify}
 					<div class="d-flex justify-content-end">
 						<DeleteTask {task} bind:parentTask />
-						<CreateTask bind:parentTask={task}/>
+						<CreateTask bind:parentTask={task} />
 					</div>
 				{/if}
 			</div>

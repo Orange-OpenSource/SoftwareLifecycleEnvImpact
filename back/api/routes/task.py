@@ -6,6 +6,7 @@ from flask import abort, request
 from impacts_model.data_model import db, Model, Resource, Task, TaskSchema
 from impacts_model.impacts import AggregatedImpactSchema, TaskImpact, TaskImpactSchema
 from impacts_model.templates import get_task_template_by_id, TaskTemplate
+from typing import Optional
 
 
 def get_tasks() -> Any:
@@ -134,25 +135,28 @@ def delete_task(task_id: int) -> Any:
         )
 
 
-def insert_task_db(new_task: Task, template_id: int):  # TODO remove from here
-    task_template: TaskTemplate = get_task_template_by_id(template_id)
+def insert_task_db(
+    new_task: Task, template_id: Optional[int] = None
+):  # TODO remove from here
+    if template_id is not None:
+        task_template: TaskTemplate = get_task_template_by_id(template_id)
 
-    for resource_template in task_template.resources:
-        new_task.resources.append(
-            Resource(
-                name=task_template.name + " " + task_template.unit,
-                type=resource_template.name,
-                value=100,
+        for resource_template in task_template.resources:
+            new_task.resources.append(
+                Resource(
+                    name=task_template.name + " " + task_template.unit,
+                    type=resource_template.name,
+                    value=100,
+                )
             )
-        )
 
     db.session.add(new_task)
     db.session.commit()
 
 
-def create_task(task: dict[str, Any]) -> Any:
+def create_task_from_template(task: dict[str, Any]) -> Any:
     """
-    POST /tasks/
+    POST /tasks/templates
 
     :param task: task to add
     :return: the task inserted with its id
@@ -172,6 +176,35 @@ def create_task(task: dict[str, Any]) -> Any:
         task.pop("template_id")
         new_task = schema.load(task)
         insert_task_db(new_task, template_id)
+        data = schema.dump(new_task)
+        return data, 201
+    else:
+        return abort(
+            409,
+            "Task {task} exists already".format(task=task),
+        )
+
+
+def create_task(task: dict[str, Any]) -> Any:
+    """
+    POST /tasks/
+
+    :param task: task to add
+    :return: the task inserted with its id
+    """
+    name = task.get("name")
+    parent_task_id = task.get("parent_task_id")
+
+    existing_task = (
+        Task.query.filter(Task.name == name)
+        .filter(Task.parent_task_id == parent_task_id)
+        .one_or_none()
+    )
+
+    if existing_task is None:
+        schema = TaskSchema()
+        new_task = schema.load(task)
+        insert_task_db(new_task)
         data = schema.dump(new_task)
         return data, 201
     else:

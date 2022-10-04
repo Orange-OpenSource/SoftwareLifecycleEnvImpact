@@ -45,16 +45,14 @@
 					{/if}
 				</div>
 			</li>
-			{#if modify}
-				{#if error}
-					<Error message={error} />
-				{/if}
-				{#if resource == task.resources[task.resources.length - 1]}
-					<li class="list-group-item d-flex align-items-center flex-row-reverse">
-						<AddResource bind:task />
-					</li>
-				{/if}
-			{/if}
 		{/each}
 	</ul>
+{/if}
+{#if modify}
+	{#if error}
+		<Error message={error} />
+	{/if}
+	<li class="list-group-item d-flex align-items-center flex-row-reverse">
+		<AddResource bind:task />
+	</li>
 {/if}
