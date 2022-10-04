@@ -18,10 +18,7 @@ export async function getServerImpactByModelName(modelName: string): Promise<Ser
 	});
 }
 
-export async function getServerImpactByConfig(
-	config: ConfigurationServer,
-	usage: UsageServer
-): Promise<ServerImpact> {
+export async function getServerImpactByConfig(config: ConfigurationServer, usage: UsageServer): Promise<ServerImpact> {
 	console.log({
 		configuration: config,
 		usage: usage

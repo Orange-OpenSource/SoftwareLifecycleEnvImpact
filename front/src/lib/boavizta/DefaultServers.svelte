@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { getDefaultModelsName } from "./api/server";
-	let defaultServers = getDefaultModelsName()
+	import { getDefaultModelsName } from './api/server';
+	let defaultServers = getDefaultModelsName();
 </script>
 
 <div>

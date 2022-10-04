@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getDefaultModelsName, getServerImpactByModelName } from '$lib/boavizta/api/server';
 	import EnvironmentalImpact from '$lib/boavizta/EnvironmentalImpact.svelte';
-    
+
 	let defaultServers = getDefaultModelsName();
 
 	let selectedServerName: string = '';

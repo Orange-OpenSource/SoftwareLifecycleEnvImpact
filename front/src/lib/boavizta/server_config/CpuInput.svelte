@@ -39,14 +39,7 @@
 
 				<div class="col">
 					<label for="coreNumbers">Cores</label>
-					<input
-						bind:value={cpu.core_units}
-						type="number"
-						id="coreNumbers"
-						min="1"
-						max="50"
-						class="form-control"
-					/>
+					<input bind:value={cpu.core_units} type="number" id="coreNumbers" min="1" max="50" class="form-control" />
 				</div>
 			</div>
 		</div>

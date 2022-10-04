@@ -1,4 +1,3 @@
-
 import type { PatchDocument } from '$lib/model/api/model/patchDocument';
 import { patch, post, del } from './api';
 import type { Resource } from './model/resource';

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ServerConfig from "$lib/boavizta/server_config/ServerConfig.svelte";
+	import ServerConfig from '$lib/boavizta/server_config/ServerConfig.svelte';
 </script>
 
 <svelte:head>
@@ -7,5 +7,5 @@
 </svelte:head>
 
 <div class="container">
-	<ServerConfig/>
+	<ServerConfig />
 </div>

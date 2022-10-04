@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { getDiskManufacturers } from "../api/disk";
-	import type { Disk } from "../api/model/disk";
-	
+	import { getDiskManufacturers } from '../api/disk';
+	import type { Disk } from '../api/model/disk';
+
 	export let disks: Disk[] = [{}];
 
 	const diskManufacturers = getDiskManufacturers();
@@ -30,15 +30,7 @@
 		<div class="form-group row">
 			<div class="form-group col">
 				<label for="diskCapacity">Capacity (GB)</label>
-				<input
-					bind:value={disk.capacity}
-					type="number"
-					class="form-control"
-					id="diskCapacity"
-					min="10"
-					max="10000"
-					step="10"
-				/>
+				<input bind:value={disk.capacity} type="number" class="form-control" id="diskCapacity" min="10" max="10000" step="10" />
 			</div>
 
 			<div class="form-group col ">

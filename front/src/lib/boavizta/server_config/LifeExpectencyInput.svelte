@@ -3,12 +3,4 @@
 </script>
 
 <label for="lifeExpectancy">Years</label>
-<input
-    bind:value={yearsExpectancy}
-    type="number"
-    class="form-control"
-    id="lifeExpectancy"
-    min="10"
-    max="10000"
-    step="10"
-/>
+<input bind:value={yearsExpectancy} type="number" class="form-control" id="lifeExpectancy" min="10" max="10000" step="10" />

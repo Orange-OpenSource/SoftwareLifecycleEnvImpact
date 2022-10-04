@@ -13,15 +13,7 @@
 	<div class="form-group row">
 		<div class="form-group col">
 			<label for="ramQuantity">Size</label>
-			<input
-				bind:value={ram.capacity}
-				class="form-control"
-				type="number"
-				id="ramQuantity"
-				min="4"
-				max="1000"
-				step="2"
-			/>
+			<input bind:value={ram.capacity} class="form-control" type="number" id="ramQuantity" min="4" max="1000" step="2" />
 		</div>
 		<div class="form-group col">
 			<label for="ramManufacturer">Manufacturer</label>
