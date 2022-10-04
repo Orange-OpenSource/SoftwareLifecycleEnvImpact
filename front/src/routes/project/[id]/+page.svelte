@@ -1,17 +1,16 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import TaskTree from '$lib/TaskTree/TaskTree.svelte';
-	import ModelList from '$lib/Model/ModelList.svelte';
-	import Impact from '$lib/Impact/Impact.svelte';
+	import TaskTree from '$lib/model/TaskTree/TaskTree.svelte';
+	import ModelList from '$lib/model/Model/ModelList.svelte';
+	import Impact from '$lib/model/Impact/Impact.svelte';
 	import Split from 'split.js';
 	import { onMount } from 'svelte';
-	import type { Task } from 'src/model/task';
-	import type { Model } from 'src/model/model';
-	import type { Project } from 'src/model/project';
-	import { getProjectRequest } from '$lib/api/project';
+	import type { Task } from '$lib/model/api/model/task';
+	import type { Model } from '$lib/model/api/model/model';
 	import Error from '$lib/Error.svelte';
 	import Spinner from '$lib/Spinner.svelte';
-	import ModelComparison from '$lib/Model/Comparison/ModelsComparison.svelte';
+	import ModelComparison from '$lib/model/Model/Comparison/ModelsComparison.svelte';
+	import { getProjectRequest } from '$lib/model/api/project';
 
 	let projectId = $page.params.id; // id of project clicked on (arg in URL "/project/X")
 

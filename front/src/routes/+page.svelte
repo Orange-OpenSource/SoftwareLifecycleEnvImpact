@@ -1,5 +1,5 @@
-<script>
-	import ProjectList from '$lib/Project/ProjectList.svelte';
+<script lang="ts">
+	import ProjectList from '$lib/model/Project/ProjectList.svelte';
 </script>
 
 <svelte:head>
