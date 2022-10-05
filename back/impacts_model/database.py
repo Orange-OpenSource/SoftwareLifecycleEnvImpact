@@ -19,13 +19,13 @@ def retrieve_similar_model_db(model_name: str, project_id: int) -> Model:
 
 
 def insert_model_db(model: Model) -> Model:
-    # if model.root_task == None:
-    #     # Create a model only with a name imply to create it
-    #     root_task = Task(
-    #         name=model.name,
-    #     )
-    #     model.root_task = root_task
-    #     model.tasks = [root_task]
+    if model.root_task == None:
+        # Create a model only with a name imply to create the associate root_task
+        root_task = Task(
+            name=model.name,
+        )
+        model.root_task = root_task
+        model.tasks = [root_task]
 
     db.session.add(model)
     db.session.commit()
