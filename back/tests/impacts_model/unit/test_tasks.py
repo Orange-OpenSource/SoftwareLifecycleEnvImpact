@@ -8,7 +8,7 @@ import pytest
 from flask_sqlalchemy import SQLAlchemy
 from pint import Quantity
 
-from impacts_model.data_model import Model, Project, Resource, Task
+from impacts_model.data_model import Model, Project, Resource, ResourceInput, Task
 from impacts_model.impact_sources import ImpactSource
 from impacts_model.impacts import ImpactIndicator
 from impacts_model.quantities.quantities import (
@@ -40,12 +40,12 @@ def single_task_fixture(db: SQLAlchemy) -> Task:
     resource1 = Resource(
         name="Resource 1 test task",
         type="TestResource",
-        value=1,
+        input=ResourceInput(type="test", value=1),
     )
     resource2 = Resource(
         name="Resource 2 test task",
         type="TestResource",
-        value=1,
+        input=ResourceInput(type="test", value=1),
     )
     task.resources = [resource1, resource2]
     model.tasks = [task]
@@ -65,19 +65,19 @@ def task_fixture_with_subtask(db: SQLAlchemy) -> Task:
     resource1 = Resource(
         name="Resource 1 test task",
         type="TestResource",
-        value=1,
+        input=ResourceInput(type="test", value=1),
     )
     resource2 = Resource(
         name="Resource 2 test task",
         type="TestResource",
-        value=1,
+        input=ResourceInput(type="test", value=1),
     )
     task.resources = [resource1, resource2]
     subtask = Task(name="Test task subtask")
     resource3 = Resource(
         name="Resource 3 test task subtask",
         type="TestResource",
-        value=1,
+        input=ResourceInput(type="test", value=1),
     )
     subtask.resources = [resource3]
 
@@ -148,6 +148,7 @@ def test_get_task_impact_list(
         ImpactIndicator.PRIMARY_ENERGY: 0 * PRIMARY_MJ,
         ImpactIndicator.RAW_MATERIALS: 0 * TONNE_MIPS,
     }
+
 
 @mock.patch(
     "impacts_model.templates.ResourceTemplate._load_impacts",

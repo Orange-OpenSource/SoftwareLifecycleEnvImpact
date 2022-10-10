@@ -16,6 +16,37 @@ db = SQLAlchemy()
 ma = FlaskMarshmallow()
 
 
+class ResourceInput(db.Model):  # type: ignore
+    __tablename__ = "resource_input"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+
+    resource_id = db.Column(db.Integer, db.ForeignKey("resource.id"), nullable=False)
+    resource = db.relationship("Resource", back_populates="input")
+
+    type = db.Column(db.String, nullable=False)
+    input = db.Column(db.Integer, default=0)
+    days = db.Column(db.Integer, default=0)
+    months = db.Column(db.Integer, default=0)
+    years = db.Column(db.Integer, default=0)
+
+    value = (
+        db.Column(
+            db.Integer, db.Computed("input * days * (months * 31) * (years * 365)")
+        ),
+    )
+
+    def copy(self) -> Any:
+        return ResourceInput(
+            time_input=self.time_input.copy(),
+            type=self.type,
+            hours=self.hours,
+            days=self.days,
+            months=self.months,
+            years=self.years,
+            value=self.value,
+        )
+
+
 class Resource(db.Model):  # type: ignore # TODO resource should have a unit
     """
     Resource object and table with a name, a type and a value. Only for a task
@@ -25,11 +56,16 @@ class Resource(db.Model):  # type: ignore # TODO resource should have a unit
     __tablename__ = "resource"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String, nullable=False)
+    type = db.Column(db.String, nullable=False)
+    input = db.relationship(
+        ResourceInput,
+        back_populates="resource",
+        lazy=True,
+        cascade="all",
+        uselist=False,
+    )
 
     task_id = db.Column(db.Integer, db.ForeignKey("task.id"), nullable=False)
-
-    type = db.Column(db.String, nullable=False)
-    value = db.Column(db.Integer)  # TODO maybe should never be null ?
 
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
     updated_at = db.Column(
@@ -40,7 +76,7 @@ class Resource(db.Model):  # type: ignore # TODO resource should have a unit
         return Resource(
             name=self.name,
             type=self.type,
-            value=self.value,
+            input=self.input.copy(),
         )
 
     def get_environmental_impact(self) -> AggregatedImpact:
@@ -54,7 +90,8 @@ class Resource(db.Model):  # type: ignore # TODO resource should have a unit
         for impact_source in resource_template.impact_sources:
             for key in impact_source.environmental_impact.impacts:
                 environmental_impact.merge_impact(
-                    key, impact_source.environmental_impact.impacts[key] * self.value
+                    key,
+                    impact_source.environmental_impact.impacts[key] * self.input.value,
                 )
 
         return environmental_impact
@@ -69,7 +106,7 @@ class Resource(db.Model):  # type: ignore # TODO resource should have a unit
         resource_template = ResourceTemplate(self.type)
 
         impacts: List[Quantity[Any]] = [
-            i.environmental_impact.impacts[impact_indicator] * self.value
+            i.environmental_impact.impacts[impact_indicator] * self.input.value
             for i in resource_template.impact_sources
         ]
 

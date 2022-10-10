@@ -5,7 +5,7 @@ import pytest
 from flask_sqlalchemy import SQLAlchemy
 from pint import Quantity
 
-from impacts_model.data_model import Model, Project, Resource, Task
+from impacts_model.data_model import Model, Project, Resource, ResourceInput, Task
 from impacts_model.impact_sources import ImpactSource
 from impacts_model.impacts import ImpactIndicator
 from impacts_model.quantities.quantities import (
@@ -97,11 +97,13 @@ def resource_fixture(db: SQLAlchemy) -> Resource:
     resource = Resource(
         name="Resource test",
         type="TestResource",
-        value=2312,
     )
+    input = ResourceInput(input=2312, type="test")
+
+    resource.input = input
     task.resources = [resource]
     model.tasks = [task]
-    db.session.add_all([project, model, task])
+    db.session.add_all([project, model, task, resource])
     db.session.commit()
     return resource
 
@@ -123,10 +125,10 @@ def test_get_resource_impact(resource_fixture: Resource) -> None:
     """
     impact = resource_fixture.get_indicator_impact(ImpactIndicator.CLIMATE_CHANGE)
     assert isinstance(impact, Quantity)
-    assert impact == (1000 + 999 + 333) * resource_fixture.value * KG_CO2E
+    assert impact == (1000 + 999 + 333) * resource_fixture.input.value * KG_CO2E
 
     # Test quantity change
-    resource_fixture.value = 12321.423
+    resource_fixture.input.value = 12321.423
     impact = resource_fixture.get_indicator_impact(ImpactIndicator.CLIMATE_CHANGE)
     assert isinstance(impact, Quantity)
     assert impact == (1000 + 999 + 333) * 12321.423 * KG_CO2E
@@ -145,7 +147,7 @@ def test_get_resource_environmental_impact(resource_fixture: Resource) -> None:
     Test get_impacts computation by changing quantity and impacts_list
     :return:
     """
-    resource_fixture.value = 1
+    resource_fixture.input.value = 1
     assert resource_fixture.get_environmental_impact().impacts == {
         ImpactIndicator.CLIMATE_CHANGE: 10000.123 * KG_CO2E,
         ImpactIndicator.RESOURCE_DEPLETION: 0 * KG_SBE,
@@ -159,7 +161,7 @@ def test_get_resource_environmental_impact(resource_fixture: Resource) -> None:
     }
 
     # Test quantity multiplication
-    resource_fixture.value = 10
+    resource_fixture.input.value = 10
     assert resource_fixture.get_environmental_impact().impacts == {
         ImpactIndicator.CLIMATE_CHANGE: (10 * 10000.123) * KG_CO2E,
         ImpactIndicator.RESOURCE_DEPLETION: 0 * KG_SBE,

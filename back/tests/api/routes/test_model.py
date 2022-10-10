@@ -2,9 +2,10 @@ import pytest
 from flask.testing import FlaskClient
 from flask_sqlalchemy import SQLAlchemy
 
-from impacts_model.data_model import Model, Project, Resource, Task
+from impacts_model.data_model import Model, Project, Resource, ResourceInput, Task
 
 models_root = "/api/v1/models"
+
 
 @pytest.fixture(scope="function")
 def model_fixture(db: SQLAlchemy) -> Model:
@@ -18,7 +19,7 @@ def model_fixture(db: SQLAlchemy) -> Model:
     resource = Resource(
         name="Resource 1 test task",
         type="TestResource",
-        value=1,
+        input=ResourceInput(type="test", value=1),
     )
     task.resources = [resource]
     model.tasks = [task]
