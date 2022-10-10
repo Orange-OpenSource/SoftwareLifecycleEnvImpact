@@ -1,0 +1,496 @@
+{
+  "base_model": null,
+  "base_model_id": null,
+  "created_at": null,
+  "id": null,
+  "name": "Real project",
+  "updated_at": null,
+  "models": [
+    {
+      "created_at": null,
+      "id": null,
+      "name": "Real project model 1",
+      "project_id": 2,
+      "root_task": {
+        "created_at": null,
+        "id": null,
+        "name": "Real project",
+        "parent_task_id": null,
+        "resources": [],
+        "subtasks": [
+          {
+            "created_at": null,
+            "id": null,
+            "name": "Build",
+            "parent_task_id": null,
+            "resources": [],
+            "subtasks": [
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Implementation",
+                "parent_task_id": null,
+                "resources": [],
+                "subtasks": [
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Development",
+                    "parent_task_id": null,
+                    "resources": [
+                      {
+                        "created_at": null,
+                        "id": null,
+                        "name": "Development man days",
+                        "task_id": null,
+                        "type": "People",
+                        "updated_at": null,
+                        "input": {
+                          "input": 100,
+                          "type": "People"
+                        }
+                      }
+                    ],
+                    "subtasks": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Design",
+                    "parent_task_id": null,
+                    "resources": [
+                      {
+                        "created_at": null,
+                        "id": null,
+                        "name": "Design man days",
+                        "task_id": null,
+                        "type": "People",
+                        "updated_at": null,
+                        "input": {
+                          "input": 100,
+                          "type": "People"
+                        }
+                      }
+                    ],
+                    "subtasks": [],
+                    "updated_at": null
+                  }
+                ],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Specifications",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Specifications man days",
+                    "task_id": null,
+                    "type": "People",
+                    "updated_at": null,
+                    "input": {
+                      "input": 100,
+                      "type": "People"
+                    }
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Management",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Management man days",
+                    "task_id": null,
+                    "type": "People",
+                    "updated_at": null,
+                    "input": {
+                      "input": 100,
+                      "type": "UserDevice"
+                    }
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              }
+            ],
+            "updated_at": null
+          },
+          {
+            "created_at": null,
+            "id": null,
+            "name": "Run",
+            "parent_task_id": null,
+            "resources": [],
+            "subtasks": [
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Maintenance",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Storage terabytes",
+                    "task_id": null,
+                    "type": "Storage",
+                    "updated_at": null,
+                    "input": {
+                      "input": 100,
+                      "type": "Storage"
+                    }
+                  }
+                ],
+                "subtasks": [
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Compute",
+                    "parent_task_id": null,
+                    "resources": [
+                      {
+                        "created_at": null,
+                        "id": null,
+                        "name": "Servers amount",
+                        "task_id": null,
+                        "type": "Compute",
+                        "updated_at": null,
+                        "input": {
+                          "input": 100,
+                          "type": "Compute"
+                        }
+                      }
+                    ],
+                    "subtasks": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Storage",
+                    "parent_task_id": null,
+                    "resources": [],
+                    "subtasks": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Network",
+                    "parent_task_id": null,
+                    "resources": [
+                      {
+                        "created_at": null,
+                        "id": null,
+                        "name": "Data transferred",
+                        "task_id": null,
+                        "type": "Network",
+                        "updated_at": null,
+                        "input": {
+                          "input": 100,
+                          "type": "Network"
+                        }
+                      }
+                    ],
+                    "subtasks": [],
+                    "updated_at": null
+                  }
+                ],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Hosting",
+                "parent_task_id": null,
+                "resources": [],
+                "subtasks": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Usage",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Users",
+                    "task_id": null,
+                    "type": "UserDevice",
+                    "updated_at": null,
+                    "input": {
+                      "input": 100,
+                      "type": "UserDevice"
+                    }
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              }
+            ],
+            "updated_at": null
+          }
+        ],
+        "updated_at": null
+      },
+      "root_task_id": null,
+      "updated_at": null
+    },
+    {
+      "created_at": null,
+      "id": null,
+      "name": "Real project model 1",
+      "project_id": 2,
+      "root_task": {
+        "created_at": null,
+        "id": null,
+        "name": "Real project",
+        "parent_task_id": null,
+        "resources": [],
+        "subtasks": [
+          {
+            "created_at": null,
+            "id": null,
+            "name": "Build",
+            "parent_task_id": null,
+            "resources": [],
+            "subtasks": [
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Implementation",
+                "parent_task_id": null,
+                "resources": [],
+                "subtasks": [
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Development",
+                    "parent_task_id": null,
+                    "resources": [
+                      {
+                        "created_at": null,
+                        "id": null,
+                        "name": "Development man days",
+                        "task_id": null,
+                        "type": "People",
+                        "updated_at": null,
+                        "input": {
+                          "input": 100,
+                          "type": "People"
+                        }
+                      }
+                    ],
+                    "subtasks": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Design",
+                    "parent_task_id": null,
+                    "resources": [
+                      {
+                        "created_at": null,
+                        "id": null,
+                        "name": "Design man days",
+                        "task_id": null,
+                        "type": "People",
+                        "updated_at": null,
+                        "input": {
+                          "input": 100,
+                          "type": "People"
+                        }
+                      }
+                    ],
+                    "subtasks": [],
+                    "updated_at": null
+                  }
+                ],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Specifications",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Specifications man days",
+                    "task_id": null,
+                    "type": "People",
+                    "updated_at": null,
+                    "input": {
+                      "input": 100,
+                      "type": "People"
+                    }
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Management",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Management man days",
+                    "task_id": null,
+                    "type": "People",
+                    "updated_at": null,
+                    "input": {
+                      "input": 100,
+                      "type": "People"
+                    }
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              }
+            ],
+            "updated_at": null
+          },
+          {
+            "created_at": null,
+            "id": null,
+            "name": "Run",
+            "parent_task_id": null,
+            "resources": [],
+            "subtasks": [
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Maintenance",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Storage terabytes",
+                    "task_id": null,
+                    "type": "Storage",
+                    "updated_at": null,
+                    "input": {
+                      "input": 100,
+                      "type": "Storage"
+                    }
+                  }
+                ],
+                "subtasks": [
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Compute",
+                    "parent_task_id": null,
+                    "resources": [
+                      {
+                        "created_at": null,
+                        "id": null,
+                        "name": "Servers amount",
+                        "task_id": null,
+                        "type": "Compute",
+                        "updated_at": null,
+                        "input": {
+                          "input": 100,
+                          "type": "Compute"
+                        }
+                      }
+                    ],
+                    "subtasks": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Storage",
+                    "parent_task_id": null,
+                    "resources": [],
+                    "subtasks": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Network",
+                    "parent_task_id": null,
+                    "resources": [
+                      {
+                        "created_at": null,
+                        "id": null,
+                        "name": "Data transferred",
+                        "task_id": null,
+                        "type": "Network",
+                        "updated_at": null,
+                        "input": {
+                          "input": 100,
+                          "type": "Network"
+                        }
+                      }
+                    ],
+                    "subtasks": [],
+                    "updated_at": null
+                  }
+                ],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Hosting",
+                "parent_task_id": null,
+                "resources": [],
+                "subtasks": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Usage",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Users",
+                    "task_id": null,
+                    "type": "UserDevice",
+                    "updated_at": null,
+                    "input": {
+                      "input": 100,
+                      "type": "UserDevice"
+                    }
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              }
+            ],
+            "updated_at": null
+          }
+        ],
+        "updated_at": null
+      },
+      "root_task_id": null,
+      "updated_at": null
+    }
+  ]
+}
