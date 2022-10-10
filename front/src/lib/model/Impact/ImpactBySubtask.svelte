@@ -26,13 +26,15 @@
 				/*Retrieve task object from its id*/
 				let task = selectedTask.subtasks.find((s) => s.id == Number(task_id))!;
 
-				chartLabels.push(task.name);
-				if (impact['Climate change'] != undefined) {
-					/**For each task push it with its associated impact*/
-					chartData.push({
-						task: task,
-						impact: impact['Climate change'].value
-					});
+				if (task != undefined) {
+					chartLabels.push(task.name);
+					if (impact['Climate change'] != undefined) {
+						/**For each task push it with its associated impact*/
+						chartData.push({
+							task: task,
+							impact: impact['Climate change'].value
+						});
+					}
 				}
 			}
 

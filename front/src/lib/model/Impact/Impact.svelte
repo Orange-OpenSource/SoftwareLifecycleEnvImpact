@@ -29,10 +29,8 @@
 	{#if impact != undefined}
 		<ImpactByIndicator impact={impact.task_impact} />
 
-		{#if selectedTask != undefined && selectedTask.subtasks.length != 0}
-			<h5>Subtask</h5>
-			<ImpactBySubtask {selectedTask} impactBySubtask={impact.subtasks} />
-		{/if}
+		<h5>Subtask</h5>
+		<ImpactBySubtask {selectedTask} impactBySubtask={impact.subtasks} />
 
 		<h5>Resources</h5>
 		<ImpactByResource impactByResource={impact.resources} />

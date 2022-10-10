@@ -49,3 +49,16 @@ export async function createTaskRequest(name: string, parent_task_id: number): P
 		return JSON.parse(json);
 	});
 }
+
+export async function changeTaskParent(task: Task, newParent: Task): Promise<Task> {
+	console.log('Replacing parent ' + task.parent_task_id + ' to ' + newParent.id);
+	const patchDocument: PatchDocument = {
+		op: 'replace',
+		path: '/parent_task_id',
+		value: newParent.id.toString()
+	};
+	const res = await patch('tasks/' + task.id, patchDocument);
+	return res.text().then((json: string) => {
+		return JSON.parse(json);
+	});
+}
