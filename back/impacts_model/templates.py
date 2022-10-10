@@ -28,7 +28,9 @@ class ResourceTemplate:
         """
         Load the list of impact_sources from the corresponding Resource file
         """
-        with open("impacts_model/data/resources/" + self.name + ".yaml", "r") as stream:
+        with open(
+            "impacts_model/data/resources/" + self.name + ".yaml", "r"
+        ) as stream:  # TODO add a test to ensure files a still there
             data_loaded = yaml.safe_load(stream)
             self.id = data_loaded["id"]
             impacts_list = []
@@ -39,6 +41,7 @@ class ResourceTemplate:
 
 class ResourceTemplateSchema(Schema):
     """Marshmallow schema to serialize a ResourceTemplate object"""
+
     id = fields.Integer()
     name = fields.String()
 
@@ -54,8 +57,8 @@ class TaskTemplate:
     """
 
     def __init__(
-            self,
-            name: str,
+        self,
+        name: str,
     ):
         """
         Define a task with a name, resources and subtasks
@@ -125,6 +128,7 @@ def get_resources_templates() -> List[ResourceTemplate]:
     for filename in os.listdir("impacts_model/data/resources"):
         resources_template.append(ResourceTemplate(filename))
     return resources_template
+
 
 def get_resource_template_by_id(template_id: int) -> Optional[ResourceTemplate]:
     """

@@ -22,7 +22,7 @@ class ImpactIndicator(str, Enum):
     PRIMARY_ENERGY = "Primary energy consumption"
     RAW_MATERIALS = "Raw materials"
 
-    def __str__(self):
+    def __str__(self) -> Any:
         """Allow for Marshmallow to serialize the value, not the name"""
         return self.value
 
@@ -91,19 +91,19 @@ class AggregatedImpactSchema(Schema):
             for impact_indicator_name in in_data["impacts"]:
                 split = str(in_data["impacts"][impact_indicator_name]).split()
                 out_data[impact_indicator_name.replace("ImpactIndicator.", "")] = {
-                    'value': round(float(split[0]), 2),
-                    'unit': split[1],
+                    "value": round(float(split[0]), 2),
+                    "unit": split[1],
                 }
         return out_data
 
 
 class TaskImpact:
     def __init__(
-            self,
-            task_id: int,
-            task_impact: AggregatedImpact,
-            subtasks: dict[int, AggregatedImpact],
-            resources: AggregatedImpactByResource
+        self,
+        task_id: int,
+        task_impact: AggregatedImpact,
+        subtasks: dict[int, AggregatedImpact],
+        resources: AggregatedImpactByResource,
     ):
         self.task_id = task_id
         self.task_impact = task_impact
@@ -114,8 +114,12 @@ class TaskImpact:
 class TaskImpactSchema(Schema):
     task_id = fields.Integer()
     task_impact = fields.Nested("AggregatedImpactSchema")
-    subtasks = fields.Dict(keys=fields.Integer(), values=fields.Nested("AggregatedImpactSchema"))
-    resources = fields.Dict(keys=fields.Str(), values=fields.Nested("AggregatedImpactSchema"))
+    subtasks = fields.Dict(
+        keys=fields.Integer(), values=fields.Nested("AggregatedImpactSchema")
+    )
+    resources = fields.Dict(
+        keys=fields.Str(), values=fields.Nested("AggregatedImpactSchema")
+    )
 
 
 ##############################

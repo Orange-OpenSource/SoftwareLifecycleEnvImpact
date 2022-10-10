@@ -4,7 +4,7 @@ import jsonpatch
 from flask import abort, request
 
 from api.routes.task import get_task
-from impacts_model.data_model import ModelSchema, db, Project
+from impacts_model.data_model import ModelSchema, db, Project, Model
 from impacts_model.database import (
     retrieve_all_models_db,
     retrieve_model_db,
@@ -60,13 +60,13 @@ def update_model(model_id: int) -> Any:
             data = patch.apply(data)
             model = model_schema.load(data)
 
-            if (
-                Project.query.filter(Project.id == model.project_id)
-                .filter(model in Project.models)
-                .one_or_none()
-                is not None
-            ):
-                return abort(403, "A model with this name already exists")
+            # if (
+            #     Project.query.filter(Project.id == model.project_id)
+            #     .filter(model.name == Model.name)
+            #     .one_or_none()
+            #     is not None
+            # ):
+            #     return abort(403, "A model with this name already exists") # TODO marche pas ave le patch
 
             db.session.commit()
 

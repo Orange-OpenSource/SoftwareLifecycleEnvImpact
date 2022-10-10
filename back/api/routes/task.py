@@ -3,7 +3,14 @@ from typing import Any
 import jsonpatch
 from flask import abort, request
 
-from impacts_model.data_model import db, Model, Resource, Task, TaskSchema
+from impacts_model.data_model import (
+    db,
+    Model,
+    Resource,
+    Task,
+    TaskSchema,
+    ResourceInput,
+)
 from impacts_model.impacts import AggregatedImpactSchema, TaskImpact, TaskImpactSchema
 from impacts_model.templates import get_task_template_by_id, TaskTemplate
 from typing import Optional
@@ -146,7 +153,7 @@ def insert_task_db(
                 Resource(
                     name=task_template.name + " " + task_template.unit,
                     type=resource_template.name,
-                    value=100,
+                    input=ResourceInput(type="test", input=1),
                 )
             )
 

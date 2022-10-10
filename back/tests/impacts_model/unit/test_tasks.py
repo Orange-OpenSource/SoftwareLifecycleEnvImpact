@@ -40,12 +40,12 @@ def single_task_fixture(db: SQLAlchemy) -> Task:
     resource1 = Resource(
         name="Resource 1 test task",
         type="TestResource",
-        input=ResourceInput(type="test", value=1),
+        input=ResourceInput(type="test", input=1),
     )
     resource2 = Resource(
         name="Resource 2 test task",
         type="TestResource",
-        input=ResourceInput(type="test", value=1),
+        input=ResourceInput(type="test", input=1),
     )
     task.resources = [resource1, resource2]
     model.tasks = [task]
@@ -65,19 +65,19 @@ def task_fixture_with_subtask(db: SQLAlchemy) -> Task:
     resource1 = Resource(
         name="Resource 1 test task",
         type="TestResource",
-        input=ResourceInput(type="test", value=1),
+        input=ResourceInput(type="test", input=1),
     )
     resource2 = Resource(
         name="Resource 2 test task",
         type="TestResource",
-        input=ResourceInput(type="test", value=1),
+        input=ResourceInput(type="test", input=1),
     )
     task.resources = [resource1, resource2]
     subtask = Task(name="Test task subtask")
     resource3 = Resource(
         name="Resource 3 test task subtask",
         type="TestResource",
-        input=ResourceInput(type="test", value=1),
+        input=ResourceInput(type="test", input=1),
     )
     subtask.resources = [resource3]
 

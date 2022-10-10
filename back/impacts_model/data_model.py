@@ -16,37 +16,6 @@ db = SQLAlchemy()
 ma = FlaskMarshmallow()
 
 
-class ResourceInput(db.Model):  # type: ignore
-    __tablename__ = "resource_input"
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-
-    resource_id = db.Column(db.Integer, db.ForeignKey("resource.id"), nullable=False)
-    resource = db.relationship("Resource", back_populates="input")
-
-    type = db.Column(db.String, nullable=False)
-    input = db.Column(db.Integer, default=0)
-    days = db.Column(db.Integer, default=0)
-    months = db.Column(db.Integer, default=0)
-    years = db.Column(db.Integer, default=0)
-
-    value = (
-        db.Column(
-            db.Integer, db.Computed("input * days * (months * 31) * (years * 365)")
-        ),
-    )
-
-    def copy(self) -> Any:
-        return ResourceInput(
-            time_input=self.time_input.copy(),
-            type=self.type,
-            hours=self.hours,
-            days=self.days,
-            months=self.months,
-            years=self.years,
-            value=self.value,
-        )
-
-
 class Resource(db.Model):  # type: ignore # TODO resource should have a unit
     """
     Resource object and table with a name, a type and a value. Only for a task
@@ -58,7 +27,7 @@ class Resource(db.Model):  # type: ignore # TODO resource should have a unit
     name = db.Column(db.String, nullable=False)
     type = db.Column(db.String, nullable=False)
     input = db.relationship(
-        ResourceInput,
+        "ResourceInput",
         back_populates="resource",
         lazy=True,
         cascade="all",
@@ -91,7 +60,8 @@ class Resource(db.Model):  # type: ignore # TODO resource should have a unit
             for key in impact_source.environmental_impact.impacts:
                 environmental_impact.merge_impact(
                     key,
-                    impact_source.environmental_impact.impacts[key] * self.input.value,
+                    impact_source.environmental_impact.impacts[key]
+                    * self.input.value(),
                 )
 
         return environmental_impact
@@ -106,11 +76,47 @@ class Resource(db.Model):  # type: ignore # TODO resource should have a unit
         resource_template = ResourceTemplate(self.type)
 
         impacts: List[Quantity[Any]] = [
-            i.environmental_impact.impacts[impact_indicator] * self.input.value
+            i.environmental_impact.impacts[impact_indicator] * self.input.value()
             for i in resource_template.impact_sources
         ]
 
         return sum(impacts)
+
+
+class ResourceInput(db.Model):  # type: ignore
+    __tablename__ = "resource_input"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+
+    resource_id = db.Column(db.Integer, db.ForeignKey("resource.id"), nullable=False)
+    resource = db.relationship("Resource", back_populates="input")
+
+    type = db.Column(db.String, nullable=False)
+    input = db.Column(db.Integer, nullable=False)
+    days = db.Column(db.Integer, default=0)
+    months = db.Column(db.Integer, default=0)
+    years = db.Column(db.Integer, default=0)
+
+    # value = (
+    #     db.Column(
+    #         db.Integer, db.Computed("input * days * (months * 31) * (years * 365)")
+    #     ),
+    # )
+
+    def value(self):  # TODO put this as a quantity
+        time = self.days + (self.months * 31) + (self.years * 365)
+        if time > 0:
+            return self.input * time
+        return self.input
+
+    def copy(self) -> Any:
+        return ResourceInput(
+            time_input=self.time_input.copy(),
+            type=self.type,
+            hours=self.hours,
+            days=self.days,
+            months=self.months,
+            years=self.years,
+        )
 
 
 class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
@@ -129,6 +135,21 @@ class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
 
     id = ma.auto_field(allow_none=True)
     task_id = ma.auto_field(allow_none=True)
+
+
+class ResourceInputSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
+    """
+    ResourceInput schema to serialize a ResourceInput object
+    """
+
+    class Meta(ma.SQLAlchemyAutoSchema.Meta):  # type: ignore
+        """Schema meta class"""
+
+        model = ResourceInput
+        include_relationships = True
+        load_instance = True
+        include_fk = True
+        sqla_session = db.session
 
 
 class Task(db.Model):  # type: ignore
@@ -271,11 +292,7 @@ class Model(db.Model):  # type: ignore
     )
 
     def copy(self) -> Any:
-        model = Model(
-            name=self.name,
-            root_task=self.root_task.copy(),
-            project_id=self.project_id,
-        )
+        model = Model(name=self.name, root_task=self.root_task.copy())
         return model
 
 

@@ -2,7 +2,8 @@ from typing import Any
 
 from impacts_model.templates import (
     get_resources_templates,
-    ResourceTemplateSchema, )
+    ResourceTemplateSchema,
+)
 
 
 def get_resource_templates() -> Any:

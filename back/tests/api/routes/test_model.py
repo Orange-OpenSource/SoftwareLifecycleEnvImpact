@@ -19,7 +19,7 @@ def model_fixture(db: SQLAlchemy) -> Model:
     resource = Resource(
         name="Resource 1 test task",
         type="TestResource",
-        input=ResourceInput(type="test", value=1),
+        input=ResourceInput(type="test", input=1),
     )
     task.resources = [resource]
     model.tasks = [task]
@@ -51,8 +51,8 @@ def test_post_model(client: FlaskClient, model_fixture: Model) -> None:
         models_root, json={"name": "Model 1", "project_id": model_fixture.project_id}
     )
     assert response.status_code == 201
-    assert response.json["name"] == "Model 1"
-    assert response.json["id"] is not None
+    assert response.json["name"] == "Model 1"  # type: ignore
+    assert response.json["id"] is not None  # type: ignore
 
     # Test 409 project exists already
     response = client.post(
@@ -96,6 +96,13 @@ def test_patch_model(client: FlaskClient, db: SQLAlchemy, model_fixture: Model) 
     )
     assert response.status_code == 200
     assert response.json["name"] == "newer name"
+
+    # # Test model with same name already exist
+    # response = client.patch(
+    #     models_root + "/" + str(model_fixture.id),
+    #     json=[{"op": "replace", "path": "/name", "value": "newer name"}],
+    # )
+    # assert response.status_code == 403 # TODO
 
     # Test wrong patch format
     response = client.patch(
