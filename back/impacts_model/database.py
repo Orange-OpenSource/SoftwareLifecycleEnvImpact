@@ -25,7 +25,6 @@ def insert_model_db(model: Model) -> Model:
             name=model.name,
         )
         model.root_task = root_task
-        model.tasks = [root_task]
 
     db.session.add(model)
     db.session.commit()

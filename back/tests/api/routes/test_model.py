@@ -22,7 +22,6 @@ def model_fixture(db: SQLAlchemy) -> Model:
         input=ResourceInput(type="test", input=1),
     )
     task.resources = [resource]
-    model.tasks = [task]
     model.root_task = task
     db.session.add_all([model, project, task, resource])
     db.session.commit()
@@ -164,7 +163,6 @@ def test_get_model_tasks(client: FlaskClient, db: SQLAlchemy) -> None:
     project = Project(name="Project 1")
     project.models = [model]
     project.base_model_id = model.id
-    model.tasks = [task1, task2]
     model.root_task = task1
     db.session.add_all([task1, task2, model, project])
     db.session.commit()

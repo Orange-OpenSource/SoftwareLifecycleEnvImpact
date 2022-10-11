@@ -136,7 +136,6 @@ def create_project(project: dict[str, Any]) -> Any:
         )
 
         model.root_task = root_task
-        model.tasks = [root_task]
         new_project.base_model = model
         new_project.models = [model]
 

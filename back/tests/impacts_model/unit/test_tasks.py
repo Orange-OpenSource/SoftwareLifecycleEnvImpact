@@ -48,7 +48,7 @@ def single_task_fixture(db: SQLAlchemy) -> Task:
         input=ResourceInput(type="test", input=1),
     )
     task.resources = [resource1, resource2]
-    model.tasks = [task]
+    model.root_task = task
     db.session.add_all([project, model, task, resource1, resource2])
     db.session.commit()
     return task
@@ -82,7 +82,7 @@ def task_fixture_with_subtask(db: SQLAlchemy) -> Task:
     subtask.resources = [resource3]
 
     task.subtasks = [subtask]
-    model.tasks = [task, subtask]
+    model.root_task = task
 
     db.session.add_all([project, model, task, resource1, resource2])
     db.session.commit()

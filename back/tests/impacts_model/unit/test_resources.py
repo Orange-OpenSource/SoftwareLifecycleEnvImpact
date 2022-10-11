@@ -102,7 +102,7 @@ def resource_fixture(db: SQLAlchemy) -> Resource:
 
     resource.input = input
     task.resources = [resource]
-    model.tasks = [task]
+    model.root_task = task
     db.session.add_all([project, model, task, resource])
     db.session.commit()
     return resource
