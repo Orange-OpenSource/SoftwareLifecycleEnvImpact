@@ -28,7 +28,7 @@
 	}
 </script>
 
-<button on:click|stopPropagation={() => (showModal = true)} class="btn btn-light">Delete</button>
+<input on:click|stopPropagation={() => (showModal = true)} type="image" src="/trash.svg" width="25" height="25" alt="Bin" loading="lazy" />
 
 <Modal bind:showModal>
 	<span slot="title">Confirm delete</span>

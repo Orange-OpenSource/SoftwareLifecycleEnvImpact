@@ -16,12 +16,43 @@
 			error = e.message;
 		}
 	}
+
+	function getDuration() {
+		let duration = 'for ';
+		if (resourceInput.days) duration += resourceInput.days + ' day(s),';
+		if (resourceInput.months) duration += resourceInput.months + ' month(s),';
+		if (resourceInput.years) duration += resourceInput.years + ' year(s),';
+		if (duration == 'for ') return '';
+		return duration.replace(/,$/, ''); // Remove trailing , if it exists
+	}
 </script>
 
-<input type="number" id="typeNumber{resourceInput.input}" class="form-control" readonly={!modify} bind:value={resourceInput.input} min="1" on:change={() => updateResource()} on:click={() => {}} />
-<input type="number" id="typeNumber{resourceInput.days}" class="form-control" readonly={!modify} bind:value={resourceInput.days} min="0" on:change={() => updateResource()} on:click={() => {}} />
-<input type="number" id="typeNumber{resourceInput.months}" class="form-control" readonly={!modify} bind:value={resourceInput.months} min="0" on:change={() => updateResource()} on:click={() => {}} />
-<input type="number" id="typeNumber{resourceInput.years}" class="form-control" readonly={!modify} bind:value={resourceInput.years} min="0" on:change={() => updateResource()} on:click={() => {}} />
+{#if !modify}
+	<p class="card-text">
+		{resourceInput.input}
+		{resourceInput.type}
+		{getDuration()}
+	</p>
+{:else}
+	<form class="row">
+		<div class="col-12">
+			<label for="inputValue" class="form-label">{resourceInput.type}:</label>
+			<input type="number" id="inputValue" class="form-control" bind:value={resourceInput.input} min="1" on:change={() => updateResource()} on:click={() => {}} />
+		</div>
+		<div class="col-md-4">
+			<label for="inputDays" class="form-label">Days:</label>
+			<input type="number" id="inputDays" class="form-control" bind:value={resourceInput.days} min="0" on:change={() => updateResource()} on:click={() => {}} />
+		</div>
+		<div class="col-md-4">
+			<label for="inputMonths" class="form-label">Months:</label>
+			<input type="number" id="inputMonths" class="form-control" bind:value={resourceInput.months} min="0" on:change={() => updateResource()} on:click={() => {}} />
+		</div>
+		<div class="col-md-4">
+			<label for="inputYears" class="form-label">Years:</label>
+			<input type="number" id="inputYears" class="form-control" bind:value={resourceInput.years} min="0" on:change={() => updateResource()} on:click={() => {}} />
+		</div>
+	</form>
+{/if}
 
 {#if error}
 	<Error message={error} />

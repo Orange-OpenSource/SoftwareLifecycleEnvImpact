@@ -13,6 +13,7 @@
 
 	let resourceTemplates = getResourceTemplatesRequest();
 	let selectedTemplate: TaskTemplate;
+	let name = '';
 
 	let error = '';
 	$: showModal, (error = ''); //Clean error message when closing modal
@@ -21,7 +22,7 @@
 		error = '';
 		try {
 			if (selectedTemplate != null) {
-				const res = await addResourceRequest(selectedTemplate.name, task.id, selectedTemplate.id);
+				const res = await addResourceRequest(name, task.id, selectedTemplate.id);
 				task.resources.push(res);
 				/*Redondant assignment to force Svelte to update components*/
 				task.resources = task.resources;
@@ -33,28 +34,35 @@
 	}
 </script>
 
-<input on:click={() => (showModal = true)} type="image" src="/add.svg" width="25" height="25" alt="Bin" loading="lazy" />
+<button on:click|stopPropagation={() => (showModal = true)} class="btn btn-link">Add resource</button>
 
 <Modal bind:showModal>
-	<span slot="title">Create new resource :</span>
+	<span slot="title">Add new resource :</span>
 	<form slot="body" on:submit|preventDefault={handleSubmit}>
 		{#await resourceTemplates}
 			<Spinner />
 		{:then resourceTemplates}
-			<select class="form-select" bind:value={selectedTemplate}>
-				<option value={null} disabled selected class="form-check-input"> -- Templates -- </option>
-				{#each resourceTemplates as template}
-					<option value={template}>{template.name}</option>
-				{/each}
-			</select>
+			<div class="row g-3">
+				<div class="col-6">
+					<input bind:value={name} type="text" class="form-control" placeholder="Name" required />
+				</div>
+				<div class="col-6">
+					<select class="form-select" bind:value={selectedTemplate} required>
+						<option value={null} disabled selected class="form-check-input"> -- Unit -- </option>
+						{#each resourceTemplates as template}
+							<option value={template}>{template.name}</option>
+						{/each}
+					</select>
+				</div>
+				<div class="col-12">
+					<button type="submit" data-dismiss="modal" class="btn btn-primary">Add resource</button>
+				</div>
+			</div>
 		{:catch error}
-			<Error message={error.message} slot="error" />
+			<Error message={error.message} />
 		{/await}
-
-		{#if error}
-			<Error message={error} slot="error" />
-		{/if}
-
-		<button type="submit" data-dismiss="modal" class="btn btn-primary">Create resource</button>
 	</form>
+	{#if error}
+		<Error message={error} />
+	{/if}
 </Modal>

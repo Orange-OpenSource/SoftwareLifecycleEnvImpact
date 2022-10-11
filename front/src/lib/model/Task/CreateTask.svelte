@@ -41,7 +41,7 @@
 	}
 </script>
 
-<button on:click|stopPropagation={() => (showModal = true)} class="btn btn-primary">Add task</button>
+<button on:click|stopPropagation={() => (showModal = true)} class="btn btn-primary">Add subtask</button>
 
 <Modal bind:showModal>
 	<span slot="title">Create new task :</span>

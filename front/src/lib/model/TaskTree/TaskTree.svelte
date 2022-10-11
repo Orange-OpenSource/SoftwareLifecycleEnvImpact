@@ -31,19 +31,17 @@
 	}
 </script>
 
-<div class="col">
-	{#await rootTaskPromise}
-		<Spinner />
-	{:then rootTask}
-		{#if selectedModel == undefined}
-			No model selected
-		{:else if rootTask != undefined}
-			<Header bind:modify bind:selectedTask {selectedModel} />
-			<div class="col scroll">
-				<TaskComponent task={rootTask} bind:selectedTask {modify} {selectedModel} parentTask={rootTask} draggedObject={undefined} />
-			</div>
-		{/if}
-	{:catch error}
-		<Error message={error.message} />
-	{/await}
-</div>
+{#await rootTaskPromise}
+	<Spinner />
+{:then rootTask}
+	{#if selectedModel == undefined}
+		No model selected
+	{:else if rootTask != undefined}
+		<Header bind:modify bind:selectedTask {selectedModel} />
+		<div class="col scroll">
+			<TaskComponent task={rootTask} bind:selectedTask {modify} {selectedModel} parentTask={rootTask} />
+		</div>
+	{/if}
+{:catch error}
+	<Error message={error.message} />
+{/await}

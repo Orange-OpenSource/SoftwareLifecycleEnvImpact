@@ -103,10 +103,12 @@
 		{#await projectPromise}
 			<Spinner />
 		{:then project}
-			<ModelList bind:selectedModel bind:selectedModels {project} />
-			{#if selectedModels.length > 1}
-				<button on:click|stopPropagation={compareModelsButton} type="button" class="col-5 btn btn-light">Compare</button>
-			{/if}
+			<div class="sticky-top">
+				<ModelList bind:selectedModel bind:selectedModels {project} />
+				{#if selectedModels.length > 1}
+					<button on:click|stopPropagation={compareModelsButton} type="button" class="col-5 btn btn-light">Compare</button>
+				{/if}
+			</div>
 		{:catch error}
 			<Error message={error.message} slot="error" />
 		{/await}

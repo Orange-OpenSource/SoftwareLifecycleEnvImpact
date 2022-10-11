@@ -20,29 +20,34 @@
 	// } TODO request to rename task
 </script>
 
-{#if task.resources != null}
-	<ul class="list-group list-group-flush">
-		{#each task.resources as resource}
-			<li class="list-group-item">
-				<div class="d-flex w-100 justify-content-between align-items-center">
-					<div>
-						<label class="input-group-text" for="typeNumber">{resource.name}</label>
-						<ResourceInput bind:resourceInput={resource.input} {modify} />
+{#if error}
+	<Error message={error} />
+{/if}
+<div class="col">
+	<ul class="list-group list-group-flush list-group-numbered">
+		{#if task.resources != null}
+			{#each task.resources as resource}
+				<li class="list-group-item d-flex">
+					<div class="ms-2">
+						<div class="row justify-content-start">
+							<div class="fw-bold col-md-auto">{resource.name}</div>
+							{#if modify}
+								<div class="col">
+									<DeleteResource bind:task {resource} />
+								</div>
+							{/if}
+						</div>
+						<div class="row ms-2">
+							<ResourceInput bind:resourceInput={resource.input} {modify} />
+						</div>
 					</div>
-
-					{#if modify}
-						<DeleteResource bind:task {resource} />
-					{/if}
-				</div>
+				</li>
+			{/each}
+		{/if}
+		{#if modify}
+			<li class="list-group-item">
+				<AddResource bind:task />
 			</li>
-		{/each}
+		{/if}
 	</ul>
-{/if}
-{#if modify}
-	{#if error}
-		<Error message={error} />
-	{/if}
-	<li class="list-group-item d-flex align-items-center flex-row-reverse">
-		<AddResource bind:task />
-	</li>
-{/if}
+</div>

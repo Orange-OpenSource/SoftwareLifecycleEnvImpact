@@ -25,7 +25,7 @@
 	}
 </script>
 
-<button on:click|stopPropagation={() => (showModal = true)} class="btn btn-light">Rename</button>
+<input on:click|stopPropagation={() => (showModal = true)} type="image" src="/pencil.svg" width="25" height="25" alt="Pencil" loading="lazy" />
 
 <Modal bind:showModal>
 	<span slot="title">Rename task</span>

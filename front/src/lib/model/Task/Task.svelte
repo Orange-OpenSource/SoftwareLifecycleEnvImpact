@@ -16,11 +16,13 @@
 	export let modify: boolean;
 	export let selectedModel: Model;
 
-	export let draggedObject: DragObject;
+	export let draggedObject: DragObject = {};
+
+	$: dragging = draggedObject.task != undefined;
 
 	interface DragObject {
-		task: Task;
-		oldParent: Task;
+		task?: Task;
+		oldParent?: Task;
 	}
 
 	function handleDragStart(e) {
@@ -33,28 +35,30 @@
 	}
 
 	async function handleDragDrop(e) {
-		let oldParent = draggedObject.oldParent;
-		let taskToMove = draggedObject.task;
+		if (draggedObject.oldParent != undefined && draggedObject.task != undefined) {
+			let oldParent = draggedObject.oldParent!;
+			let taskToMove = draggedObject.task!;
 
-		const res = await changeTaskParent(taskToMove, task);
-		if (res) {
-			console.log(res);
-			// Move card to this task subtasks
-			task.subtasks.push(taskToMove);
-			// Remove the card to move from its old parent
-			oldParent.subtasks = oldParent.subtasks.filter((t) => t.id != taskToMove.id);
+			const res = await changeTaskParent(taskToMove, task);
+			if (res) {
+				console.log(res);
+				// Move card to this task subtasks
+				task.subtasks.push(taskToMove);
+				// Remove the card to move from its old parent
+				oldParent.subtasks = oldParent.subtasks.filter((t) => t.id != taskToMove.id);
 
-			/*Redondant assignment to force Svelte to update components*/
-			task.subtasks = task.subtasks;
-			oldParent.subtasks = oldParent.subtasks;
+				/*Redondant assignment to force Svelte to update components*/
+				task.subtasks = task.subtasks;
+				oldParent.subtasks = oldParent.subtasks;
 
-			// Clear the bound object
-			draggedObject = undefined;
+				// Clear the bound object
+				draggedObject = {};
+			}
 		}
 	}
 
 	function handleDragEnd(e) {
-		draggedObject = undefined;
+		draggedObject = {};
 	}
 </script>
 
@@ -71,25 +75,31 @@
 			style="min-width: 18rem; width: fit-content;"
 		>
 			<div class="card-body">
-				<div class="d-flex justify-content-between">
-					<h5 class="card-title">{task.name}</h5>
-					{#if modify}
-						<RenameTask bind:task />
+				<div class="card-title row">
+					<div class="col">
+						<div class="row justify-content-start">
+							<div class="col-md-auto"><h5>{task.name}</h5></div>
+							{#if modify && !dragging}
+								<div class="col">
+									<RenameTask bind:task />
+								</div>
+							{/if}
+						</div>
+					</div>
+
+					{#if modify && !dragging}
+						<div class="col-1">
+							<DeleteTask {task} bind:parentTask />
+						</div>
 					{/if}
 				</div>
 
-				{#if task.resources.length > 0 || modify}
-					<h6 class="card-subtitle mb-2 text-muted">Resources:</h6>
+				{#if !dragging}
+					{#if task.resources.length > 0 || modify}
+						<h6 class="card-subtitle text-muted">Resources:</h6>
 
-					<div class="card-text">
 						<ResourceList bind:task {modify} />
-					</div>
-				{/if}
-				{#if modify}
-					<div class="d-flex justify-content-end">
-						<DeleteTask {task} bind:parentTask />
-						<CreateTask bind:parentTask={task} />
-					</div>
+					{/if}
 				{/if}
 			</div>
 		</div>
@@ -99,11 +109,11 @@
 		<svelte:self bind:task={subtask} bind:draggedObject bind:selectedTask bind:parentTask={task} {modify} {selectedModel} />
 	{/each}
 
-	{#if draggedObject != undefined && draggedObject.task != task}
+	{#if draggedObject.task != undefined && draggedObject.task != task}
 		<div on:drop={handleDragDrop} id="drop_zone" ondragover="return false" />
 	{/if}
 
-	{#if task.parent_task_id == null && modify}
+	{#if modify}
 		<!--For the root task, "Add Task" button as a task in the tree-->
 		<div class="task">
 			<CreateTask bind:parentTask={task} />
