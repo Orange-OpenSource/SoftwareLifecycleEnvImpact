@@ -40,10 +40,10 @@
 		{:else if rootTask != undefined}
 			<Header bind:modify bind:selectedTask {selectedModel} />
 			<div class="col scroll">
-				<TaskComponent task={rootTask} bind:selectedTask {modify} {selectedModel} parentTask={rootTask} />
+				<TaskComponent task={rootTask} bind:selectedTask {modify} {selectedModel} parentTask={rootTask} draggedObject={undefined} />
 			</div>
 		{/if}
 	{:catch error}
-		<Error message={error.message} slot="error" />
+		<Error message={error.message} />
 	{/await}
 </div>

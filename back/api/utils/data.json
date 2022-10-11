@@ -10,7 +10,7 @@
       "created_at": null,
       "id": null,
       "name": "Real project model 1",
-      "project_id": 2,
+      "project_id": null,
       "root_task": {
         "created_at": null,
         "id": null,
@@ -46,6 +46,7 @@
                         "type": "People",
                         "updated_at": null,
                         "input": {
+                          "resource_id": null,
                           "input": 100,
                           "type": "People"
                         }
@@ -68,6 +69,7 @@
                         "type": "People",
                         "updated_at": null,
                         "input": {
+                          "resource_id": null,
                           "input": 100,
                           "type": "People"
                         }
@@ -93,6 +95,7 @@
                     "type": "People",
                     "updated_at": null,
                     "input": {
+                      "resource_id": null,
                       "input": 100,
                       "type": "People"
                     }
@@ -115,6 +118,7 @@
                     "type": "People",
                     "updated_at": null,
                     "input": {
+                      "resource_id": null,
                       "input": 100,
                       "type": "UserDevice"
                     }
@@ -147,6 +151,7 @@
                     "type": "Storage",
                     "updated_at": null,
                     "input": {
+                      "resource_id": null,
                       "input": 100,
                       "type": "Storage"
                     }
@@ -167,6 +172,7 @@
                         "type": "Compute",
                         "updated_at": null,
                         "input": {
+                          "resource_id": null,
                           "input": 100,
                           "type": "Compute"
                         }
@@ -198,6 +204,7 @@
                         "type": "Network",
                         "updated_at": null,
                         "input": {
+                          "resource_id": null,
                           "input": 100,
                           "type": "Network"
                         }
@@ -232,6 +239,7 @@
                     "type": "UserDevice",
                     "updated_at": null,
                     "input": {
+                      "resource_id": null,
                       "input": 100,
                       "type": "UserDevice"
                     }
@@ -253,7 +261,7 @@
       "created_at": null,
       "id": null,
       "name": "Real project model 1",
-      "project_id": 2,
+      "project_id": null,
       "root_task": {
         "created_at": null,
         "id": null,
@@ -289,6 +297,7 @@
                         "type": "People",
                         "updated_at": null,
                         "input": {
+                          "resource_id": null,
                           "input": 100,
                           "type": "People"
                         }
@@ -311,6 +320,7 @@
                         "type": "People",
                         "updated_at": null,
                         "input": {
+                          "resource_id": null,
                           "input": 100,
                           "type": "People"
                         }
@@ -336,6 +346,7 @@
                     "type": "People",
                     "updated_at": null,
                     "input": {
+                      "resource_id": null,
                       "input": 100,
                       "type": "People"
                     }
@@ -358,6 +369,7 @@
                     "type": "People",
                     "updated_at": null,
                     "input": {
+                      "resource_id": null,
                       "input": 100,
                       "type": "People"
                     }
@@ -390,6 +402,7 @@
                     "type": "Storage",
                     "updated_at": null,
                     "input": {
+                      "resource_id": null,
                       "input": 100,
                       "type": "Storage"
                     }
@@ -410,6 +423,7 @@
                         "type": "Compute",
                         "updated_at": null,
                         "input": {
+                          "resource_id": null,
                           "input": 100,
                           "type": "Compute"
                         }
@@ -441,6 +455,7 @@
                         "type": "Network",
                         "updated_at": null,
                         "input": {
+                          "resource_id": null,
                           "input": 100,
                           "type": "Network"
                         }
@@ -475,6 +490,7 @@
                     "type": "UserDevice",
                     "updated_at": null,
                     "input": {
+                      "resource_id": null,
                       "input": 100,
                       "type": "UserDevice"
                     }
