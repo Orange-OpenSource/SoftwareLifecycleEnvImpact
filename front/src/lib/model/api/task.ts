@@ -9,7 +9,7 @@ export async function renameTaskRequest(task: Task, newName: string): Promise<Ta
 		path: '/name',
 		value: newName
 	};
-	const res = await patch('tasks/' + task.id, patchDocument);
+	const res = await patch('tasks/' + task.id, [patchDocument]);
 	return res.text().then((json: string) => {
 		return JSON.parse(json);
 	});
@@ -57,7 +57,7 @@ export async function changeTaskParent(task: Task, newParent: Task): Promise<Tas
 		path: '/parent_task_id',
 		value: newParent.id.toString()
 	};
-	const res = await patch('tasks/' + task.id, patchDocument);
+	const res = await patch('tasks/' + task.id, [patchDocument]);
 	return res.text().then((json: string) => {
 		return JSON.parse(json);
 	});

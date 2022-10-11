@@ -43,7 +43,7 @@ export async function renameProjectRequest(project: Project, name: string): Prom
 		path: '/name',
 		value: name
 	};
-	const res = await patch('projects/' + project.id, patchDocument);
+	const res = await patch('projects/' + project.id, [patchDocument]);
 	return res.text().then((json: string) => {
 		return JSON.parse(json);
 	});

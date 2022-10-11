@@ -40,6 +40,6 @@ export async function put(path: string, data: unknown) {
 	return send('PUT', path, data);
 }
 
-export async function patch(path: string, data: PatchDocument) {
-	return send('PATCH', path, [data]); // Json patch has to be in an array
+export async function patch(path: string, data: PatchDocument[]) {
+	return send('PATCH', path, data); // Json patch has to be in an array
 }

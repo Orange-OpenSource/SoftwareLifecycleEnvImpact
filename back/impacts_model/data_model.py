@@ -50,7 +50,7 @@ class Resource(db.Model):  # type: ignore # TODO resource should have a unit
 
     def get_environmental_impact(self) -> AggregatedImpact:
         """
-        Get a resource complete environmental impact as an EnvironementalImapct object
+        Get a resource complete environmental impact as an EnvironmentalImpact object
         :return: an AggregatedImpact object with all resource impacts
         """
         resource_template = ResourceTemplate(self.type)
@@ -96,6 +96,10 @@ class ResourceInput(db.Model):  # type: ignore
     months = db.Column(db.Integer, default=0)
     years = db.Column(db.Integer, default=0)
 
+    created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    updated_at = db.Column(
+        db.DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
+    )
     # value = (
     #     db.Column(
     #         db.Integer, db.Computed("input * days * (months * 31) * (years * 365)")
@@ -135,6 +139,7 @@ class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
 
     id = ma.auto_field(allow_none=True)
     task_id = ma.auto_field(allow_none=True)
+    input = Nested("ResourceInputSchema", many=False)
 
 
 class ResourceInputSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
@@ -150,6 +155,8 @@ class ResourceInputSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
         load_instance = True
         include_fk = True
         sqla_session = db.session
+
+    resource_id = ma.auto_field(allow_none=True)
 
 
 class Task(db.Model):  # type: ignore
@@ -314,6 +321,7 @@ class ModelSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
     id = ma.auto_field(allow_none=True)
     root_task = Nested("TaskSchema")
     tasks = Nested("TaskSchema", many=True)
+    project_id = ma.auto_field(allow_none=True)
 
 
 class Project(db.Model):  # type: ignore

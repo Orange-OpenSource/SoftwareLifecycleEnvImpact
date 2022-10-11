@@ -26,7 +26,7 @@ export async function renameModelRequest(model: Model, newName: string) {
 		path: '/name',
 		value: newName
 	};
-	const res = await patch('models/' + model.id, patchDocument);
+	const res = await patch('models/' + model.id, [patchDocument]);
 	return res.text().then((json: string) => {
 		return JSON.parse(json);
 	});

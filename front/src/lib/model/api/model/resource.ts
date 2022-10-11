@@ -14,7 +14,7 @@ export interface Resource {
 	/**
 	 * Value of the resource
 	 */
-	value: number;
+	input: ResourceInput;
 	/**
 	 * Creation date of the resource
 	 */
@@ -23,6 +23,17 @@ export interface Resource {
 	 * Last update date of the resource
 	 */
 	updated_at: string;
+}
+
+export interface ResourceInput {
+	id: number;
+	days: number;
+	input: number;
+	months: number;
+	resource: number;
+	resource_id: number;
+	type: string;
+	years: number;
 }
 
 export interface ResourceTemplate {
