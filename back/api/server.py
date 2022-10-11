@@ -30,4 +30,6 @@ def create_app(env: str = "") -> flask.app.Flask:
     data_model.db.init_app(app)
     data_model.ma.init_app(app)
 
+    with app.app_context():
+        data_model.db.create_all()
     return app

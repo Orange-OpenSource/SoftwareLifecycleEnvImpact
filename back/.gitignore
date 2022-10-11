@@ -153,3 +153,5 @@ tags
 ### IntelliJ IDEA ###
 .idea/
 
+# Database
+*.db
