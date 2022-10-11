@@ -1,14 +1,22 @@
-<script lang="ts">
-	/*Bound var*/
-	export let showModal: boolean;
+<script>
+	export let showModal = false;
 
-	function close() {
+	function closeModal(event) {
+		event.stopPropagation();
 		showModal = false;
+	}
+
+	$: showModal, () => {
+		if (showModal && !document.body.classList.contains('modal-open')) {
+			document.body.classList.add('modal-open');
+		} else if (document.body.classList.contains('modal-open')) {
+			document.body.classList.remove('modal-open');
+		}
 	}
 </script>
 
 {#if showModal}
-	<div class="modal" id="sampleModal" tabindex="-1" role="dialog" aria-labelledby="sampleModalLabel" aria-hidden={false} on:click|stopPropagation={() => console.log('stopped propagation')}>
+	<div class="modal fade show" tabindex="-1" role="dialog" on:click|self={closeModal}>
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -16,7 +24,7 @@
 						<h5 class="modal-title"><slot name="title" /></h5>
 						<slot name="btndelete" />
 					</div>
-					<button type="button" class="btn-close" on:click|stopPropagation={close} aria-label="Close" />
+					<button type="button" class="btn-close" on:click|self={closeModal} />
 				</div>
 				<div class="modal-body">
 					<slot name="body" />
@@ -28,6 +36,9 @@
 			</div>
 		</div>
 	</div>
+	{#if showModal}
+		<div class="modal-backdrop show" />
+	{/if}
 {/if}
 
 <style>
