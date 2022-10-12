@@ -69,7 +69,7 @@
 		<div
 			on:click|stopPropagation={() => (selectedTask = task)}
 			class="col-8 card {task === selectedTask ? 'border-primary' : ''}"
-			draggable="true"
+			draggable={modify}
 			on:dragstart={handleDragStart}
 			on:dragend={handleDragEnd}
 			style="min-width: 15rem;"
@@ -110,24 +110,17 @@
 	{/each}
 
 	{#if draggedObject.task != undefined && draggedObject.task != task}
-		<div on:drop={handleDragDrop} id="drop_zone" ondragover="return false" />
-	{/if}
-
-	{#if modify}
-		<!--For the root task, "Add Task" button as a task in the tree-->
+		<div class="task" on:drop={handleDragDrop} ondragover="return false">
+			<div class="col-8 card" style="min-width: 15rem;">
+				<div class="card-body">
+					<small>Drop here</small>
+				</div>
+			</div>
+		</div>
+	{:else if modify}
+		<!--"Add Task" button as a task in the tree-->
 		<div class="task">
 			<CreateTask bind:parentTask={task} />
 		</div>
 	{/if}
 </div>
-
-<style>
-	#drop_zone {
-		background-color: #eee;
-		border: #999 1px solid;
-		width: 280px;
-		height: 200px;
-		padding: 8px;
-		font-size: 19px;
-	}
-</style>
