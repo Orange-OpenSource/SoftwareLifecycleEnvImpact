@@ -94,35 +94,35 @@
 
 <div class="split">
 	<div id="split-0">
-		<h2 class="title">My models</h2>
-		{#await projectPromise}
-			<Spinner />
-		{:then project}
-			<div class="sticky-top">
+		<div class="col ps-2 sticky-top">
+			<h2 class="title">My models</h2>
+			{#await projectPromise}
+				<Spinner />
+			{:then project}
 				<ModelList bind:selectedModel bind:selectedModels bind:compareModels {project} />
-			</div>
-		{:catch error}
-			<Error message={error.message} slot="error" />
-		{/await}
+			{:catch error}
+				<Error message={error.message} slot="error" />
+			{/await}
+		</div>
 	</div>
 
 	{#if !compareModels}
 		<div id="split-1">
-			<div class="col">
+			<div class="col ps-2">
 				<h2 class="title">Tasks</h2>
 				<TaskTree bind:selectedTask {selectedModel} />
 			</div>
 		</div>
 
 		<div id="split-2">
-			<div class="col sticky-top">
+			<div class="col ps-2 sticky-top">
 				<h2 class="title">Impact</h2>
 				<Impact bind:selectedTask />
 			</div>
 		</div>
 	{:else}
 		<div id="split-1">
-			<div class="col">
+			<div class="col ps-2 ">
 				<h2 class="title">Compare</h2>
 				<ModelComparison models={selectedModels} />
 			</div>
