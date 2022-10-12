@@ -114,9 +114,7 @@ class ResourceInput(db.Model):  # type: ignore
 
     def copy(self) -> Any:
         return ResourceInput(
-            time_input=self.time_input.copy(),
             type=self.type,
-            hours=self.hours,
             days=self.days,
             months=self.months,
             years=self.years,
