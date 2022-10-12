@@ -23,7 +23,7 @@
 					<button type="button" class="list-group-item list-group-item-action" on:click|stopPropagation={() => (selectedModel = model)}>
 						<div class="row">
 							<div class="col-2">
-								<input type="checkbox" class="form-check-input" value={model} bind:group={selectedModels} name={String(model.id)} on:click|stopPropagation={() => console.log('hello')} />
+								<input type="checkbox" class="form-check-input" value={model} bind:group={selectedModels} name={String(model.id)} />
 							</div>
 							<div class="col-7">
 								<h5>

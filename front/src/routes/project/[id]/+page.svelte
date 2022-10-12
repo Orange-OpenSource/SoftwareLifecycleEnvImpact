@@ -100,7 +100,6 @@
 		{:then project}
 			<div class="sticky-top">
 				<ModelList bind:selectedModel bind:selectedModels bind:compareModels {project} />
-
 			</div>
 		{:catch error}
 			<Error message={error.message} slot="error" />
@@ -109,20 +108,24 @@
 
 	{#if !compareModels}
 		<div id="split-1">
-			<h2 class="title">Tasks</h2>
-			<TaskTree bind:selectedTask {selectedModel} />
+			<div class="col">
+				<h2 class="title">Tasks</h2>
+				<TaskTree bind:selectedTask {selectedModel} />
+			</div>
 		</div>
 
 		<div id="split-2">
-			<div class="sticky-top">
+			<div class="col sticky-top">
 				<h2 class="title">Impact</h2>
 				<Impact bind:selectedTask />
 			</div>
 		</div>
 	{:else}
 		<div id="split-1">
-			<h2 class="title">Compare</h2>
-			<ModelComparison models={selectedModels} />
+			<div class="col">
+				<h2 class="title">Compare</h2>
+				<ModelComparison models={selectedModels} />
+			</div>
 		</div>
 	{/if}
 </div>
