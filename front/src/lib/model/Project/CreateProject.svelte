@@ -46,12 +46,17 @@
 <Modal bind:showModal>
 	<span slot="title">Create new project</span>
 	<form slot="body" on:submit|preventDefault={createNewProject}>
-		<input id="createProjectInput" placeholder="Project name" required bind:value={projectName} />
-		{#if error}
-			<Error message={error} slot="error" />
-		{/if}
-		<input type="file" accept=".json" bind:files />
+		<div class="row g-3">
+			<div class="col-12">
+				<input id="createModelInput" class="form-control" placeholder="Project name" required bind:value={projectName} />
+			</div>
 
-		<button type="submit" class="btn btn-primary">Create project</button>
+			<div class="col-12">
+				<button type="submit" data-dismiss="modal" class="btn btn-primary">Create project</button>
+			</div>
+		</div>
+		{#if error}
+			<Error message={error} />
+		{/if}
 	</form>
 </Modal>

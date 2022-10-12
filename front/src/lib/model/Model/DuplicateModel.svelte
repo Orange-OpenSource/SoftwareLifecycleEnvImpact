@@ -11,7 +11,7 @@
 	export let model: Model;
 
 	let showModal = false;
-	let error = '';
+	let error = 'd';
 
 	$: showModal, (error = ''); //Clean error message when closing modal
 
@@ -35,11 +35,18 @@
 <Modal bind:showModal>
 	<span slot="title">Confirm duplicate</span>
 
-	<span slot="body">Are you sure you want to duplicate <strong>{model.name}</strong> ?</span>
+	<form slot="body" on:submit|preventDefault={duplicateModel}>
+		<div class="row g-3">
+			<div class="col-12">
+				Are you sure you want to duplicate <strong>{model.name}</strong> ?
+			</div>
 
-	{#if error}
-		<Error message={error} slot="error" />
-	{/if}
-
-	<button on:click|stopPropagation={() => duplicateModel()} slot="btnsave" type="button" class="btn">Duplicate</button>
+			<div class="col-12">
+				<button type="submit" data-dismiss="modal" class="btn btn">Duplicate</button>
+			</div>
+		</div>
+		{#if error}
+			<Error message={error} />
+		{/if}
+	</form>
 </Modal>

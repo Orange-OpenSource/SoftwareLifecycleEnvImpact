@@ -43,10 +43,17 @@
 <Modal bind:showModal>
 	<span slot="title">Create new model</span>
 	<form slot="body" on:submit|preventDefault={createModel}>
-		<input id="createModelInput" placeholder="Model name" required bind:value={modelName} />
+		<div class="row g-3">
+			<div class="col-12">
+				<input id="createModelInput" class="form-control" placeholder="Model name" required bind:value={modelName} />
+			</div>
+
+			<div class="col-12">
+				<button type="submit" data-dismiss="modal" class="btn btn-primary">Create model</button>
+			</div>
+		</div>
 		{#if error}
-			<Error message={error} slot="error" />
+			<Error message={error} />
 		{/if}
-		<button type="submit" class="btn btn-primary">Create model</button>
 	</form>
 </Modal>

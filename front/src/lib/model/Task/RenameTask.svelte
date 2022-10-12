@@ -29,11 +29,20 @@
 
 <Modal bind:showModal>
 	<span slot="title">Rename task</span>
+
 	<form slot="body" on:submit|preventDefault={renameTask}>
-		<input id="renameTask" placeholder="Task name" required bind:value={newName} />
+		<div class="row g-3">
+			<div class="col-12">
+				<!-- TODO label ? -->
+				<input class="form-control" placeholder="tASK new name" required bind:value={newName} />
+			</div>
+
+			<div class="col-12">
+				<button type="submit" data-dismiss="modal" class="btn btn-primary">Rename task</button>
+			</div>
+		</div>
 		{#if error}
-			<Error message={error} slot="error" />
+			<Error message={error} />
 		{/if}
-		<button type="submit" class="btn btn-primary">Rename task</button>
 	</form>
 </Modal>

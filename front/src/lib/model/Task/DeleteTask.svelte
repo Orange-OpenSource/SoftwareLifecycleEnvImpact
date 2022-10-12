@@ -33,11 +33,18 @@
 <Modal bind:showModal>
 	<span slot="title">Confirm delete</span>
 
-	<span slot="body">Are you sure you want to delete <strong>{task.name}</strong> ?</span>
+	<form slot="body" on:submit|preventDefault={deleteTask}>
+		<div class="row g-3">
+			<div class="col-12">
+				<p>Are you sure you want to delete task <strong>{task.name}</strong> ?</p>
+			</div>
 
-	{#if error}
-		<Error message={error} slot="error" />
-	{/if}
-
-	<button on:click|stopPropagation={() => deleteTask()} slot="btnsave" type="button" class="btn btn-danger">Delete</button>
+			<div class="col-12">
+				<button type="submit" data-dismiss="modal" class="btn btn-danger">Delete</button>
+			</div>
+		</div>
+		{#if error}
+			<Error message={error} />
+		{/if}
+	</form>
 </Modal>

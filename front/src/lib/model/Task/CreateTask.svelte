@@ -49,29 +49,33 @@
 
 <Modal bind:showModal>
 	<span slot="title">Create new task :</span>
-	<div slot="body">
-		<form on:submit|preventDefault={createTask}>
-			{#await taskTemplates}
-				<Spinner />
-			{:then taskTemplates}
-				<select id="templateSelect" class="form-select" bind:value={selectedTemplate}>
-					<option value={null} disabled selected class="form-check-input"> -- Templates -- </option>
-					{#each taskTemplates as template}
-						<option value={template}>{template.name}</option>
-					{/each}
-				</select>
-				{#if error}
-					<Error message={error} />
-				{/if}
-			{:catch error}
-				<Error message={error.message} />
-			{/await}
 
-			<div class="line-around">OR</div>
-
-			<input placeholder="Task name" bind:value={taskName} />
-
-			<button type="submit" class="btn btn-primary">Create task</button>
-		</form>
-	</div>
+	<form slot="body" on:submit|preventDefault={createTask}>
+		{#await taskTemplates}
+			<Spinner />
+		{:then taskTemplates}
+			<div class="row g-3">
+				<div class="col-12">
+					<select id="templateSelect" class="form-select" bind:value={selectedTemplate}>
+						<option value={null} disabled selected class="form-check-input"> -- Templates -- </option>
+						{#each taskTemplates as template}
+							<option value={template}>{template.name}</option>
+						{/each}
+					</select>
+				</div>
+				<div class="line-around">OR</div>
+				<div class="col-12">
+					<input placeholder="Task name" bind:value={taskName} />
+				</div>
+				<div class="col-12">
+					<button type="submit" class="btn btn-primary">Create task</button>
+				</div>
+			</div>
+			{#if error}
+				<Error message={error} />
+			{/if}
+		{:catch error}
+			<Error message={error.message} />
+		{/await}
+	</form>
 </Modal>

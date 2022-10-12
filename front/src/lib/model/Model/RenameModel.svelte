@@ -28,14 +28,21 @@
 <input on:click|stopPropagation={() => (showModal = true)} type="image" src="/pencil.svg" width="25" height="25" alt="Pencil" loading="lazy" />
 
 <Modal bind:showModal>
-	<span slot="title">Rename model :</span>
+	<span slot="title">Rename model</span>
+
 	<form slot="body" on:submit|preventDefault={renameModel}>
-		<input id="renameModelInput{model.id}" placeholder="Model new name" bind:value={newName} required />
+		<div class="row g-3">
+			<div class="col-12">
+				<!-- TODO label ? -->
+				<input class="form-control" placeholder="Model new name" required bind:value={newName} />
+			</div>
 
+			<div class="col-12">
+				<button type="submit" data-dismiss="modal" class="btn btn-primary">Rename model</button>
+			</div>
+		</div>
 		{#if error}
-			<Error message={error} slot="error" />
+			<Error message={error} />
 		{/if}
-
-		<button type="submit" class="btn btn-primary">Rename model</button>
 	</form>
 </Modal>

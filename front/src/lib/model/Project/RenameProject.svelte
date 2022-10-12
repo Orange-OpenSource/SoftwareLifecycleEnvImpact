@@ -30,12 +30,20 @@
 
 <Modal bind:showModal>
 	<span slot="title">Rename project :</span>
-	<form slot="body" on:submit|preventDefault={renameProject}>
-		<input id="renameProjectInput{project.id}" placeholder="Project new name" bind:value={newName} required />
 
+	<form slot="body" on:submit|preventDefault={renameProject}>
+		<div class="row g-3">
+			<div class="col-12">
+				<!-- TODO label ? -->
+				<input class="form-control" placeholder="Project new name" required bind:value={newName} />
+			</div>
+
+			<div class="col-12">
+				<button type="submit" data-dismiss="modal" class="btn btn-primary">Rename project</button>
+			</div>
+		</div>
 		{#if error}
-			<Error message={error} slot="error" />
+			<Error message={error} />
 		{/if}
-		<button type="submit" class="btn btn-primary">Rename project</button>
 	</form>
 </Modal>
