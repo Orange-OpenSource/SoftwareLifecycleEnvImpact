@@ -30,7 +30,7 @@
 	}
 </script>
 
-<button on:click|stopPropagation={() => (showModal = true)} class="btn btn-light">Duplicate</button>
+<input on:click|stopPropagation={() => (showModal = true)} type="image" src="/duplicate.svg" width="25" height="25" alt="Duplicate" loading="lazy" />
 
 <Modal bind:showModal>
 	<span slot="title">Confirm duplicate</span>
