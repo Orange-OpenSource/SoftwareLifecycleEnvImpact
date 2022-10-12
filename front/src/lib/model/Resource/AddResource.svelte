@@ -16,7 +16,11 @@
 	let name = '';
 
 	let error = '';
-	$: showModal, (error = ''); //Clean error message when closing modal
+	$: showModal,
+		() => {
+			error = '';
+			name = '';
+		}; //Clean error message when closing modal
 
 	async function handleSubmit() {
 		error = '';
@@ -48,9 +52,9 @@
 				</div>
 				<div class="col-6">
 					<select class="form-select" bind:value={selectedTemplate} required>
-						<option value={null} disabled selected class="form-check-input"> -- Unit -- </option>
+						<!-- <option value={null} disabled selected class="form-check-input"> -- Unit -- </option> -->
 						{#each resourceTemplates as template}
-							<option value={template}>{template.name}</option>
+							<option value={template} class="form-check-input">{template.name}</option>
 						{/each}
 					</select>
 				</div>

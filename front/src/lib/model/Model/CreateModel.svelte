@@ -14,7 +14,11 @@
 	let modelName: string;
 	let error = '';
 
-	$: showModal, (error = ''); //Clean error message when closing modal
+	$: showModal,
+		() => {
+			error = '';
+			modelName = '';
+		}; //Clean error message when closing modal
 
 	async function createModel() {
 		if (modelName != undefined && modelName != '') {

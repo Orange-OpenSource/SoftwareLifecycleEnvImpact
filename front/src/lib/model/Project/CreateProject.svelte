@@ -11,7 +11,11 @@
 
 	let files: FileList;
 
-	$: showModal, (error = ''); //Clean error message when closing modal
+	$: showModal,
+		() => {
+			error = '';
+			projectName = '';
+		}; //Clean error message when closing modal
 
 	async function createNewProject() {
 		error = '';

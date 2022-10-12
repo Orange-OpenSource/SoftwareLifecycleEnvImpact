@@ -17,7 +17,11 @@
 	let taskName: string;
 
 	let error: string = '';
-	$: showModal, (error = ''); //Clean error message when closing modal
+	$: showModal,
+		() => {
+			error = '';
+			taskName = '';
+		}; //Clean error message when closing modal
 
 	async function createTask() {
 		error = '';
