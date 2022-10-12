@@ -72,7 +72,6 @@
 			draggable={modify}
 			on:dragstart={handleDragStart}
 			on:dragend={handleDragEnd}
-			style="min-width: 15rem;"
 		>
 			<div class="card-body">
 				<div class="card-title row">
@@ -88,7 +87,7 @@
 					</div>
 
 					{#if modify && !dragging}
-						<div class="col-1">
+						<div class="col-2">
 							<DeleteTask {task} bind:parentTask />
 						</div>
 					{/if}

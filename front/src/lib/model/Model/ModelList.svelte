@@ -60,7 +60,7 @@
 	</div>
 	<div class="row">
 		<div class="col">
-			<button on:click|stopPropagation={(compareModels = true)} type="button" class="btn btn-light" disabled={selectedModels.length <= 1}>Compare</button>
+			<button on:click|stopPropagation={() => (compareModels = true)} type="button" class="btn btn-light" disabled={selectedModels.length <= 1}>Compare</button>
 		</div>
 		<div class="col">
 			<CreateModel bind:project bind:selectedModel />
