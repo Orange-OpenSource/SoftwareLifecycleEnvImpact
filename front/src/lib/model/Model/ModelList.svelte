@@ -12,39 +12,49 @@
 	export let selectedModel: Model;
 	export let project: Project;
 	export let selectedModels: Model[];
+	export let compareModels: boolean;
 </script>
 
-<div>
-	{#if project != undefined && project.models != undefined}
-		<div class="list-group list-group-flush">
-			{#each project.models as model, i}
-				<button type="button" class="list-group-item list-group-item-action" on:click|stopPropagation={() => (selectedModel = model)}>
-					<div class="row">
-						<div class="col-2">
-							<input type="checkbox" class="form-check-input" value={model} bind:group={selectedModels} name={String(model.id)} on:click|stopPropagation={() => console.log('hello')} />
-						</div>
-						<div class="col-7">
-							<h5>
-								{model.name}
-								{#if i == 0}
-									(default)
+<div class="col">
+	<div class="row">
+		{#if project != undefined && project.models != undefined}
+			<div class="list-group list-group-flush">
+				{#each project.models as model, i}
+					<button type="button" class="list-group-item list-group-item-action" on:click|stopPropagation={() => (selectedModel = model)}>
+						<div class="row">
+							<div class="col-2">
+								<input type="checkbox" class="form-check-input" value={model} bind:group={selectedModels} name={String(model.id)} on:click|stopPropagation={() => console.log('hello')} />
+							</div>
+							<div class="col-7">
+								<h5>
+									{model.name}
+									{#if i == 0}
+										(default)
+									{/if}
+								</h5>
+								<small>{getLastUpdate(model)}</small>
+							</div>
+							<div class="col-3">
+								<RenameModel bind:model />
+								{#if i != 0}
+									<DeleteModel {model} bind:models={project.models} />
 								{/if}
-							</h5>
-							<small>{getLastUpdate(model)}</small>
+								<DuplicateModel {model} bind:models={project.models} bind:selectedModel />
+							</div>
 						</div>
-						<div class="col-3">
-							<RenameModel bind:model />
-							{#if i != 0}
-								<DeleteModel {model} bind:models={project.models} />
-							{/if}
-							<DuplicateModel {model} bind:models={project.models} bind:selectedModel />
-						</div>
-					</div>
-				</button>
-			{/each}
+					</button>
+				{/each}
+			</div>
+		{:else}
+			No model
+		{/if}
+	</div>
+	<div class="row">
+		<div class="col">
+			<button on:click|stopPropagation={(compareModels = true)} type="button" class="btn btn-light" disabled={selectedModels.length <= 1}>Compare</button>
 		</div>
-	{:else}
-		No model
-	{/if}
-	<CreateModel bind:project bind:selectedModel />
+		<div class="col">
+			<CreateModel bind:project bind:selectedModel />
+		</div>
+	</div>
 </div>

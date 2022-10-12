@@ -83,11 +83,6 @@
 		return;
 	}
 
-	function compareModelsButton() {
-		compareModels = true;
-		setTwoColumnsSplit();
-	}
-
 	onMount(async () => {
 		setThreeColumnsSplit();
 	});
@@ -104,10 +99,8 @@
 			<Spinner />
 		{:then project}
 			<div class="sticky-top">
-				<ModelList bind:selectedModel bind:selectedModels {project} />
-				{#if selectedModels.length > 1}
-					<button on:click|stopPropagation={compareModelsButton} type="button" class="col-5 btn btn-light">Compare</button>
-				{/if}
+				<ModelList bind:selectedModel bind:selectedModels bind:compareModels {project} />
+
 			</div>
 		{:catch error}
 			<Error message={error.message} slot="error" />

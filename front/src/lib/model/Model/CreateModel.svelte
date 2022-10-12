@@ -34,7 +34,7 @@
 	}
 </script>
 
-<button on:click|stopPropagation={() => (showModal = true)} type="button" class="col-5 btn btn-light">Add model</button>
+<button on:click|stopPropagation={() => (showModal = true)} type="button" class="btn btn-light">Add model</button>
 
 <Modal bind:showModal>
 	<span slot="title">Create new model</span>
