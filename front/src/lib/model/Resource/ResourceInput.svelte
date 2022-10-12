@@ -34,22 +34,26 @@
 		{getDuration()}
 	</p>
 {:else}
-	<form class="row">
-		<div class="col-12">
-			<label for="inputValue" class="form-label">{resourceInput.type}:</label>
-			<input type="number" id="inputValue" class="form-control" bind:value={resourceInput.input} min="1" on:change={() => updateResource()} on:click={() => {}} />
+	<form class="card-text">
+		<div class="row">
+			<div class="col">
+				<label for="inputValue" class="form-label">{resourceInput.type}:</label>
+				<input type="number" id="inputValue" class="form-control" bind:value={resourceInput.input} min="1" on:change={() => updateResource()} on:click={() => {}} />
+			</div>
 		</div>
-		<div class="col-md-4">
-			<label for="inputDays" class="form-label">Days:</label>
-			<input type="number" id="inputDays" class="form-control" bind:value={resourceInput.days} min="0" on:change={() => updateResource()} on:click={() => {}} />
-		</div>
-		<div class="col-md-4">
-			<label for="inputMonths" class="form-label">Months:</label>
-			<input type="number" id="inputMonths" class="form-control" bind:value={resourceInput.months} min="0" on:change={() => updateResource()} on:click={() => {}} />
-		</div>
-		<div class="col-md-4">
-			<label for="inputYears" class="form-label">Years:</label>
-			<input type="number" id="inputYears" class="form-control" bind:value={resourceInput.years} min="0" on:change={() => updateResource()} on:click={() => {}} />
+		<div class="row">
+			<div class="col">
+				<label for="inputDays" class="form-label">Days:</label>
+				<input type="number" id="inputDays" class="form-control" bind:value={resourceInput.days} min="0" on:change={() => updateResource()} on:click={() => {}} />
+			</div>
+			<div class="col">
+				<label for="inputMonths" class="form-label">Months:</label>
+				<input type="number" id="inputMonths" class="form-control" bind:value={resourceInput.months} min="0" on:change={() => updateResource()} on:click={() => {}} />
+			</div>
+			<div class="col">
+				<label for="inputYears" class="form-label">Years:</label>
+				<input type="number" id="inputYears" class="form-control" bind:value={resourceInput.years} min="0" on:change={() => updateResource()} on:click={() => {}} />
+			</div>
 		</div>
 	</form>
 {/if}

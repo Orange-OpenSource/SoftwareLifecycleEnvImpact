@@ -17,7 +17,7 @@
 			<div
 				on:click|stopPropagation={() => (selectedTask = selectedModel.root_task)}
 				class="card {selectedModel.root_task === selectedTask ? 'border-primary' : ''}"
-				style="min-width: 18rem; width: fit-content;"
+				style="min-width: 15rem; width: fit-content;"
 			>
 				<div class="card-body">
 					<h5>{selectedModel.name}</h5>

@@ -68,11 +68,11 @@
 		<!--Highlight border if task selected-->
 		<div
 			on:click|stopPropagation={() => (selectedTask = task)}
-			class="card {task === selectedTask ? 'border-primary' : ''}"
+			class="col-8 card {task === selectedTask ? 'border-primary' : ''}"
 			draggable="true"
 			on:dragstart={handleDragStart}
 			on:dragend={handleDragEnd}
-			style="min-width: 18rem; width: fit-content;"
+			style="min-width: 15rem;"
 		>
 			<div class="card-body">
 				<div class="card-title row">
