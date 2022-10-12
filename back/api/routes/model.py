@@ -160,6 +160,7 @@ def duplicate_model(model_id: int) -> Any:
     if model is not None:
         model_copy = model.copy()
         model_copy.name = model_copy.name + " copy"
+        model_copy.project_id = model.project_id
         model_copy = insert_model_db(model_copy)
         model_schema = ModelSchema()
         return model_schema.dump(model_copy)

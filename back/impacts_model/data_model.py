@@ -16,7 +16,7 @@ db = SQLAlchemy()
 ma = FlaskMarshmallow()
 
 
-class Resource(db.Model):  # type: ignore # TODO resource should have a unit
+class Resource(db.Model):  # type: ignore
     """
     Resource object and table with a name, a type and a value. Only for a task
     The type represents the name of the ResourceTemplate to retrieve model values for computation
@@ -115,6 +115,7 @@ class ResourceInput(db.Model):  # type: ignore
     def copy(self) -> Any:
         return ResourceInput(
             type=self.type,
+            input=self.input,
             days=self.days,
             months=self.months,
             years=self.years,
@@ -297,8 +298,10 @@ class Model(db.Model):  # type: ignore
     )
 
     def copy(self) -> Any:
-        model = Model(name=self.name, root_task=self.root_task.copy())
-        return model
+        return Model(
+            name=self.name,
+            root_task=self.root_task.copy(),
+        )
 
 
 class ModelSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
