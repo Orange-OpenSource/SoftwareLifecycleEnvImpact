@@ -10,14 +10,6 @@
 	export let modify: boolean;
 
 	let error = '';
-
-	// async function updateResource(resource: Resource) {
-	// 	try {
-	// 		await updateResourceRequest(resource, String(resource.value));
-	// 	} catch (e: any) {
-	// 		error = e.message;
-	// 	}
-	// } TODO request to rename task
 </script>
 
 {#if error}

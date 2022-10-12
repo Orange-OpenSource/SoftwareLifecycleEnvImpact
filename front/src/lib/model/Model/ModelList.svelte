@@ -13,6 +13,15 @@
 	export let project: Project;
 	export let selectedModels: Model[];
 	export let compareModels: boolean;
+
+	$: project,
+		() => {
+			// If selected model is deleted, select the base model instead
+			if (!project.models?.includes(selectedModel)) {
+				selectedModel = project.models[0];
+				// TODO problem with base model logic
+			}
+		};
 </script>
 
 <div class="col">
