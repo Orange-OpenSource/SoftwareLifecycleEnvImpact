@@ -19,9 +19,9 @@
 
 	function getDuration() {
 		let duration = 'for ';
-		if (resourceInput.days) duration += resourceInput.days + ' day(s),';
-		if (resourceInput.months) duration += resourceInput.months + ' month(s),';
-		if (resourceInput.years) duration += resourceInput.years + ' year(s),';
+		if (resourceInput.days) duration += resourceInput.days + (resourceInput.days > 1 ? ' days,' : ' day,');
+		if (resourceInput.months) duration += resourceInput.months + (resourceInput.months > 1 ? ' months,' : ' month,');
+		if (resourceInput.years) duration += resourceInput.years + (resourceInput.years > 1 ? ' years,' : ' year,');
 		if (duration == 'for ') return '';
 		return duration.replace(/,$/, ''); // Remove trailing , if it exists
 	}

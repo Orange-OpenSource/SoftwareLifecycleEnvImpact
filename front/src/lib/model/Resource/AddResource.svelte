@@ -16,11 +16,12 @@
 	let name = '';
 
 	let error = '';
-	$: showModal,
-		() => {
-			error = '';
-			name = '';
-		}; //Clean error message when closing modal
+	$: showModal, clearModal(); //Clean error message when closing modal
+
+	function clearModal() {
+		error = '';
+		name = '';
+	}
 
 	async function handleSubmit() {
 		error = '';
@@ -48,9 +49,12 @@
 		{:then resourceTemplates}
 			<div class="row g-3">
 				<div class="col-6">
-					<input bind:value={name} type="text" class="form-control" placeholder="Name" required />
+					<label for="resourceName">Name</label>
+					<input bind:value={name} type="text" class="form-control" placeholder="Resource name" required id="resourceName" />
 				</div>
 				<div class="col-6">
+					<label for="resourceName">Unit</label>
+					<!-- TODO is unit the right name  -->
 					<select class="form-select" bind:value={selectedTemplate} required>
 						<!-- <option value={null} disabled selected class="form-check-input"> -- Unit -- </option> -->
 						{#each resourceTemplates as template}
