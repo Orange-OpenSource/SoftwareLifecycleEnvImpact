@@ -52,10 +52,6 @@ div.task:last-child:before {
 	padding: 10px 20px 10px 20px;
 	-webkit-box-shadow: 5px 5px 3px -6px #000000;
 	box-shadow: 5px 5px 3px -6px #000000;
-	/*width: 200px;
-	height: 90px;
-	display: inline-block;
-	text-align: center;*/
 }
 
 .btn-add-task-leaf {

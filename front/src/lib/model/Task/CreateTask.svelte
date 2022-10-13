@@ -65,7 +65,7 @@
 				</div>
 				<div class="line-around">OR</div>
 				<div class="col-12">
-					<input placeholder="Task name" bind:value={taskName} />
+					<input placeholder="Task name" class="form-control" bind:value={taskName} />
 				</div>
 				<div class="col-12">
 					<button type="submit" class="btn btn-primary">Create task</button>

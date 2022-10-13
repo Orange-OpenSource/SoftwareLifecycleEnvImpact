@@ -72,6 +72,7 @@
 			draggable={modify}
 			on:dragstart={handleDragStart}
 			on:dragend={handleDragEnd}
+			style="min-width: 15rem; width: fit-content;"
 		>
 			<div class="card-body">
 				<div class="card-title row">
