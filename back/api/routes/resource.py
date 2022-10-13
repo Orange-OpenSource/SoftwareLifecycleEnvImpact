@@ -3,7 +3,7 @@ from typing import Any
 import jsonpatch
 from flask import abort, request
 
-from impacts_model.data_model import db, Resource, ResourceSchema, Task, ResourceInput
+from impacts_model.data_model import db, Resource, ResourceSchema, Task
 from impacts_model.impacts import AggregatedImpactSchema
 from impacts_model.templates import get_resource_template_by_id, ResourceTemplate
 
@@ -43,8 +43,8 @@ def create_resource(resource: dict[str, Any]) -> Any:
         resource = Resource(
             name=name,
             task_id=task_id,
-            type=resource_template.name,
-            input=ResourceInput(type=resource_template.name, input=100),
+            impact_source_name=resource_template.name,
+            input=100,
         )
         db.session.add(resource)
         db.session.commit()

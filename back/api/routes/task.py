@@ -9,7 +9,6 @@ from impacts_model.data_model import (
     Resource,
     Task,
     TaskSchema,
-    ResourceInput,
 )
 from impacts_model.impacts import AggregatedImpactSchema, TaskImpact, TaskImpactSchema
 from impacts_model.templates import get_task_template_by_id, TaskTemplate
@@ -152,8 +151,8 @@ def insert_task_db(
             new_task.resources.append(
                 Resource(
                     name=task_template.name + " " + task_template.unit,
-                    type=resource_template.name,
-                    input=ResourceInput(type="test", input=1),
+                    impact_source_name=resource_template.name,
+                    input=1,
                 )
             )
 

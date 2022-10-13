@@ -27,26 +27,34 @@ class Resource(db.Model):  # type: ignore
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String, nullable=False)
     impact_source_name = db.Column(db.String, nullable=False)
-    input = db.relationship(
-        "ResourceInput",
-        back_populates="resource",
-        lazy=True,
-        cascade="all",
-        uselist=False,
-    )
 
     task_id = db.Column(db.Integer, db.ForeignKey("task.id"), nullable=False)
+
+    input = db.Column(db.Integer, nullable=False)
+    days = db.Column(db.Integer, default=0)
+    months = db.Column(db.Integer, default=0)
+    years = db.Column(db.Integer, default=0)
 
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
     updated_at = db.Column(
         db.DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
 
+    def value(self):  # TODO put this as a quantity
+        time = self.days + (self.months * 31) + (self.years * 365)
+        if time > 0:
+            return self.input * time
+        return self.input
+
     def copy(self) -> Any:
+
         return Resource(
             name=self.name,
             impact_source_name=self.impact_source_name,
-            input=self.input.copy(),
+            input=self.input,
+            days=self.days,
+            months=self.months,
+            years=self.years,
         )
 
     def get_environmental_impact(self) -> AggregatedImpact:
@@ -62,7 +70,7 @@ class Resource(db.Model):  # type: ignore
         for key in impact_source.environmental_impact.impacts:
             environmental_impact.merge_impact(
                 key,
-                impact_source.environmental_impact.impacts[key] * self.input.value(),
+                impact_source.environmental_impact.impacts[key] * self.value(),
             )
 
         return environmental_impact
@@ -78,46 +86,7 @@ class Resource(db.Model):  # type: ignore
 
         return (
             impact_source.environmental_impact.impacts[impact_indicator]
-            * self.input.value()
-        )
-
-
-class ResourceInput(db.Model):  # type: ignore
-    __tablename__ = "resource_input"
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-
-    resource_id = db.Column(db.Integer, db.ForeignKey("resource.id"), nullable=False)
-    resource = db.relationship("Resource", back_populates="input")
-
-    type = db.Column(db.String, nullable=False)
-    input = db.Column(db.Integer, nullable=False)
-    days = db.Column(db.Integer, default=0)
-    months = db.Column(db.Integer, default=0)
-    years = db.Column(db.Integer, default=0)
-
-    created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
-    updated_at = db.Column(
-        db.DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
-    )
-    # value = (
-    #     db.Column(
-    #         db.Integer, db.Computed("input * days * (months * 31) * (years * 365)")
-    #     ),
-    # )
-
-    def value(self):  # TODO put this as a quantity
-        time = self.days + (self.months * 31) + (self.years * 365)
-        if time > 0:
-            return self.input * time
-        return self.input
-
-    def copy(self) -> Any:
-        return ResourceInput(
-            type=self.type,
-            input=self.input,
-            days=self.days,
-            months=self.months,
-            years=self.years,
+            * self.value()
         )
 
 
@@ -137,24 +106,6 @@ class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
 
     id = ma.auto_field(allow_none=True)
     task_id = ma.auto_field(allow_none=True)
-    input = Nested("ResourceInputSchema", many=False)
-
-
-class ResourceInputSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
-    """
-    ResourceInput schema to serialize a ResourceInput object
-    """
-
-    class Meta(ma.SQLAlchemyAutoSchema.Meta):  # type: ignore
-        """Schema meta class"""
-
-        model = ResourceInput
-        include_relationships = True
-        load_instance = True
-        include_fk = True
-        sqla_session = db.session
-
-    resource_id = ma.auto_field(allow_none=True)
 
 
 class Task(db.Model):  # type: ignore

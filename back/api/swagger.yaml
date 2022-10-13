@@ -601,48 +601,6 @@ paths:
             items:
               $ref: "#/definitions/ResourceTemplate"
 
-  /resourceinputs/{resource_input_id}:
-    parameters:
-      - name: resource_input_id
-        in: path
-        description: Id of the resource input to get
-        type: integer
-        required: true
-    get:
-      operationId: api.routes.resource_input.get_resource_input
-      tags:
-        - ResourceInput
-      summary: Read one resource input
-      description: Read one resource input
-      responses:
-        200:
-          description: Sucessfully read resource input
-          schema:
-            $ref: "#/definitions/ResourceInput"
-        404:
-          description: No resource input found with this id
-    patch:
-      operationId: api.routes.resource_input.update_resource_input
-      tags:
-        - ResourceInput
-      summary: Update a resource input
-      description: Update a resource input
-      parameters:
-        - name: JsonPatch
-          in: body
-          required: true
-          schema:
-            $ref: "#/definitions/PatchRequest"
-      responses:
-        200:
-          description: Successfully updated resource input
-          schema:
-            $ref: "#/definitions/ResourceInput"
-        403:
-          description: Patch format is incorrect
-        404:
-          description: No resource input with this id
-
   /debug/reset:
     get:
       summary: Debug function to reset the database
@@ -792,12 +750,21 @@ definitions:
       name:
         type: string
         description: Name of the resource
-      type:
+      impact_source_name:
         type: string
-        description: Type of the resource
-      value:
+        description: ImpactSource name
+      input:
         type: integer
-        description: Value of the resource
+        description: Input of the resource
+      days:
+        type: integer
+        description: Days of the resource
+      months:
+        type: integer
+        description: Months of the resource
+      years:
+        type: integer
+        description: Years of the resource
       created_at:
         type: ["null", string]
         format: date
@@ -807,40 +774,6 @@ definitions:
         format: date
         description: Last update date of the resource
 
-  ResourceInput:
-    type: object
-    required:
-      - id
-      - type
-      - input
-    properties:
-      id:
-        type: integer
-        description: Unique identifier
-        type:
-        type: string
-        description: Type of the resource
-      input:
-        type: integer
-        description: Input of the resource input
-      days:
-        type: integer
-        description: Days of the resource input
-      months:
-        type: integer
-        description: Months of the resource input
-      years:
-        type: integer
-        description: Years of the resource input
-      created_at:
-        type: ["null", string]
-        format: date
-        description: Creation date of the resource input
-      updated_at:
-        type: ["null", string]
-        format: date
-        description: Last update date of the resource input
-      
   ResourceTemplate:
     type: object
     required:
