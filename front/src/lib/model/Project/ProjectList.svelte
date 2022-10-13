@@ -26,32 +26,42 @@
 	});
 </script>
 
-<div>
-	{#if error}
-		<ErrorComponent message={error} />
-	{:else if projects}
-		{#each projects as project}
-			<div class="list-group-item list-group-item-action">
-				<div class="row">
-					<div class="col">
-						<a id="redirect{project.id}" href="/project/{project.id}">
-							<h5 class="mb-1">
-								{project.name}
-							</h5>
-							<small>{getLastUpdate(project)}</small>
-						</a>
-					</div>
+<div class="col">
+	<div class="row">
+		{#if error}
+			<ErrorComponent message={error} />
+		{:else if projects}
+			<div class="list-group list-group-flush">
+				{#each projects as project}
+					<div class="list-group-item list-group-item-action">
+						<div class="row">
+							<div class="col-8">
+								<a id="redirect{project.id}" href="/project/{project.id}">
+									<h5 class="mb-1">
+										{project.name}
+									</h5>
+									<small>{getLastUpdate(project)}</small>
+								</a>
+							</div>
 
-					<div class="col">
-						<RenameProject bind:project />
-						<DeleteProject bind:projects {project} />
-						<ExportProject {project} />
+							<div class="col-4">
+								<RenameProject bind:project />
+								<DeleteProject bind:projects {project} />
+								<ExportProject {project} />
+							</div>
+						</div>
+					</div>
+				{/each}
+				<div class="list-group-item">
+					<div class="row">
+						<div class="col">
+							<CreateProject />
+						</div>
 					</div>
 				</div>
 			</div>
-		{/each}
-	{:else}
-		<Spinner />
-	{/if}
-	<CreateProject />
+		{:else}
+			<Spinner />
+		{/if}
+	</div>
 </div>

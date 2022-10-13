@@ -20,10 +20,7 @@
 	}
 </script>
 
-<button on:click|stopPropagation={exportProject} class="btn btn-light"
-	>Export
-	<Icon icon="fluent:save-28-regular" /></button
->
+<button on:click|stopPropagation={exportProject} class="btn btn-light">Export</button>
 {#if error}
 	<Error message={error} />
 {/if}
