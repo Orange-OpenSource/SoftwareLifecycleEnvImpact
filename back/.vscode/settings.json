@@ -1,13 +1,8 @@
 {
-    "python.linting.pylintPath": "${workspaceFolder}/.venv/bin/pylint",
-    "cSpell.words": [
-        "backref",
-        "onupdate",
-        "primaryjoin"
-    ],
-    "python.testing.pytestArgs": [
-        "tests"
-    ],
-    "python.testing.unittestEnabled": false,
-    "python.testing.pytestEnabled": true
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin",
+  "python.linting.pylintPath": "${workspaceFolder}/.venv/bin/pylint",
+  "cSpell.words": ["backref", "onupdate", "primaryjoin"],
+  "python.testing.pytestArgs": ["tests"],
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true
 }

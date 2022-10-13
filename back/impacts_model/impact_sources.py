@@ -3,6 +3,8 @@ from __future__ import annotations
 import importlib
 
 from impacts_model.impacts import AggregatedImpact, ImpactIndicator
+from pint import Quantity
+from typing import Any
 from impacts_model.quantities.quantities import (
     CUBIC_METER,
     DAY,
@@ -14,11 +16,21 @@ from impacts_model.quantities.quantities import (
     KG_CO2E,
     KG_SBE,
     MOL_HPOS,
+    USER_DEVICE,
+    KWH,
+    GIGABYTE,
+    SERVER,
     PRIMARY_MJ,
+    TELEVISION,
     Q_,
     TONNE_MIPS,
     WATT_HOUR,
+    SMARTPHONE,
     YEAR,
+    TERABYTE,
+    MAN_DAY,
+    TABLET,
+    LAPTOP,
 )
 
 
@@ -29,6 +41,7 @@ class ImpactSource:
 
     def __init__(
         self,
+        unit: Quantity[Any],
         climate_change: KG_CO2E,
         resource_depletion: KG_SBE = 0 * KG_SBE,
         acidification: MOL_HPOS = 0 * MOL_HPOS,
@@ -50,15 +63,16 @@ class ImpactSource:
         :param primary_energy_consumption: Primary energy consumed as MJ
         :param raw_materials: Raw materials consumed as Ton
         """
-        self._co2 = climate_change
-        self.resource_depletion = resource_depletion
-        self.acidification = acidification
-        self.fine_particles = fine_particles
-        self.ionizing_radiations = ionizing_radiations
-        self.water_depletion = water_depletion
-        self.electronic_waste = electronic_waste
-        self.primary_energy_consumption = primary_energy_consumption
-        self.raw_materials = raw_materials
+        self.unit = unit
+        self._co2 = climate_change * self.unit
+        self.resource_depletion = resource_depletion * self.unit
+        self.acidification = acidification * self.unit
+        self.fine_particles = fine_particles * self.unit
+        self.ionizing_radiations = ionizing_radiations * self.unit
+        self.water_depletion = water_depletion * self.unit
+        self.electronic_waste = electronic_waste * self.unit
+        self.primary_energy_consumption = primary_energy_consumption * self.unit
+        self.raw_materials = raw_materials * self.unit
 
         self.environmental_impact = AggregatedImpact(
             impacts={
@@ -123,6 +137,7 @@ class ElectricityImpactSource(ImpactSource):
 
     def __init__(self) -> None:
         super().__init__(
+            unit=KWH,
             climate_change=0.136 * KG_CO2E,
             resource_depletion=0.000000017 * KG_SBE,
             acidification=0.000468 * MOL_HPOS,
@@ -154,7 +169,7 @@ class UserDeviceImpactSource(ImpactSource):
         self.laptop_impact = LaptopImpactSource()
         self.tablet_impact = TabletImpactSource()
         self.tv_impact = TelevisionImpactSource()
-        super().__init__(self.co2)
+        super().__init__(unit=USER_DEVICE / HOUR, climate_change=self.co2)
 
     @property
     def co2(self) -> KG_CO2E:
@@ -197,7 +212,9 @@ class LaptopImpactSource(ImpactSource):
             1 * HOUR
         )  # Cannot directly compute as laptop isn't used 24h/24h. Take 1 hour
 
-        super().__init__(hour_amortization.to("kg_co2e"))
+        super().__init__(
+            unit=LAPTOP / HOUR, climate_change=hour_amortization.to("kg_co2e")
+        )
 
 
 class SmartphoneImpactSource(ImpactSource):
@@ -223,7 +240,9 @@ class SmartphoneImpactSource(ImpactSource):
             1 * HOUR
         )  # Cannot directly compute as smartphone isn't used 24h/24h. Take 1 hour
 
-        super().__init__(hour_amortization.to("kg_co2e"))
+        super().__init__(
+            unit=SMARTPHONE / HOUR, climate_change=hour_amortization.to("kg_co2e")
+        )
 
 
 class TabletImpactSource(ImpactSource):
@@ -234,7 +253,7 @@ class TabletImpactSource(ImpactSource):
 
     FABRICATION_CO2 = (
         63.2 * KG_CO2E
-    )  # Source: https://bilans-ges.ademe.fr/fr/basecarbone/donnees-consulter/liste-element?recherche=tablette
+    )  # Source: https://bilans-ges.ademe.fr/fr/basecarbone/donnees-consulter/liste-element?recherche=tablettej
     LIFE_EXPECTANCY = 5 * YEAR
     DAILY_USE = 1 * HOUR
 
@@ -248,7 +267,9 @@ class TabletImpactSource(ImpactSource):
             1 * HOUR
         )  # Cannot directly compute as tablet isn't used 24h/24h. Take 1 hour
 
-        super().__init__(hour_amortization.to("kg_co2e"))
+        super().__init__(
+            unit=TABLET / HOUR, climate_change=hour_amortization.to("kg_co2e")
+        )
 
 
 class TelevisionImpactSource(ImpactSource):
@@ -276,7 +297,9 @@ class TelevisionImpactSource(ImpactSource):
             1 * HOUR
         )  # Cannot directly compute as television isn't used 24h/24h. Take 1 hour
 
-        super().__init__(hour_amortization.to("kg_co2e"))
+        super().__init__(
+            unit=TELEVISION / HOUR, climate_change=hour_amortization.to("kg_co2e")
+        )
 
 
 class NetworkImpactSource(ImpactSource):
@@ -286,7 +309,7 @@ class NetworkImpactSource(ImpactSource):
     """
 
     def __init__(self) -> None:
-        super().__init__(0.0015 * KG_CO2E)
+        super().__init__(unit=GIGABYTE, climate_change=0.0015 * KG_CO2E)
 
 
 class OfficeImpactSource(ImpactSource):
@@ -319,7 +342,7 @@ class OfficeImpactSource(ImpactSource):
             self.LIFE_EXPECTANCY * 365
         )
         office_co2_person = sqr_meter_office * office_emissions_sqr_meter_day
-        super().__init__(office_co2_person)
+        super().__init__(unit=MAN_DAY, climate_change=office_co2_person)
 
 
 class StorageImpactSource(ImpactSource):
@@ -339,7 +362,7 @@ class StorageImpactSource(ImpactSource):
         Uses the impactRegistry to get pue and electricity_mix
         """
         self.registry = ImpactsSourceRegistry()
-        super().__init__(self.co2)
+        super().__init__(unit=TERABYTE / DAY, climate_change=self.co2)
 
     @property
     def co2(self) -> KG_CO2E:
@@ -380,7 +403,7 @@ class ServerImpactSource(ImpactSource):
         Uses the impactRegistry to get pue and electricity_mix
         """
         self.registry = ImpactsSourceRegistry()
-        super().__init__(self.co2)
+        super().__init__(unit=SERVER / DAY, climate_change=self.co2)
 
     @property
     def co2(self) -> KG_CO2E:
@@ -430,14 +453,18 @@ class TransportImpactSource(ImpactSource):
         Then multiply by the mean distance per day per person
         """
         co2_km = (
-            self.FOOT_PERCENTAGE * 0
-            + self.BIKE_PERCENTAGE * BikeImpactSource().co2
-            + self.PUBLIC_TRANSPORT_PERCENTAGE * PublicTransportImpactSource().co2
-            + self.CAR_PERCENTAGE * CarImpactSource().co2
-            + self.MOTORBIKE_PERCENTAGE * MotorbikeImpactSource().co2
-        ) / 100
+            (
+                self.FOOT_PERCENTAGE * 0
+                + self.BIKE_PERCENTAGE * BikeImpactSource().co2
+                + self.PUBLIC_TRANSPORT_PERCENTAGE * PublicTransportImpactSource().co2
+                + self.CAR_PERCENTAGE * CarImpactSource().co2
+                + self.MOTORBIKE_PERCENTAGE * MotorbikeImpactSource().co2
+            )
+            / 100
+            / MAN_DAY  # Remove the man_day attribute from the subclasses to avoid MAN_DAY ** 2
+        )
         co2_day = co2_km * self.MEAN_DISTANCE
-        super().__init__(co2_day)
+        super().__init__(unit=MAN_DAY, climate_change=co2_day)
 
 
 class CarImpactSource(ImpactSource):
@@ -450,7 +477,7 @@ class CarImpactSource(ImpactSource):
     # 0.218 incertitude = 60%
     # https://bilans-ges.ademe.fr/fr/basecarbone/donnees-consulter/liste-element/categorie/151
     def __init__(self) -> None:
-        super().__init__(0.218 * KG_CO2E)
+        super().__init__(unit=MAN_DAY, climate_change=0.218 * KG_CO2E)
 
 
 class BikeImpactSource(ImpactSource):
@@ -463,7 +490,7 @@ class BikeImpactSource(ImpactSource):
     # https://view.publitas.com/trek-bicycle/trek-bicycle-2021-sustainability-report/page/5
 
     def __init__(self) -> None:
-        super().__init__(0.00348 * KG_CO2E)
+        super().__init__(unit=MAN_DAY, climate_change=0.00348 * KG_CO2E)
 
 
 class PublicTransportImpactSource(ImpactSource):
@@ -475,7 +502,7 @@ class PublicTransportImpactSource(ImpactSource):
     # ADEME
     # https://bilans-ges.ademe.fr/fr/accueil/documentation-gene/index/page/Ferroviaire2
     def __init__(self) -> None:
-        super().__init__(0.00503 * KG_CO2E)
+        super().__init__(unit=MAN_DAY, climate_change=0.00503 * KG_CO2E)
 
 
 class MotorbikeImpactSource(ImpactSource):
@@ -487,118 +514,119 @@ class MotorbikeImpactSource(ImpactSource):
     # ADEME
     # https://bilans-ges.ademe.fr/fr/accueil/documentation-gene/index/page/Routier2
     def __init__(self) -> None:
-        super().__init__(0.191 * KG_CO2E)
+        super().__init__(unit=MAN_DAY, climate_change=0.191 * KG_CO2E)
 
 
-class RmVCPUImpactSource(ImpactSource):
-    """
-    ImpactSource for one vCPU for one month at Rueil-Malmaison DC
-    """
+# class RmVCPUImpactSource(ImpactSource):
+#     """
+#     ImpactSource for one vCPU for one month at Rueil-Malmaison DC
+#     """
 
-    def __init__(self) -> None:
-        super().__init__(
-            climate_change=4.506211 * KG_CO2E,
-            resource_depletion=0.000000878 * KG_SBE,
-            acidification=0.015592121 * MOL_HPOS,
-            fine_particles=0.000000111281 * DISEASE_INCIDENCE,
-            ionizing_radiations=0.15738558 * KG_BQ_U235E,
-            water_depletion=8.61050442 * CUBIC_METER,
-            electronic_waste=3.087493 * ELECTRONIC_WASTE,
-            primary_energy_consumption=498.310296 * PRIMARY_MJ,
-            raw_materials=10.2950296 * TONNE_MIPS,
-        )
-
-
-class VdrCPUImpactSource(ImpactSource):
-    """
-    ImpactSource for one vCPU for one month at Val de reuil DC
-    """
-
-    def __init__(self) -> None:
-        super().__init__(
-            climate_change=0.2206123 * KG_CO2E,
-            resource_depletion=0.000766107 * KG_SBE,
-            acidification=4.85e-08 * MOL_HPOS,
-            fine_particles=5.44803e-09 * DISEASE_INCIDENCE,
-            ionizing_radiations=0.007705325 * KG_BQ_U235E,
-            water_depletion=0.416680258 * CUBIC_METER,
-            electronic_waste=0.51490173 * ELECTRONIC_WASTE,
-            primary_energy_consumption=0.1496829 * PRIMARY_MJ,
-            raw_materials=24.0944172 * TONNE_MIPS,
-        )
+#     def __init__(self) -> None:
+#         super().__init__(
+#             unit=VCPU / DAY,
+#             climate_change=4.506211 * KG_CO2E,
+#             resource_depletion=0.000000878 * KG_SBE,
+#             acidification=0.015592121 * MOL_HPOS,
+#             fine_particles=0.000000111281 * DISEASE_INCIDENCE,
+#             ionizing_radiations=0.15738558 * KG_BQ_U235E,
+#             water_depletion=8.61050442 * CUBIC_METER,
+#             electronic_waste=3.087493 * ELECTRONIC_WASTE,
+#             primary_energy_consumption=498.310296 * PRIMARY_MJ,
+#             raw_materials=10.2950296 * TONNE_MIPS,
+#         )
 
 
-class RmRAMImpactSource(ImpactSource):
-    """
-    ImpactSource for one GB of RAM for one month at Rueil-Malmaison DC
-    """
+# class VdrCPUImpactSource(ImpactSource):
+#     """
+#     ImpactSource for one vCPU for one month at Val de reuil DC
+#     """
 
-    def __init__(self) -> None:
-        super().__init__(
-            climate_change=0.5186616 * KG_CO2E,
-            resource_depletion=0.00000001055 * KG_SBE,
-            acidification=0.002105015 * MOL_HPOS,
-            fine_particles=0.0000000115591 * DISEASE_INCIDENCE,
-            ionizing_radiations=0.00596069 * KG_BQ_U235E,
-            water_depletion=0.228200547 * CUBIC_METER,
-            electronic_waste=0.0243686 * ELECTRONIC_WASTE,
-            primary_energy_consumption=7.8400366 * PRIMARY_MJ,
-            raw_materials=0.12390367 * TONNE_MIPS,
-        )
-
-
-class VdrRAMImpactSource(ImpactSource):
-    """
-    ImpactSource for one GB of RAM for one month at Val de Reuil DC
-    """
-
-    def __init__(self) -> None:
-        super().__init__(
-            climate_change=0.267726 * KG_CO2E,
-            resource_depletion=0.001086803 * KG_SBE,
-            acidification=4.58e-09 * MOL_HPOS,
-            fine_particles=5.97501e-09 * DISEASE_INCIDENCE,
-            ionizing_radiations=0.002916121 * KG_BQ_U235E,
-            water_depletion=0.109300096 * CUBIC_METER,
-            electronic_waste=0.053100643 * ELECTRONIC_WASTE,
-            primary_energy_consumption=0.00895852 * PRIMARY_MJ,
-            raw_materials=3.49000642 * TONNE_MIPS,
-        )
+#     def __init__(self) -> None:
+#         super().__init__(
+#             climate_change=0.2206123 * KG_CO2E,
+#             resource_depletion=0.000766107 * KG_SBE,
+#             acidification=4.85e-08 * MOL_HPOS,
+#             fine_particles=5.44803e-09 * DISEASE_INCIDENCE,
+#             ionizing_radiations=0.007705325 * KG_BQ_U235E,
+#             water_depletion=0.416680258 * CUBIC_METER,
+#             electronic_waste=0.51490173 * ELECTRONIC_WASTE,
+#             primary_energy_consumption=0.1496829 * PRIMARY_MJ,
+#             raw_materials=24.0944172 * TONNE_MIPS,
+#         )
 
 
-class RmStorageImpactSource(ImpactSource):
-    """
-    ImpactSource for one GB of storage for one month at Rueil-Malmaison DC
-    """
+# class RmRAMImpactSource(ImpactSource):
+#     """
+#     ImpactSource for one GB of RAM for one month at Rueil-Malmaison DC
+#     """
 
-    def __init__(self) -> None:
-        super().__init__(
-            climate_change=1.1922143 * KG_CO2E,
-            resource_depletion=0.00000084877 * KG_SBE,
-            acidification=0.004756408 * MOL_HPOS,
-            fine_particles=0.00000002585 * DISEASE_INCIDENCE,
-            ionizing_radiations=0.041780379 * KG_BQ_U235E,
-            water_depletion=0.4456003 * CUBIC_METER,
-            electronic_waste=0.1535267 * ELECTRONIC_WASTE,
-            primary_energy_consumption=12.1600201 * PRIMARY_MJ,
-            raw_materials=0.53460201 * TONNE_MIPS,
-        )
+#     def __init__(self) -> None:
+#         super().__init__(
+#             climate_change=0.5186616 * KG_CO2E,
+#             resource_depletion=0.00000001055 * KG_SBE,
+#             acidification=0.002105015 * MOL_HPOS,
+#             fine_particles=0.0000000115591 * DISEASE_INCIDENCE,
+#             ionizing_radiations=0.00596069 * KG_BQ_U235E,
+#             water_depletion=0.228200547 * CUBIC_METER,
+#             electronic_waste=0.0243686 * ELECTRONIC_WASTE,
+#             primary_energy_consumption=7.8400366 * PRIMARY_MJ,
+#             raw_materials=0.12390367 * TONNE_MIPS,
+#         )
 
 
-class VdrRamStorageImpactSource(ImpactSource):
-    """
-    ImpactSource for one GB of storage for one month at Val de Reuil DC
-    """
+# class VdrRAMImpactSource(ImpactSource):
+#     """
+#     ImpactSource for one GB of RAM for one month at Val de Reuil DC
+#     """
 
-    def __init__(self) -> None:
-        super().__init__(
-            climate_change=1.1922143 * KG_CO2E,
-            resource_depletion=0.004756408 * KG_SBE,
-            acidification=8.4877e-07 * MOL_HPOS,
-            fine_particles=2.585e-08 * DISEASE_INCIDENCE,
-            ionizing_radiations=0.041780379 * KG_BQ_U235E,
-            water_depletion=0.4456003 * CUBIC_METER,
-            electronic_waste=0.53460201 * ELECTRONIC_WASTE,
-            primary_energy_consumption=0.1535267 * PRIMARY_MJ,
-            raw_materials=12.1600201 * TONNE_MIPS,
-        )
+#     def __init__(self) -> None:
+#         super().__init__(
+#             climate_change=0.267726 * KG_CO2E,
+#             resource_depletion=0.001086803 * KG_SBE,
+#             acidification=4.58e-09 * MOL_HPOS,
+#             fine_particles=5.97501e-09 * DISEASE_INCIDENCE,
+#             ionizing_radiations=0.002916121 * KG_BQ_U235E,
+#             water_depletion=0.109300096 * CUBIC_METER,
+#             electronic_waste=0.053100643 * ELECTRONIC_WASTE,
+#             primary_energy_consumption=0.00895852 * PRIMARY_MJ,
+#             raw_materials=3.49000642 * TONNE_MIPS,
+#         )
+
+
+# class RmStorageImpactSource(ImpactSource):
+#     """
+#     ImpactSource for one GB of storage for one month at Rueil-Malmaison DC
+#     """
+
+#     def __init__(self) -> None:
+#         super().__init__(
+#             climate_change=1.1922143 * KG_CO2E,
+#             resource_depletion=0.00000084877 * KG_SBE,
+#             acidification=0.004756408 * MOL_HPOS,
+#             fine_particles=0.00000002585 * DISEASE_INCIDENCE,
+#             ionizing_radiations=0.041780379 * KG_BQ_U235E,
+#             water_depletion=0.4456003 * CUBIC_METER,
+#             electronic_waste=0.1535267 * ELECTRONIC_WASTE,
+#             primary_energy_consumption=12.1600201 * PRIMARY_MJ,
+#             raw_materials=0.53460201 * TONNE_MIPS,
+#         )
+
+
+# class VdrRamStorageImpactSource(ImpactSource):
+#     """
+#     ImpactSource for one GB of storage for one month at Val de Reuil DC
+#     """
+
+#     def __init__(self) -> None:
+#         super().__init__(
+#             climate_change=1.1922143 * KG_CO2E,
+#             resource_depletion=0.004756408 * KG_SBE,
+#             acidification=8.4877e-07 * MOL_HPOS,
+#             fine_particles=2.585e-08 * DISEASE_INCIDENCE,
+#             ionizing_radiations=0.041780379 * KG_BQ_U235E,
+#             water_depletion=0.4456003 * CUBIC_METER,
+#             electronic_waste=0.53460201 * ELECTRONIC_WASTE,
+#             primary_energy_consumption=0.1535267 * PRIMARY_MJ,
+#             raw_materials=12.1600201 * TONNE_MIPS,
+#         )

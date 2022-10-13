@@ -11,6 +11,7 @@ from impacts_model.impacts import (
     ImpactIndicator,
 )
 from impacts_model.templates import ResourceTemplate
+from impacts_model.impact_sources import impact_source_factory, ImpactSource
 
 db = SQLAlchemy()
 ma = FlaskMarshmallow()
@@ -25,7 +26,7 @@ class Resource(db.Model):  # type: ignore
     __tablename__ = "resource"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String, nullable=False)
-    type = db.Column(db.String, nullable=False)
+    impact_source_name = db.Column(db.String, nullable=False)
     input = db.relationship(
         "ResourceInput",
         back_populates="resource",
@@ -44,7 +45,7 @@ class Resource(db.Model):  # type: ignore
     def copy(self) -> Any:
         return Resource(
             name=self.name,
-            type=self.type,
+            impact_source_name=self.impact_source_name,
             input=self.input.copy(),
         )
 
@@ -53,16 +54,16 @@ class Resource(db.Model):  # type: ignore
         Get a resource complete environmental impact as an EnvironmentalImpact object
         :return: an AggregatedImpact object with all resource impacts
         """
-        resource_template = ResourceTemplate(self.type)
+        impact_source = impact_source_factory(
+            self.impact_source_name
+        )  # TODO try setting impact source as a class object but not saved in the db
         environmental_impact = AggregatedImpact()
 
-        for impact_source in resource_template.impact_sources:
-            for key in impact_source.environmental_impact.impacts:
-                environmental_impact.merge_impact(
-                    key,
-                    impact_source.environmental_impact.impacts[key]
-                    * self.input.value(),
-                )
+        for key in impact_source.environmental_impact.impacts:
+            environmental_impact.merge_impact(
+                key,
+                impact_source.environmental_impact.impacts[key] * self.input.value(),
+            )
 
         return environmental_impact
 
@@ -73,14 +74,12 @@ class Resource(db.Model):  # type: ignore
         :param impact_indicator: The ImpactIndicator to retrieve the impact
         :return: A quantity corresponding to the resource ImpactIndicator quantity
         """
-        resource_template = ResourceTemplate(self.type)
+        impact_source = impact_source_factory(self.impact_source_name)
 
-        impacts: List[Quantity[Any]] = [
-            i.environmental_impact.impacts[impact_indicator] * self.input.value()
-            for i in resource_template.impact_sources
-        ]
-
-        return sum(impacts)
+        return (
+            impact_source.environmental_impact.impacts[impact_indicator]
+            * self.input.value()
+        )
 
 
 class ResourceInput(db.Model):  # type: ignore
@@ -235,14 +234,14 @@ class Task(db.Model):  # type: ignore
         :param task: task to get the impact from
         :return: AggregatedImpactByResource object, with AggregatedImpact objects by resource type
         """
-        result = AggregatedImpactByResource()
+        result: AggregatedImpactByResource = {}
 
         for r in self.resources:
             impacts_to_add = r.get_environmental_impact()
-            if r.type in result:
-                result[r.type].merge_aggregated_impact(impacts_to_add)
+            if r.impact_source_name in result:
+                result[r.impact_source_name].merge_aggregated_impact(impacts_to_add)
             else:
-                result[r.type] = impacts_to_add
+                result[r.impact_source_name] = impacts_to_add
 
         for s in self.subtasks:
             subtasks_impacts = s.get_impact_by_resource_type()

@@ -19,6 +19,7 @@ YEAR = ureg.year
 HOUR = ureg.hour
 DAY = ureg.day
 WATT_HOUR = ureg.watt_hour
+KWH = ureg.kilowatt_hour
 
 KG_CO2E = ureg.kg_co2e
 KG_SBE = ureg.kg_Sbe
@@ -29,3 +30,15 @@ CUBIC_METER = ureg.cubic_meter
 ELECTRONIC_WASTE = ureg.electronic_waste
 PRIMARY_MJ = ureg.primary_MJ
 TONNE_MIPS = ureg.tonne_mips
+
+USER_DEVICE = ureg.user_device
+LAPTOP = ureg.laptop
+SMARTPHONE = ureg.smartphone
+TABLET = ureg.tablet
+TELEVISION = ureg.television
+SERVER = ureg.server
+
+GIGABYTE = ureg.gigabyte
+TERABYTE = ureg.terabyte
+
+MAN_DAY = ureg.man_day

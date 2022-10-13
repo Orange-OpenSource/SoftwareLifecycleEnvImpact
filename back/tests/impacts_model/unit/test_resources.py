@@ -18,6 +18,7 @@ from impacts_model.quantities.quantities import (
     MOL_HPOS,
     PRIMARY_MJ,
     TONNE_MIPS,
+    SERVER,
 )
 
 ##########
@@ -96,7 +97,7 @@ def resource_fixture(db: SQLAlchemy) -> Resource:
 
     resource = Resource(
         name="Resource test",
-        type="TestResource",
+        impact_source_name="TestResource",
     )
     input = ResourceInput(input=2312, type="test")
 
@@ -109,14 +110,8 @@ def resource_fixture(db: SQLAlchemy) -> Resource:
 
 
 @mock.patch(
-    "impacts_model.templates.ResourceTemplate._load_impacts",
-    MagicMock(
-        return_value=[
-            ImpactSource(1000 * KG_CO2E),
-            ImpactSource(999 * KG_CO2E),
-            ImpactSource(333 * KG_CO2E),
-        ]
-    ),
+    "impacts_model.data_model.impact_source_factory",
+    MagicMock(return_value=ImpactSource(SERVER, 2332 * KG_CO2E)),
 )
 def test_get_resource_impact(resource_fixture: Resource) -> None:
     """
@@ -125,21 +120,21 @@ def test_get_resource_impact(resource_fixture: Resource) -> None:
     """
     impact = resource_fixture.get_indicator_impact(ImpactIndicator.CLIMATE_CHANGE)
     assert isinstance(impact, Quantity)
-    assert impact == (1000 + 999 + 333) * resource_fixture.input.value() * KG_CO2E
+    assert impact == (2332) * resource_fixture.input.value() * KG_CO2E
 
     # Test quantity change
     resource_fixture.input.input = 12321.423
     impact = resource_fixture.get_indicator_impact(ImpactIndicator.CLIMATE_CHANGE)
     assert isinstance(impact, Quantity)
-    assert impact == (1000 + 999 + 333) * 12321.423 * KG_CO2E
+    assert impact == (2332) * 12321.423 * KG_CO2E
 
 
 @mock.patch(
-    "impacts_model.templates.ResourceTemplate._load_impacts",
+    "impacts_model.data_model.impact_source_factory",
     MagicMock(
-        return_value=[
-            ImpactSource(10000.123 * KG_CO2E, raw_materials=213.3 * TONNE_MIPS),
-        ]
+        return_value=ImpactSource(
+            SERVER, 10000.123 * KG_CO2E, raw_materials=213.3 * TONNE_MIPS
+        ),
     ),
 )
 def test_get_resource_environmental_impact(resource_fixture: Resource) -> None:

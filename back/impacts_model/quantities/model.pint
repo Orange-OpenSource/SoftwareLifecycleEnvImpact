@@ -7,6 +7,8 @@ kg_Bq_u235e = becquerel * kg
 electronic_waste = tonne
 primary_MJ = J * 1e6
 tonne_mips = tonne
+gigabyte = byte * 1e6
+terabyte = gigabyte * 1000
 
 man_day = day
 kWh = watt_hour * 1000
@@ -15,3 +17,10 @@ electricity_mix = kg_co2e / kWh
 life_expectancy = year
 
 amortization = kg_co2e / day
+
+user_device = 1
+laptop = 1
+smartphone = 1
+tablet = 1
+television = 1
+server = 1

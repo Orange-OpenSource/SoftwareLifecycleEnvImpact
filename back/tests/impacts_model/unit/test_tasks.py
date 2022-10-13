@@ -9,7 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 from pint import Quantity
 
 from impacts_model.data_model import Model, Project, Resource, ResourceInput, Task
-from impacts_model.impact_sources import ImpactSource
+from impacts_model.impact_sources import ImpactSource, ServerImpactSource
 from impacts_model.impacts import ImpactIndicator
 from impacts_model.quantities.quantities import (
     CUBIC_METER,
@@ -21,6 +21,7 @@ from impacts_model.quantities.quantities import (
     MOL_HPOS,
     PRIMARY_MJ,
     TONNE_MIPS,
+    SERVER,
 )
 
 
@@ -39,12 +40,12 @@ def single_task_fixture(db: SQLAlchemy) -> Task:
 
     resource1 = Resource(
         name="Resource 1 test task",
-        type="TestResource",
+        impact_source_name="TestImpactSource",
         input=ResourceInput(type="test", input=1),
     )
     resource2 = Resource(
         name="Resource 2 test task",
-        type="TestResource",
+        impact_source_name="TestImpactSource",
         input=ResourceInput(type="test", input=1),
     )
     task.resources = [resource1, resource2]
@@ -64,19 +65,19 @@ def task_fixture_with_subtask(db: SQLAlchemy) -> Task:
 
     resource1 = Resource(
         name="Resource 1 test task",
-        type="TestResource",
+        impact_source_name="TestImpactSource",
         input=ResourceInput(type="test", input=1),
     )
     resource2 = Resource(
         name="Resource 2 test task",
-        type="TestResource",
+        impact_source_name="TestImpactSource",
         input=ResourceInput(type="test", input=1),
     )
     task.resources = [resource1, resource2]
     subtask = Task(name="Test task subtask")
     resource3 = Resource(
         name="Resource 3 test task subtask",
-        type="TestResource",
+        impact_source_name="TestImpactSource",
         input=ResourceInput(type="test", input=1),
     )
     subtask.resources = [resource3]
@@ -90,8 +91,10 @@ def task_fixture_with_subtask(db: SQLAlchemy) -> Task:
 
 
 @mock.patch(
-    "impacts_model.templates.ResourceTemplate._load_impacts",
-    MagicMock(return_value=[ImpactSource(1000 * KG_CO2E), ImpactSource(776 * KG_CO2E)]),
+    "impacts_model.data_model.impact_source_factory",
+    MagicMock(
+        return_value=ImpactSource(SERVER, 1776 * KG_CO2E),
+    ),
 )
 def test_get_task_impact_by_indicator(
     single_task_fixture: Task, task_fixture_with_subtask: Task
@@ -113,8 +116,8 @@ def test_get_task_impact_by_indicator(
 
 
 @mock.patch(
-    "impacts_model.templates.ResourceTemplate._load_impacts",
-    MagicMock(return_value=[ImpactSource(1000 * KG_CO2E)]),
+    "impacts_model.data_model.impact_source_factory",
+    MagicMock(return_value=ImpactSource(SERVER, 1000 * KG_CO2E)),
 )
 def test_get_task_impact_list(
     single_task_fixture: Task, task_fixture_with_subtask: Task
@@ -151,8 +154,8 @@ def test_get_task_impact_list(
 
 
 @mock.patch(
-    "impacts_model.templates.ResourceTemplate._load_impacts",
-    MagicMock(return_value=[ImpactSource(1000 * KG_CO2E)]),
+    "impacts_model.data_model.impact_source_factory",
+    MagicMock(return_value=ImpactSource(SERVER, 1000 * KG_CO2E)),
 )
 def test_get_task_impact_by_resource_type(
     single_task_fixture: Task, task_fixture_with_subtask: Task
@@ -162,13 +165,13 @@ def test_get_task_impact_by_resource_type(
     """
     # Test two res
     res_dict = single_task_fixture.get_impact_by_resource_type()
-    assert res_dict["TestResource"].impacts[
+    assert res_dict["TestImpactSource"].impacts[
         ImpactIndicator.CLIMATE_CHANGE
     ] == single_task_fixture.get_indicator_impact(ImpactIndicator.CLIMATE_CHANGE)
 
     # Test subtasks
     res_dict = task_fixture_with_subtask.get_impact_by_resource_type()
-    assert res_dict["TestResource"].impacts[
+    assert res_dict["TestImpactSource"].impacts[
         ImpactIndicator.CLIMATE_CHANGE
     ] == task_fixture_with_subtask.get_indicator_impact(ImpactIndicator.CLIMATE_CHANGE)
 

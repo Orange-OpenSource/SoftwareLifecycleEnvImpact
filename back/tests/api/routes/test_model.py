@@ -18,7 +18,7 @@ def model_fixture(db: SQLAlchemy) -> Model:
 
     resource = Resource(
         name="Resource 1 test task",
-        type="TestResource",
+        impact_source_name="TestResource",
         input=ResourceInput(type="test", input=1),
     )
     task.resources = [resource]
