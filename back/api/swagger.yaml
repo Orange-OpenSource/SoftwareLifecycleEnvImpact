@@ -646,7 +646,7 @@ paths:
   /debug/reset:
     get:
       summary: Debug function to reset the database
-      operationId: api.utils.build_database.reset_db
+      operationId: api.routes.debug.reset_db
       responses:
         200:
           description: Database reset status

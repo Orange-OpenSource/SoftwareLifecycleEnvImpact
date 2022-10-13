@@ -27,7 +27,7 @@ def reset_db() -> None:
     # Create the database
     db.create_all()
 
-    f = open("api/utils/data.json", "r")
+    f = open("api/mockdata/data.json", "r")
     data = json.load(f)
     schema = ProjectSchema()
     new_project = schema.load(data)
