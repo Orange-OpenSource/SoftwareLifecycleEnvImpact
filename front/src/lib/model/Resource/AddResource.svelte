@@ -1,18 +1,19 @@
 <script lang="ts">
 	import Modal from '$lib/Modal.svelte';
-	import { getResourceTemplatesRequest } from '$lib/model/api/resourceTemplates';
-	import type { Task, TaskTemplate } from '$lib/model/api/model/task';
+	import { getResourceUnitsRequest } from '$lib/model/api/resourceUnits';
+	import type { Task } from '$lib/model/api/model/task';
 	import { addResourceRequest } from '$lib/model/api/resource';
 	import Error from '$lib/Error.svelte';
 	import Spinner from '$lib/Spinner.svelte';
+	import type { ResourceUnit } from '../api/model/resource';
 
 	/*Bound var*/
 	export let task: Task;
 
 	let showModal = false;
 
-	let resourceTemplates = getResourceTemplatesRequest();
-	let selectedTemplate: TaskTemplate;
+	let resourceUnits = getResourceUnitsRequest();
+	let selectedUnit: ResourceUnit;
 	let name = '';
 
 	let error = '';
@@ -26,8 +27,8 @@
 	async function handleSubmit() {
 		error = '';
 		try {
-			if (selectedTemplate != null) {
-				const res = await addResourceRequest(name, task.id, selectedTemplate.id);
+			if (selectedUnit != null) {
+				const res = await addResourceRequest(name, task.id, selectedUnit.id);
 				task.resources.push(res);
 				/*Redondant assignment to force Svelte to update components*/
 				task.resources = task.resources;
@@ -44,9 +45,9 @@
 <Modal bind:showModal>
 	<span slot="title">Add new resource :</span>
 	<form slot="body" on:submit|preventDefault={handleSubmit}>
-		{#await resourceTemplates}
+		{#await resourceUnits}
 			<Spinner />
-		{:then resourceTemplates}
+		{:then resourceUnits}
 			<div class="row g-3">
 				<div class="col-6">
 					<label for="resourceName">Name</label>
@@ -55,10 +56,10 @@
 				<div class="col-6">
 					<label for="resourceName">Unit</label>
 					<!-- TODO is unit the right name  -->
-					<select class="form-select" bind:value={selectedTemplate} required>
+					<select class="form-select" bind:value={selectedUnit} required>
 						<!-- <option value={null} disabled selected class="form-check-input"> -- Unit -- </option> -->
-						{#each resourceTemplates as template}
-							<option value={template} class="form-check-input">{template.name}</option>
+						{#each resourceUnits as unit}
+							<option value={unit} class="form-check-input">{unit.name}</option>
 						{/each}
 					</select>
 				</div>

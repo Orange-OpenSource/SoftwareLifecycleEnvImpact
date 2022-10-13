@@ -1,7 +1,7 @@
 import { get } from './api';
-import type { ResourceTemplate } from './model/resource';
+import type { ResourceUnit } from './model/resource';
 
-export async function getResourceTemplatesRequest(): Promise<Array<ResourceTemplate>> {
+export async function getResourceUnitsRequest(): Promise<Array<ResourceUnit>> {
 	const res = await get('resourcetemplates');
 	return res.text().then((json: string) => {
 		return JSON.parse(json);

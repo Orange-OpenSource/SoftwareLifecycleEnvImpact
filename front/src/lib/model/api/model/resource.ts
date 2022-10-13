@@ -36,7 +36,7 @@ export interface ResourceInput {
 	years: number;
 }
 
-export interface ResourceTemplate {
+export interface ResourceUnit {
 	/**
 	 * Unique identifier
 	 */

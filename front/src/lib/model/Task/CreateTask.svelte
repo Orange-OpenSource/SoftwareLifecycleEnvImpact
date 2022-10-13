@@ -4,7 +4,6 @@
 	import type { Task, TaskTemplate } from '$lib/model/api/model/task';
 	import Error from '$lib/Error.svelte';
 	import Spinner from '$lib/Spinner.svelte';
-	import ResourceList from '$lib/model/Resource/ResourceList.svelte';
 	import Modal from '$lib/Modal.svelte';
 
 	/* Bound var */

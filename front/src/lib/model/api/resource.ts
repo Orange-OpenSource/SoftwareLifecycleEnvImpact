@@ -14,11 +14,12 @@ export async function renameResourceRequest(resource: Resource, newName: string)
 	});
 }
 
-export async function addResourceRequest(name: string, taskId: number, templateId: number) {
+export async function addResourceRequest(name: string, taskId: number, unitId: number) {
 	const res = await post('resources', {
 		name: name,
 		task_id: taskId,
-		template_id: templateId
+		template_id: unitId
+		// TODO update template id to resource unit id
 	});
 	return res.text().then((json: string) => {
 		return JSON.parse(json);
