@@ -32,3 +32,32 @@ export async function deleteResourceRequest(resource: Resource): Promise<Resourc
 		return JSON.parse(json);
 	});
 }
+
+export async function updateResourceInputRequest(resource: Resource): Promise<Resource> {
+	const patchDocument: PatchDocument[] = [
+		{
+			op: 'replace',
+			path: '/input',
+			value: resource.input.toString()
+		},
+		{
+			op: 'replace',
+			path: '/days',
+			value: resource.days.toString()
+		},
+		{
+			op: 'replace',
+			path: '/months',
+			value: resource.months.toString()
+		},
+		{
+			op: 'replace',
+			path: '/years',
+			value: resource.years.toString()
+		}
+	];
+	const res = await patch('resources/' + resource.id, patchDocument);
+	return res.text().then((json: string) => {
+		return JSON.parse(json);
+	});
+}

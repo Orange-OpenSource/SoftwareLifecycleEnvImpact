@@ -1,8 +1,14 @@
 import pytest
 from flask.testing import FlaskClient
 from flask_sqlalchemy import SQLAlchemy
-
+from unittest import mock
+from unittest.mock import MagicMock
 from impacts_model.data_model import Model, Project, Resource, Task
+from impacts_model.impact_sources import ImpactSource
+from impacts_model.quantities.quantities import (
+    KG_CO2E,
+    SERVER,
+)
 
 models_root = "/api/v1/models"
 
@@ -79,6 +85,17 @@ def test_get_one_model(
     db.session.commit()
     response = client.get(models_root + "/" + str(model_fixture.id))
     assert response.status_code == 404
+
+
+@mock.patch(
+    "impacts_model.data_model.impact_source_factory",
+    MagicMock(
+        return_value=ImpactSource(SERVER, 1776 * KG_CO2E),
+    ),
+)
+def test_get_model_impact(client: FlaskClient, model_fixture: Model) -> None:
+    response = client.get(models_root + "/" + str(model_fixture.id) + "/impact")
+    assert response.status_code == 200
 
 
 def test_patch_model(client: FlaskClient, db: SQLAlchemy, model_fixture: Model) -> None:

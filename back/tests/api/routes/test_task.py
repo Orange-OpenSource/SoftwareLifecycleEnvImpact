@@ -137,7 +137,6 @@ def test_delete_task(client: FlaskClient, db: SQLAlchemy, task_fixture: Task) ->
 
     # Test to delete root task
     model = Model.query.filter(Model.root_task_id == task_fixture.id).one_or_none()
-    print(model)
     model.root_task = task_fixture
     response = client.delete(tasks_root_path + "/" + str(task_fixture.id))
     assert response.status_code == 403
@@ -166,4 +165,5 @@ def test_get_task_impacts(
     :param db: SQLAlchemy database fixture
     :param task_fixture: Task fixture
     """
-    # TODO
+    response = client.get(tasks_root_path + "/" + str(task_fixture.id) + "/impacts")
+    assert response.status_code == 200

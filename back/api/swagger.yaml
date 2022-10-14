@@ -306,6 +306,28 @@ paths:
         404:
           description: No model found with this id
 
+  /models/{model_id}/impact:
+    parameters:
+      - name: model_id
+        in: path
+        description: Id of the model to get the impact from
+        type: integer
+        required: true
+    get:
+      operationId: api.routes.model.get_model_impact
+      tags:
+        - Model
+        - Impact
+      summary: Read one model impacts
+      description: Read one model impacts
+      responses:
+        200:
+          description: Sucessfully read model impacts
+          schema:
+            $ref: "#/definitions/TaskImpact"
+        404:
+          description: No model found with this id
+
   /tasks:
     get:
       operationId: api.routes.task.get_tasks

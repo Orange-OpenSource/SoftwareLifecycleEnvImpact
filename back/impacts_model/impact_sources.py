@@ -165,25 +165,26 @@ class UserDeviceImpactSource(ImpactSource):
         """
         Standard ratio for one hour of user device, half on a laptop and the other on a smartphone
         """
-        self.smartphone_impact = SmartphoneImpactSource()
-        self.laptop_impact = LaptopImpactSource()
-        self.tablet_impact = TabletImpactSource()
-        self.tv_impact = TelevisionImpactSource()
-        super().__init__(unit=USER_DEVICE / HOUR, climate_change=self.co2)
+        self.unit = USER_DEVICE / HOUR
+        self.smartphone_impact = SmartphoneImpactSource().co2 * HOUR / SMARTPHONE
+        self.laptop_impact = LaptopImpactSource().co2 * HOUR / LAPTOP
+        self.tablet_impact = TabletImpactSource().co2 * HOUR / TABLET
+        self.tv_impact = TelevisionImpactSource().co2 * HOUR / TELEVISION
+        super().__init__(unit=self.unit, climate_change=self.co2)
 
     @property
-    def co2(self) -> KG_CO2E:
+    def co2(self) -> (KG_CO2E * USER_DEVICE / HOUR):
         """
         Compute a standard UserDevice hour impact, by using the registry ratio of devices
         :return: KG_CO2E impact for 1h of UserDevice
         """
         co2: KG_CO2E = (
-            self.RATIO_TABLET * self.tablet_impact.co2
-            + self.RATIO_PC * self.laptop_impact.co2
-            + self.RATIO_TV * self.tv_impact.co2
-            + self.RATIO_SMARTPHONE * self.smartphone_impact.co2
+            self.RATIO_TABLET * self.tablet_impact
+            + self.RATIO_PC * self.laptop_impact
+            + self.RATIO_TV * self.tv_impact
+            + self.RATIO_SMARTPHONE * self.smartphone_impact
         )
-        return co2
+        return co2 * self.unit
 
 
 class LaptopImpactSource(ImpactSource):
@@ -345,6 +346,19 @@ class OfficeImpactSource(ImpactSource):
         super().__init__(unit=MAN_DAY, climate_change=office_co2_person)
 
 
+class PeopleImpactSource(ImpactSource):
+    """
+    ImpactSource for a people day
+    Ratio/person/day
+    """
+
+    def __init__(self) -> None:
+        laptop = LaptopImpactSource().co2 * (7 * HOUR) / LAPTOP
+        office = OfficeImpactSource().co2 / MAN_DAY
+        transport = TransportImpactSource().co2 / MAN_DAY
+        super().__init__(unit=MAN_DAY, climate_change=office + transport + laptop)
+
+
 class StorageImpactSource(ImpactSource):
     """
     AggregatedImpact source for storage (disks)
@@ -362,10 +376,11 @@ class StorageImpactSource(ImpactSource):
         Uses the impactRegistry to get pue and electricity_mix
         """
         self.registry = ImpactsSourceRegistry()
-        super().__init__(unit=TERABYTE / DAY, climate_change=self.co2)
+        self.unit = TERABYTE / DAY
+        super().__init__(unit=self.unit, climate_change=self.co2)
 
     @property
-    def co2(self) -> KG_CO2E:
+    def co2(self) -> (KG_CO2E * TERABYTE / DAY):
         """
         Compute the co2 of a 1tb disk for a day, using amortization and power consumption
         :return: KG_CO2E/disk(1tb)
@@ -380,7 +395,9 @@ class StorageImpactSource(ImpactSource):
             kwh_day * self.registry.electricity_mix
         )  # consumption co2 emissions
         co2_total: KG_CO2E = consumption_co2 + amortization_day
-        return Q_(co2_total.magnitude, KG_CO2E)  # TODO improve computation, do not cast
+        return (
+            Q_(co2_total.magnitude, KG_CO2E) * self.unit
+        )  # TODO improve computation, do not cast
 
 
 class ServerImpactSource(ImpactSource):
@@ -403,10 +420,11 @@ class ServerImpactSource(ImpactSource):
         Uses the impactRegistry to get pue and electricity_mix
         """
         self.registry = ImpactsSourceRegistry()
-        super().__init__(unit=SERVER / DAY, climate_change=self.co2)
+        self.unit = SERVER / DAY
+        super().__init__(unit= self.unit, climate_change=self.co2)
 
     @property
-    def co2(self) -> KG_CO2E:
+    def co2(self) -> (KG_CO2E * SERVER / DAY):
         """
         Compute the co2 cost of a server, adding consumption pondered with pue and amortization
         :return: KG_CO2E / day
@@ -424,7 +442,7 @@ class ServerImpactSource(ImpactSource):
             kwh_day * self.registry.electricity_mix
         )  # consumption co2 emissions
         co2_total: KG_CO2E = consumption_co2 + amortization_day
-        return co2_total.to("kg_co2e")
+        return co2_total.to("kg_co2e") * self.unit
 
 
 class TransportImpactSource(ImpactSource):

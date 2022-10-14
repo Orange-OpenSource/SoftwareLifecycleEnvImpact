@@ -4,7 +4,7 @@ import type { UsageServer } from '$lib/model/usageServer';
 import type { ConfigurationServer } from '$lib/model/configurationServer';
 
 export async function getDefaultModelsName(): Promise<string[]> {
-	const res = await get('server/all_default_models');
+	const res = await get('server/all_default_models/');
 	return res.text().then((json) => {
 		return JSON.parse(json);
 	});
@@ -12,7 +12,7 @@ export async function getDefaultModelsName(): Promise<string[]> {
 
 export async function getServerImpactByModelName(modelName: string): Promise<ServerImpact> {
 	const params = '?archetype=' + modelName + '&verbose=false';
-	const res = await get('server/model' + params);
+	const res = await get('server/model/' + params);
 	return res.text().then((json) => {
 		return JSON.parse(json);
 	});
@@ -24,7 +24,7 @@ export async function getServerImpactByConfig(config: ConfigurationServer, usage
 		usage: usage
 	});
 	const params = '?verbose=true&allocation=TOTAL';
-	const res = await post('server' + params, {
+	const res = await post('server/' + params, {
 		configuration: config,
 		usage: usage
 	});

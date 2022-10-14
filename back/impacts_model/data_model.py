@@ -62,15 +62,15 @@ class Resource(db.Model):  # type: ignore
         Get a resource complete environmental impact as an EnvironmentalImpact object
         :return: an AggregatedImpact object with all resource impacts
         """
-        impact_source = impact_source_factory(
-            self.impact_source_name
-        )  # TODO try setting impact source as a class object but not saved in the db
+        impact_source = impact_source_factory(self.impact_source_name)
         environmental_impact = AggregatedImpact()
 
         for key in impact_source.environmental_impact.impacts:
             environmental_impact.merge_impact(
                 key,
-                impact_source.environmental_impact.impacts[key] * self.value(),
+                impact_source.environmental_impact.impacts[key]
+                * self.value()
+                / impact_source.unit, # TODO this is probably a bad way
             )
 
         return environmental_impact
@@ -85,8 +85,7 @@ class Resource(db.Model):  # type: ignore
         impact_source = impact_source_factory(self.impact_source_name)
 
         return (
-            impact_source.environmental_impact.impacts[impact_indicator]
-            * self.value()
+            impact_source.environmental_impact.impacts[impact_indicator] * self.value()
         )
 
 

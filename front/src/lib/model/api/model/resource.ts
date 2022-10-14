@@ -1,48 +1,11 @@
 export interface Resource {
-	/**
-	 * Unique identifier
-	 */
 	id: number;
-	/**
-	 * Name of the resource
-	 */
 	name: string;
-	/**
-	 * Type of the resource
-	 */
-	type: string;
-	/**
-	 * Value of the resource
-	 */
-	input: ResourceInput;
-	/**
-	 * Creation date of the resource
-	 */
-	created_at: string;
-	/**
-	 * Last update date of the resource
-	 */
-	updated_at: string;
-}
-
-export interface ResourceInput {
-	id: number;
-	days: number;
+	impact_source_name: string;
 	input: number;
+	days: number;
 	months: number;
-	resource: number;
-	resource_id: number;
-	type: string;
 	years: number;
-}
-
-export interface ResourceUnit {
-	/**
-	 * Unique identifier
-	 */
-	id: number;
-	/**
-	 * Name of the resource
-	 */
-	name: string;
+	created_at: string;
+	updated_at: string;
 }

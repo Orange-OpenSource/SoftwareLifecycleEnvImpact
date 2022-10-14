@@ -3,8 +3,9 @@ from typing import Any
 import jsonpatch
 from flask import abort, request
 
+from impacts_model.impacts import TaskImpact, TaskImpactSchema
 from api.routes.task import get_task
-from impacts_model.data_model import ModelSchema, db, Project, Model
+from impacts_model.data_model import ModelSchema, db, Project, Task, TaskSchema
 from impacts_model.database import (
     retrieve_all_models_db,
     retrieve_model_db,
@@ -35,6 +36,38 @@ def get_model(model_id: int) -> Any:
     if model is not None:
         model_schema = ModelSchema()
         return model_schema.dump(model)
+    else:
+        return abort(
+            404,
+            "No model found for Id: {model_id}".format(model_id=model_id),
+        )
+
+
+def get_model_impact(model_id: int) -> Any:
+    """
+    GET /models/<model_id>/impact
+    :param model_id: the id of the model to retrieve the impact from
+    :return: The impact it model exists with id, 404 else
+    """
+    model = retrieve_model_db(model_id)
+
+    if model is not None:
+        task = Task.query.filter(Task.id == model.root_task_id).one_or_none()
+
+        if task is not None:
+            task_impact = TaskImpact(
+                task.id,
+                task.get_environmental_impact(),
+                task.get_subtasks_impact(),
+                task.get_impact_by_resource_type(),
+            )
+            schema = TaskImpactSchema()
+            return schema.dump(task_impact)
+        else:
+            return abort(
+                404,
+                "No task found for Id: {task_id}".format(task_id=task.id),
+            )
     else:
         return abort(
             404,

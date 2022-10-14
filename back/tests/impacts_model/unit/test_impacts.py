@@ -190,6 +190,7 @@ def test_user_device_impact_co2() -> None:
         + user_device_impact.RATIO_TV * TelevisionImpactSource().co2
         + user_device_impact.RATIO_SMARTPHONE * SmartphoneImpactSource().co2
     )
+    assert user_device_impact.co2.units == user_device_impact.unit * KG_CO2E
 
 
 ################
@@ -206,6 +207,7 @@ def test_laptop_impact() -> None:
     amortization_day = l.FABRICATION_CO2.magnitude / (l.LIFE_EXPECTANCY.magnitude * 365)
     amortization_hour = amortization_day / l.DAILY_USE.magnitude
     assert round(l.co2, 2) == round(amortization_hour * KG_CO2E * l.unit, 2)
+    assert l.co2.units == l.unit * KG_CO2E
 
 
 ####################
@@ -222,6 +224,7 @@ def test_smartphone_impact() -> None:
     amortization_day = s.FABRICATION_CO2.magnitude / (s.LIFE_EXPECTANCY.magnitude * 365)
     amortization_hour = amortization_day / s.DAILY_USE.magnitude
     assert round(s.co2, 2) == round(amortization_hour * KG_CO2E * s.unit, 2)
+    assert s.co2.units == s.unit * KG_CO2E
 
 
 ################
@@ -238,6 +241,7 @@ def test_tablet_impact() -> None:
     amortization_day = t.FABRICATION_CO2.magnitude / (t.LIFE_EXPECTANCY.magnitude * 365)
     amortization_hour = amortization_day / t.DAILY_USE.magnitude
     assert round(t.co2, 2) == round(amortization_hour * KG_CO2E * t.unit, 2)
+    assert t.co2.units == t.unit * KG_CO2E
 
 
 ####################
@@ -254,6 +258,7 @@ def test_television_impact() -> None:
     amortization_day = t.FABRICATION_CO2.magnitude / (t.LIFE_EXPECTANCY.magnitude * 365)
     amortization_hour = amortization_day / t.DAILY_USE.magnitude
     assert round(t.co2, 2) == round(amortization_hour * KG_CO2E * t.unit, 2)
+    assert t.co2.units == t.unit * KG_CO2E
 
 
 ################
@@ -270,6 +275,7 @@ def test_office_impact() -> None:
     one_person_office_size = o.OFFICE_SIZE / o.OFFICES_OCCUPANCY
     square_meter_co2_day = o.BUILDING_EMISSIONS.magnitude / (o.LIFE_EXPECTANCY * 365)
     assert o.co2 == (one_person_office_size * square_meter_co2_day) * KG_CO2E * o.unit
+    assert o.co2.units == o.unit * KG_CO2E
 
 
 ################
@@ -300,6 +306,7 @@ def test_server_impact() -> None:
     impacts_registry.electricity_mix = 0.7543 * ELECTRICITY_MIX
     impacts_registry.pue = 1.5
     assert s.co2 == first_co2
+    assert s.co2.units == s.unit * KG_CO2E
 
 
 #################
@@ -330,7 +337,8 @@ def test_storage_impact() -> None:
 
     registry.electricity_mix = 0.7543 * ELECTRICITY_MIX
     registry.pue = 1.5
-    assert s.co2 == first_co2
+    assert s.co2 == first_co2 
+    assert s.co2.units == s.unit * KG_CO2E
 
 
 ###################
@@ -361,3 +369,4 @@ def test_transport_impact() -> None:
         * KG_CO2E
         * u.unit
     )
+    assert u.co2.units == u.unit * KG_CO2E
