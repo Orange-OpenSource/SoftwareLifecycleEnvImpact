@@ -1,7 +1,7 @@
 id: 4
 name: Hosting
 unit:
-resources:
+impact_sources:
 subtasks:
   - Storage
   - Compute.yaml

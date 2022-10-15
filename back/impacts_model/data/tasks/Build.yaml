@@ -1,7 +1,7 @@
 id: 0
 name: Build
 unit: man_days
-resources:
+impact_sources:
 subtasks:
   - Implementation
   - Specification.yaml

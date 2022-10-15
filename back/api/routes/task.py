@@ -147,11 +147,11 @@ def insert_task_db(
     if template_id is not None:
         task_template: TaskTemplate = get_task_template_by_id(template_id)
 
-        for resource_template in task_template.resources:
+        for impact_source in task_template.impact_sources:
             new_task.resources.append(
                 Resource(
-                    name=task_template.name + " " + task_template.unit,
-                    impact_source_name=resource_template.name,
+                    name=task_template.name,
+                    impact_source_name=impact_source,
                     input=1,
                 )
             )

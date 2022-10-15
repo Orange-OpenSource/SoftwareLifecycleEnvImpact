@@ -1,6 +1,6 @@
 id: 6
 name: Maintenance
 unit: man_days
-resources:
+impact_sources:
   - People
 subtasks:

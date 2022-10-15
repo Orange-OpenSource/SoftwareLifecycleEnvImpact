@@ -1,6 +1,6 @@
 id: 7
 name: Management
 unit: man_days
-resources:
+impact_sources:
   - People
 subtasks:

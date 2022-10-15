@@ -1,19 +1,18 @@
 <script lang="ts">
 	import Modal from '$lib/Modal.svelte';
-	import { getResourceUnitsRequest } from '$lib/model/api/resourceUnits';
+	import { getImpactSources } from '$lib/model/api/impactSources';
 	import type { Task } from '$lib/model/api/model/task';
 	import { addResourceRequest } from '$lib/model/api/resource';
 	import Error from '$lib/Error.svelte';
 	import Spinner from '$lib/Spinner.svelte';
-	import type { ResourceUnit } from '../api/model/resource';
 
 	/*Bound var*/
 	export let task: Task;
 
 	let showModal = false;
 
-	let resourceUnits = getResourceUnitsRequest();
-	let selectedUnit: ResourceUnit;
+	let impactSources = getImpactSources();
+	let selectedImpactSource: string;
 	let name = '';
 
 	let error = '';
@@ -27,8 +26,8 @@
 	async function handleSubmit() {
 		error = '';
 		try {
-			if (selectedUnit != null) {
-				const res = await addResourceRequest(name, task.id, selectedUnit.id);
+			if (selectedImpactSource != null) {
+				const res = await addResourceRequest(name, task.id, selectedImpactSource);
 				task.resources.push(res);
 				/*Redondant assignment to force Svelte to update components*/
 				task.resources = task.resources;
@@ -45,9 +44,9 @@
 <Modal bind:showModal>
 	<span slot="title">Add new resource :</span>
 	<form slot="body" on:submit|preventDefault={handleSubmit}>
-		{#await resourceUnits}
+		{#await impactSources}
 			<Spinner />
-		{:then resourceUnits}
+		{:then impactSources}
 			<div class="row g-3">
 				<div class="col-6">
 					<label for="resourceName">Name</label>
@@ -55,11 +54,9 @@
 				</div>
 				<div class="col-6">
 					<label for="resourceName">Unit</label>
-					<!-- TODO is unit the right name  -->
-					<select class="form-select" bind:value={selectedUnit} required>
-						<!-- <option value={null} disabled selected class="form-check-input"> -- Unit -- </option> -->
-						{#each resourceUnits as unit}
-							<option value={unit} class="form-check-input">{unit.name}</option>
+					<select class="form-select" bind:value={selectedImpactSource} required>
+						{#each impactSources as impactSource}
+							<option value={impactSource} class="form-check-input">{impactSource.replace('ImpactSource', '')}</option>
 						{/each}
 					</select>
 				</div>

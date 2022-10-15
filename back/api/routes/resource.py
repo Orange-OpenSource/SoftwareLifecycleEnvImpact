@@ -5,7 +5,6 @@ from flask import abort, request
 
 from impacts_model.data_model import db, Resource, ResourceSchema, Task
 from impacts_model.impacts import AggregatedImpactSchema
-from impacts_model.templates import get_resource_template_by_id, ResourceTemplate
 
 
 def get_resources() -> Any:
@@ -28,7 +27,7 @@ def create_resource(resource: dict[str, Any]) -> Any:
     """
     name = resource.get("name")
     task_id = resource.get("task_id")
-    template_id = resource.get("template_id")
+    impact_source_name = resource.get("impact_source_name")
 
     existing_resource = (
         Resource.query.filter(Resource.name == name)
@@ -38,12 +37,11 @@ def create_resource(resource: dict[str, Any]) -> Any:
     existing_task = Task.query.filter(Task.id == task_id).one_or_none()
 
     if existing_resource is None and existing_task is not None:
-        resource_template: ResourceTemplate = get_resource_template_by_id(template_id)
 
         resource = Resource(
             name=name,
             task_id=task_id,
-            impact_source_name=resource_template.name,
+            impact_source_name=impact_source_name,
             input=100,
         )
         db.session.add(resource)

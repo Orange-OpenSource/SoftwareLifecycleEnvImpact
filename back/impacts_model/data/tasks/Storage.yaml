@@ -1,6 +1,6 @@
 id: 11
 name: Storage
 unit: storage_hours
-resources:
+impact_sources:
   - Storage
 subtasks:

@@ -19,17 +19,12 @@ export async function getServerImpactByModelName(modelName: string): Promise<Ser
 }
 
 export async function getServerImpactByConfig(config: ConfigurationServer, usage: UsageServer): Promise<ServerImpact> {
-	console.log({
-		configuration: config,
-		usage: usage
-	});
 	const params = '?verbose=true&allocation=TOTAL';
 	const res = await post('server/' + params, {
 		configuration: config,
 		usage: usage
 	});
 	return res.text().then((json) => {
-		console.log(json);
 		return JSON.parse(json);
 	});
 }

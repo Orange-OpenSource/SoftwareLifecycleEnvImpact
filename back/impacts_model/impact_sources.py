@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import importlib
-
+import inspect
 from impacts_model.impacts import AggregatedImpact, ImpactIndicator
 from pint import Quantity
 from typing import Any
@@ -109,6 +109,19 @@ def impact_source_factory(name: str) -> ImpactSource:
     class_ = getattr(module, name)
     instance = class_()
     return instance
+
+
+def get_all_impact_sources() -> list[str]:
+    list = []
+    g = globals().copy()
+    for name, obj in g.items():
+        if (
+            inspect.isclass(obj)
+            and name.endswith("ImpactSource")
+            and name != "ImpactSource"
+        ):
+            list.append(name)
+    return list
 
 
 class ImpactsSourceRegistry:
@@ -421,7 +434,7 @@ class ServerImpactSource(ImpactSource):
         """
         self.registry = ImpactsSourceRegistry()
         self.unit = SERVER / DAY
-        super().__init__(unit= self.unit, climate_change=self.co2)
+        super().__init__(unit=self.unit, climate_change=self.co2)
 
     @property
     def co2(self) -> (KG_CO2E * SERVER / DAY):

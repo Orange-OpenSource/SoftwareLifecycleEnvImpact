@@ -14,6 +14,8 @@ from impacts_model.impact_sources import (
     TelevisionImpactSource,
     TransportImpactSource,
     UserDeviceImpactSource,
+    get_all_impact_sources,
+    impact_source_factory,
 )
 
 ##########
@@ -76,6 +78,20 @@ def test_merge_impacts_lists() -> None:
         ImpactIndicator.WATER_DEPLETION: 21323 * CUBIC_METER,
     }
 '''
+
+
+def test_impact_source_factory() -> None:
+    # TODO
+    assert isinstance(impact_source_factory("NetworkImpactSource"), ImpactSource)
+
+
+def test_get_all_impact_sources() -> None:
+    impact_sources = get_all_impact_sources()
+    for impact_source in impact_sources:
+        assert impact_source.endswith("ImpactSource")
+        assert impact_source != "ImpactSource"
+        assert isinstance(impact_source_factory(impact_source), ImpactSource)
+
 
 ###################
 # ImpactsSourceRegistry #
@@ -337,7 +353,7 @@ def test_storage_impact() -> None:
 
     registry.electricity_mix = 0.7543 * ELECTRICITY_MIX
     registry.pue = 1.5
-    assert s.co2 == first_co2 
+    assert s.co2 == first_co2
     assert s.co2.units == s.unit * KG_CO2E
 
 

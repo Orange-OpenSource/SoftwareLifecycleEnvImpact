@@ -10,7 +10,6 @@ from impacts_model.impacts import (
     AggregatedImpactByResource,
     ImpactIndicator,
 )
-from impacts_model.templates import ResourceTemplate
 from impacts_model.impact_sources import impact_source_factory, ImpactSource
 
 db = SQLAlchemy()
@@ -19,8 +18,7 @@ ma = FlaskMarshmallow()
 
 class Resource(db.Model):  # type: ignore
     """
-    Resource object and table with a name, a type and a value. Only for a task
-    The type represents the name of the ResourceTemplate to retrieve model values for computation
+    Resource object and table with a name, an impact source name and a computed value from duration and input
     """
 
     __tablename__ = "resource"

@@ -41,7 +41,6 @@
 
 			const res = await changeTaskParent(taskToMove, task);
 			if (res) {
-				console.log(res);
 				// Move card to this task subtasks
 				task.subtasks.push(taskToMove);
 				// Remove the card to move from its old parent

@@ -1,6 +1,6 @@
 id: 13
 name: UserDevice
 unit: users_number
-resources:
+impact_sources:
   - UserDevice
 subtasks:

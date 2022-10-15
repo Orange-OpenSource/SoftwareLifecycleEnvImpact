@@ -1,7 +1,7 @@
 id: 9
 name: Run
 unit: day
-resources:
+impact_sources:
 subtasks:
   - Maintenance
   - Hosting

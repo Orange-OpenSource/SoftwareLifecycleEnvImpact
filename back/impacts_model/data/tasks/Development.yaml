@@ -1,6 +1,6 @@
 id: 3
 name: Development
 unit: man_days
-resources:
+impact_sources:
   - People
 subtasks:

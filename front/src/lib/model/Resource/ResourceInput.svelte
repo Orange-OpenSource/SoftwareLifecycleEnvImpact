@@ -30,14 +30,14 @@
 {#if !modify}
 	<p class="card-text">
 		{resource.input}
-		{resource.impact_source_name}
+		{resource.impact_source_name.replace("ImpactSource","")}
 		{getDuration()}
 	</p>
 {:else}
 	<form class="card-text">
 		<div class="row">
 			<div class="col">
-				<label for="inputValue" class="form-label">{resource.impact_source_name}:</label>
+				<label for="inputValue" class="form-label">{resource.impact_source_name.replace("ImpactSource","")}:</label>
 				<input type="number" id="inputValue" class="form-control" bind:value={resource.input} min="1" on:change={() => updateResource()} on:click={() => {}} />
 			</div>
 		</div>

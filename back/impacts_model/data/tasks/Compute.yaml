@@ -1,6 +1,6 @@
 id: 1
 name: Compute
 unit: server_hours
-resources:
+impact_sources:
   - Compute
 subtasks:

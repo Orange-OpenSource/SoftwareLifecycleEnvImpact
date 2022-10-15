@@ -22,7 +22,6 @@
 		try {
 			let res;
 			if (files && files[0]) {
-				console.log('here');
 				var reader = new FileReader();
 				reader.readAsText(files[0], 'UTF-8');
 				reader.onload = async function (event) {

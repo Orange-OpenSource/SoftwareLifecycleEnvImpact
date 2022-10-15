@@ -51,7 +51,6 @@ export async function createTaskRequest(name: string, parent_task_id: number): P
 }
 
 export async function changeTaskParent(task: Task, newParent: Task): Promise<Task> {
-	console.log('Replacing parent ' + task.parent_task_id + ' to ' + newParent.id);
 	const patchDocument: PatchDocument = {
 		op: 'replace',
 		path: '/parent_task_id',

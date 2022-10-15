@@ -609,19 +609,19 @@ paths:
           schema:
             $ref: "#/definitions/AggregatedImpact"
 
-  /resourcetemplates:
+  /impactsources:
     get:
-      operationId: api.routes.resource_template.get_resource_templates
+      operationId: api.routes.impact_sources.get_impact_sources
       tags:
-        - ResourceTemplate
-      summary: Get all resource templates
+        - ImpactSource
+      summary: Get all impact sources names 
       responses:
         200:
-          description: List of resource templates
+          description: List of impact sources names
           schema:
             type: array
             items:
-              $ref: "#/definitions/ResourceTemplate"
+              type: string
 
   /debug/reset:
     get:
@@ -795,19 +795,6 @@ definitions:
         type: ["null", string]
         format: date
         description: Last update date of the resource
-
-  ResourceTemplate:
-    type: object
-    required:
-      - id
-      - name
-    properties:
-      id:
-        type: integer
-        description: Unique identifier
-      name:
-        type: string
-        description: Name of the resource
 
   AggregatedImpact:
     type: object
