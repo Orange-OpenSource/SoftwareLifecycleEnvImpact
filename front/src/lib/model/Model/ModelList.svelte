@@ -26,8 +26,8 @@
 
 <div class="col">
 	<div class="row">
-		{#if project != undefined && project.models != undefined}
-			<div class="list-group list-group-flush">
+		<div class="list-group list-group-flush">
+			{#if project != undefined && project.models != undefined}
 				{#each project.models as model, i}
 					<button type="button" class="list-group-item list-group-item-action" on:click|stopPropagation={() => (selectedModel = model)}>
 						<div class="row">
@@ -53,17 +53,20 @@
 						</div>
 					</button>
 				{/each}
+			{:else}
+				No model
+			{/if}
+
+			<div class="list-group-item">
+				<div class="row justify-content-center">
+					<div class="col-5">
+						<button on:click|stopPropagation={() => (compareModels = true)} type="button" class="btn btn-light" disabled={selectedModels.length <= 1}> Compare </button>
+					</div>
+					<div class="col-5">
+						<CreateModel bind:project bind:selectedModel />
+					</div>
+				</div>
 			</div>
-		{:else}
-			No model
-		{/if}
-	</div>
-	<div class="row">
-		<div class="col">
-			<button on:click|stopPropagation={() => (compareModels = true)} type="button" class="btn btn-light" disabled={selectedModels.length <= 1}>Compare</button>
-		</div>
-		<div class="col">
-			<CreateModel bind:project bind:selectedModel />
 		</div>
 	</div>
 </div>
