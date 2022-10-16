@@ -47,7 +47,12 @@
 	<form slot="body" on:submit|preventDefault={createNewProject}>
 		<div class="row g-3">
 			<div class="col-12">
+				<label for="createModelInput">Name</label>
 				<input id="createModelInput" class="form-control" placeholder="Project name" required bind:value={projectName} />
+			</div>
+			<div class="col-12">
+				<label for="loadFile">Load from file</label>
+				<input id="loadFile" type="file" class="form-control" accept=".json" bind:files />
 			</div>
 
 			<div class="col-12">
