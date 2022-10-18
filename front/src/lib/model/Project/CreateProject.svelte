@@ -4,6 +4,7 @@
 	import { createProjectRequest, importProjectRequest } from '$lib/model/api/project';
 	import Error from '$lib/Error.svelte';
 	import Modal from '$lib/Modal.svelte';
+	import { replaceIDs } from '@iconify/svelte';
 
 	let projectName: string;
 	let showModal = false;
@@ -11,11 +12,12 @@
 
 	let files: FileList;
 
-	$: showModal,
-		() => {
-			error = '';
-			projectName = '';
-		}; //Clean error message when closing modal
+	$: showModal, clearModal(); //Clean error message when closing modal
+
+	function clearModal() {
+		error = '';
+		projectName = '';
+	}
 
 	async function createNewProject() {
 		error = '';
@@ -32,11 +34,15 @@
 			} else {
 				res = await createProjectRequest(projectName);
 			}
-			showModal = false;
 			if (browser && res != undefined) goto('/project/' + res.id);
 		} catch (e: any) {
 			error = e.message;
 		}
+	}
+
+	function updateName() {
+		console.log(files);
+		if (files != undefined && files[0] != undefined && files[0].name != undefined) projectName = files[0].name.replace('.json', '');
 	}
 </script>
 
@@ -52,7 +58,7 @@
 			</div>
 			<div class="col-12">
 				<label for="loadFile">Load from file</label>
-				<input id="loadFile" type="file" class="form-control" accept=".json" bind:files />
+				<input id="loadFile" type="file" class="form-control" accept=".json" bind:files on:change={(e) => updateName()} />
 			</div>
 
 			<div class="col-12">
