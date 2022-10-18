@@ -68,7 +68,7 @@ class Resource(db.Model):  # type: ignore
                 key,
                 impact_source.environmental_impact.impacts[key]
                 * self.value()
-                / impact_source.unit, # TODO this is probably a bad way
+                / impact_source.unit,  # TODO this is probably a bad way
             )
 
         return environmental_impact
