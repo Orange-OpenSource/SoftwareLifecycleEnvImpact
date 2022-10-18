@@ -11,7 +11,12 @@
 	let error = '';
 	let newName = task.name;
 
-	$: showModal, (error = ''); //Clean error message when closing modal
+	$: showModal, clearModal(); //Clean error message when closing modal
+
+	function clearModal() {
+		error = '';
+		newName = '';
+	}
 
 	async function renameTask() {
 		error = '';

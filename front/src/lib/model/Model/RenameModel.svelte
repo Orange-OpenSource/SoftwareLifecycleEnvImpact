@@ -11,7 +11,11 @@
 	let showModal = false;
 	let error = '';
 
-	$: showModal, (error = ''); //Clean error message when closing modal
+	$: showModal, clearModal(); //Clean error message when closing modal
+
+	function clearModal() {
+		error = '';
+	}
 
 	async function renameModel() {
 		error = '';
