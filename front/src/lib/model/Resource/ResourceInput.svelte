@@ -30,29 +30,29 @@
 {#if !modify}
 	<p class="card-text">
 		{resource.input}
-		{resource.impact_source_name.replace("ImpactSource","")}
+		{resource.impact_source_name.replace('ImpactSource', '')}
 		{getDuration()}
 	</p>
 {:else}
 	<form class="card-text">
 		<div class="row">
 			<div class="col">
-				<label for="inputValue" class="form-label">{resource.impact_source_name.replace("ImpactSource","")}:</label>
-				<input type="number" id="inputValue" class="form-control" bind:value={resource.input} min="1" on:change={() => updateResource()} on:click={() => {}} />
+				<label for="inputValue" class="form-label">{resource.impact_source_name.replace('ImpactSource', '')}:</label>
+				<input type="number" id="inputValue" class="form-control" bind:value={resource.input} min="1" on:change={() => updateResource()} on:click|stopPropagation={() => {}} />
 			</div>
 		</div>
 		<div class="row">
 			<div class="col">
 				<label for="inputDays" class="form-label">Days:</label>
-				<input type="number" id="inputDays" class="form-control" bind:value={resource.days} min="0" on:change={() => updateResource()} on:click={() => {}} />
+				<input type="number" id="inputDays" class="form-control" bind:value={resource.days} min="0" on:change={() => updateResource()} on:click|stopPropagation={() => {}} />
 			</div>
 			<div class="col">
 				<label for="inputMonths" class="form-label">Months:</label>
-				<input type="number" id="inputMonths" class="form-control" bind:value={resource.months} min="0" on:change={() => updateResource()} on:click={() => {}} />
+				<input type="number" id="inputMonths" class="form-control" bind:value={resource.months} min="0" on:change={() => updateResource()} on:click|stopPropagation={() => {}} />
 			</div>
 			<div class="col">
 				<label for="inputYears" class="form-label">Years:</label>
-				<input type="number" id="inputYears" class="form-control" bind:value={resource.years} min="0" on:change={() => updateResource()} on:click={() => {}} />
+				<input type="number" id="inputYears" class="form-control" bind:value={resource.years} min="0" on:change={() => updateResource()} on:click|stopPropagation={() => {}} />
 			</div>
 		</div>
 	</form>

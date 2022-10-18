@@ -30,7 +30,7 @@
 							{/if}
 						</div>
 						<div class="row ms-2">
-							<ResourceInput bind:resource={resource} {modify} />
+							<ResourceInput bind:resource {modify} />
 						</div>
 					</div>
 				</li>

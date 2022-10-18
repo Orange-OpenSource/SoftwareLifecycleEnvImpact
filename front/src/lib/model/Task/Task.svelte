@@ -20,6 +20,14 @@
 
 	$: dragging = draggedObject.task != undefined;
 
+	$: task, updateImpact();
+
+	function updateImpact() {
+		// Little hack to trigger a re-draw of impacts by updating
+		// the selectedTask even if another one is modified
+		selectedTask = selectedTask;
+	}
+
 	interface DragObject {
 		task?: Task;
 		oldParent?: Task;
