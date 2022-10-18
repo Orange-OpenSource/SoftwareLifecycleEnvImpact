@@ -121,6 +121,7 @@ def get_all_impact_sources() -> list[str]:
             and name != "ImpactSource"
         ):
             list.append(name)
+    list.sort()
     return list
 
 

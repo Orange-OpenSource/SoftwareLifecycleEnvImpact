@@ -108,7 +108,7 @@ class TaskImpact:
         self.task_id = task_id
         self.task_impact = task_impact
         self.subtasks = subtasks
-        self  = resources
+        self.resources = resources
 
 
 class TaskImpactSchema(Schema):

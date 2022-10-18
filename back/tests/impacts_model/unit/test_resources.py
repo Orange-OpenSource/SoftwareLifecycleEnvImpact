@@ -96,9 +96,7 @@ def resource_fixture(db: SQLAlchemy) -> Resource:
     task = Task(name="Test_resources task")
 
     resource = Resource(
-        name="Resource test",
-        impact_source_name="TestResource",
-        input=2312
+        name="Resource test", impact_source_name="TestResource", input=2312
     )
 
     task.resources = [resource]
