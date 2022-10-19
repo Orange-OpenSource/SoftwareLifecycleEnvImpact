@@ -23,8 +23,7 @@ def test_impact(client: FlaskClient) -> None:
     """
     client.get(debug_root + "/reset")
     models = client.get(projects_root)
-    # response = client.get(models_root + "/" + str(model_fixture.id) + "/impact")
-    # assert response.status_code == 200
-    # response = client.get(tasks_root_path + "/" + str(task_fixture.id) + "/impacts")
-    # assert response.status_code == 200
-    # TODO should test the impact on a big project
+    model_id = models.json[0]["models"][0]["id"] # retrieve the id of the first model
+    
+    response = client.get(models_root + "/" + str(model_id) + "/impact")
+    assert response.status_code == 200
