@@ -6,6 +6,7 @@
 
 	/* Bound var */
 	export let parentTask: Task;
+	export let selectedTask: Task;
 
 	export let task: Task;
 
@@ -25,6 +26,9 @@
 			parentTask.subtasks = parentTask.subtasks.filter((s) => s.id != task.id);
 			/*Redondant assignment to force Svelte to update components*/
 			parentTask.subtasks = parentTask.subtasks;
+			if (task.id == selectedTask.id) {
+				selectedTask = parentTask;
+			}
 			showModal = false;
 		} catch (e: any) {
 			error = e.message;

@@ -96,7 +96,7 @@
 
 					{#if modify && !dragging}
 						<div class="col-2">
-							<DeleteTask {task} bind:parentTask />
+							<DeleteTask {task} bind:parentTask bind:selectedTask/>
 						</div>
 					{/if}
 				</div>

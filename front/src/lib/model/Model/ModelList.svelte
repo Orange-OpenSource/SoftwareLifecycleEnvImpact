@@ -14,14 +14,11 @@
 	export let selectedModels: Model[];
 	export let compareModels: boolean;
 
-	$: project,
-		() => {
-			// If selected model is deleted, select the base model instead
-			if (!project.models?.includes(selectedModel)) {
-				selectedModel = project.models[0];
-				// TODO problem with base model logic
-			}
-		};
+	$: if (!project.models?.includes(selectedModel)) {
+		console.log('here');
+		selectedModel = project.models[0];
+		// TODO problem with base model logic
+	}
 </script>
 
 <div class="col">
@@ -32,7 +29,7 @@
 					<button type="button" class="list-group-item list-group-item-action" on:click|stopPropagation={() => (selectedModel = model)}>
 						<div class="row">
 							<div class="col-2">
-								<input type="checkbox" class="form-check-input" value={model} bind:group={selectedModels} name={String(model.id)} on:click|stopPropagation={() => {}}/>
+								<input type="checkbox" class="form-check-input" value={model} bind:group={selectedModels} name={String(model.id)} on:click|stopPropagation={() => {}} />
 							</div>
 							<div class="col-7">
 								<h5>
