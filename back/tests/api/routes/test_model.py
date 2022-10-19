@@ -146,14 +146,6 @@ def test_delete_model(
     :param db: SQLAlchemy database fixture
     :param model_fixture: Model fixture
     """
-    # Test to delete root model
-    project = Project.query.filter(Project.id == model_fixture.project_id).one_or_none()
-    project.base_model = model_fixture
-    db.session.commit()
-    response = client.delete(models_root + "/" + str(model_fixture.id))
-    assert response.status_code == 403
-    project.base_model = None
-    db.session.commit()
 
     # Test nominal
     response = client.delete(models_root + "/" + str(model_fixture.id))
@@ -179,7 +171,6 @@ def test_get_model_tasks(client: FlaskClient, db: SQLAlchemy) -> None:
     model = Model(name="Model 1")
     project = Project(name="Project 1")
     project.models = [model]
-    project.base_model_id = model.id
     model.root_task = task1
     db.session.add_all([task1, task2, model, project])
     db.session.commit()

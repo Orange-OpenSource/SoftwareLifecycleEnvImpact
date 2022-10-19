@@ -286,10 +286,6 @@ class Project(db.Model):  # type: ignore
         primaryjoin=id == Model.project_id,
         cascade="all",
     )
-    base_model_id = db.Column(db.Integer, db.ForeignKey("model.id"))
-    base_model = db.relationship(
-        Model, primaryjoin=base_model_id == Model.id, post_update=True, cascade="all"
-    )
 
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
     updated_at = db.Column(
@@ -298,7 +294,7 @@ class Project(db.Model):  # type: ignore
 
     def copy(self) -> Any:
         models_copy = [model.copy() for model in self.models]
-        project = Project(name=self.name, models=models_copy, base_model=models_copy[0])
+        project = Project(name=self.name, models=models_copy)
         return project
 
 
@@ -318,5 +314,4 @@ class ProjectSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
         sqla_session = db.session
 
     id = ma.auto_field(allow_none=True)
-    base_model_id = ma.auto_field(allow_none=True)
     models = Nested("ModelSchema", many=True)

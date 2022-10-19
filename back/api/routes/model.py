@@ -123,14 +123,6 @@ def delete_model(model_id: int) -> Any:
     model = retrieve_model_db(model_id)
 
     if model is not None:
-        project = Project.query.filter(Project.id == model.project_id).one_or_none()
-        if project.base_model_id == model.id:
-            return abort(
-                403,
-                "Cannot delete model {model_id} as it is the base model of project {project}".format(
-                    model_id=model.id, project=project.id
-                ),
-            )
         db.session.delete(model)
         db.session.commit()
         return 200

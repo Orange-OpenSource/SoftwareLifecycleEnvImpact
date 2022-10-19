@@ -19,25 +19,29 @@
 
 	function updateImpacts() {
 		// WIthout this, sometimes the selectedTask refresh was called indefinitely
-		if (olderTask == undefined || olderTask != selectedTask) {
+		if (selectedTask != undefined && (olderTask == undefined || olderTask != selectedTask)) {
 			olderTask = selectedTask;
 			impactPromise = getTaskImpact(selectedTask);
 		}
 	}
 </script>
 
-{#await impactPromise}
-	<Spinner />
-{:then impact}
-	{#if impact != undefined}
-		<ImpactByIndicator impact={impact.task_impact} />
+{#if selectedTask != undefined}
+	{#await impactPromise}
+		<Spinner />
+	{:then impact}
+		{#if impact != undefined}
+			<ImpactByIndicator impact={impact.task_impact} />
 
-		<h5>Subtask</h5>
-		<ImpactBySubtask bind:selectedTask impactBySubtask={impact.subtasks} />
+			<h5>Subtask</h5>
+			<ImpactBySubtask bind:selectedTask impactBySubtask={impact.subtasks} />
 
-		<h5>Resources</h5>
-		<ImpactByResource impactByResource={impact.resources} />
-	{/if}
-{:catch error}
-	<Error message={error.message} />
-{/await}
+			<h5>Resources</h5>
+			<ImpactByResource impactByResource={impact.resources} />
+		{/if}
+	{:catch error}
+		<Error message={error.message} />
+	{/await}
+{:else}
+	No task selected
+{/if}

@@ -93,6 +93,7 @@ def resource_fixture(db: SQLAlchemy) -> Resource:
     project = Project(name="Project test_resources")
     model = Model(name="Model test_resourcess")
     project.models = [model]
+    project.base_model = model
     task = Task(name="Test_resources task")
 
     resource = Resource(

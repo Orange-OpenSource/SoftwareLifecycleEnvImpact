@@ -258,8 +258,6 @@ paths:
           description: Successfully deleted model
           schema:
             $ref: "#/definitions/Model"
-        403:
-          description: Cannot delete the root model of a project
         404:
           description: No model project with this id
 

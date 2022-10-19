@@ -13,12 +13,6 @@
 	export let project: Project;
 	export let selectedModels: Model[];
 	export let compareModels: boolean;
-
-	$: if (!project.models?.includes(selectedModel)) {
-		console.log('here');
-		selectedModel = project.models[0];
-		// TODO problem with base model logic
-	}
 </script>
 
 <div class="col">
@@ -34,9 +28,6 @@
 							<div class="col-7">
 								<h5>
 									{model.name}
-									{#if i == 0}
-										(default)
-									{/if}
 								</h5>
 								<small>{getLastUpdate(model)}</small>
 							</div>

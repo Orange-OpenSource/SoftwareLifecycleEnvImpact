@@ -61,6 +61,7 @@ def task_fixture_with_subtask(db: SQLAlchemy) -> Task:
     project = Project(name="Project test_task with subtask")
     model = Model(name="Model test_task with subtask")
     project.models = [model]
+    project.base_model = model
     task = Task(name="Test task with subtask")
 
     resource1 = Resource(
