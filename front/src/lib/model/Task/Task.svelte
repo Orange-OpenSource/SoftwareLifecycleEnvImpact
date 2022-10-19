@@ -75,7 +75,7 @@
 		<!--Highlight border if task selected-->
 		<div
 			on:click|stopPropagation={() => (selectedTask = task)}
-			class="col-8 card {task === selectedTask ? 'border-primary' : ''}"
+			class="col-8 card {selectedTask.id == task.id ? 'border-primary' : ''}"
 			draggable={modify}
 			on:dragstart={handleDragStart}
 			on:dragend={handleDragEnd}

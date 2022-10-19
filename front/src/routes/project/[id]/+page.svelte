@@ -101,7 +101,7 @@
 			{:then project}
 				<ModelList bind:selectedModel bind:selectedModels bind:compareModels {project} />
 			{:catch error}
-				<Error message={error.message} slot="error" />
+				<Error message={error.message} />
 			{/await}
 		</div>
 	</div>

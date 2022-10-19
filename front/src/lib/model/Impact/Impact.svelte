@@ -10,14 +10,17 @@
 
 	/*Bound var*/
 	export let selectedTask: Task;
+	let olderTask: Task;
 
 	let impactPromise: Promise<TaskImpact>;
 
 	/*Trigger update when selected task is updated*/
 	$: selectedTask, updateImpacts();
 
-	async function updateImpacts() {
-		if (selectedTask != undefined) {
+	function updateImpacts() {
+		// WIthout this, sometimes the selectedTask refresh was called indefinitely
+		if (olderTask == undefined || olderTask != selectedTask) {
+			olderTask = selectedTask;
 			impactPromise = getTaskImpact(selectedTask);
 		}
 	}
@@ -30,7 +33,7 @@
 		<ImpactByIndicator impact={impact.task_impact} />
 
 		<h5>Subtask</h5>
-		<ImpactBySubtask {selectedTask} impactBySubtask={impact.subtasks} />
+		<ImpactBySubtask bind:selectedTask impactBySubtask={impact.subtasks} />
 
 		<h5>Resources</h5>
 		<ImpactByResource impactByResource={impact.resources} />
