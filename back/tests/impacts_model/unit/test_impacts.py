@@ -7,7 +7,7 @@ from impacts_model.impact_sources import (
 ##########
 # STATIC #
 ##########
-from impacts_model.impacts import ImpactIndicator
+from impacts_model.impacts import ImpactCategory
 from impacts_model.quantities.quantities import (
     CUBIC_METER,
     DISEASE_INCIDENCE,
@@ -31,37 +31,37 @@ def test_merge_impacts_lists() -> None:
     """
     first_list: ImpactsList = {}
     second_list: ImpactsList = {
-        ImpactIndicator.CLIMATE_CHANGE: 1000 * KG_CO2E,
-        ImpactIndicator.ELECTRONIC_WASTE: 1000 * ELECTRONIC_WASTE,
+        ImpactCategory.CLIMATE_CHANGE: 1000 * KG_CO2E,
+        ImpactCategory.ELECTRONIC_WASTE: 1000 * ELECTRONIC_WASTE,
     }
 
     # test with empty list
     assert merge_impacts_lists(first_list, second_list) == {
-        ImpactIndicator.CLIMATE_CHANGE: 1000 * KG_CO2E,
-        ImpactIndicator.ELECTRONIC_WASTE: 1000 * ELECTRONIC_WASTE,
+        ImpactCategory.CLIMATE_CHANGE: 1000 * KG_CO2E,
+        ImpactCategory.ELECTRONIC_WASTE: 1000 * ELECTRONIC_WASTE,
     }
 
     # test with same types
     first_list = {
-        ImpactIndicator.CLIMATE_CHANGE: 1000 * KG_CO2E,
-        ImpactIndicator.ELECTRONIC_WASTE: 1000 * ELECTRONIC_WASTE,
+        ImpactCategory.CLIMATE_CHANGE: 1000 * KG_CO2E,
+        ImpactCategory.ELECTRONIC_WASTE: 1000 * ELECTRONIC_WASTE,
     }
     assert merge_impacts_lists(first_list, second_list) == {
-        ImpactIndicator.CLIMATE_CHANGE: 2000 * KG_CO2E,
-        ImpactIndicator.ELECTRONIC_WASTE: 2000 * ELECTRONIC_WASTE,
+        ImpactCategory.CLIMATE_CHANGE: 2000 * KG_CO2E,
+        ImpactCategory.ELECTRONIC_WASTE: 2000 * ELECTRONIC_WASTE,
     }
 
     # Test with other type
     second_list = {
-        ImpactIndicator.CLIMATE_CHANGE: 1000 * KG_CO2E,
-        ImpactIndicator.ELECTRONIC_WASTE: 1000 * ELECTRONIC_WASTE,
-        ImpactIndicator.WATER_DEPLETION: 21323 * CUBIC_METER,
+        ImpactCategory.CLIMATE_CHANGE: 1000 * KG_CO2E,
+        ImpactCategory.ELECTRONIC_WASTE: 1000 * ELECTRONIC_WASTE,
+        ImpactCategory.WATER_DEPLETION: 21323 * CUBIC_METER,
     }
 
     assert merge_impacts_lists(first_list, second_list) == {
-        ImpactIndicator.CLIMATE_CHANGE: 2000 * KG_CO2E,
-        ImpactIndicator.ELECTRONIC_WASTE: 2000 * ELECTRONIC_WASTE,
-        ImpactIndicator.WATER_DEPLETION: 21323 * CUBIC_METER,
+        ImpactCategory.CLIMATE_CHANGE: 2000 * KG_CO2E,
+        ImpactCategory.ELECTRONIC_WASTE: 2000 * ELECTRONIC_WASTE,
+        ImpactCategory.WATER_DEPLETION: 21323 * CUBIC_METER,
     }
 '''
 
@@ -167,13 +167,13 @@ def test_get_impacts_quantities() -> None:
     )
 
     assert i.aggregated_impact.impacts == {
-        ImpactIndicator.CLIMATE_CHANGE: 103.72 * KG_CO2E * i.unit,
-        ImpactIndicator.RESOURCE_DEPLETION: 312.23 * KG_SBE * i.unit,
-        ImpactIndicator.ACIDIFICATION: 32443.2134 * MOL_HPOS * i.unit,
-        ImpactIndicator.FINE_PARTICLES: 24324.234324 * DISEASE_INCIDENCE * i.unit,
-        ImpactIndicator.IONIZING_RADIATIONS: 421312.123 * KG_BQ_U235E * i.unit,
-        ImpactIndicator.WATER_DEPLETION: 124.123 * CUBIC_METER * i.unit,
-        ImpactIndicator.ELECTRONIC_WASTE: 134242.12341 * ELECTRONIC_WASTE * i.unit,
-        ImpactIndicator.PRIMARY_ENERGY: 1234.23123 * PRIMARY_MJ * i.unit,
-        ImpactIndicator.RAW_MATERIALS: 124.123441 * TONNE_MIPS * i.unit,
+        ImpactCategory.CLIMATE_CHANGE: 103.72 * KG_CO2E * i.unit,
+        ImpactCategory.RESOURCE_DEPLETION: 312.23 * KG_SBE * i.unit,
+        ImpactCategory.ACIDIFICATION: 32443.2134 * MOL_HPOS * i.unit,
+        ImpactCategory.FINE_PARTICLES: 24324.234324 * DISEASE_INCIDENCE * i.unit,
+        ImpactCategory.IONIZING_RADIATIONS: 421312.123 * KG_BQ_U235E * i.unit,
+        ImpactCategory.WATER_DEPLETION: 124.123 * CUBIC_METER * i.unit,
+        ImpactCategory.ELECTRONIC_WASTE: 134242.12341 * ELECTRONIC_WASTE * i.unit,
+        ImpactCategory.PRIMARY_ENERGY: 1234.23123 * PRIMARY_MJ * i.unit,
+        ImpactCategory.RAW_MATERIALS: 124.123441 * TONNE_MIPS * i.unit,
     }

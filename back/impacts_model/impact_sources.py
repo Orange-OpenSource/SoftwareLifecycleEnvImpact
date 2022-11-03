@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import importlib
 import inspect
-from impacts_model.impacts import AggregatedImpact, ImpactIndicator
+from impacts_model.impacts import AggregatedImpact, ImpactCategory
 from pint import Quantity
 from typing import Any, Optional
 import yaml
@@ -32,7 +32,9 @@ class ImpactSource(yaml.YAMLObject):
         self,
         id: str,
         name: str,
-        unit: Quantity[Any],
+        unit: Quantity[
+            Any
+        ],  # TODO unit test that the values set by the yaml corresponds to reality. Also test none values that shouldn't be in yaml such as climate change ?
         climate_change: KG_CO2E,
         resource_depletion: KG_SBE = 0 * KG_SBE,
         acidification: MOL_HPOS = 0 * MOL_HPOS,
@@ -76,15 +78,15 @@ class ImpactSource(yaml.YAMLObject):
         """
         return AggregatedImpact(
             impacts={
-                ImpactIndicator.CLIMATE_CHANGE: self.climate_change,
-                ImpactIndicator.RESOURCE_DEPLETION: self.resource_depletion,
-                ImpactIndicator.ACIDIFICATION: self.acidification,
-                ImpactIndicator.FINE_PARTICLES: self.fine_particles,
-                ImpactIndicator.IONIZING_RADIATIONS: self.ionizing_radiations,
-                ImpactIndicator.WATER_DEPLETION: self.water_depletion,
-                ImpactIndicator.ELECTRONIC_WASTE: self.electronic_waste,
-                ImpactIndicator.PRIMARY_ENERGY: self.primary_energy_consumption,
-                ImpactIndicator.RAW_MATERIALS: self.raw_materials,
+                ImpactCategory.CLIMATE_CHANGE: self.climate_change,
+                ImpactCategory.RESOURCE_DEPLETION: self.resource_depletion,
+                ImpactCategory.ACIDIFICATION: self.acidification,
+                ImpactCategory.FINE_PARTICLES: self.fine_particles,
+                ImpactCategory.IONIZING_RADIATIONS: self.ionizing_radiations,
+                ImpactCategory.WATER_DEPLETION: self.water_depletion,
+                ImpactCategory.ELECTRONIC_WASTE: self.electronic_waste,
+                ImpactCategory.PRIMARY_ENERGY: self.primary_energy_consumption,
+                ImpactCategory.RAW_MATERIALS: self.raw_materials,
             }
         )
 

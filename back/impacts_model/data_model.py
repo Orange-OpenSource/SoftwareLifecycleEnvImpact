@@ -8,7 +8,7 @@ from sqlalchemy import func
 from impacts_model.impacts import (
     AggregatedImpact,
     AggregatedImpactByResource,
-    ImpactIndicator,
+    ImpactCategory,
 )
 from impacts_model.impact_sources import impact_source_factory, ImpactSource
 from impacts_model.quantities.quantities import deserialize_pint, serialize_pint
@@ -212,17 +212,18 @@ class Resource(db.Model):  # type: ignore
 
         return aggregated_impact
 
-    def get_indicator_impact(self, impact_indicator: ImpactIndicator) -> Quantity[Any]:
+    def get_category_impact(self, impact_category: ImpactCategory) -> Quantity[Any]:
         """
-        Compute and return a resource environmental impact for an ImpactIndicator
+        Compute and return a resource environmental impact for an ImpactCategory
         :param resource: the Resource object to view to impact from
-        :param impact_indicator: The ImpactIndicator to retrieve the impact
-        :return: A quantity corresponding to the resource ImpactIndicator quantity
+        :param impact_category: The ImpactCategory to retrieve the impact
+        :return: A quantity corresponding to the resource ImpactCategory quantity
         """
         impact_source = impact_source_factory(self.impact_source_id)
 
         return (
-            impact_source.aggregated_impact.impacts[impact_indicator] * self.value() # TODO this should not use the aggregated impacts
+            impact_source.aggregated_impact.impacts[impact_category]
+            * self.value()  # TODO this should not use the aggregated impacts
         )
 
 
@@ -307,17 +308,17 @@ class Task(db.Model):  # type: ignore
             impacts_list[subtask.id] = subtask.get_environmental_impact()
         return impacts_list
 
-    def get_indicator_impact(self, indicator: ImpactIndicator) -> Quantity[Any]:
+    def get_category_impact(self, category: ImpactCategory) -> Quantity[Any]:
         """
-        Compute and return a Task impact for a given ImpactIndicator
-        :param indicator: the ImpactIndicator to get the value for the task
-        :return: A quantity corresponding to the task ImpactIndicator chosen
+        Compute and return a Task impact for a given ImpactCategory
+        :param category: the ImpactCategory to get the value for the task
+        :return: A quantity corresponding to the task ImpactCategory chosen
         """
         impacts_resources: List[Quantity[Any]] = [
-            r.get_indicator_impact(indicator) for r in self.resources
+            r.get_category_impact(category) for r in self.resources
         ]
         impacts_subtasks: List[Quantity[Any]] = [
-            s.get_indicator_impact(indicator) for s in self.subtasks
+            s.get_category_impact(category) for s in self.subtasks
         ]
 
         return sum(impacts_resources) + sum(impacts_subtasks)

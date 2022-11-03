@@ -10,7 +10,7 @@ from pint import Quantity
 
 from impacts_model.data_model import Model, Project, Resource, Task
 from impacts_model.impact_sources import ImpactSource
-from impacts_model.impacts import ImpactIndicator
+from impacts_model.impacts import ImpactCategory
 from impacts_model.quantities.quantities import (
     CUBIC_METER,
     DISEASE_INCIDENCE,
@@ -99,20 +99,20 @@ def task_fixture_with_subtask(db: SQLAlchemy) -> Task:
         ),
     ),
 )
-def test_get_task_impact_by_indicator(
+def test_get_task_impact_by_category(
     single_task_fixture: Task, task_fixture_with_subtask: Task
 ) -> None:
     """Test that task co2 impact is those of all _resources from itself and its children"""
 
     # Mock task = 2 * TestResource (mocked) = 2 * (1000 + 776) = 3552
-    result = single_task_fixture.get_indicator_impact(ImpactIndicator.CLIMATE_CHANGE)
+    result = single_task_fixture.get_category_impact(ImpactCategory.CLIMATE_CHANGE)
     assert isinstance(result, Quantity)
     assert result == 3552 * KG_CO2E
 
     # Test adding a subtask
     # Task = 3552, subtask = 1776 -> 5328
-    result = task_fixture_with_subtask.get_indicator_impact(
-        ImpactIndicator.CLIMATE_CHANGE
+    result = task_fixture_with_subtask.get_category_impact(
+        ImpactCategory.CLIMATE_CHANGE
     )
     assert isinstance(result, Quantity)
     assert result == 5328 * KG_CO2E
@@ -135,28 +135,28 @@ def test_get_task_impact_list(
     """
     # Test res
     assert single_task_fixture.get_environmental_impact().impacts == {
-        ImpactIndicator.CLIMATE_CHANGE: 2000 * KG_CO2E,
-        ImpactIndicator.RESOURCE_DEPLETION: 0 * KG_SBE,
-        ImpactIndicator.ACIDIFICATION: 0 * MOL_HPOS,
-        ImpactIndicator.FINE_PARTICLES: 0 * DISEASE_INCIDENCE,
-        ImpactIndicator.IONIZING_RADIATIONS: 0 * KG_BQ_U235E,
-        ImpactIndicator.WATER_DEPLETION: 0 * CUBIC_METER,
-        ImpactIndicator.ELECTRONIC_WASTE: 0 * ELECTRONIC_WASTE,
-        ImpactIndicator.PRIMARY_ENERGY: 0 * PRIMARY_MJ,
-        ImpactIndicator.RAW_MATERIALS: 0 * TONNE_MIPS,
+        ImpactCategory.CLIMATE_CHANGE: 2000 * KG_CO2E,
+        ImpactCategory.RESOURCE_DEPLETION: 0 * KG_SBE,
+        ImpactCategory.ACIDIFICATION: 0 * MOL_HPOS,
+        ImpactCategory.FINE_PARTICLES: 0 * DISEASE_INCIDENCE,
+        ImpactCategory.IONIZING_RADIATIONS: 0 * KG_BQ_U235E,
+        ImpactCategory.WATER_DEPLETION: 0 * CUBIC_METER,
+        ImpactCategory.ELECTRONIC_WASTE: 0 * ELECTRONIC_WASTE,
+        ImpactCategory.PRIMARY_ENERGY: 0 * PRIMARY_MJ,
+        ImpactCategory.RAW_MATERIALS: 0 * TONNE_MIPS,
     }
 
     # Test adding a subtask
     assert task_fixture_with_subtask.get_environmental_impact().impacts == {
-        ImpactIndicator.CLIMATE_CHANGE: (3000) * KG_CO2E,
-        ImpactIndicator.RESOURCE_DEPLETION: 0 * KG_SBE,
-        ImpactIndicator.ACIDIFICATION: 0 * MOL_HPOS,
-        ImpactIndicator.FINE_PARTICLES: 0 * DISEASE_INCIDENCE,
-        ImpactIndicator.IONIZING_RADIATIONS: 0 * KG_BQ_U235E,
-        ImpactIndicator.WATER_DEPLETION: 0 * CUBIC_METER,
-        ImpactIndicator.ELECTRONIC_WASTE: 0 * ELECTRONIC_WASTE,
-        ImpactIndicator.PRIMARY_ENERGY: 0 * PRIMARY_MJ,
-        ImpactIndicator.RAW_MATERIALS: 0 * TONNE_MIPS,
+        ImpactCategory.CLIMATE_CHANGE: (3000) * KG_CO2E,
+        ImpactCategory.RESOURCE_DEPLETION: 0 * KG_SBE,
+        ImpactCategory.ACIDIFICATION: 0 * MOL_HPOS,
+        ImpactCategory.FINE_PARTICLES: 0 * DISEASE_INCIDENCE,
+        ImpactCategory.IONIZING_RADIATIONS: 0 * KG_BQ_U235E,
+        ImpactCategory.WATER_DEPLETION: 0 * CUBIC_METER,
+        ImpactCategory.ELECTRONIC_WASTE: 0 * ELECTRONIC_WASTE,
+        ImpactCategory.PRIMARY_ENERGY: 0 * PRIMARY_MJ,
+        ImpactCategory.RAW_MATERIALS: 0 * TONNE_MIPS,
     }
 
 
@@ -177,14 +177,14 @@ def test_get_task_impact_by_resource_type(
     # Test two res
     res_dict = single_task_fixture.get_impact_by_resource_type()
     assert res_dict["TestImpactSource"].impacts[
-        ImpactIndicator.CLIMATE_CHANGE
-    ] == single_task_fixture.get_indicator_impact(ImpactIndicator.CLIMATE_CHANGE)
+        ImpactCategory.CLIMATE_CHANGE
+    ] == single_task_fixture.get_category_impact(ImpactCategory.CLIMATE_CHANGE)
 
     # Test subtasks
     res_dict = task_fixture_with_subtask.get_impact_by_resource_type()
     assert res_dict["TestImpactSource"].impacts[
-        ImpactIndicator.CLIMATE_CHANGE
-    ] == task_fixture_with_subtask.get_indicator_impact(ImpactIndicator.CLIMATE_CHANGE)
+        ImpactCategory.CLIMATE_CHANGE
+    ] == task_fixture_with_subtask.get_category_impact(ImpactCategory.CLIMATE_CHANGE)
 
 
 def test_get_task_impact_by_resource_type_quantity(
@@ -195,5 +195,5 @@ def test_get_task_impact_by_resource_type_quantity(
     # d = get_task_environmental_impact(task_fixture_with_subtask)
     # TODO should test quantity computation diff between functions but unclear
     # for impact in d:
-    #    co2 += d[impact].impact_sources[ImpactIndicator.CLIMATE_CHANGE]
+    #    co2 += d[impact].impact_sources[ImpactCategory.CLIMATE_CHANGE]
     #    assert round(p.get_co2_impact(), 5) == round(co2, 5)
