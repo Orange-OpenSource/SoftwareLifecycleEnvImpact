@@ -109,7 +109,7 @@ def resource_fixture(db: SQLAlchemy) -> Resource:
 
 @mock.patch(
     "impacts_model.data_model.impact_source_factory",
-    MagicMock(return_value=ImpactSource(SERVER, 2332 * KG_CO2E)),
+    MagicMock(return_value=ImpactSource(id= 0, name="test", unit=SERVER, climate_change=2332 * KG_CO2E)),
 )
 def test_get_resource_impact(resource_fixture: Resource) -> None:
     """
@@ -131,7 +131,7 @@ def test_get_resource_impact(resource_fixture: Resource) -> None:
     "impacts_model.data_model.impact_source_factory",
     MagicMock(
         return_value=ImpactSource(
-            SERVER, 10000.123 * KG_CO2E, raw_materials=213.3 * TONNE_MIPS
+            id= 0, name="test", unit=SERVER, climate_change =10000.123 * KG_CO2E, raw_materials=213.3 * TONNE_MIPS
         ),
     ),
 )

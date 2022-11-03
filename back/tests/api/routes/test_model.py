@@ -90,7 +90,9 @@ def test_get_one_model(
 @mock.patch(
     "impacts_model.data_model.impact_source_factory",
     MagicMock(
-        return_value=ImpactSource(SERVER, 1776 * KG_CO2E),
+        return_value=ImpactSource(
+            id=0, name="test", unit=SERVER, climate_change=1776 * KG_CO2E
+        ),
     ),
 )
 def test_get_model_impact(client: FlaskClient, model_fixture: Model) -> None:

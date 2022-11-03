@@ -5,6 +5,7 @@ import inspect
 from impacts_model.impacts import AggregatedImpact, ImpactIndicator
 from pint import Quantity
 from typing import Any
+import yaml
 from impacts_model.quantities.quantities import (
     CUBIC_METER,
     DAY,
@@ -34,13 +35,17 @@ from impacts_model.quantities.quantities import (
 )
 
 
-class ImpactSource:
+class ImpactSource(yaml.YAMLObject):
     """
     A source of environmental impact_sources
     """
 
+    yaml_tag = "!ImpactSource"
+
     def __init__(
         self,
+        id: int,
+        name: str,
         unit: Quantity[Any],
         climate_change: KG_CO2E,
         resource_depletion: KG_SBE = 0 * KG_SBE,
@@ -53,7 +58,6 @@ class ImpactSource:
         raw_materials: TONNE_MIPS = 0 * TONNE_MIPS,
     ):
         """
-        Should be used by implementations, define the different impacts_sources sources
         :param climate_change: Climate change as kgeqCO2
         :param resource_depletion: Depletion of natural abiotic resources as kgeqSb
         :param acidification: acidification (PEF-AP) as mol H+ eq
@@ -63,6 +67,8 @@ class ImpactSource:
         :param primary_energy_consumption: Primary energy consumed as MJ
         :param raw_materials: Raw materials consumed as Ton
         """
+        self.id = id
+        self.name = name
         self.unit = unit
         self._co2 = climate_change * self.unit
         self.resource_depletion = resource_depletion * self.unit
@@ -99,30 +105,26 @@ class ImpactSource:
         return self._co2
 
 
-def impact_source_factory(name: str) -> ImpactSource:
+def _get_all_impact_sources() -> list[ImpactSource]:
+    list = []
+    with open("impacts_model/data/impact_sources/default.yaml", "r") as stream:
+        data_loaded = yaml.load_all(stream, Loader=yaml.Loader)
+        print(data_loaded)
+        for data in data_loaded:
+            list.append(data.id)
+    return list
+
+
+impact_sources = _get_all_impact_sources()
+
+
+def impact_source_factory(id: int) -> ImpactSource:
     """
-    Factory class to create an ImpactSource object from its name
-    :param name: name of the ImpactSource to create
+    Factory class to create an ImpactSource object from its id
+    :param id: id of the ImpactSource to create
     :return: an ImpactSource object
     """
-    module = importlib.import_module("impacts_model.impact_sources")
-    class_ = getattr(module, name)
-    instance = class_()
-    return instance
-
-
-def get_all_impact_sources() -> list[str]:
-    list = []
-    g = globals().copy()
-    for name, obj in g.items():
-        if (
-            inspect.isclass(obj)
-            and name.endswith("ImpactSource")
-            and name != "ImpactSource"
-        ):
-            list.append(name)
-    list.sort()
-    return list
+    next((x for x in impact_sources if x.id == id), None)  # TODO better way ?
 
 
 class ImpactsSourceRegistry:

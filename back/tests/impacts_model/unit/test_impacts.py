@@ -14,7 +14,7 @@ from impacts_model.impact_sources import (
     TelevisionImpactSource,
     TransportImpactSource,
     UserDeviceImpactSource,
-    get_all_impact_sources,
+    _get_all_impact_sources,
     impact_source_factory,
 )
 
@@ -86,7 +86,7 @@ def test_impact_source_factory() -> None:
 
 
 def test_get_all_impact_sources() -> None:
-    impact_sources = get_all_impact_sources()
+    impact_sources = _get_all_impact_sources()
     for impact_source in impact_sources:
         assert impact_source.endswith("ImpactSource")
         assert impact_source != "ImpactSource"
@@ -124,7 +124,9 @@ def test_impact_registry_singleton() -> None:
 
 def test_co2() -> None:
     """Test ImpactFactor co2 property getter"""
-    i = ImpactSource(SERVER / DAY, 103.72 * KG_CO2E)
+    i = ImpactSource(
+        id=0, name="test", unit=SERVER / DAY, climate_change=103.72 * KG_CO2E
+    )
     assert i.co2 == 103.72 * KG_CO2E * i.unit
 
 
@@ -135,6 +137,8 @@ def test_impact_source_parameters() -> None:
     :return:
     """
     i = ImpactSource(
+        id=0,
+        name="test",
         unit=SERVER / DAY,
         climate_change=103.72 * KG_CO2E,
         resource_depletion=312.23 * KG_SBE,
@@ -164,6 +168,8 @@ def test_get_impacts_quantities() -> None:
     :return:
     """
     i = ImpactSource(
+        id=0,
+        name="test",
         unit=SERVER / DAY,
         climate_change=103.72 * KG_CO2E,
         resource_depletion=312.23 * KG_SBE,
