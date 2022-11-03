@@ -16,6 +16,40 @@ source: >
   Orange
 methodology:
 ---
+# TODO improve value, random number actually
+!ImpactSource 
+id: "storage"
+name: "storage"
+unit: gb * day
+climate_change: 0.1
+resource_depletion:
+acidification:
+fine_particles:
+ionizing_radiations:
+water_depletion:
+electronic_waste:
+primary_energy_consumption:
+raw_materials:
+source: 
+methodology:
+---
+# TODO improve value, random number actually
+!ImpactSource 
+id: "server"
+name: "server"
+unit: server * day
+climate_change: 0.1
+resource_depletion:
+acidification:
+fine_particles:
+ionizing_radiations:
+water_depletion:
+electronic_waste:
+primary_energy_consumption:
+raw_materials:
+source: 
+methodology:
+---
 !ImpactSource
 id: "electricity"
 name: "Electricity"

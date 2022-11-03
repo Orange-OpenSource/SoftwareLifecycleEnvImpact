@@ -7,6 +7,7 @@ from impacts_model.data_model import Model, Project, Resource, Task
 from impacts_model.impact_sources import ImpactSource
 from impacts_model.quantities.quantities import (
     KG_CO2E,
+    DAY,
     SERVER,
 )
 
@@ -24,8 +25,9 @@ def model_fixture(db: SQLAlchemy) -> Model:
 
     resource = Resource(
         name="Resource 1 test task",
-        impact_source_name="TestResource",
-        input=1,
+        impact_source_id="TestResource",
+        input=1 * SERVER,
+        duration=3 * DAY,
     )
     task.resources = [resource]
     model.root_task = task
@@ -91,7 +93,7 @@ def test_get_one_model(
     "impacts_model.data_model.impact_source_factory",
     MagicMock(
         return_value=ImpactSource(
-            id=0, name="test", unit=SERVER, climate_change=1776 * KG_CO2E
+            id="testid", name="test", unit=SERVER, climate_change=1776 * KG_CO2E
         ),
     ),
 )

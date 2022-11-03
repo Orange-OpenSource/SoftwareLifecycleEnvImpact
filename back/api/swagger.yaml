@@ -612,13 +612,13 @@ paths:
       operationId: api.routes.impact_sources.get_impact_sources
       tags:
         - ImpactSource
-      summary: Get all impact sources names 
+      summary: Get all impact sources names and ids
       responses:
         200:
-          description: List of impact sources names
+          description: Dict of impact sources id and names
           schema:
-            type: array
-            items:
+            type: object
+            additionalProperties:
               type: string
 
   /debug/reset:
@@ -770,9 +770,9 @@ definitions:
       name:
         type: string
         description: Name of the resource
-      impact_source_name:
+      impact_source_id:
         type: string
-        description: ImpactSource name
+        description: ImpactSource id
       input:
         type: integer
         description: Input of the resource

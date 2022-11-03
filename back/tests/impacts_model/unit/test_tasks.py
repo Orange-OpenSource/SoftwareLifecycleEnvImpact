@@ -9,7 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 from pint import Quantity
 
 from impacts_model.data_model import Model, Project, Resource, Task
-from impacts_model.impact_sources import ImpactSource, ServerImpactSource
+from impacts_model.impact_sources import ImpactSource
 from impacts_model.impacts import ImpactIndicator
 from impacts_model.quantities.quantities import (
     CUBIC_METER,
@@ -40,13 +40,13 @@ def single_task_fixture(db: SQLAlchemy) -> Task:
 
     resource1 = Resource(
         name="Resource 1 test task",
-        impact_source_name="TestImpactSource",
-        input=1,
+        impact_source_id="TestImpactSource",
+        input=1 * SERVER,
     )
     resource2 = Resource(
         name="Resource 2 test task",
-        impact_source_name="TestImpactSource",
-        input=1,
+        impact_source_id="TestImpactSource",
+        input=1 * SERVER,
     )
     task.resources = [resource1, resource2]
     model.root_task = task
@@ -66,20 +66,20 @@ def task_fixture_with_subtask(db: SQLAlchemy) -> Task:
 
     resource1 = Resource(
         name="Resource 1 test task",
-        impact_source_name="TestImpactSource",
-        input=1,
+        impact_source_id="TestImpactSource",
+        input=1 * SERVER,
     )
     resource2 = Resource(
         name="Resource 2 test task",
-        impact_source_name="TestImpactSource",
-        input=1,
+        impact_source_id="TestImpactSource",
+        input=1 * SERVER,
     )
     task.resources = [resource1, resource2]
     subtask = Task(name="Test task subtask")
     resource3 = Resource(
         name="Resource 3 test task subtask",
-        impact_source_name="TestImpactSource",
-        input=1,
+        impact_source_id="TestImpactSource",
+        input=1 * SERVER,
     )
     subtask.resources = [resource3]
 
@@ -94,7 +94,9 @@ def task_fixture_with_subtask(db: SQLAlchemy) -> Task:
 @mock.patch(
     "impacts_model.data_model.impact_source_factory",
     MagicMock(
-        return_value=ImpactSource(id= 0, name="test", unit = SERVER, climate_change= 1776 * KG_CO2E),
+        return_value=ImpactSource(
+            id="testid", name="test", unit=SERVER, climate_change=1776 * KG_CO2E
+        ),
     ),
 )
 def test_get_task_impact_by_indicator(
@@ -118,7 +120,11 @@ def test_get_task_impact_by_indicator(
 
 @mock.patch(
     "impacts_model.data_model.impact_source_factory",
-    MagicMock(return_value=ImpactSource(id= 0, name="test",unit=SERVER, climate_change=1000 * KG_CO2E)),
+    MagicMock(
+        return_value=ImpactSource(
+            id="testid", name="test", unit=SERVER, climate_change=1000 * KG_CO2E
+        )
+    ),
 )
 def test_get_task_impact_list(
     single_task_fixture: Task, task_fixture_with_subtask: Task
@@ -156,7 +162,11 @@ def test_get_task_impact_list(
 
 @mock.patch(
     "impacts_model.data_model.impact_source_factory",
-    MagicMock(return_value=ImpactSource(id= 0, name="test", unit=SERVER, climate_change=1000 * KG_CO2E)),
+    MagicMock(
+        return_value=ImpactSource(
+            id="testId", name="test", unit=SERVER, climate_change=1000 * KG_CO2E
+        )
+    ),
 )
 def test_get_task_impact_by_resource_type(
     single_task_fixture: Task, task_fixture_with_subtask: Task

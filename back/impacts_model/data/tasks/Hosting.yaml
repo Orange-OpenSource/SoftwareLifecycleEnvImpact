@@ -4,4 +4,4 @@ unit:
 impact_sources:
 subtasks:
   - Storage
-  - Compute.yaml
+  - Compute

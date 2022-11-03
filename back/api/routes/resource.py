@@ -27,7 +27,8 @@ def create_resource(resource: dict[str, Any]) -> Any:
     """
     name = resource.get("name")
     task_id = resource.get("task_id")
-    impact_source_name = resource.get("impact_source_name")
+    impact_source_id = resource.get("impact_source_id") # TODO this should use the resourceSchema directly
+    input = resource.get("input")
 
     existing_resource = (
         Resource.query.filter(Resource.name == name)
@@ -41,8 +42,8 @@ def create_resource(resource: dict[str, Any]) -> Any:
         resource = Resource(
             name=name,
             task_id=task_id,
-            impact_source_name=impact_source_name,
-            input=100,
+            impact_source_id=impact_source_id, # TODO this should use the resourceSchema
+            input=input,
         )
         db.session.add(resource)
         db.session.commit()

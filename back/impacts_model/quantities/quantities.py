@@ -1,6 +1,7 @@
 import os as _os
+from typing import Any
 
-from pint import Context, UnitRegistry
+from pint import Context, Quantity, UnitRegistry
 
 abspath = _os.path.dirname(_os.path.abspath(__file__))
 ureg = UnitRegistry()
@@ -8,6 +9,18 @@ ureg.load_definitions(_os.path.join(abspath, "model.pint"))
 ureg.add_context(Context("test"))
 
 Q_ = ureg.Quantity
+
+
+def serialize_pint(input: Quantity[Any]) -> str:
+    try:
+        return str(input)
+    except AttributeError:
+        raise TypeError("Input must be a Quantity")
+
+
+def deserialize_pint(input: str) -> Quantity[Any]:
+    return ureg(input)
+
 
 ############
 # ALISASES #
@@ -42,3 +55,4 @@ GIGABYTE = ureg.gigabyte
 TERABYTE = ureg.terabyte
 
 MAN_DAY = ureg.man_day
+PEOPLE = ureg.people

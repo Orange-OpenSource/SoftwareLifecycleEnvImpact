@@ -15,6 +15,7 @@ from impacts_model.quantities.quantities import (
     KG_SBE,
     MOL_HPOS,
     PRIMARY_MJ,
+    SERVER,
     TONNE_MIPS,
     DAY,
 )
@@ -32,8 +33,8 @@ def resource_fixture(db: SQLAlchemy):
 
     resource = Resource(
         name="Resource test",
-        impact_source_name="TestImpactSource",
-        input=1,
+        impact_source_id="TestImpactSource",
+        input=1 * SERVER,
         duration=1 * DAY,
     )
     task.resources = [resource]
@@ -65,7 +66,7 @@ def test_get_resources(client: FlaskClient, resource_fixture: Resource) -> None:
     "impacts_model.data_model.impact_source_factory",
     MagicMock(
         return_value=ImpactSource(
-            id=0, name="test", unit=DAY, climate_change=1776 * KG_CO2E
+            id="testid", name="test", unit=DAY, climate_change=1776 * KG_CO2E
         ),
     ),
 )
@@ -80,7 +81,8 @@ def test_post_resources(client: FlaskClient, resource_fixture: Resource) -> None
         json={
             "name": "Resource test post",
             "task_id": resource_fixture.task_id,
-            "impact_source_name": resource_fixture.impact_source_name,
+            "impact_source_id": resource_fixture.impact_source_id,
+            "input": "3 server"
         },
     )
     assert response.status_code == 201
@@ -93,7 +95,7 @@ def test_post_resources(client: FlaskClient, resource_fixture: Resource) -> None
         json={
             "name": "Resource test post",
             "task_id": resource_fixture.task_id,
-            "impact_source_name": resource_fixture.impact_source_name,
+            "impact_source_id": resource_fixture.impact_source_id,
         },
     )
     assert response.status_code == 409

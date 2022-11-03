@@ -97,7 +97,7 @@ def resource_fixture(db: SQLAlchemy) -> Resource:
     task = Task(name="Test_resources task")
 
     resource = Resource(
-        name="Resource test", impact_source_name="TestResource", input=2312
+        name="Resource test", impact_source_id="TestResource", input=2312 * SERVER
     )
 
     task.resources = [resource]
@@ -109,7 +109,7 @@ def resource_fixture(db: SQLAlchemy) -> Resource:
 
 @mock.patch(
     "impacts_model.data_model.impact_source_factory",
-    MagicMock(return_value=ImpactSource(id= 0, name="test", unit=SERVER, climate_change=2332 * KG_CO2E)),
+    MagicMock(return_value=ImpactSource(id= "testid", name="test", unit=SERVER, climate_change=2332 * KG_CO2E)),
 )
 def test_get_resource_impact(resource_fixture: Resource) -> None:
     """
@@ -121,7 +121,7 @@ def test_get_resource_impact(resource_fixture: Resource) -> None:
     assert impact == (2332) * resource_fixture.value() * KG_CO2E
 
     # Test quantity change
-    resource_fixture.input = 12321.423
+    resource_fixture.input = 12321.423 * SERVER
     impact = resource_fixture.get_indicator_impact(ImpactIndicator.CLIMATE_CHANGE)
     assert isinstance(impact, Quantity)
     assert impact == (2332) * 12321.423 * KG_CO2E
@@ -131,7 +131,7 @@ def test_get_resource_impact(resource_fixture: Resource) -> None:
     "impacts_model.data_model.impact_source_factory",
     MagicMock(
         return_value=ImpactSource(
-            id= 0, name="test", unit=SERVER, climate_change =10000.123 * KG_CO2E, raw_materials=213.3 * TONNE_MIPS
+            id= "testid", name="test", unit=SERVER, climate_change =10000.123 * KG_CO2E, raw_materials=213.3 * TONNE_MIPS
         ),
     ),
 )
@@ -140,7 +140,7 @@ def test_get_resource_environmental_impact(resource_fixture: Resource) -> None:
     Test get_impacts computation by changing quantity and impacts_list
     :return:
     """
-    resource_fixture.input = 1
+    resource_fixture.input = 1 * SERVER
     assert resource_fixture.get_environmental_impact().impacts == {
         ImpactIndicator.CLIMATE_CHANGE: 10000.123 * KG_CO2E,
         ImpactIndicator.RESOURCE_DEPLETION: 0 * KG_SBE,
@@ -154,7 +154,7 @@ def test_get_resource_environmental_impact(resource_fixture: Resource) -> None:
     }
 
     # Test quantity multiplication
-    resource_fixture.input = 10
+    resource_fixture.input = 10 * SERVER
     assert resource_fixture.get_environmental_impact().impacts == {
         ImpactIndicator.CLIMATE_CHANGE: (10 * 10000.123) * KG_CO2E,
         ImpactIndicator.RESOURCE_DEPLETION: 0 * KG_SBE,
