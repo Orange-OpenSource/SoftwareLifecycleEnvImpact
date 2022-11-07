@@ -605,7 +605,7 @@ paths:
         200:
           description: Impacts
           schema:
-            $ref: "#/definitions/AggregatedImpact"
+            $ref: "#/definitions/EnvironmentalImpact"
 
   /impactsources:
     get:
@@ -644,7 +644,7 @@ definitions:
         type: string
         description: The operation to be performed
         enum:
-          - "merge_aggregated_impact"
+          - "merge"
           - "remove"
           - "replace"
           - "move"
@@ -794,7 +794,7 @@ definitions:
         format: date
         description: Last update date of the resource
 
-  AggregatedImpact:
+  EnvironmentalImpact:
     type: object
     properties:
       impacts:
@@ -821,9 +821,9 @@ definitions:
         $ref: "#/definitions/Task"
       subtasks:
         type: object
-        $ref: "#/definitions/AggregatedImpact"
+        $ref: "#/definitions/EnvironmentalImpact"
       resources:
         type: string
         additionalProperties:
           type: object
-          $ref: "#/definitions/AggregatedImpact"
+          $ref: "#/definitions/EnvironmentalImpact"

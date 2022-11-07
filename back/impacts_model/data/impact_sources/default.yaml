@@ -2,8 +2,8 @@
 !ImpactSource
 id: "network"
 name: "Network"
-unit: gb
-climate_change: 0.0015
+unit: gigabyte
+climate_change: '0.0015 kg_co2e'
 resource_depletion:
 acidification:
 fine_particles:
@@ -20,8 +20,8 @@ methodology:
 !ImpactSource 
 id: "storage"
 name: "storage"
-unit: gb * day
-climate_change: 0.1
+unit: gigabyte * day
+climate_change: "0.1 kg_co2e"
 resource_depletion:
 acidification:
 fine_particles:
@@ -38,7 +38,7 @@ methodology:
 id: "server"
 name: "server"
 unit: server * day
-climate_change: 0.1
+climate_change: "0.1 kg_co2e"
 resource_depletion:
 acidification:
 fine_particles:
@@ -54,15 +54,15 @@ methodology:
 id: "electricity"
 name: "Electricity"
 unit: kWh
-climate_change: 0.136
-resource_depletion: 0.000000017
-acidification: 0.000468
-fine_particles: 0.00000000337
-ionizing_radiations: 0.00478
-water_depletion: 0.267
-electronic_waste: 0.0952
-primary_energy_consumption: 15.5
-raw_materials: 0.298
+climate_change: "0.136 kg_co2e"
+resource_depletion: "0.000000017 kg_Sbe"
+acidification: "0.000468 mol_Hpos"
+fine_particles: "0.00000000337 disease_incidence"
+ionizing_radiations: "0.00478 kg_Bq_u235e"
+water_depletion: "0.267 cubic_meter"
+electronic_waste: "0.0952 electronic_waste"
+primary_energy_consumption: "15.5 primary_MJ"
+raw_materials: "0.298 tonne_mips"
 source: >
   Orange
 methodology:
@@ -71,7 +71,7 @@ methodology:
 id: "userDevice"
 name: "User device"
 unit: user_device * hour
-climate_change: 0.03740583958581879
+climate_change: "0.03740583958581879 kg_co2e"
 resource_depletion:
 acidification:
 fine_particles:
@@ -98,7 +98,7 @@ methodology: >
 id: "tablet"
 name: "Tablet"
 unit: tablet * hour
-climate_change: 0.017303216974674882
+climate_change: "0.017303216974674882 kg_co2e"
 resource_depletion:
 acidification:
 fine_particles:
@@ -120,7 +120,7 @@ methodology: >
 id: "laptop"
 name: "Laptop"
 unit: laptop * hour
-climate_change: 0.027700236880868794
+climate_change: "0.027700236880868794 kg_co2e"
 resource_depletion:
 acidification:
 fine_particles:
@@ -141,7 +141,7 @@ methodology: >
 id: "television"
 name: "Television"
 unit: television * hour
-climate_change: 0.04563084645220169
+climate_change: "0.04563084645220169 kg_co2e"
 resource_depletion:
 acidification:
 fine_particles:
@@ -163,7 +163,7 @@ methodology: >
 id: "smartphone"
 name: "Smartphone"
 unit: smartphone * hour
-climate_change: 0.03893978483300865
+climate_change: "0.03893978483300865 kg_co2e"
 resource_depletion:
 acidification:
 fine_particles:
@@ -186,7 +186,7 @@ methodology: >
 id: "building"
 name: "Building"
 unit: (meter * meter) * day
-climate_change: 0.21355236139630387
+climate_change: "0.21355236139630387 kg_co2e"
 resource_depletion:
 acidification:
 fine_particles:
@@ -206,7 +206,7 @@ methodology: >
 id: "office"
 name: "Office"
 unit: people * day
-climate_change: 5.491346435904957
+climate_change: "5.491346435904957 kg_co2e"
 resource_depletion:
 acidification:
 fine_particles:
@@ -228,7 +228,7 @@ methodology: >
 id: "car"
 name: "car"
 unit: km
-climate_change: 0.218
+climate_change: "0.218 kg_co2e"
 resource_depletion:
 acidification:
 fine_particles:
@@ -245,7 +245,7 @@ methodology:
 id: "bike"
 name: "bike"
 unit: km
-climate_change: 0.00348
+climate_change: "0.00348 kg_co2e"
 resource_depletion:
 acidification:
 fine_particles:
@@ -262,7 +262,7 @@ methodology:
 id: "publicTransport"
 name: "Public transport"
 unit: km
-climate_change: 0.00503
+climate_change: "0.00503 kg_co2e"
 resource_depletion:
 acidification:
 fine_particles:
@@ -279,7 +279,7 @@ methodology:
 id: "motorbike"
 name: "Motorbike"
 unit: km
-climate_change: 0.191
+climate_change: "0.191 kg_co2e"
 resource_depletion:
 acidification:
 fine_particles:
@@ -296,7 +296,7 @@ methodology:
 id: "transportation"
 name: "Transportation"
 unit: people * day
-climate_change: 6.583113447812
+climate_change: "6.583113447812 kg_co2e"
 resource_depletion:
 acidification:
 fine_particles:
@@ -333,7 +333,7 @@ methodology: >
 id: "people"
 name: "People"
 unit: people * day
-climate_change: 0.21355236139630387
+climate_change: "0.21355236139630387 kg_co2e"
 resource_depletion:
 acidification:
 fine_particles:

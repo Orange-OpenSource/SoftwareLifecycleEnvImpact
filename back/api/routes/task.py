@@ -10,7 +10,7 @@ from impacts_model.data_model import (
     Task,
     TaskSchema,
 )
-from impacts_model.impacts import AggregatedImpactSchema, TaskImpact, TaskImpactSchema
+from impacts_model.impacts import EnvironmentalImpactSchema, TaskImpact, TaskImpactSchema
 from impacts_model.templates import get_task_template_by_id, TaskTemplate
 from typing import Optional
 
@@ -105,7 +105,7 @@ def get_task_subtasks_impacts(task_id: int):
         impacts_list = []
         for subtask in task.subtasks:
             impacts_list.append(subtask.get_environmental_impact())
-        schema = AggregatedImpactSchema(many=True)
+        schema = EnvironmentalImpactSchema(many=True)
         return schema.dump(impacts_list)
     else:
         return abort(

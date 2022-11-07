@@ -4,7 +4,7 @@ import jsonpatch
 from flask import abort, request
 
 from impacts_model.data_model import db, Resource, ResourceSchema, Task
-from impacts_model.impacts import AggregatedImpactSchema
+from impacts_model.impacts import EnvironmentalImpactSchema
 
 
 def get_resources() -> Any:
@@ -130,7 +130,7 @@ def get_resource_impacts(resource_id: int):
 
     if resource is not None:
         environmental_impact = resource.get_environmental_impact()
-        schema = AggregatedImpactSchema()
+        schema = EnvironmentalImpactSchema()
         return schema.dump(environmental_impact)
     else:
         return abort(

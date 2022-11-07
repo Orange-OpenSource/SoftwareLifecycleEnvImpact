@@ -116,7 +116,7 @@ def create_project(project: dict[str, Any]) -> Any:
     """
     POST /projects/
 
-    :param project: project to merge_aggregated_impact
+    :param project: project to merge
     :return: the project inserted with its id
     """
     name = project.get("name")

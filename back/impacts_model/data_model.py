@@ -6,8 +6,8 @@ from pint import Quantity
 from sqlalchemy import func
 
 from impacts_model.impacts import (
-    AggregatedImpact,
-    AggregatedImpactByResource,
+    EnvironmentalImpact,
+    EnvironmentalImpactByResource,
     ImpactCategory,
 )
 from impacts_model.impact_sources import impact_source_factory, ImpactSource
@@ -174,7 +174,7 @@ class Resource(db.Model):  # type: ignore
         # Used as filter by SQLAlchemy queries
         return self._duration
 
-    def value(self):  # TODO put this return as a quantity
+    def value(self):  # TODO put this return as a quantity and property
         return (
             self.input
             * (self.time_use if self.time_use is not None else 1)
@@ -194,23 +194,20 @@ class Resource(db.Model):  # type: ignore
             _duration=self._duration,
         )
 
-    def get_environmental_impact(self) -> AggregatedImpact:
+    def get_environmental_impact(self) -> EnvironmentalImpact:
         """
         Get a resource complete environmental impact as an EnvironmentalImpact object
-        :return: an AggregatedImpact object with all resource impacts
+        :return: an EnvironmentalImpact object with all resource impacts
         """
         impact_source = impact_source_factory(self.impact_source_id)
-        aggregated_impact = AggregatedImpact()
+        environmental_impact = EnvironmentalImpact()
 
-        for key in impact_source.aggregated_impact.impacts:
-            aggregated_impact.merge_impact(
-                key,
-                impact_source.aggregated_impact.impacts[key]
-                * self.value()
-                / impact_source.unit,  # TODO this is probably a bad way
+        for key in impact_source.environmental_impact.impacts:
+            environmental_impact.add_impact(
+                key, impact_source.environmental_impact.impacts[key] * self.value()
             )
 
-        return aggregated_impact
+        return environmental_impact
 
     def get_category_impact(self, impact_category: ImpactCategory) -> Quantity[Any]:
         """
@@ -222,7 +219,7 @@ class Resource(db.Model):  # type: ignore
         impact_source = impact_source_factory(self.impact_source_id)
 
         return (
-            impact_source.aggregated_impact.impacts[impact_category]
+            impact_source.environmental_impact.impacts[impact_category]
             * self.value()  # TODO this should not use the aggregated impacts
         )
 
@@ -286,22 +283,22 @@ class Task(db.Model):  # type: ignore
             resources=[resource.copy() for resource in self.resources],
         )
 
-    def get_environmental_impact(self) -> AggregatedImpact:
+    def get_environmental_impact(self) -> EnvironmentalImpact:
         """
-        Get a Task complete Environmental impact via an AggregatedImpact object
-        :return: an EnvironmentImpact object with all the task environmental impacts
+        Get a Task complete Environmental impact via an EnvironmentalImpact object
+        :return: an EnvironmentalImpact object with all the task environmental impacts
         """
-        environmental_impact = AggregatedImpact()
+        environmental_impact = EnvironmentalImpact()
 
         for r in self.resources:
-            environmental_impact.merge_aggregated_impact(r.get_environmental_impact())
+            environmental_impact.add(r.get_environmental_impact())
 
         for s in self.subtasks:
-            environmental_impact.merge_aggregated_impact(s.get_environmental_impact())
+            environmental_impact.add(s.get_environmental_impact())
 
         return environmental_impact
 
-    def get_subtasks_impact(self) -> dict[int, AggregatedImpact]:
+    def get_subtasks_impact(self) -> dict[int, EnvironmentalImpact]:
         # TODO test comment
         impacts_list = {}
         for subtask in self.subtasks:
@@ -323,18 +320,18 @@ class Task(db.Model):  # type: ignore
 
         return sum(impacts_resources) + sum(impacts_subtasks)
 
-    def get_impact_by_resource_type(self) -> AggregatedImpactByResource:
+    def get_impact_by_resource_type(self) -> EnvironmentalImpactByResource:
         """
         Return a class environmental impact classified by its Resource types
         :param task: task to get the impact from
-        :return: AggregatedImpactByResource object, with AggregatedImpact objects by resource type
+        :return: EnvironmentalImpactByResource object, with EnvironmentalImpact objects by resource type
         """
-        result: AggregatedImpactByResource = {}
+        result: EnvironmentalImpactByResource = {}
 
         for r in self.resources:
             impacts_to_add = r.get_environmental_impact()
             if r.impact_source_id in result:
-                result[r.impact_source_id].merge_aggregated_impact(impacts_to_add)
+                result[r.impact_source_id].add(impacts_to_add)
             else:
                 result[r.impact_source_id] = impacts_to_add
 
@@ -342,9 +339,7 @@ class Task(db.Model):  # type: ignore
             subtasks_impacts = s.get_impact_by_resource_type()
             for resource_type in subtasks_impacts:
                 if resource_type in result:
-                    result[resource_type].merge_aggregated_impact(
-                        subtasks_impacts[resource_type]
-                    )
+                    result[resource_type].add(subtasks_impacts[resource_type])
                 else:
                     result[resource_type] = subtasks_impacts[resource_type]
 

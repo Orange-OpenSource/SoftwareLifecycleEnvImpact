@@ -2,48 +2,37 @@ from __future__ import annotations
 
 import importlib
 import inspect
-from impacts_model.impacts import AggregatedImpact, ImpactCategory
-from pint import Quantity
+from impacts_model.impacts import EnvironmentalImpact, ImpactCategory
+from pint import Quantity, Unit
 from typing import Any, Optional
 import yaml
 from impacts_model.quantities.quantities import (
-    CUBIC_METER,
-    DAY,
-    DISEASE_INCIDENCE,
-    ELECTRONIC_WASTE,
-    HOUR,
-    KG_BQ_U235E,
-    KG_CO2E,
-    KG_SBE,
-    MOL_HPOS,
-    PRIMARY_MJ,
-    TONNE_MIPS,
+    deserialize_pint,
+    deserialize_unit,
 )
 
 
-class ImpactSource(yaml.YAMLObject):
+class ImpactSource:
     """
     A source of environmental impact_sources
     """
-
-    yaml_tag = "!ImpactSource"
 
     def __init__(
         self,
         id: str,
         name: str,
-        unit: Quantity[
-            Any
-        ],  # TODO unit test that the values set by the yaml corresponds to reality. Also test none values that shouldn't be in yaml such as climate change ?
-        climate_change: KG_CO2E,
-        resource_depletion: KG_SBE = 0 * KG_SBE,
-        acidification: MOL_HPOS = 0 * MOL_HPOS,
-        fine_particles: DISEASE_INCIDENCE = 0 * DISEASE_INCIDENCE,
-        ionizing_radiations: KG_BQ_U235E = 0 * KG_BQ_U235E,
-        water_depletion: CUBIC_METER = 0 * CUBIC_METER,
-        electronic_waste: ELECTRONIC_WASTE = 0 * ELECTRONIC_WASTE,
-        primary_energy_consumption: PRIMARY_MJ = 0 * PRIMARY_MJ,
-        raw_materials: TONNE_MIPS = 0 * TONNE_MIPS,
+        unit: str,
+        climate_change: str,
+        resource_depletion: str = "",
+        acidification: str = "",
+        fine_particles: str = "",
+        ionizing_radiations: str = "",
+        water_depletion: str = "",
+        electronic_waste: str = "",
+        primary_energy_consumption: str = "",
+        raw_materials: str = "",
+        source: str = "",
+        methodology: str = "",
     ):
         """
         :param climate_change: Climate change as kgeqCO2
@@ -55,28 +44,55 @@ class ImpactSource(yaml.YAMLObject):
         :param primary_energy_consumption: Primary energy consumed as MJ
         :param raw_materials: Raw materials consumed as Ton
         """
+
+        if climate_change is None or not climate_change: # TODO try to put back in constructor
+            climate_change = 0 * deserialize_unit(ImpactCategory.CLIMATE_CHANGE.value)
+        if resource_depletion is None or not resource_depletion:
+            resource_depletion = 0 * deserialize_unit(ImpactCategory.RESOURCE_DEPLETION.value)
+        if acidification is None or not acidification:
+            acidification = 0 * deserialize_unit(ImpactCategory.ACIDIFICATION.value)
+        if fine_particles is None or not fine_particles:
+            fine_particles = 0 * deserialize_unit(ImpactCategory.FINE_PARTICLES.value)
+        if ionizing_radiations is None or not ionizing_radiations:
+            ionizing_radiations = 0 * deserialize_unit(ImpactCategory.IONIZING_RADIATIONS.value)
+        if water_depletion is None or not water_depletion:
+            water_depletion = 0 * deserialize_unit(ImpactCategory.WATER_DEPLETION.value)
+        if electronic_waste is None or not electronic_waste:
+            electronic_waste = 0 * deserialize_unit(ImpactCategory.ELECTRONIC_WASTE.value)
+        if primary_energy_consumption is None or not primary_energy_consumption:
+            primary_energy_consumption = 0 * deserialize_unit(ImpactCategory.PRIMARY_ENERGY.value)
+        if raw_materials is None or not raw_materials:
+            raw_materials = 0 * deserialize_unit(ImpactCategory.RAW_MATERIALS.value)
+
+        # TODO unit test that the values set by the yaml corresponds to reality. Also test none values that shouldn't be in yaml such as climate change ?
         self.id = id
         self.name = name
-        self.unit = unit
-        self.climate_change = climate_change * self.unit
-        self.resource_depletion = resource_depletion * self.unit
-        self.acidification = acidification * self.unit
-        self.fine_particles = fine_particles * self.unit
-        self.ionizing_radiations = ionizing_radiations * self.unit
-        self.water_depletion = water_depletion * self.unit
-        self.electronic_waste = electronic_waste * self.unit
-        self.primary_energy_consumption = primary_energy_consumption * self.unit
-        self.raw_materials = raw_materials * self.unit
+        self.unit = deserialize_unit(unit)
+        self.climate_change = deserialize_pint(climate_change) / self.unit
+        self.resource_depletion = (deserialize_pint(resource_depletion) / self.unit)
+        self.acidification = deserialize_pint(acidification) / self.unit
+        self.fine_particles = deserialize_pint(fine_particles) / self.unit
+        self.ionizing_radiations = deserialize_pint(ionizing_radiations) / self.unit
+        self.water_depletion = deserialize_pint(water_depletion) / self.unit
+        self.electronic_waste = deserialize_pint(electronic_waste) / self.unit
+        self.primary_energy_consumption = (
+            deserialize_pint(primary_energy_consumption) / self.unit
+        )
+        self.raw_materials = deserialize_pint(raw_materials) / self.unit
+        self.source = source
+        self.methodology = methodology
+
+        # TODO test ce que ca fait si il manque co2 dans yaml
 
     @property
-    def aggregated_impact(  # TODO why is this a property ?
+    def environmental_impact(  # TODO why is this a property ?
         self,
-    ) -> AggregatedImpact:
+    ) -> EnvironmentalImpact:
         """
         Getter for co2 property
         :return: co2 as float
         """
-        return AggregatedImpact(
+        return EnvironmentalImpact(
             impacts={
                 ImpactCategory.CLIMATE_CHANGE: self.climate_change,
                 ImpactCategory.RESOURCE_DEPLETION: self.resource_depletion,
@@ -92,10 +108,15 @@ class ImpactSource(yaml.YAMLObject):
 
 
 def _get_all_impact_sources() -> list[ImpactSource]:
+    def constructor(loader, node):
+        fields = loader.construct_mapping(node)
+        return ImpactSource(**fields)
+
+    yaml.add_constructor("!ImpactSource", constructor)
+
     list = []
     with open("impacts_model/data/impact_sources/default.yaml", "r") as stream:
         data_loaded = yaml.load_all(stream, Loader=yaml.Loader)
-        print(data_loaded)
         for data in data_loaded:
             list.append(data)
     return list
@@ -110,7 +131,7 @@ def impact_source_factory(id: str) -> ImpactSource:
     :param id: id of the ImpactSource to create
     :return: an ImpactSource object
     """
-    res = next((x for x in impact_sources if x.id == id), None)  # TODO better way ?
+    res = next((x for x in impact_sources if x.id == id), None)
     if res is None:
         raise Exception("No corresponding impact source")
     return res
@@ -366,7 +387,7 @@ def impact_source_factory(id: str) -> ImpactSource:
 
 # class StorageImpactSource(ImpactSource):
 #     """
-#     AggregatedImpact source for storage (disks)
+#     EnvironmentalImpact source for storage (disks)
 #     Ratio / tb / day
 #     """
 
