@@ -37,8 +37,10 @@ def deserialize_unit(input: str) -> Unit:
 ELECTRICITY_MIX = ureg.electricity_mix
 
 YEAR = ureg.year
-HOUR = ureg.hour
+MONTH = ureg.month
 DAY = ureg.day
+HOUR = ureg.hour
+MINUTE = ureg.minute
 WATT_HOUR = ureg.watt_hour
 KWH = ureg.kilowatt_hour
 
@@ -53,6 +55,7 @@ PRIMARY_MJ = ureg.primary_MJ
 TONNE_MIPS = ureg.tonne_mips
 
 USER_DEVICE = ureg.user_device
+DEVICE = ureg.device
 LAPTOP = ureg.laptop
 SMARTPHONE = ureg.smartphone
 TABLET = ureg.tablet
@@ -64,3 +67,5 @@ TERABYTE = ureg.terabyte
 
 MAN_DAY = ureg.man_day
 PEOPLE = ureg.people
+
+TIME = '[time]'

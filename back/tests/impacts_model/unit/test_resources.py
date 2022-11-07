@@ -18,7 +18,10 @@ from impacts_model.quantities.quantities import (
     MOL_HPOS,
     PRIMARY_MJ,
     TONNE_MIPS,
+    DAY,
     SERVER,
+    HOUR,
+    MONTH
 )
 
 ##########
@@ -97,7 +100,9 @@ def resource_fixture(db: SQLAlchemy) -> Resource:
     task = Task(name="Test_resources task")
 
     resource = Resource(
-        name="Resource test", impact_source_id="TestResource", input=2312 * SERVER
+        name="Resource test",
+        impact_source_id="server",
+        input=2312 * SERVER ,  # TODO pas mettre server en id mais mock
     )
 
     task.resources = [resource]
@@ -105,6 +110,31 @@ def resource_fixture(db: SQLAlchemy) -> Resource:
     db.session.add_all([project, model, task, resource])
     db.session.commit()
     return resource
+
+
+def test_resource_value(resource_fixture: Resource):
+    """Test computation of function value()"""
+    assert isinstance(resource_fixture.value(), Quantity)
+
+    # Test with only input ( 3 servers)
+    resource_fixture.input = 3 * SERVER
+    assert resource_fixture.value() == 3 * SERVER
+
+    # Test with duration (3 servers during one month)
+    resource_fixture.duration = 1 * MONTH
+    assert resource_fixture.value() == (3 * SERVER) * (1 * MONTH) 
+
+    # Test with duration and frequency (3 servers per day during one month)
+    resource_fixture.frequency = 1 * DAY
+    assert resource_fixture.value() == (3 * SERVER) / (1 * DAY) * (1 * MONTH) 
+
+    # Test with time_use and frequency and duration (3 servers 2 hours per day during one month)
+    resource_fixture.time_use = 2 * HOUR
+    assert resource_fixture.value() == (3 * SERVER) * (2 * HOUR) / (1 * DAY) * (1 * MONTH) 
+
+
+def test_resource_copy():
+    pass  # TODO
 
 
 @mock.patch(
@@ -174,3 +204,7 @@ def test_get_resource_environmental_impact(resource_fixture: Resource) -> None:
         ImpactCategory.PRIMARY_ENERGY: 0 * PRIMARY_MJ,
         ImpactCategory.RAW_MATERIALS: (10 * 213.3) * TONNE_MIPS,
     }
+
+
+def test_resource_get_category_impact():
+    pass  # TODO

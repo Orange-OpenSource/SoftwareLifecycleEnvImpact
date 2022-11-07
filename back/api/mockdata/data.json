@@ -43,7 +43,8 @@
                         "task_id": null,
                         "updated_at": null,
                         "impact_source_id": "people",
-                        "input": "100 people"
+                        "input": "100 people",
+                        "duration": "10 day"
                       }
                     ],
                     "subtasks": [],
@@ -62,7 +63,8 @@
                         "task_id": null,
                         "updated_at": null,
                         "impact_source_id": "people",
-                        "input": "100 people"
+                        "input": "100 people",
+                        "duration": "10 day"
                       }
                     ],
                     "subtasks": [],
@@ -84,7 +86,8 @@
                     "task_id": null,
                     "updated_at": null,
                     "impact_source_id": "people",
-                    "input": "100 people"
+                    "input": "100 people",
+                    "duration": "10 day"
                   }
                 ],
                 "subtasks": [],
@@ -133,8 +136,8 @@
                     "task_id": null,
                     "updated_at": null,
                     "impact_source_id": "storage",
-                    "input": "100 gb",
-                    "duration":"100 day"
+                    "input": "100 gigabyte",
+                    "duration": "100 day"
                   }
                 ],
                 "subtasks": [
@@ -152,7 +155,7 @@
                         "updated_at": null,
                         "impact_source_id": "server",
                         "input": "10 server",
-                        "duration":"100 day"
+                        "duration": "100 day"
                       }
                     ],
                     "subtasks": [],
@@ -171,8 +174,8 @@
                         "task_id": null,
                         "updated_at": null,
                         "impact_source_id": "storage",
-                        "input": "100 gb",
-                        "duration":"100 day"
+                        "input": "100 gigabyte",
+                        "duration": "100 day"
                       }
                     ],
                     "subtasks": [],
@@ -191,7 +194,7 @@
                         "task_id": null,
                         "updated_at": null,
                         "impact_source_id": "network",
-                        "input": "100 gb"
+                        "input": "100 gigabyte"
                       }
                     ],
                     "subtasks": [],
@@ -213,7 +216,8 @@
                     "task_id": null,
                     "updated_at": null,
                     "impact_source_id": "userDevice",
-                    "input": "100 device"
+                    "input": "100 device",
+                    "duration": "10 day"
                   }
                 ],
                 "subtasks": [],

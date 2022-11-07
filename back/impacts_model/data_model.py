@@ -1,17 +1,27 @@
 from typing import Any, List
 from flask_marshmallow import Marshmallow as FlaskMarshmallow
 from flask_sqlalchemy import SQLAlchemy
+from marshmallow import ValidationError, validates_schema
 from marshmallow_sqlalchemy.fields import Nested
 from pint import Quantity
 from sqlalchemy import func
+import re
 
 from impacts_model.impacts import (
     EnvironmentalImpact,
     EnvironmentalImpactByResource,
     ImpactCategory,
 )
-from impacts_model.impact_sources import impact_source_factory, ImpactSource
-from impacts_model.quantities.quantities import deserialize_pint, serialize_pint
+from impacts_model.impact_sources import (
+    ImpactSourceError,
+    impact_source_factory,
+)
+from impacts_model.quantities.quantities import (
+    MONTH,
+    TIME,
+    deserialize_pint,
+    serialize_pint,
+)
 from sqlalchemy.ext.hybrid import hybrid_property
 
 db = SQLAlchemy()
@@ -45,7 +55,7 @@ class Resource(db.Model):  # type: ignore
         return impact_source_factory(self.impact_source_id)
 
     @hybrid_property
-    def input(self):
+    def input(self) -> Quantity[Any]:
         # Pint does not deal with None values
         if self._input is None:
             return None
@@ -54,7 +64,7 @@ class Resource(db.Model):  # type: ignore
             return deserialize_pint(self._input)
 
     @input.setter
-    def input(self, input):
+    def input(self, input) -> None:
         if input is None:
             self._input = None
             return
@@ -78,7 +88,7 @@ class Resource(db.Model):  # type: ignore
         self._input = serialize_pint(input)
 
     @input.expression
-    def input(self):
+    def input(self) -> str:
         # Used as filter by SQLAlchemy queries
         return self._input
 
@@ -131,9 +141,9 @@ class Resource(db.Model):  # type: ignore
 
         # Check the given duration is a pint.Quantity instance with a dimension of 'time'
         try:
-            if not frequency.check("1/[time]"):  # TODO test this
+            if not frequency.check("[time]"):  # TODO test this
                 raise ValueError(
-                    "Frequency must be a Quantity with a dimensionality of 1/[time]"
+                    "Frequency must be a Quantity with a dimensionality of [time]"
                 )
         except AttributeError:
             raise TypeError("Frequency must be a Quantity")
@@ -178,11 +188,11 @@ class Resource(db.Model):  # type: ignore
         # Used as filter by SQLAlchemy queries
         return self._duration
 
-    def value(self):  # TODO put this return as a quantity and property
+    def value(self) -> Quantity[Any]:
         return (
             self.input
             * (self.time_use if self.time_use is not None else 1)
-            * (self.frequency if self.frequency is not None else 1)
+            / (self.frequency if self.frequency is not None else 1)
             * (self.duration if self.duration is not None else 1)
         )
         # TODO unit test
@@ -248,6 +258,44 @@ class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
     _duration = ma.auto_field(
         data_key="duration", attribute="_duration", allow_none=False
     )
+
+    @validates_schema
+    def validate_quantities(self, data, **kwargs):
+        errors = {}
+        try:
+            # Retrieve the impact source to assess inputs
+            impact_source = impact_source_factory(data["impact_source_id"])
+            # Deserialize input pint quantity
+            input = deserialize_pint(data["_input"])
+            # Check that input unit correspond to the resource
+            if input.units != impact_source.unit:
+                # Use the string to compare units
+                units_split = re.split(r"[*,/]", str(impact_source.unit))
+                units_len = len(units_split)
+                if units_len == 1:
+                    # If same dimensionnality, means that input unit is incorrect
+                    # as it should be exactly the impact source one
+                    errors["_input"] = ["Input unit should be " + str(impact_source.unit)]
+                elif units_len == 2:
+                    if deserialize_pint(1 * units_split[0]).check(
+                        "[time]"
+                    ) or deserialize_pint(1 * units_split[1]).check("[time]"):
+                        if not "_duration" in data:
+                            errors["_duration"] = [
+                                "Impact source unit is "
+                                + str(impact_source.unit)
+                                + ", duration is needed"
+                            ]
+                else:
+                    errors["_input"] = ["Input unit should be " + str(impact_source.unit)]
+
+        except TypeError:
+            errors["_input"] = ["Wrong input quantity format"]
+        except ImpactSourceError:
+            errors["impact_source_id"] = ["Wrong impact_source_id"]
+
+        if errors:
+            raise ValidationError(errors)
 
 
 class Task(db.Model):  # type: ignore

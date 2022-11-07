@@ -124,6 +124,8 @@ def _get_all_impact_sources() -> list[ImpactSource]:
 
 impact_sources = _get_all_impact_sources()
 
+class ImpactSourceError(Exception):
+    pass
 
 def impact_source_factory(id: str) -> ImpactSource:
     """
@@ -133,7 +135,7 @@ def impact_source_factory(id: str) -> ImpactSource:
     """
     res = next((x for x in impact_sources if x.id == id), None)
     if res is None:
-        raise Exception("No corresponding impact source")
+        raise ImpactSourceError("No corresponding impact source")
     return res
 
 
