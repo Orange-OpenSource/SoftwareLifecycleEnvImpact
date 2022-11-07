@@ -43,6 +43,6 @@ def test_impact_source_factory() -> None:
             list.append(data.id)
     
     assert len(list) > 0
-    for d in data:
-        loaded_impact = impact_source_factory(d.id)
+    for d in list:
+        loaded_impact = impact_source_factory(d)
         assert isinstance(loaded_impact, ImpactSource)

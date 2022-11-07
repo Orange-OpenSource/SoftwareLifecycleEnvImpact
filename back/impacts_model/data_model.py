@@ -41,6 +41,10 @@ class Resource(db.Model):  # type: ignore
     )
 
     @hybrid_property
+    def impact_source(self):
+        return impact_source_factory(self.impact_source_id)
+
+    @hybrid_property
     def input(self):
         # Pint does not deal with None values
         if self._input is None:
@@ -199,12 +203,11 @@ class Resource(db.Model):  # type: ignore
         Get a resource complete environmental impact as an EnvironmentalImpact object
         :return: an EnvironmentalImpact object with all resource impacts
         """
-        impact_source = impact_source_factory(self.impact_source_id)
         environmental_impact = EnvironmentalImpact()
 
-        for key in impact_source.environmental_impact.impacts:
+        for key in self.impact_source.environmental_impact.impacts:
             environmental_impact.add_impact(
-                key, impact_source.environmental_impact.impacts[key] * self.value()
+                key, self.impact_source.environmental_impact.impacts[key] * self.value()
             )
 
         return environmental_impact
@@ -216,10 +219,8 @@ class Resource(db.Model):  # type: ignore
         :param impact_category: The ImpactCategory to retrieve the impact
         :return: A quantity corresponding to the resource ImpactCategory quantity
         """
-        impact_source = impact_source_factory(self.impact_source_id)
-
         return (
-            impact_source.environmental_impact.impacts[impact_category]
+            self.impact_source.environmental_impact.impacts[impact_category]
             * self.value()  # TODO this should not use the aggregated impacts
         )
 
