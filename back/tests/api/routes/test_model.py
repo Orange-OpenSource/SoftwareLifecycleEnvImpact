@@ -101,7 +101,14 @@ def test_get_model_impact(client: FlaskClient, model_fixture: Model) -> None:
     response = client.get(models_root + "/" + str(model_fixture.id) + "/impact")
     assert response.status_code == 200
 
-
+@mock.patch(
+    "impacts_model.data_model.impact_source_factory",
+    MagicMock(
+        return_value=ImpactSource(
+            id="testid", name="test", unit=SERVER, climate_change=1776 * KG_CO2E
+        ),
+    ),
+)
 def test_patch_model(client: FlaskClient, db: SQLAlchemy, model_fixture: Model) -> None:
     """
     Test response of PATCH /models/<id>

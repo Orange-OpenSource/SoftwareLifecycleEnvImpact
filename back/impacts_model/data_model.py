@@ -1,4 +1,4 @@
-from typing import Any, List
+from typing import Any, List, Optional
 from flask_marshmallow import Marshmallow as FlaskMarshmallow
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow import ValidationError, validates_schema
@@ -259,38 +259,88 @@ class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
         data_key="duration", attribute="_duration", allow_none=False
     )
 
+    def _validate_quantity(self, name, data, errors) -> Optional[Quantity[Any]]:
+        if name in data:
+            try:
+                return deserialize_pint(data[name])
+            except TypeError:
+                errors[name] = ["Wrong quantity format"]
+        return None
+
+    # Validate time in resource (duration, duration and frequency, duration an frequency and time_use)
+
+    # Validate no time in resource either duration and frequency or nothing
+
     @validates_schema
     def validate_quantities(self, data, **kwargs):
         errors = {}
+
+        # Validate that input are quantities
+        input = self._validate_quantity("_input", data, errors)
+        time_use = self._validate_quantity("_time_use", data, errors)
+        frequency = self._validate_quantity("_frequency", data, errors)
+        duration = self._validate_quantity("_duration", data, errors)
+
         try:
-            # Retrieve the impact source to assess inputs
+            # Validate that the ImpactSource can be retrieved
             impact_source = impact_source_factory(data["impact_source_id"])
-            # Deserialize input pint quantity
-            input = deserialize_pint(data["_input"])
-            # Check that input unit correspond to the resource
-            if input.units != impact_source.unit:
+
+            # Validate that the input unit correspond to the ImpactSource one
+            if input.units == impact_source.unit:
+                # If it is the right unit, and they're is no time in resource_unit, should either have time_use and frequency or nothing
+                # TODO is there really no time here ?
+                if time_use is None and frequency is not None:
+                    errors["time_use"] = [
+                        "time_use should not be none if frequency is set, as they're is no [time] the ImpactSource unit ("
+                        + str(impact_source.unit)
+                        + ")"
+                    ]
+                if frequency is None and time_use is not None:
+                    errors["frequency"] = [
+                        "frequency should not be none if time_use is set, as they're is no [time] the ImpactSource unit ("
+                        + str(impact_source.unit)
+                        + ")"
+                    ]
+            else:
+                # If the input unit is different from the ImpactSource one
+
                 # Use the string to compare units
                 units_split = re.split(r"[*,/]", str(impact_source.unit))
-                units_len = len(units_split)
-                if units_len == 1:
-                    # If same dimensionnality, means that input unit is incorrect
-                    # as it should be exactly the impact source one
-                    errors["_input"] = ["Input unit should be " + str(impact_source.unit)]
-                elif units_len == 2:
+                units_split_len = len(units_split)
+
+                if units_split_len > 2 or units_split_len == 0:
+                    # Should not happen, safeguard for the future
+                    errors["impact_source"] = ["ImpactSource unit dimensionality > 2"]
+                elif units_split_len == 2:
+                    # Means that duration should be set, or if no time in impactsource unit that input unit should match with a dimensionality of 2
+
+                    # Check that time is present in ImpactSource unit
                     if deserialize_pint(1 * units_split[0]).check(
                         "[time]"
                     ) or deserialize_pint(1 * units_split[1]).check("[time]"):
+
+                        # If time in ImpactSourceUnit, duration should be set
                         if not "_duration" in data:
                             errors["_duration"] = [
                                 "Impact source unit is "
                                 + str(impact_source.unit)
                                 + ", duration is needed"
                             ]
-                else:
-                    errors["_input"] = ["Input unit should be " + str(impact_source.unit)]
-
-        except TypeError:
-            errors["_input"] = ["Wrong input quantity format"]
+                        else:
+                            # If duration is set, frequency and (time use and frequency) can be set, not time_use alone
+                            if "_time_use" in data and not "_frequency":
+                                errors["_time_use"] = [
+                                    "If time_use is set, frequency should be set"
+                                ]
+                    else:
+                        # No time in ImpactSource unit
+                        errors["_input"] = [
+                            "Input unit should be " + str(impact_source.unit)
+                        ]
+                elif units_split_len == 1:
+                    errors["_input"] = [
+                            "Input unit should be " + str(impact_source.unit)
+                        ]
         except ImpactSourceError:
             errors["impact_source_id"] = ["Wrong impact_source_id"]
 

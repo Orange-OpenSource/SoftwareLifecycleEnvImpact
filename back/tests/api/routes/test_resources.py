@@ -33,7 +33,7 @@ def resource_fixture(db: SQLAlchemy):
 
     resource = Resource(
         name="Resource test",
-        impact_source_id="TestImpactSource",
+        impact_source_id="testid",
         input=1 * SERVER,
         duration=1 * DAY,
     )
@@ -82,7 +82,7 @@ def test_post_resources(client: FlaskClient, resource_fixture: Resource) -> None
             "name": "Resource test post",
             "task_id": resource_fixture.task_id,
             "impact_source_id": resource_fixture.impact_source_id,
-            "input": "3 server"
+            "input": "3 server",
         },
     )
     assert response.status_code == 201
@@ -123,6 +123,14 @@ def test_get_one_resource(
     assert response.status_code == 404
 
 
+@mock.patch(
+    "impacts_model.data_model.impact_source_factory",
+    MagicMock(
+        return_value=ImpactSource(
+            id="testid", name="test", unit=SERVER, climate_change=2332 * KG_CO2E
+        )
+    ),
+)
 def test_patch_resource(
     client: FlaskClient, db: SQLAlchemy, resource_fixture: Resource
 ) -> None:
