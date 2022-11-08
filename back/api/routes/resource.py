@@ -25,10 +25,9 @@ def create_resource(resource: dict[str, Any]) -> Any:
     :param resource: resource to create
     :return: the resource inserted with its id
     """
+
     name = resource.get("name")
     task_id = resource.get("task_id")
-    impact_source_id = resource.get("impact_source_id") # TODO this should use the resourceSchema directly
-    input = resource.get("input")
 
     existing_resource = (
         Resource.query.filter(Resource.name == name)
@@ -38,25 +37,18 @@ def create_resource(resource: dict[str, Any]) -> Any:
     existing_task = Task.query.filter(Task.id == task_id).one_or_none()
 
     if existing_resource is None and existing_task is not None:
-
-        resource = Resource(
-            name=name,
-            task_id=task_id,
-            impact_source_id=impact_source_id, # TODO this should use the resourceSchema
-            input=input,
-        )
-        db.session.add(resource)
+        schema = ResourceSchema()
+        loaded_resource = schema.load(resource)
+        db.session.add(loaded_resource)
         db.session.commit()
 
-        schema = ResourceSchema()
-        data = schema.dump(resource)
+        data = schema.dump(loaded_resource)
         return data, 201
     else:
         return abort(
             409,
             "Resource {resource} exists already".format(resource=name),
         )
-
 
 def get_resource(resource_id: int) -> Any:
     """

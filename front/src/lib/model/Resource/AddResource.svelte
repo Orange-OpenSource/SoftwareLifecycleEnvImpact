@@ -5,6 +5,7 @@
 	import { addResourceRequest } from '$lib/model/api/resource';
 	import Error from '$lib/Error.svelte';
 	import Spinner from '$lib/Spinner.svelte';
+	import type { ImpactSource } from '../api/model/resource';
 
 	/*Bound var*/
 	export let task: Task;
@@ -12,7 +13,7 @@
 	let showModal = false;
 
 	let impactSourcesPromise = getImpactSources();
-	let selectedImpactSource: string;
+	let selectedImpactSource: ImpactSource;
 	let name = '';
 
 	let error = '';
@@ -23,7 +24,7 @@
 		name = '';
 	}
 
-	async function handleSubmit() {
+	async function handleSubmit() { // TODO error marche pas à cause du async
 		error = '';
 		try {
 			if (selectedImpactSource != null) {
@@ -55,8 +56,8 @@
 				<div class="col-6">
 					<label for="resourceName">Unit</label>
 					<select class="form-select" bind:value={selectedImpactSource} required>
-						{#each impactSources as [key, value]}
-							<option value={key} class="form-check-input">{value}</option>
+						{#each impactSources as impactSource}
+							<option value={impactSource} class="form-check-input">{impactSource.name}</option>
 						{/each}
 					</select>
 				</div>

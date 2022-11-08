@@ -33,7 +33,7 @@
 		oldParent?: Task;
 	}
 
-	function handleDragStart(e) {
+	function handleDragStart(e: any) {
 		e.dataTransfer.dropEffect = 'move';
 		draggedObject = {
 			task: task,
@@ -42,7 +42,7 @@
 		// e.dataTransfer.setData('text', JSON.stringify(draggingObject));
 	}
 
-	async function handleDragDrop(e) {
+	async function handleDragDrop(e: any) {
 		if (draggedObject.oldParent != undefined && draggedObject.task != undefined) {
 			let oldParent = draggedObject.oldParent!;
 			let taskToMove = draggedObject.task!;
@@ -64,7 +64,7 @@
 		}
 	}
 
-	function handleDragEnd(e) {
+	function handleDragEnd(e: any) {
 		draggedObject = {};
 	}
 </script>

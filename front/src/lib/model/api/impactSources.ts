@@ -1,8 +1,9 @@
 import { get } from './api';
+import type { ImpactSource } from './model/resource';
 
-export async function getImpactSources(): Promise<[string, string] | [string, unknown][]> {
+export async function getImpactSources(): Promise<ImpactSource[]> {
 	const res = await get('impactsources');
 	return res.text().then((json: string) => {
-		return Object.entries(JSON.parse(json));
+		return JSON.parse(json);
 	});
 }

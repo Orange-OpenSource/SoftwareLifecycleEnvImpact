@@ -6,6 +6,7 @@ from marshmallow_sqlalchemy.fields import Nested
 from pint import Quantity
 from sqlalchemy import func
 import re
+from marshmallow import post_dump
 
 from impacts_model.impacts import (
     EnvironmentalImpact,
@@ -255,9 +256,41 @@ class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
     _input = ma.auto_field(data_key="input", attribute="_input", allow_none=False)
     _time_use = ma.auto_field(data_key="time_use", attribute="_time_use")
     _frequency = ma.auto_field(data_key="frequency", attribute="_frequency")
-    _duration = ma.auto_field(
-        data_key="duration", attribute="_duration", allow_none=False
-    )
+    _duration = ma.auto_field(data_key="duration", attribute="_duration")
+
+    @post_dump
+    def translate_quantities(self, in_data, **kwargs):  # type: ignore
+        """Translate pint quantities to dict before serialization
+        {
+            'value': 12421.4213,
+            'unit': "KG_CO2E",
+        }
+        """
+        if "input" in in_data and in_data["input"] is not None:
+            split = str(in_data["input"]).split()
+            in_data["input"] = {
+                "value": round(float(split[0]), 2),
+                "unit": split[1],
+            }
+        if "time_use" in in_data and in_data["time_use"] is not None:
+            split = str(in_data["time_use"]).split()
+            in_data["time_use"] = {
+                "value": round(float(split[0]), 2),
+                "unit": split[1],
+            }
+        if "frequency" in in_data and in_data["frequency"] is not None:
+            split = str(in_data["frequency"]).split()
+            in_data["frequency"] = {
+                "value": round(float(split[0]), 2),
+                "unit": split[1],
+            }
+        if "duration" in in_data and in_data["duration"] is not None:
+            split = str(in_data["duration"]).split()
+            in_data["duration"] = {
+                "value": round(float(split[0]), 2),
+                "unit": split[1],
+            }
+        return in_data
 
     def _validate_quantity(self, name, data, errors) -> Optional[Quantity[Any]]:
         if name in data:
@@ -339,8 +372,8 @@ class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
                         ]
                 elif units_split_len == 1:
                     errors["_input"] = [
-                            "Input unit should be " + str(impact_source.unit)
-                        ]
+                        "Input unit should be " + str(impact_source.unit)
+                    ]
         except ImpactSourceError:
             errors["impact_source_id"] = ["Wrong impact_source_id"]
 

@@ -615,11 +615,9 @@ paths:
       summary: Get all impact sources names and ids
       responses:
         200:
-          description: Dict of impact sources id and names
+          description: ImpactSources
           schema:
-            type: object
-            additionalProperties:
-              type: string
+            $ref: "#/definitions/ImpactSource"
 
   /debug/reset:
     get:
@@ -656,6 +654,19 @@ definitions:
       value:
         type: string
         description: The value to be used within the operations.
+
+  Quantity:
+    type: object
+    required:
+      - value
+      - unit
+    properties:
+      value:
+        type: number
+        description: quantity magnitude
+      unit:
+        type: string
+        description: quantity unit
 
   Project:
     type: object
@@ -774,17 +785,21 @@ definitions:
         type: string
         description: ImpactSource id
       input:
-        type: integer
+        type: object
+        $ref: "#/definitions/Quantity"
         description: Input of the resource
-      days:
-        type: integer
-        description: Days of the resource
-      months:
-        type: integer
-        description: Months of the resource
-      years:
-        type: integer
-        description: Years of the resource
+      time_use:
+        type: object
+        $ref: "#/definitions/Quantity"
+        description: Time use of the resource
+      frequency:
+        type: object
+        $ref: "#/definitions/Quantity"
+        description: Frequency of the resource
+      duration:
+        type: object
+        $ref: "#/definitions/Quantity"
+        description: Duration of the resource
       created_at:
         type: ["null", string]
         format: date
@@ -800,7 +815,7 @@ definitions:
       impacts:
         type: object
         additionalProperties:
-          type: string
+          $ref: "#/definitions/Quantity"
     example:
       {
         "Acidification": "0 mol_Hpos",
@@ -827,3 +842,22 @@ definitions:
         additionalProperties:
           type: object
           $ref: "#/definitions/EnvironmentalImpact"
+
+  ImpactSource:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Unique identifier
+      name:
+        type: string
+        description: Name of the resource
+      unit:
+        type: string
+        description: Unit of the impact source
+      source:
+        type: string
+        description: Source of the impact source
+      methodology:
+        type: string
+        description: Methodology of the impact source

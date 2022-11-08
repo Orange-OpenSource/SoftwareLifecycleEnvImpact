@@ -10,7 +10,7 @@ from impacts_model.quantities.quantities import (
     deserialize_pint,
     deserialize_unit,
 )
-
+from marshmallow import Schema, fields
 
 class ImpactSource:
     """
@@ -106,7 +106,14 @@ class ImpactSource:
             }
         )
 
+class ImpactSourceSchema(Schema):
+    id = fields.Str()
+    name = fields.Str()
+    unit = fields.Str()
+    source = fields.Str()
+    methodology = fields.Str()
 
+    
 def _get_all_impact_sources() -> list[ImpactSource]:
     def constructor(loader, node):
         fields = loader.construct_mapping(node)
