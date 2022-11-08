@@ -3,7 +3,7 @@
 id: "network"
 name: "Network"
 unit: gigabyte
-climate_change: '0.0015 kg_co2e'
+climate_change: "0.0015 kg_co2e"
 resource_depletion:
 acidification:
 fine_particles:
@@ -17,9 +17,9 @@ source: >
 methodology:
 ---
 # TODO improve value, random number actually
-!ImpactSource 
+!ImpactSource
 id: "storage"
-name: "storage"
+name: "Storage"
 unit: gigabyte * day
 climate_change: "0.1 kg_co2e"
 resource_depletion:
@@ -30,13 +30,13 @@ water_depletion:
 electronic_waste:
 primary_energy_consumption:
 raw_materials:
-source: 
+source:
 methodology:
 ---
 # TODO improve value, random number actually
-!ImpactSource 
+!ImpactSource
 id: "server"
-name: "server"
+name: "Server"
 unit: server * day
 climate_change: "0.1 kg_co2e"
 resource_depletion:
@@ -47,7 +47,7 @@ water_depletion:
 electronic_waste:
 primary_energy_consumption:
 raw_materials:
-source: 
+source:
 methodology:
 ---
 !ImpactSource
@@ -226,7 +226,7 @@ methodology: >
 ---
 !ImpactSource
 id: "car"
-name: "car"
+name: "Car"
 unit: km
 climate_change: "0.218 kg_co2e"
 resource_depletion:
@@ -243,7 +243,7 @@ methodology:
 ---
 !ImpactSource
 id: "bike"
-name: "bike"
+name: "Bike"
 unit: km
 climate_change: "0.00348 kg_co2e"
 resource_depletion:
@@ -316,7 +316,7 @@ methodology: >
       76.32407 + 0.15459
   )
   MOTORBIKE_PERCENTAGE = 2.91722
-  
+
   MEAN_DISTANCE = 19 * 2 * km / day
   (
       FOOT_PERCENTAGE * 0 * kg_co2e / km

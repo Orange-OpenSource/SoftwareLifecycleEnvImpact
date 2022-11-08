@@ -11,7 +11,7 @@
 
 	let showModal = false;
 
-	let impactSources = getImpactSources();
+	let impactSourcesPromise = getImpactSources();
 	let selectedImpactSource: string;
 	let name = '';
 
@@ -44,7 +44,7 @@
 <Modal bind:showModal>
 	<span slot="title">Add new resource :</span>
 	<form slot="body" on:submit|preventDefault={handleSubmit}>
-		{#await impactSources}
+		{#await impactSourcesPromise}
 			<Spinner />
 		{:then impactSources}
 			<div class="row g-3">
@@ -55,8 +55,8 @@
 				<div class="col-6">
 					<label for="resourceName">Unit</label>
 					<select class="form-select" bind:value={selectedImpactSource} required>
-						{#each impactSources as impactSource}
-							<option value={impactSource} class="form-check-input">{impactSource.replace('ImpactSource', '')}</option>
+						{#each impactSources as [key, value]}
+							<option value={key} class="form-check-input">{value}</option>
 						{/each}
 					</select>
 				</div>

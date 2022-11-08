@@ -1,7 +1,7 @@
 export interface Resource {
 	id: number;
 	name: string;
-	impact_source_name: string;
+	impact_source_id: string;
 	input: number;
 	days: number;
 	months: number;
