@@ -39,12 +39,11 @@
                       {
                         "created_at": null,
                         "id": null,
-                        "name": "Development man days",
                         "task_id": null,
                         "updated_at": null,
                         "impact_source_id": "people",
-                        "input": "100 people",
-                        "duration": "10 day"
+                        "input": { "value": 100, "unit": "people" },
+                        "duration": { "value": 10, "unit": "day" }
                       }
                     ],
                     "subtasks": [],
@@ -59,12 +58,11 @@
                       {
                         "created_at": null,
                         "id": null,
-                        "name": "Design man days",
                         "task_id": null,
                         "updated_at": null,
                         "impact_source_id": "people",
-                        "input": "100 people",
-                        "duration": "10 day"
+                        "input": { "value": 100, "unit": "people" },
+                        "duration": { "value": 10, "unit": "day" }
                       }
                     ],
                     "subtasks": [],
@@ -82,12 +80,11 @@
                   {
                     "created_at": null,
                     "id": null,
-                    "name": "Specifications man days",
                     "task_id": null,
                     "updated_at": null,
                     "impact_source_id": "people",
-                    "input": "100 people",
-                    "duration": "10 day"
+                    "input": { "value": 100, "unit": "people" },
+                    "duration": { "value": 10, "unit": "day" }
                   }
                 ],
                 "subtasks": [],
@@ -102,12 +99,11 @@
                   {
                     "created_at": null,
                     "id": null,
-                    "name": "Management man days",
                     "task_id": null,
                     "updated_at": null,
                     "impact_source_id": "people",
-                    "input": "100 people",
-                    "duration": "10 day"
+                    "input": { "value": 100, "unit": "people" },
+                    "duration": { "value": 10, "unit": "day" }
                   }
                 ],
                 "subtasks": [],
@@ -132,12 +128,11 @@
                   {
                     "created_at": null,
                     "id": null,
-                    "name": "Storage terabytes",
                     "task_id": null,
                     "updated_at": null,
                     "impact_source_id": "storage",
-                    "input": "100 gigabyte",
-                    "duration": "100 day"
+                    "input": { "value": 10, "unit": "gigabyte" },
+                    "duration": { "value": 100, "unit": "day" }
                   }
                 ],
                 "subtasks": [
@@ -150,12 +145,11 @@
                       {
                         "created_at": null,
                         "id": null,
-                        "name": "Servers amount",
                         "task_id": null,
                         "updated_at": null,
                         "impact_source_id": "server",
-                        "input": "10 server",
-                        "duration": "100 day"
+                        "input": { "value": 10, "unit": "server" },
+                        "duration": { "value": 100, "unit": "day" }
                       }
                     ],
                     "subtasks": [],
@@ -170,12 +164,11 @@
                       {
                         "created_at": null,
                         "id": null,
-                        "name": "Quantity",
                         "task_id": null,
                         "updated_at": null,
                         "impact_source_id": "storage",
-                        "input": "100 gigabyte",
-                        "duration": "100 day"
+                        "input": { "value": 100, "unit": "gigabyte" },
+                        "duration": { "value": 100, "unit": "day" }
                       }
                     ],
                     "subtasks": [],
@@ -190,11 +183,10 @@
                       {
                         "created_at": null,
                         "id": null,
-                        "name": "Data transferred",
                         "task_id": null,
                         "updated_at": null,
                         "impact_source_id": "network",
-                        "input": "100 gigabyte"
+                        "input": { "value": 100, "unit": "gigabyte" }
                       }
                     ],
                     "subtasks": [],
@@ -212,12 +204,11 @@
                   {
                     "created_at": null,
                     "id": null,
-                    "name": "Users",
                     "task_id": null,
                     "updated_at": null,
                     "impact_source_id": "userDevice",
-                    "input": "100 device",
-                    "duration": "10 day"
+                    "input": { "value": 100, "unit": "device" },
+                    "duration": { "value": 10, "unit": "day" }
                   }
                 ],
                 "subtasks": [],

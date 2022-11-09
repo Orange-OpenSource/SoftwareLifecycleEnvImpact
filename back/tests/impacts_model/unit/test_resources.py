@@ -100,7 +100,6 @@ def resource_fixture(db: SQLAlchemy) -> Resource:
     task = Task(name="Test_resources task")
 
     resource = Resource(
-        name="Resource test",
         impact_source_id="server",
         input=2312 * SERVER ,  # TODO pas mettre server en id mais mock
     )

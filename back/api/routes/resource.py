@@ -26,17 +26,11 @@ def create_resource(resource: dict[str, Any]) -> Any:
     :return: the resource inserted with its id
     """
 
-    name = resource.get("name")
     task_id = resource.get("task_id")
 
-    existing_resource = (
-        Resource.query.filter(Resource.name == name)
-        .filter(Resource.task_id == task_id)
-        .one_or_none()
-    )
     existing_task = Task.query.filter(Task.id == task_id).one_or_none()
 
-    if existing_resource is None and existing_task is not None:
+    if existing_task is not None:
         schema = ResourceSchema()
         loaded_resource = schema.load(resource)
         db.session.add(loaded_resource)
@@ -47,8 +41,9 @@ def create_resource(resource: dict[str, Any]) -> Any:
     else:
         return abort(
             409,
-            "Resource {resource} exists already".format(resource=name),
+            "Task does not exist",
         )
+
 
 def get_resource(resource_id: int) -> Any:
     """

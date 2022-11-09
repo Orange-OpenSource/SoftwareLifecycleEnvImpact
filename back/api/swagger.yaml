@@ -778,9 +778,6 @@ definitions:
       id:
         type: integer
         description: Unique identifier
-      name:
-        type: string
-        description: Name of the resource
       impact_source_id:
         type: string
         description: ImpactSource id

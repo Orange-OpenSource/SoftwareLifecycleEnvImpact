@@ -6,7 +6,7 @@ from marshmallow_sqlalchemy.fields import Nested
 from pint import Quantity
 from sqlalchemy import func
 import re
-from marshmallow import post_dump
+from marshmallow import post_dump, pre_load, pre_dump, post_load
 
 from impacts_model.impacts import (
     EnvironmentalImpact,
@@ -24,6 +24,7 @@ from impacts_model.quantities.quantities import (
     serialize_pint,
 )
 from sqlalchemy.ext.hybrid import hybrid_property
+from marshmallow import Schema, fields
 
 db = SQLAlchemy()
 ma = FlaskMarshmallow()
@@ -36,7 +37,6 @@ class Resource(db.Model):  # type: ignore
 
     __tablename__ = "resource"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String, nullable=False)
     impact_source_id = db.Column(db.String, nullable=False)
 
     task_id = db.Column(db.Integer, db.ForeignKey("task.id"), nullable=False)
@@ -201,7 +201,6 @@ class Resource(db.Model):  # type: ignore
     def copy(self) -> Any:
 
         return Resource(
-            name=self.name,
             impact_source_id=self.impact_source_id,
             _input=self._input,
             _time_use=self._time_use,
@@ -236,6 +235,38 @@ class Resource(db.Model):  # type: ignore
         )
 
 
+class QuantitySchema(Schema):
+    value = fields.Number()
+    unit = fields.Str()
+
+    @post_load
+    def post_load(self, data, **kwargs):
+        """Translate serialized pint quantites before loading"""
+        return str(data["value"]) + " " + data["unit"]
+
+    @pre_dump
+    def preprocess(self, data, **kwargs):
+        """Translate pint quantities to dict before serialization
+        {
+            'value': 12421.4213,
+            'unit': "KG_CO2E",
+        }
+        """
+        split = data.split()
+        data = {
+            "value": round(float(split[0]), 2),
+            "unit": split[1],
+        }
+        return data
+
+    @validates_schema
+    def validate_quantities(self, data, **kwargs):
+        try:
+            deserialize_pint(str(data["value"]) + " " + data["unit"])
+        except TypeError:
+            raise ValidationError("Wrong quantity format")
+
+
 class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
     """
     Resource schema to serialize a Resource object
@@ -253,52 +284,50 @@ class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
     id = ma.auto_field(allow_none=True)
     task_id = ma.auto_field(allow_none=True)
 
-    _input = ma.auto_field(data_key="input", attribute="_input", allow_none=False)
-    _time_use = ma.auto_field(data_key="time_use", attribute="_time_use")
-    _frequency = ma.auto_field(data_key="frequency", attribute="_frequency")
-    _duration = ma.auto_field(data_key="duration", attribute="_duration")
+    _input = Nested(
+        QuantitySchema,
+        data_key="input",
+        attribute="_input",
+        allow_none=False,
+        many=False,
+    )
+    _time_use = Nested(
+        QuantitySchema,
+        data_key="time_use",
+        attribute="_time_use",
+        allow_none=True,
+        many=False,
+    )
+    _frequency = Nested(
+        QuantitySchema,
+        data_key="frequency",
+        attribute="_frequency",
+        allow_none=True,
+        many=False,
+    )
+    _duration = Nested(
+        QuantitySchema,
+        data_key="duration",
+        attribute="_duration",
+        allow_none=True,
+        many=False,
+    )
 
+    @pre_load
+    def pre_load(self, data, **kwargs):
+        return data
+
+    @post_load
+    def post_load(self, data, **kwargs):
+        return data
+
+    @pre_dump
+    def pre_dump(self, data, **kwargs):
+        return data
+    
     @post_dump
-    def translate_quantities(self, in_data, **kwargs):  # type: ignore
-        """Translate pint quantities to dict before serialization
-        {
-            'value': 12421.4213,
-            'unit': "KG_CO2E",
-        }
-        """
-        if "input" in in_data and in_data["input"] is not None:
-            split = str(in_data["input"]).split()
-            in_data["input"] = {
-                "value": round(float(split[0]), 2),
-                "unit": split[1],
-            }
-        if "time_use" in in_data and in_data["time_use"] is not None:
-            split = str(in_data["time_use"]).split()
-            in_data["time_use"] = {
-                "value": round(float(split[0]), 2),
-                "unit": split[1],
-            }
-        if "frequency" in in_data and in_data["frequency"] is not None:
-            split = str(in_data["frequency"]).split()
-            in_data["frequency"] = {
-                "value": round(float(split[0]), 2),
-                "unit": split[1],
-            }
-        if "duration" in in_data and in_data["duration"] is not None:
-            split = str(in_data["duration"]).split()
-            in_data["duration"] = {
-                "value": round(float(split[0]), 2),
-                "unit": split[1],
-            }
-        return in_data
-
-    def _validate_quantity(self, name, data, errors) -> Optional[Quantity[Any]]:
-        if name in data:
-            try:
-                return deserialize_pint(data[name])
-            except TypeError:
-                errors[name] = ["Wrong quantity format"]
-        return None
+    def post_dump(self, data, **kwargs):
+        return data
 
     # Validate time in resource (duration, duration and frequency, duration an frequency and time_use)
 
@@ -308,15 +337,15 @@ class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
     def validate_quantities(self, data, **kwargs):
         errors = {}
 
-        # Validate that input are quantities
-        input = self._validate_quantity("_input", data, errors)
-        time_use = self._validate_quantity("_time_use", data, errors)
-        frequency = self._validate_quantity("_frequency", data, errors)
-        duration = self._validate_quantity("_duration", data, errors)
-
         try:
             # Validate that the ImpactSource can be retrieved
             impact_source = impact_source_factory(data["impact_source_id"])
+
+            # Deserialize the quantities
+            input = deserialize_pint(data["_input"]) if "_input" in data else None
+            duration = deserialize_pint(data["_duration"]) if "_duration" in data else None
+            time_use = deserialize_pint(data["_time_use"]) if "_time_use" in data else None
+            frequency = deserialize_pint(data["_frequency"]) if "_frequency" in data else None
 
             # Validate that the input unit correspond to the ImpactSource one
             if input.units == impact_source.unit:
@@ -353,7 +382,7 @@ class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
                     ) or deserialize_pint(1 * units_split[1]).check("[time]"):
 
                         # If time in ImpactSourceUnit, duration should be set
-                        if not "_duration" in data:
+                        if duration is None:
                             errors["_duration"] = [
                                 "Impact source unit is "
                                 + str(impact_source.unit)
@@ -361,7 +390,7 @@ class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
                             ]
                         else:
                             # If duration is set, frequency and (time use and frequency) can be set, not time_use alone
-                            if "_time_use" in data and not "_frequency":
+                            if time_use is not None and frequency is None:
                                 errors["_time_use"] = [
                                     "If time_use is set, frequency should be set"
                                 ]
