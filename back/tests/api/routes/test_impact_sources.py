@@ -1,7 +1,17 @@
 from flask.testing import FlaskClient
-from impacts_model.impact_sources import impact_sources
+from impacts_model.impact_sources import ImpactSourceSchema, impact_sources
 
 impact_sources_root = "/api/v1/impactsources"
+
+
+def test_impact_source_schema() -> None:
+    """Test that an ImpactSourceSchema can dump and load correctly"""
+    schema = ImpactSourceSchema()
+
+    for impact_source in impact_sources:
+        dump = schema.dump(impact_source)
+        load = schema.load(dump)
+        dump = schema.dump(load)
 
 
 def test_get_impact_sources(client: FlaskClient) -> None:

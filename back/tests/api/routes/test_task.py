@@ -5,7 +5,7 @@ import pytest
 from flask.testing import FlaskClient
 from flask_sqlalchemy import SQLAlchemy
 
-from impacts_model.data_model import Model, Project, Task
+from impacts_model.data_model import Model, Project, Task, TaskSchema
 
 tasks_root_path = "/api/v1/tasks"
 
@@ -21,6 +21,14 @@ def task_fixture(db: SQLAlchemy) -> Task:
     db.session.add_all([project, model, task])
     db.session.commit()
     return task
+
+def test_task_schema(task_fixture: Task):
+    """Test that a TaskSchema can dump and load correctly"""
+    schema = TaskSchema()
+
+    dump = schema.dump(task_fixture)
+    load = schema.load(dump)
+    dump = schema.dump(load)
 
 
 def test_get_tasks(client: FlaskClient, task_fixture: Task) -> None:

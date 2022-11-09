@@ -2,7 +2,7 @@ import pytest
 from flask.testing import FlaskClient
 from flask_sqlalchemy import SQLAlchemy
 
-from impacts_model.data_model import Project
+from impacts_model.data_model import Project, ProjectSchema
 
 projects_root = "/api/v1/projects"
 
@@ -15,6 +15,13 @@ def project_fixture(db: SQLAlchemy):
     db.session.commit()
     return project
 
+def test_project_schema(project_fixture: Project):
+    """Test that a ProjectSchema can dump and load correctly"""
+    schema = ProjectSchema()
+
+    dump = schema.dump(project_fixture)
+    load = schema.load(dump)
+    dump = schema.dump(load)
 
 def test_get_projects(client: FlaskClient, project_fixture: Project) -> None:
     """

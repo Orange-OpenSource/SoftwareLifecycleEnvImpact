@@ -1,7 +1,5 @@
 from impacts_model.impact_sources import (
     ImpactSource,
-    _get_all_impact_sources,
-    impact_source_factory,
 )
 
 ##########

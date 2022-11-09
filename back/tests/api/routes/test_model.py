@@ -3,7 +3,7 @@ from flask.testing import FlaskClient
 from flask_sqlalchemy import SQLAlchemy
 from unittest import mock
 from unittest.mock import MagicMock
-from impacts_model.data_model import Model, Project, Resource, Task
+from impacts_model.data_model import Model, ModelSchema, Project, Resource, Task
 from impacts_model.impact_sources import ImpactSource
 from impacts_model.quantities.quantities import (
     KG_CO2E,
@@ -33,6 +33,23 @@ def model_fixture(db: SQLAlchemy) -> Model:
     db.session.add_all([model, project, task, resource])
     db.session.commit()
     return model
+
+
+@mock.patch(
+    "impacts_model.data_model.impact_source_factory",
+    MagicMock(
+        return_value=ImpactSource(
+            id="testid", name="test", unit=SERVER, climate_change=1776 * KG_CO2E
+        ),
+    ),
+)
+def test_model_schema(model_fixture: Model) -> None:
+    """Test that a ModelSchema can dump and load correctly"""
+    schema = ModelSchema()
+
+    dump = schema.dump(model_fixture)
+    load = schema.load(dump)
+    dump = schema.dump(load)
 
 
 def test_get_models(client: FlaskClient, model_fixture: Model) -> None:
@@ -99,6 +116,7 @@ def test_get_one_model(
 def test_get_model_impact(client: FlaskClient, model_fixture: Model) -> None:
     response = client.get(models_root + "/" + str(model_fixture.id) + "/impact")
     assert response.status_code == 200
+
 
 @mock.patch(
     "impacts_model.data_model.impact_source_factory",

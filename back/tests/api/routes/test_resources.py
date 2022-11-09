@@ -44,10 +44,12 @@ def resource_fixture(db: SQLAlchemy):
     ),
 )
 def test_resource_schema(resource_fixture: Resource) -> None:
-    """Test that the resource schema     can be dumped and loaded"""
+    """Test that the resource schema can be dumped and loaded"""
     schema = ResourceSchema()
+
     dump = schema.dump(resource_fixture)
-    loaded = schema.load(dump)
+    load = schema.load(dump)
+    dump = schema.dump(load)
 
 
 def test_get_resources(client: FlaskClient, resource_fixture: Resource) -> None:

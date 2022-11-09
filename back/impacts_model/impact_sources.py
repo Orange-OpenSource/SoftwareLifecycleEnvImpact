@@ -12,6 +12,7 @@ from impacts_model.quantities.quantities import (
 )
 from marshmallow import Schema, fields
 
+
 class ImpactSource:
     """
     A source of environmental impact_sources
@@ -45,22 +46,32 @@ class ImpactSource:
         :param raw_materials: Raw materials consumed as Ton
         """
 
-        if climate_change is None or not climate_change: # TODO try to put back in constructor
+        if (
+            climate_change is None or not climate_change
+        ):  # TODO try to put back in constructor
             climate_change = 0 * deserialize_unit(ImpactCategory.CLIMATE_CHANGE.value)
         if resource_depletion is None or not resource_depletion:
-            resource_depletion = 0 * deserialize_unit(ImpactCategory.RESOURCE_DEPLETION.value)
+            resource_depletion = 0 * deserialize_unit(
+                ImpactCategory.RESOURCE_DEPLETION.value
+            )
         if acidification is None or not acidification:
             acidification = 0 * deserialize_unit(ImpactCategory.ACIDIFICATION.value)
         if fine_particles is None or not fine_particles:
             fine_particles = 0 * deserialize_unit(ImpactCategory.FINE_PARTICLES.value)
         if ionizing_radiations is None or not ionizing_radiations:
-            ionizing_radiations = 0 * deserialize_unit(ImpactCategory.IONIZING_RADIATIONS.value)
+            ionizing_radiations = 0 * deserialize_unit(
+                ImpactCategory.IONIZING_RADIATIONS.value
+            )
         if water_depletion is None or not water_depletion:
             water_depletion = 0 * deserialize_unit(ImpactCategory.WATER_DEPLETION.value)
         if electronic_waste is None or not electronic_waste:
-            electronic_waste = 0 * deserialize_unit(ImpactCategory.ELECTRONIC_WASTE.value)
+            electronic_waste = 0 * deserialize_unit(
+                ImpactCategory.ELECTRONIC_WASTE.value
+            )
         if primary_energy_consumption is None or not primary_energy_consumption:
-            primary_energy_consumption = 0 * deserialize_unit(ImpactCategory.PRIMARY_ENERGY.value)
+            primary_energy_consumption = 0 * deserialize_unit(
+                ImpactCategory.PRIMARY_ENERGY.value
+            )
         if raw_materials is None or not raw_materials:
             raw_materials = 0 * deserialize_unit(ImpactCategory.RAW_MATERIALS.value)
 
@@ -69,7 +80,7 @@ class ImpactSource:
         self.name = name
         self.unit = deserialize_unit(unit)
         self.climate_change = deserialize_pint(climate_change) / self.unit
-        self.resource_depletion = (deserialize_pint(resource_depletion) / self.unit)
+        self.resource_depletion = deserialize_pint(resource_depletion) / self.unit
         self.acidification = deserialize_pint(acidification) / self.unit
         self.fine_particles = deserialize_pint(fine_particles) / self.unit
         self.ionizing_radiations = deserialize_pint(ionizing_radiations) / self.unit
@@ -106,14 +117,19 @@ class ImpactSource:
             }
         )
 
+
 class ImpactSourceSchema(Schema):
     id = fields.Str()
     name = fields.Str()
     unit = fields.Str()
-    source = fields.Str()
-    methodology = fields.Str()
+    source = fields.Str(
+        allow_none=True,
+    )
+    methodology = fields.Str(
+        allow_none=True,
+    )
 
-    
+
 def _get_all_impact_sources() -> list[ImpactSource]:
     def constructor(loader, node):
         fields = loader.construct_mapping(node)
@@ -131,8 +147,10 @@ def _get_all_impact_sources() -> list[ImpactSource]:
 
 impact_sources = _get_all_impact_sources()
 
+
 class ImpactSourceError(Exception):
     pass
+
 
 def impact_source_factory(id: str) -> ImpactSource:
     """
