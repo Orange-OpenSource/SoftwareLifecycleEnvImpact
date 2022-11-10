@@ -36,7 +36,7 @@ def deserialize_unit(input: str) -> Unit:
     if input is None:
         return None
     if isinstance(input, Unit):
-split[1]        return input
+        return input
     return ureg.Unit(input)
 
 

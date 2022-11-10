@@ -255,7 +255,7 @@ class QuantitySchema(Schema):
                 "value": data.magnitude,
                 "unit": data.units,
             }
-        else: # mean its a string
+        else:  # mean its a string
             split = data.split()
             data = {
                 "value": round(float(split[0]), 2),

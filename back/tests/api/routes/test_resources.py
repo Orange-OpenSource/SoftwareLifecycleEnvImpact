@@ -233,15 +233,27 @@ def test_patch_resource(
     :param db: SQLAlchemy database fixture
     :param resource_fixture: Resource fixture
     """
+    # Change id
+    response = client.patch(
+        resources_root + "/" + str(resource_fixture.id),
+        json=[{"op": "replace", "path": "/impact_source_id", "value": "server"}],
+    )
+    assert response.status_code == 200
+    assert response.json["impact_source_id"] == "server"
 
-    # TODO update quantity in resource
-    pass
-    # response = client.patch(
-    #     resources_root + "/" + str(resource_fixture.id),
-    #     json=[{"op": "replace", "path": "/name", "value": "newer name"}],
-    # )
-    # assert response.status_code == 200
-    # assert response.json["input"] == 2 * SERVER
+    # Patch a quantity
+    response = client.patch(
+        resources_root + "/" + str(resource_fixture.id),
+        json=[
+            {
+                "op": "replace",
+                "path": "/input",
+                "value": {"value": 8, "unit": "server"},
+            },
+        ],
+    )
+    assert response.status_code == 200
+    assert response.json["input"] == {"value": 8, "unit": "server"}
 
     # Test wrong patch format
     response = client.patch(

@@ -652,7 +652,7 @@ definitions:
         type: string
         description: A JSON-Pointer
       value:
-        type: string
+        type: [string, object]
         description: The value to be used within the operations.
 
   Quantity:
