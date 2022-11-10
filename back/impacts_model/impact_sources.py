@@ -7,7 +7,7 @@ from pint import Quantity, Unit
 from typing import Any, Optional
 import yaml
 from impacts_model.quantities.quantities import (
-    deserialize_pint,
+    deserialize_quantity,
     deserialize_unit,
 )
 from marshmallow import Schema, fields
@@ -75,28 +75,25 @@ class ImpactSource:
         if raw_materials is None or not raw_materials:
             raw_materials = 0 * deserialize_unit(ImpactCategory.RAW_MATERIALS.value)
 
-        # TODO unit test that the values set by the yaml corresponds to reality. Also test none values that shouldn't be in yaml such as climate change ?
         self.id = id
         self.name = name
         self.unit = deserialize_unit(unit)
-        self.climate_change = deserialize_pint(climate_change) / self.unit
-        self.resource_depletion = deserialize_pint(resource_depletion) / self.unit
-        self.acidification = deserialize_pint(acidification) / self.unit
-        self.fine_particles = deserialize_pint(fine_particles) / self.unit
-        self.ionizing_radiations = deserialize_pint(ionizing_radiations) / self.unit
-        self.water_depletion = deserialize_pint(water_depletion) / self.unit
-        self.electronic_waste = deserialize_pint(electronic_waste) / self.unit
+        self.climate_change = deserialize_quantity(climate_change) / self.unit
+        self.resource_depletion = deserialize_quantity(resource_depletion) / self.unit
+        self.acidification = deserialize_quantity(acidification) / self.unit
+        self.fine_particles = deserialize_quantity(fine_particles) / self.unit
+        self.ionizing_radiations = deserialize_quantity(ionizing_radiations) / self.unit
+        self.water_depletion = deserialize_quantity(water_depletion) / self.unit
+        self.electronic_waste = deserialize_quantity(electronic_waste) / self.unit
         self.primary_energy_consumption = (
-            deserialize_pint(primary_energy_consumption) / self.unit
+            deserialize_quantity(primary_energy_consumption) / self.unit
         )
-        self.raw_materials = deserialize_pint(raw_materials) / self.unit
+        self.raw_materials = deserialize_quantity(raw_materials) / self.unit
         self.source = source
         self.methodology = methodology
 
-        # TODO test ce que ca fait si il manque co2 dans yaml
-
     @property
-    def environmental_impact(  # TODO why is this a property ?
+    def environmental_impact(
         self,
     ) -> EnvironmentalImpact:
         """
@@ -450,7 +447,7 @@ def impact_source_factory(id: str) -> ImpactSource:
 #         co2_total: KG_CO2E = consumption_co2 + amortization_day
 #         return (
 #             Q_(co2_total.magnitude, KG_CO2E) * self.unit
-#         )  # TODO improve computation, do not cast
+#         ) 
 
 
 # class ServerImpactSource(ImpactSource):

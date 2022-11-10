@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from enum import Enum
 from typing import Any
-
+from marshmallow_sqlalchemy.fields import Nested
 from marshmallow import fields, post_dump, Schema
 from pint import Quantity
 
@@ -101,28 +101,7 @@ class EnvironmentalImpact:
 class EnvironmentalImpactSchema(Schema):
     """Marshmallow schema to serialize a EnvironmentalImpactSchema object"""
 
-    impacts = fields.Dict(keys=fields.Str(), values=fields.Str())
-
-    @post_dump
-    def translate_quantities(self, in_data, **kwargs) -> dict[str, dict[str, float | str]]:  # type: ignore
-        """Translate pint quantities to dict before serialization, example for one ImpactCategory entry:
-        {
-            'value': 12421.4213,
-            'unit': "KG_CO2E",
-        }
-        """
-        out_data: dict[str, dict[str, float | str]] = {}
-        if "impacts" in in_data:
-            for impact_category_name in in_data["impacts"]:
-                split = str(in_data["impacts"][impact_category_name]).split()
-                out_data[
-                    impact_category_name.replace("ImpactCategory.", "")
-                ] = {  # TODO what is this, should be tested
-                    "value": round(float(split[0]), 2),
-                    "unit": split[1],
-                }
-        return out_data
-
+    impacts = fields.Dict(keys=fields.Str(), values=Nested("QuantitySchema"))
 
 class TaskImpact:
     def __init__(
@@ -153,6 +132,8 @@ class TaskImpactSchema(Schema):
 # EnvironmentalImpactByResource #
 ##############################
 
+ResourceName = str
+
 EnvironmentalImpactByResource = dict[
-    str, EnvironmentalImpact
-]  # TODO this should have a resource name, not str ?
+    ResourceName, EnvironmentalImpact
+]

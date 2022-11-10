@@ -59,7 +59,7 @@ class TaskTemplateSchema(Schema):
     subtasks = fields.Nested("TaskTemplateSchema", many=True)
 
 
-def get_tasks_templates() -> List[TaskTemplate]:  # TODO improve naming clash with route
+def load_tasks_templates() -> List[TaskTemplate]:
     """
     Load and return all TaskTemplate from files
     """
@@ -75,6 +75,4 @@ def get_task_template_by_id(template_id: int) -> Optional[TaskTemplate]:
     :param template_id: id of the TaskTemplate to retrieve
     :return: TaskTemplate if it exists with id, or None
     """
-    return [x for x in get_tasks_templates() if x.id == template_id][
-        0
-    ]  # TODO bad solution to create associated resource
+    return  next((x for x in load_tasks_templates() if x.id == template_id), None)

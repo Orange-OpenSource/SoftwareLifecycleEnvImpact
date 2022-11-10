@@ -8,7 +8,7 @@ from impacts_model.impact_sources import (
 )
 
 from impacts_model.quantities.quantities import (
-    deserialize_pint,
+    deserialize_quantity,
 )
 
 

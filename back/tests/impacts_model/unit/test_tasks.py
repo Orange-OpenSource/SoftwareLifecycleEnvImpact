@@ -180,15 +180,3 @@ def test_get_task_impact_by_resource_type(
     assert res_dict["TestImpactSource"].impacts[
         ImpactCategory.CLIMATE_CHANGE
     ] == task_fixture_with_subtask.get_category_impact(ImpactCategory.CLIMATE_CHANGE)
-
-
-def test_get_task_impact_by_resource_type_quantity(
-    task_fixture_with_subtask: Task,
-) -> None:
-    """TODO"""
-    co2 = 0.0
-    # d = get_task_environmental_impact(task_fixture_with_subtask)
-    # TODO should test quantity computation diff between functions but unclear
-    # for impact in d:
-    #    co2 += d[impact].impact_sources[ImpactCategory.CLIMATE_CHANGE]
-    #    assert round(p.get_co2_impact(), 5) == round(co2, 5)

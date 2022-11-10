@@ -22,8 +22,8 @@ from impacts_model.impact_sources import (
 from impacts_model.quantities.quantities import (
     MONTH,
     TIME,
-    deserialize_pint,
-    serialize_pint,
+    deserialize_quantity,
+    serialize_quantity,
 )
 from sqlalchemy.ext.hybrid import hybrid_property
 from marshmallow import Schema, fields
@@ -65,7 +65,7 @@ class Resource(db.Model):  # type: ignore
             return None
         else:
             # Quantity are stored as string in the database, deserialize it
-            return deserialize_pint(self._input)
+            return deserialize_quantity(self._input)
 
     @input.setter
     def input(self, input) -> None:
@@ -73,23 +73,14 @@ class Resource(db.Model):  # type: ignore
             self._input = None
             return
 
-        # Check the given input is a pint.Quantity instance
-        # try:
-        #     if not input.check("[any]"):
-        #         raise ValueError(
-        #             "Input must be a Quantity with a dimensionality of [any]"
-        #         )
-        # except AttributeError:
-        #     raise TypeError("Input must be a Quantity")
-        # TODO check for the quantity given to inputs
         if not isinstance(input, Quantity):
             try:
-                input = deserialize_pint(input)
+                input = deserialize_quantity(input)
             except Exception as err:
                 raise TypeError("Input must be a Quantity")
 
         # Serialize the value to save in database
-        self._input = serialize_pint(input)
+        self._input = serialize_quantity(input)
 
     @input.expression
     def input(self) -> str:
@@ -103,7 +94,7 @@ class Resource(db.Model):  # type: ignore
             return None
         else:
             # Quantity are stored as string in the database, deserialize it
-            return deserialize_pint(self._time_use)
+            return deserialize_quantity(self._time_use)
 
     @time_use.setter
     def time_use(self, time_use):
@@ -121,7 +112,7 @@ class Resource(db.Model):  # type: ignore
             raise TypeError("Time use must be a Quantity")
 
         # Serialize the value to save in database
-        self._time_use = serialize_pint(time_use)
+        self._time_use = serialize_quantity(time_use)
 
     @time_use.expression
     def time_use(self):
@@ -135,7 +126,7 @@ class Resource(db.Model):  # type: ignore
             return None
         else:
             # Quantity are stored as string in the database, deserialize it
-            return deserialize_pint(self._frequency)
+            return deserialize_quantity(self._frequency)
 
     @frequency.setter
     def frequency(self, frequency):
@@ -153,7 +144,7 @@ class Resource(db.Model):  # type: ignore
             raise TypeError("Frequency must be a Quantity")
 
         # Serialize the value to save in database
-        self._frequency = serialize_pint(frequency)
+        self._frequency = serialize_quantity(frequency)
 
     @frequency.expression
     def frequency(self):
@@ -167,7 +158,7 @@ class Resource(db.Model):  # type: ignore
             return None
         else:
             # Quantity are stored as string in the database, deserialize it
-            return deserialize_pint(self._duration)
+            return deserialize_quantity(self._duration)
 
     @duration.setter
     def duration(self, duration):
@@ -185,7 +176,7 @@ class Resource(db.Model):  # type: ignore
             raise TypeError("Duration must be a Quantity")
 
         # Serialize the value to save in database
-        self._duration = serialize_pint(duration)
+        self._duration = serialize_quantity(duration)
 
     @duration.expression
     def duration(self):
@@ -238,7 +229,7 @@ class Resource(db.Model):  # type: ignore
         """
         return (
             self.impact_source.environmental_impact.impacts[impact_category]
-            * self.value()  # TODO this should not use the aggregated impacts
+            * self.value()
         )
 
 
@@ -259,17 +250,23 @@ class QuantitySchema(Schema):
             'unit': "KG_CO2E",
         }
         """
-        split = data.split()
-        data = {
-            "value": round(float(split[0]), 2),
-            "unit": split[1],
-        }
+        if isinstance(data, Quantity):
+            data = {
+                "value": data.magnitude,
+                "unit": data.units,
+            }
+        else: # mean its a string
+            split = data.split()
+            data = {
+                "value": round(float(split[0]), 2),
+                "unit": split[1],
+            }
         return data
 
     @validates_schema
     def validate_quantities(self, data, **kwargs):
         try:
-            deserialize_pint(str(data["value"]) + " " + data["unit"])
+            deserialize_quantity(str(data["value"]) + " " + data["unit"])
         except TypeError:
             raise ValidationError("Wrong quantity format")
 
@@ -340,15 +337,17 @@ class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
             impact_source = impact_source_factory(data["impact_source_id"])
 
             # Deserialize the quantities
-            input = deserialize_pint(data["_input"]) if "_input" in data else None
+            input = deserialize_quantity(data["_input"]) if "_input" in data else None
             duration = (
-                deserialize_pint(data["_duration"]) if "_duration" in data else None
+                deserialize_quantity(data["_duration"]) if "_duration" in data else None
             )
             time_use = (
-                deserialize_pint(data["_time_use"]) if "_time_use" in data else None
+                deserialize_quantity(data["_time_use"]) if "_time_use" in data else None
             )
             frequency = (
-                deserialize_pint(data["_frequency"]) if "_frequency" in data else None
+                deserialize_quantity(data["_frequency"])
+                if "_frequency" in data
+                else None
             )
 
             # Validate that the input unit correspond to the ImpactSource one
@@ -382,9 +381,9 @@ class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
                     # Means that duration should be set, or if no time in impactsource unit that input unit should match with a dimensionality of 2
 
                     # Check that time is present in ImpactSource unit
-                    if deserialize_pint(1 * units_split[0]).check(
+                    if deserialize_quantity(1 * units_split[0]).check(
                         "[time]"
-                    ) or deserialize_pint(1 * units_split[1]).check("[time]"):
+                    ) or deserialize_quantity(1 * units_split[1]).check("[time]"):
 
                         # If time in ImpactSourceUnit, duration should be set
                         if duration is None:
@@ -467,7 +466,9 @@ class Task(db.Model):  # type: ignore
         return environmental_impact
 
     def get_subtasks_impact(self) -> dict[int, EnvironmentalImpact]:
-        # TODO test comment
+        """
+        Return a dict with all subtask ids as key, with their EnvironmentalImpact as values
+        """
         impacts_list = {}
         for subtask in self.subtasks:
             impacts_list[subtask.id] = subtask.get_environmental_impact()

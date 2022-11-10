@@ -41,7 +41,7 @@ def resource_fixture(db: SQLAlchemy) -> Resource:
     task = Task(name="Test_resources task")
 
     resource = Resource(
-        impact_source_id="server",  # TODO pas mettre server en id mais mock
+        impact_source_id="testid",
         input=2312 * SERVER,
     )
 
@@ -51,7 +51,14 @@ def resource_fixture(db: SQLAlchemy) -> Resource:
     db.session.commit()
     return resource
 
-
+@mock.patch(
+    "impacts_model.data_model.impact_source_factory",
+    MagicMock(
+        return_value=ImpactSource(
+            id="testid", name="test", unit=SERVER, climate_change=1776 * KG_CO2E
+        ),
+    ),
+)
 def test_resource_impact_source(resource_fixture: Resource):
     """Tests for resource impact_source hybrid property"""
     assert isinstance(resource_fixture.impact_source, ImpactSource)

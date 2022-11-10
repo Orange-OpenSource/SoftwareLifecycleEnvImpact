@@ -11,7 +11,8 @@ ureg.add_context(Context("test"))
 Q_ = ureg.Quantity
 
 
-def serialize_pint(input: Quantity[Any]) -> str:  # TODO Rename serialize_quantity
+def serialize_quantity(input: Quantity[Any]) -> str:
+    """Serialize a pint quantity to a string"""
     if input is None:
         return None
     try:
@@ -20,10 +21,13 @@ def serialize_pint(input: Quantity[Any]) -> str:  # TODO Rename serialize_quanti
         raise TypeError("Input must be a Quantity")
 
 
-def deserialize_pint(input: str) -> Quantity[Any]:  # TODO Rename deserialize_quantity
+def deserialize_quantity(
+    input: str,
+) -> Quantity[Any]:
+    """Deserialize a pint quantity"""
     if input is None:
         return None
-    if isinstance(input, Quantity):  # TODO try to remove
+    if isinstance(input, Quantity):
         return input
     return ureg(input)
 
@@ -31,8 +35,8 @@ def deserialize_pint(input: str) -> Quantity[Any]:  # TODO Rename deserialize_qu
 def deserialize_unit(input: str) -> Unit:
     if input is None:
         return None
-    if isinstance(input, Unit):  # TODO try to remove
-        return input
+    if isinstance(input, Unit):
+split[1]        return input
     return ureg.Unit(input)
 
 

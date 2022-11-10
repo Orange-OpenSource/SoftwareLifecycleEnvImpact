@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from unittest import mock
 from unittest.mock import MagicMock
 from impacts_model.impact_sources import ImpactSource, ImpactSourceError
-from impacts_model.data_model import Resource, ResourceSchema
+from impacts_model.data_model import QuantitySchema, Resource, ResourceSchema
 from impacts_model.data_model import Model, Project, Resource, Task
 from impacts_model.quantities.quantities import (
     KG_CO2E,
@@ -34,6 +34,14 @@ def resource_fixture(db: SQLAlchemy):
     db.session.add_all([project, model, task, resource])
     db.session.commit()
     return resource
+
+
+def test_quantity_schema():
+    """Test that the quantity schema can be dumped and loaded"""
+    schema = QuantitySchema()
+    dump = schema.dump("3 server")
+    load = schema.load(dump)
+    dump = schema.dump(load)
 
 
 @mock.patch(
