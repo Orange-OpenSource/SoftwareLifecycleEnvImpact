@@ -12,6 +12,8 @@ Q_ = ureg.Quantity
 
 
 def serialize_pint(input: Quantity[Any]) -> str:  # TODO Rename serialize_quantity
+    if input is None:
+        return None
     try:
         return str(input)
     except AttributeError:
@@ -19,13 +21,17 @@ def serialize_pint(input: Quantity[Any]) -> str:  # TODO Rename serialize_quanti
 
 
 def deserialize_pint(input: str) -> Quantity[Any]:  # TODO Rename deserialize_quantity
-    if(isinstance(input, Quantity)): # TODO try to remove
+    if input is None:
+        return None
+    if isinstance(input, Quantity):  # TODO try to remove
         return input
     return ureg(input)
 
 
 def deserialize_unit(input: str) -> Unit:
-    if(isinstance(input, Unit)): # TODO try to remove
+    if input is None:
+        return None
+    if isinstance(input, Unit):  # TODO try to remove
         return input
     return ureg.Unit(input)
 
@@ -68,4 +74,4 @@ TERABYTE = ureg.terabyte
 MAN_DAY = ureg.man_day
 PEOPLE = ureg.people
 
-TIME = '[time]'
+TIME = "[time]"

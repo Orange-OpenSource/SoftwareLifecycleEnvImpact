@@ -1,13 +1,15 @@
+from marshmallow import ValidationError
 import pytest
 from flask.testing import FlaskClient
 from flask_sqlalchemy import SQLAlchemy
 from unittest import mock
 from unittest.mock import MagicMock
-from impacts_model.impact_sources import ImpactSource
+from impacts_model.impact_sources import ImpactSource, ImpactSourceError
 from impacts_model.data_model import Resource, ResourceSchema
 from impacts_model.data_model import Model, Project, Resource, Task
 from impacts_model.quantities.quantities import (
     KG_CO2E,
+    MINUTE,
     SERVER,
     DAY,
 )
@@ -50,6 +52,85 @@ def test_resource_schema(resource_fixture: Resource) -> None:
     dump = schema.dump(resource_fixture)
     load = schema.load(dump)
     dump = schema.dump(load)
+
+
+@mock.patch(
+    "impacts_model.data_model.impact_source_factory",
+    MagicMock(
+        return_value=ImpactSource(
+            id="testid", name="test", unit=SERVER, climate_change=1776 * KG_CO2E
+        ),
+    ),
+)
+def test_resource_schema_validation_no_time_impactsource() -> None:
+    """
+    Test marshamllow validation when not time in ImpactSource unit for:
+        Frequency AND duration OR none of them
+    """
+    schema = ResourceSchema()
+
+    # Wrong input unit should raise error
+    with pytest.raises(ValidationError):
+        dump = schema.dump(
+            Resource(
+                impact_source_id="testid",
+                input=1 * SERVER * DAY,
+            )
+        )
+        schema.load(dump)
+
+    # Only frequency should raise error
+    with pytest.raises(ValidationError):
+        dump = schema.dump(
+            Resource(impact_source_id="testid", input=1 * SERVER, frequency=1 * DAY)
+        )
+        schema.load(dump)
+
+    # Only duration should raise error
+    with pytest.raises(ValidationError):
+        dump = schema.dump(
+            Resource(impact_source_id="testid", input=1 * SERVER, duration=1 * DAY)
+        )
+        schema.load(dump)
+
+
+@mock.patch(
+    "impacts_model.data_model.impact_source_factory",
+    MagicMock(
+        return_value=ImpactSource(
+            id="testid", name="test", unit=SERVER * DAY, climate_change=1776 * KG_CO2E
+        ),
+    ),
+)
+def test_resource_schema_validation_time_impactsource() -> None:
+    """
+    Test marshamllow validation when time in ImpactSource unit for:
+        - Duration is mandatory
+        - If time_use is is set, frequency should also be set
+    """
+    schema = ResourceSchema()
+
+    # Wrong input unit should raise error
+    with pytest.raises(ValidationError):
+        dump = schema.dump(
+            Resource(
+                impact_source_id="testid",
+                input=1 * SERVER * DAY,
+            )
+        )
+        schema.load(dump)
+
+    # No duration should raise error
+    with pytest.raises(ValidationError):
+        dump = schema.dump(Resource(impact_source_id="testid", input=1 * SERVER))
+        schema.load(dump)
+
+    # No frequency when time_se should raise error
+    with pytest.raises(ValidationError):
+        dump = schema.dump(
+            Resource(impact_source_id="testid", input=1 * SERVER, time_use=1 * MINUTE)
+        )
+        schema.load(dump)
 
 
 def test_get_resources(client: FlaskClient, resource_fixture: Resource) -> None:
