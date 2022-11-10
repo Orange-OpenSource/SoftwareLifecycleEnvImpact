@@ -1,5 +1,5 @@
 from typing import Any
-
+from copy import copy
 import jsonpatch
 from flask import abort, request
 
@@ -46,7 +46,7 @@ def get_project(project_id: int) -> Any:
 
 def export_project(project_id: int) -> Any:
     project = Project.query.filter(Project.id == project_id).one_or_none()
-    project_copy = project.copy()
+    project_copy = copy(project)
     if project is not None:
         project_schema = ProjectSchema()
         return project_schema.dump(project_copy)

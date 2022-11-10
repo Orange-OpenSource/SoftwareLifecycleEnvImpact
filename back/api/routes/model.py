@@ -1,4 +1,5 @@
 from typing import Any
+from copy import copy
 
 import jsonpatch
 from flask import abort, request
@@ -183,7 +184,7 @@ def duplicate_model(model_id: int) -> Any:
     model = retrieve_model_db(model_id)
 
     if model is not None:
-        model_copy = model.copy()
+        model_copy = copy(model)
         model_copy.name = model_copy.name + " copy"
         model_copy.project_id = model.project_id
         model_copy = insert_model_db(model_copy)

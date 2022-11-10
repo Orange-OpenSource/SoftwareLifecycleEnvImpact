@@ -5,6 +5,7 @@ from marshmallow import ValidationError, validates_schema
 from marshmallow_sqlalchemy.fields import Nested
 from pint import Quantity
 from sqlalchemy import func
+from copy import copy
 import re
 from marshmallow import post_dump, pre_load, pre_dump, post_load
 
@@ -442,11 +443,12 @@ class Task(db.Model):  # type: ignore
         db.DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
 
-    def copy(self) -> Any:
+    def __copy__(self):
+        """Override of copy function to return a Task stripped of ids"""
         return Task(
             name=self.name,
-            subtasks=[subtask.copy() for subtask in self.subtasks],
-            resources=[resource.copy() for resource in self.resources],
+            subtasks=[copy(subtask) for subtask in self.subtasks],
+            resources=[copy(resource) for resource in self.resources],
         )
 
     def get_environmental_impact(self) -> EnvironmentalImpact:
@@ -552,10 +554,11 @@ class Model(db.Model):  # type: ignore
         db.DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
 
-    def copy(self) -> Any:
+    def __copy__(self):
+        """Override of copy function to return a Model stripped of ids"""
         return Model(
             name=self.name,
-            root_task=self.root_task.copy(),
+            root_task=copy(self.root_task),
         )
 
 
@@ -600,8 +603,9 @@ class Project(db.Model):  # type: ignore
         db.DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
 
-    def copy(self) -> Any:
-        models_copy = [model.copy() for model in self.models]
+    def __copy__(self):
+        """Override of copy function to return a Project stripped of ids"""
+        models_copy = [copy(model) for model in self.models]
         project = Project(name=self.name, models=models_copy)
         return project
 
