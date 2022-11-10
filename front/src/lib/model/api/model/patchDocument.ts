@@ -13,7 +13,7 @@ export interface PatchDocument {
 	/**
 	 * The value to be used within the operations.
 	 */
-	value: string;
+	value: string | object;
 }
 
 export type OpEnum = 'merge' | 'remove' | 'replace' | 'move' | 'copy' | 'test';

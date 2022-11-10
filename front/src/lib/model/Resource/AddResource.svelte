@@ -14,21 +14,19 @@
 
 	let impactSourcesPromise = getImpactSources();
 	let selectedImpactSource: ImpactSource;
-	let name = '';
 
 	let error = '';
 	$: showModal, clearModal(); //Clean error message when closing modal
 
 	function clearModal() {
 		error = '';
-		name = '';
 	}
 
 	async function handleSubmit() { // TODO error marche pas à cause du async
 		error = '';
 		try {
 			if (selectedImpactSource != null) {
-				const res = await addResourceRequest(name, task.id, selectedImpactSource);
+				const res = await addResourceRequest(task.id, selectedImpactSource);
 				task.resources.push(res);
 				/*Redondant assignment to force Svelte to update components*/
 				task.resources = task.resources;
@@ -49,10 +47,6 @@
 			<Spinner />
 		{:then impactSources}
 			<div class="row g-3">
-				<div class="col-6">
-					<label for="resourceName">Name</label>
-					<input bind:value={name} type="text" class="form-control" placeholder="Resource name" required id="resourceName" />
-				</div>
 				<div class="col-6">
 					<label for="resourceName">Unit</label>
 					<select class="form-select" bind:value={selectedImpactSource} required>

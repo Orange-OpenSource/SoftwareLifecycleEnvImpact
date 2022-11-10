@@ -15,21 +15,20 @@ export async function renameResourceRequest(resource: Resource, newName: string)
 	});
 }
 
-export async function addResourceRequest(name: string, taskId: number, impact_source: ImpactSource) {
+export async function addResourceRequest(taskId: number, impact_source: ImpactSource) {
 	let duration;
-	let input = '1 ' + impact_source.unit; // create the quantity
+	let input = { value: 1, unit: impact_source.unit }; // create the quantity
 	// Check if time needed
 	impact_source.unit.split(/[*,/]/).forEach(function (unit) {
-		unit = unit.trim()
+		unit = unit.trim();
 		if (TIME_UNITS.indexOf(unit) > -1) {
-			duration = '1 ' + unit; // create the quantity for duration
+			duration = { value: 1, unit: unit }; // create the quantity for duration
 		} else {
-			input = '1 ' + unit; // redefine input quantity without duration
+			input = { value: 1, unit: unit }; // redefine input quantity without duration
 		}
 	});
-	
+
 	const res = await post('resources', {
-		name: name,
 		task_id: taskId,
 		impact_source_id: impact_source.id,
 		input: input,
@@ -52,24 +51,28 @@ export async function updateResourceInputRequest(resource: Resource): Promise<Re
 		{
 			op: 'replace',
 			path: '/input',
-			value: resource.input.value + ' ' + resource.input.unit
-		},
-		{
-			op: 'replace',
-			path: '/time_use',
-			value: resource.time_use.value + ' ' + resource.time_use.unit
-		},
-		{
-			op: 'replace',
-			path: '/frequency',
-			value: resource.frequency.value + ' ' + resource.frequency.unit
-		},
-		{
-			op: 'replace',
-			path: '/duration',
-			value: resource.duration.value + ' ' + resource.duration.unit
+			value: { value: resource.input.value, unit: resource.input.unit }
 		}
 	];
+	if (resource.time_use)
+		patchDocument.push({
+			op: 'replace',
+			path: '/time_use',
+			value: { value: resource.time_use.value, unit: resource.time_use.unit }
+		});
+	if (resource.frequency)
+		patchDocument.push({
+			op: 'replace',
+			path: '/frequency',
+			value: { value: resource.frequency.value, unit: resource.frequency.unit }
+		});
+	if (resource.duration)
+		patchDocument.push({
+			op: 'replace',
+			path: '/duration',
+			value: { value: resource.duration.value, unit: resource.duration.unit }
+		});
+
 	const res = await patch('resources/' + resource.id, patchDocument);
 	return res.text().then((json: string) => {
 		return JSON.parse(json);

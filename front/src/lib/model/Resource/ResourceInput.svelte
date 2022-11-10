@@ -1,7 +1,8 @@
 <script lang="ts">
 	import Error from '$lib/Error.svelte';
-	import type { Resource } from '../api/model/resource';
+	import { TIME_UNITS, type Resource } from '../api/model/resource';
 	import { updateResourceInputRequest } from '../api/resource';
+	import TimeunitInput from './TimeunitInput.svelte';
 
 	/*Bound var*/
 	export let resource: Resource;
@@ -42,20 +43,39 @@
 				<input type="number" id="inputValue" class="form-control" bind:value={resource.input.value} min="1" on:change={() => updateResource()} on:click|stopPropagation={() => {}} />
 			</div>
 		</div>
-		<!-- <div class="row">
-			<div class="col">
-				<label for="inputDays" class="form-label">Days:</label>
-				<input type="number" id="inputDays" class="form-control" bind:value={resource.days} min="0" on:change={() => updateResource()} on:click|stopPropagation={() => {}} />
+		{#if resource.time_use}
+			<div class="row">
+				<div class="col">
+					<label for="timeUseValue" class="form-label">Time use:</label>
+					<input type="number" id="timeUseValue" class="form-control" bind:value={resource.time_use.value} min="1" on:change={() => updateResource()} on:click|stopPropagation={() => {}} />
+				</div>
+				<div class="col">
+					<TimeunitInput bind:inputUnit={resource.time_use.unit} />
+				</div>
 			</div>
-			<div class="col">
-				<label for="inputMonths" class="form-label">Months:</label>
-				<input type="number" id="inputMonths" class="form-control" bind:value={resource.months} min="0" on:change={() => updateResource()} on:click|stopPropagation={() => {}} />
+		{/if}
+		{#if resource.frequency}
+			<div class="row">
+				<div class="col">
+					<label for="frequencyValue" class="form-label">Frequency:</label>
+					<input type="number" id="frequencyValue" class="form-control" bind:value={resource.frequency.value} min="1" on:change={() => updateResource()} on:click|stopPropagation={() => {}} />
+				</div>
+				<div class="col">
+					<TimeunitInput bind:inputUnit={resource.frequency.unit} />
+				</div>
 			</div>
-			<div class="col">
-				<label for="inputYears" class="form-label">Years:</label>
-				<input type="number" id="inputYears" class="form-control" bind:value={resource.years} min="0" on:change={() => updateResource()} on:click|stopPropagation={() => {}} />
+		{/if}
+		{#if resource.duration}
+			<div class="row">
+				<div class="col">
+					<label for="durationValue" class="form-label">Duration:</label>
+					<input type="number" id="durationValue" class="form-control" bind:value={resource.duration.value} min="1" on:change={() => updateResource()} on:click|stopPropagation={() => {}} />
+				</div>
+				<div class="col">
+					<TimeunitInput bind:inputUnit={resource.duration.unit} />
+				</div>
 			</div>
-		</div> -->
+		{/if}
 	</form>
 {/if}
 

@@ -3,9 +3,9 @@ export interface Resource {
 	name: string;
 	impact_source_id: string;
 	input: Quantity;
-	duration: Quantity;
-	frequency: Quantity;
-	time_use: Quantity;
+	duration?: Quantity;
+	frequency?: Quantity;
+	time_use?: Quantity;
 	created_at: string;
 	updated_at: string;
 }
