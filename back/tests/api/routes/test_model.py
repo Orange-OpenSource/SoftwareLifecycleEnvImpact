@@ -9,6 +9,7 @@ from impacts_model.quantities.quantities import (
     KG_CO2E,
     DAY,
     SERVER,
+    MINUTE,
 )
 
 models_root = "/api/v1/models"
@@ -27,6 +28,7 @@ def model_fixture(db: SQLAlchemy) -> Model:
         impact_source_id="TestResource",
         input=1 * SERVER,
         duration=3 * DAY,
+        frequency=3 * MINUTE,
     )
     task.resources = [resource]
     model.root_task = task
@@ -141,12 +143,12 @@ def test_patch_model(client: FlaskClient, db: SQLAlchemy, model_fixture: Model) 
     assert response.status_code == 200
     assert response.json["name"] == "newer name"
 
-    # # Test model with same name already exist
-    # response = client.patch(
-    #     models_root + "/" + str(model_fixture.id),
-    #     json=[{"op": "replace", "path": "/name", "value": "newer name"}],
-    # )
-    # assert response.status_code == 403 # TODO
+    # Test model with same name already exist
+    response = client.patch(
+        models_root + "/" + str(model_fixture.id),
+        json=[{"op": "replace", "path": "/name", "value": "newer name"}],
+    )
+    assert response.status_code == 403
 
     # Test wrong patch format
     response = client.patch(

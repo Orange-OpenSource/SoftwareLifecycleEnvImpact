@@ -28,7 +28,6 @@ def resource_fixture(db: SQLAlchemy):
     resource = Resource(
         impact_source_id="testid",
         input=1 * SERVER,
-        duration=1 * DAY,
     )
     task.resources = [resource]
     model.root_task = task
