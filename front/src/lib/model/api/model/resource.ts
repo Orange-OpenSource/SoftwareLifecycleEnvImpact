@@ -1,9 +1,10 @@
 export interface Resource {
+	[x: string]: {};
 	id: number;
 	name: string;
 	impact_source_id: string;
 	input: Quantity;
-	has_time_unit: boolean;
+	has_time_input: boolean;
 	duration?: Quantity;
 	frequency?: Quantity;
 	time_use?: Quantity;

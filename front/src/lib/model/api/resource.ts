@@ -55,19 +55,19 @@ export async function updateResourceInputRequest(resource: Resource): Promise<Re
 			value: { value: resource.input.value, unit: resource.input.unit }
 		}
 	];
-	if (resource.time_use)
+	if (resource.time_use && resource.time_use.value != undefined && resource.time_use.unit != undefined)
 		patchDocument.push({
 			op: 'replace',
 			path: '/time_use',
 			value: { value: resource.time_use.value, unit: resource.time_use.unit }
 		});
-	if (resource.frequency)
+	if (resource.frequency && resource.frequency.value != undefined && resource.frequency.unit != undefined)
 		patchDocument.push({
 			op: 'replace',
 			path: '/frequency',
 			value: { value: resource.frequency.value, unit: resource.frequency.unit }
 		});
-	if (resource.duration)
+	if (resource.duration && resource.duration.value != undefined && resource.duration.unit != undefined)
 		patchDocument.push({
 			op: 'replace',
 			path: '/duration',
