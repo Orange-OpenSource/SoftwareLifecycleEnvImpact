@@ -18,11 +18,11 @@ life_expectancy = year
 
 amortization = kg_co2e / day
 
-user_device = 1
-device = 1
-laptop = 1
-smartphone = 1
-tablet = 1
-television = 1
-server = 1
-people = 1
+user_device = []
+device = []
+laptop = []
+smartphone = []
+tablet = []
+television = []
+server = []
+people = []
