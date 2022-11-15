@@ -3,6 +3,7 @@ export interface Resource {
 	name: string;
 	impact_source_id: string;
 	input: Quantity;
+	has_time_unit: boolean;
 	duration?: Quantity;
 	frequency?: Quantity;
 	time_use?: Quantity;

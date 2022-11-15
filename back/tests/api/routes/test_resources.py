@@ -26,6 +26,7 @@ def resource_fixture(db: SQLAlchemy):
     task = Task(name="test_resource task")
 
     resource = Resource(
+        name="testResource",
         impact_source_id="testid",
         input=1 * SERVER,
     )
@@ -172,6 +173,7 @@ def test_post_resources(
     response = client.post(
         resources_root,
         json={
+            "name": "testName",
             "task_id": resource_fixture.task_id,
             "impact_source_id": resource_fixture.impact_source_id,
             "input": {"value": 3, "unit": "server"},
@@ -187,6 +189,7 @@ def test_post_resources(
     response = client.post(
         resources_root,
         json={
+            "name": "testName",
             "task_id": resource_fixture.task_id,
             "impact_source_id": resource_fixture.impact_source_id,
         },

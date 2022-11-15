@@ -1,32 +1,38 @@
+import re
+from copy import copy
 from typing import Any, List, Optional
+
 from flask_marshmallow import Marshmallow as FlaskMarshmallow
 from flask_sqlalchemy import SQLAlchemy
-from marshmallow import ValidationError, validates_schema
+from marshmallow import (
+    Schema,
+    ValidationError,
+    fields,
+    post_dump,
+    post_load,
+    pre_dump,
+    pre_load,
+    validates_schema,
+)
 from marshmallow_sqlalchemy.fields import Nested
 from pint import Quantity
 from sqlalchemy import func
-from copy import copy
-import re
-from marshmallow import post_dump, pre_load, pre_dump, post_load
+from sqlalchemy.ext.hybrid import hybrid_property
 
-from impacts_model.impacts import (
-    EnvironmentalImpact,
-    EnvironmentalImpactByResource,
-    ImpactCategory,
-)
 from impacts_model.impact_sources import (
     ImpactSource,
     ImpactSourceError,
     impact_source_factory,
 )
+from impacts_model.impacts import (
+    EnvironmentalImpact,
+    EnvironmentalImpactByResource,
+    ImpactCategory,
+)
 from impacts_model.quantities.quantities import (
-    MONTH,
-    TIME,
     deserialize_quantity,
     serialize_quantity,
 )
-from sqlalchemy.ext.hybrid import hybrid_property
-from marshmallow import Schema, fields
 
 db = SQLAlchemy()
 ma = FlaskMarshmallow()
@@ -39,6 +45,7 @@ class Resource(db.Model):  # type: ignore
 
     __tablename__ = "resource"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String, nullable=False)
     impact_source_id = db.Column(db.String, nullable=False)
 
     task_id = db.Column(db.Integer, db.ForeignKey("task.id"), nullable=False)
@@ -57,6 +64,14 @@ class Resource(db.Model):  # type: ignore
     def impact_source(self) -> ImpactSource:
         """Load and return ImpactSource corresponding to saved id"""
         return impact_source_factory(self.impact_source_id)
+
+    @hybrid_property
+    def has_time_input(self) -> bool:
+        try:
+            return self.impact_source.has_time_input
+        except:
+            print("no impactsource for " + self.impact_source_id)
+            return False
 
     @hybrid_property
     def input(self) -> Quantity[Any]:
@@ -199,6 +214,7 @@ class Resource(db.Model):  # type: ignore
     def __copy__(self):
         """Override of copy function to return a Resource stripped of ids"""
         return Resource(
+            name=self.name,
             impact_source_id=self.impact_source_id,
             _input=self._input,
             _time_use=self._time_use,
@@ -271,22 +287,20 @@ class QuantitySchema(Schema):
             raise ValidationError("Wrong quantity format")
 
 
-class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
+class ResourceSchema(Schema):  # type: ignore
     """
     Resource schema to serialize a Resource object
     """
 
-    class Meta(ma.SQLAlchemyAutoSchema.Meta):  # type: ignore
-        """Schema meta class"""
+    id = fields.Integer(allow_none=True)
+    task_id = fields.Integer(allow_none=True)
+    name = fields.String()
 
-        model = Resource
-        include_relationships = True
-        load_instance = True
-        include_fk = True
-        sqla_session = db.session
+    impact_source_id = fields.String()
+    has_time_input = fields.Bool()
 
-    id = ma.auto_field(allow_none=True)
-    task_id = ma.auto_field(allow_none=True)
+    updated_at = fields.DateTime(allow_none=True)
+    created_at = fields.DateTime(allow_none=True)
 
     _input = Nested(
         QuantitySchema,
@@ -317,9 +331,11 @@ class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
         many=False,
     )
 
-    # Validate time in resource (duration, duration and frequency, duration an frequency and time_use)
-
-    # Validate no time in resource either duration and frequency or nothing
+    @post_load
+    def post_load(self, data, **kwargs):
+        if "has_time_input" in data:
+            data.pop("has_time_input") # Delete hybrid property that can't be set
+        return Resource(**data)
 
     @validates_schema
     def validate_quantities(self, data, **kwargs):

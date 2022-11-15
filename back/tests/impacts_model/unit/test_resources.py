@@ -41,6 +41,7 @@ def resource_fixture(db: SQLAlchemy) -> Resource:
     task = Task(name="Test_resources task")
 
     resource = Resource(
+        name="testResource",
         impact_source_id="testid",
         input=2312 * SERVER,
     )
@@ -50,6 +51,7 @@ def resource_fixture(db: SQLAlchemy) -> Resource:
     db.session.add_all([project, model, task, resource])
     db.session.commit()
     return resource
+
 
 @mock.patch(
     "impacts_model.data_model.impact_source_factory",

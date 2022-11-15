@@ -39,7 +39,7 @@
 		<div class="row g-3">
 			<div class="col-12">
 				<!-- TODO label ? -->
-				<input class="form-control" placeholder="tASK new name" required bind:value={newName} />
+				<input class="form-control" placeholder="Task new name" required bind:value={newName} />
 			</div>
 
 			<div class="col-12">

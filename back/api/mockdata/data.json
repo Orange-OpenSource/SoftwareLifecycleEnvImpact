@@ -39,6 +39,7 @@
                       {
                         "created_at": null,
                         "id": null,
+                        "name": "People",
                         "task_id": null,
                         "updated_at": null,
                         "impact_source_id": "people",
@@ -58,6 +59,7 @@
                       {
                         "created_at": null,
                         "id": null,
+                        "name": "People",
                         "task_id": null,
                         "updated_at": null,
                         "impact_source_id": "people",
@@ -80,6 +82,7 @@
                   {
                     "created_at": null,
                     "id": null,
+                    "name": "People",
                     "task_id": null,
                     "updated_at": null,
                     "impact_source_id": "people",
@@ -99,6 +102,7 @@
                   {
                     "created_at": null,
                     "id": null,
+                    "name": "People",
                     "task_id": null,
                     "updated_at": null,
                     "impact_source_id": "people",
@@ -128,6 +132,7 @@
                   {
                     "created_at": null,
                     "id": null,
+                    "name": "Storage",
                     "task_id": null,
                     "updated_at": null,
                     "impact_source_id": "storage",
@@ -145,6 +150,7 @@
                       {
                         "created_at": null,
                         "id": null,
+                        "name": "Server",
                         "task_id": null,
                         "updated_at": null,
                         "impact_source_id": "server",
@@ -164,6 +170,7 @@
                       {
                         "created_at": null,
                         "id": null,
+                        "name": "Storage",
                         "task_id": null,
                         "updated_at": null,
                         "impact_source_id": "storage",
@@ -183,6 +190,7 @@
                       {
                         "created_at": null,
                         "id": null,
+                        "name": "Network",
                         "task_id": null,
                         "updated_at": null,
                         "impact_source_id": "network",
@@ -204,6 +212,7 @@
                   {
                     "created_at": null,
                     "id": null,
+                    "name": "User device",
                     "task_id": null,
                     "updated_at": null,
                     "impact_source_id": "userDevice",

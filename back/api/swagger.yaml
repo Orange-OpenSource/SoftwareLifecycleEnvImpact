@@ -778,6 +778,12 @@ definitions:
       id:
         type: integer
         description: Unique identifier
+      name:
+        type: string
+        description: Resource name
+      has_time_input:
+        type: ["null", boolean]
+        description: True if the impact source require a time to be set
       impact_source_id:
         type: string
         description: ImpactSource id
@@ -848,7 +854,7 @@ definitions:
         description: Unique identifier
       name:
         type: string
-        description: Name of the resource
+        description: Name of the impact source
       unit:
         type: string
         description: Unit of the impact source

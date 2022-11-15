@@ -8,8 +8,59 @@ from impacts_model.impact_sources import (
 )
 
 from impacts_model.quantities.quantities import (
+    DAY,
+    KG_CO2E,
+    SERVER,
     deserialize_quantity,
 )
+
+
+def test_impact_source_has_time_input() -> None:
+    """
+    Test computation of function has_time_input that should
+    return true if the ImpactSource has a time in its unit, else False
+    """
+
+    # Test without time
+    assert (
+        ImpactSource(
+            id="testid", name="test", unit=SERVER, climate_change=1776 * KG_CO2E
+        ).has_time_input
+        == False
+    )
+
+    # Test with time first
+    assert (
+        ImpactSource(
+            id="testid",
+            name="test",
+            unit=DAY * SERVER,
+            climate_change=1776 * KG_CO2E,
+        ).has_time_input
+        == True
+    )
+
+    # Test with time second
+    assert (
+        ImpactSource(
+            id="testid",
+            name="test",
+            unit=SERVER * DAY,
+            climate_change=1776 * KG_CO2E,
+        ).has_time_input
+        == True
+    )
+
+    # Test double magnitude without time
+    assert (
+        ImpactSource(
+            id="testid",
+            name="test",
+            unit=SERVER * SERVER,
+            climate_change=1776 * KG_CO2E,
+        ).has_time_input
+        == False
+    )
 
 
 def test_yaml_loading() -> None:

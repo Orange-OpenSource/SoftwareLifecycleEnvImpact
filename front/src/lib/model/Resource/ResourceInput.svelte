@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Error from '$lib/Error.svelte';
-	import { TIME_UNITS, type Resource } from '../api/model/resource';
+	import { type Resource } from '../api/model/resource';
 	import { updateResourceInputRequest } from '../api/resource';
 	import TimeunitInput from './TimeunitInput.svelte';
 
@@ -39,11 +39,15 @@
 	<form class="card-text">
 		<div class="row">
 			<div class="col">
-				<label for="inputValue" class="form-label">{resource.input.unit}:</label>
+				<label for="inputValue" class="form-label">Value:</label>
 				<input type="number" id="inputValue" class="form-control" bind:value={resource.input.value} min="1" on:change={() => updateResource()} on:click|stopPropagation={() => {}} />
 			</div>
+			<div class="col">
+				<div class="form-label" >A</div>
+				{resource.input.unit}
+			</div>
 		</div>
-		{#if resource.time_use}
+		{#if resource.time_use && resource.has_time_unit}
 			<div class="row">
 				<div class="col">
 					<label for="timeUseValue" class="form-label">Time use:</label>
@@ -55,6 +59,7 @@
 			</div>
 		{/if}
 		{#if resource.frequency}
+			Per
 			<div class="row">
 				<div class="col">
 					<label for="frequencyValue" class="form-label">Frequency:</label>
@@ -66,6 +71,7 @@
 			</div>
 		{/if}
 		{#if resource.duration}
+			For
 			<div class="row">
 				<div class="col">
 					<label for="durationValue" class="form-label">Duration:</label>

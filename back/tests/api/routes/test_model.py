@@ -25,6 +25,7 @@ def model_fixture(db: SQLAlchemy) -> Model:
     task = Task(name="Test task")
 
     resource = Resource(
+        name="TestResource",
         impact_source_id="TestResource",
         input=1 * SERVER,
         duration=3 * DAY,
@@ -32,7 +33,7 @@ def model_fixture(db: SQLAlchemy) -> Model:
     )
     task.resources = [resource]
     model.root_task = task
-    db.session.add_all([model, project, task, resource])
+    db.session.add_all([project, task, model,resource])
     db.session.commit()
     return model
 

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib
 import inspect
+import re
 from impacts_model.impacts import EnvironmentalImpact, ImpactCategory
 from pint import Quantity, Unit
 from typing import Any, Optional
@@ -113,6 +114,17 @@ class ImpactSource:
                 ImpactCategory.RAW_MATERIALS: self.raw_materials,
             }
         )
+
+    @property
+    def has_time_input(self) -> bool:
+        units_split = re.split(r"[*,/]", str(self.unit))
+        units_split_len = len(units_split)
+        if units_split_len < 2:
+            return False
+        else:
+            return deserialize_quantity(1 * units_split[0]).check(
+                "[time]"
+            ) or deserialize_quantity(1 * units_split[1]).check("[time]")
 
 
 class ImpactSourceSchema(Schema):
@@ -447,7 +459,7 @@ def impact_source_factory(id: str) -> ImpactSource:
 #         co2_total: KG_CO2E = consumption_co2 + amortization_day
 #         return (
 #             Q_(co2_total.magnitude, KG_CO2E) * self.unit
-#         ) 
+#         )
 
 
 # class ServerImpactSource(ImpactSource):

@@ -29,6 +29,7 @@ export async function addResourceRequest(taskId: number, impact_source: ImpactSo
 	});
 
 	const res = await post('resources', {
+		name: impact_source.name,
 		task_id: taskId,
 		impact_source_id: impact_source.id,
 		input: input,
