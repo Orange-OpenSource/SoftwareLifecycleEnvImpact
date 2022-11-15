@@ -1,12 +1,12 @@
 <script lang="ts">
-	import type { AggregatedImpact } from '$lib/model/api/model/impacts';
+	import type { EnvironmentalImpact } from '$lib/model/api/model/impacts';
 
-	export let impact: AggregatedImpact;
+	export let environmentalImpact: EnvironmentalImpact;
 </script>
 
-{#if impact != undefined}
+{#if environmentalImpact != undefined}
 	<ul>
-		{#each Object.entries(impact) as [key, impact]}
+		{#each Object.entries(environmentalImpact.impacts) as [key, impact]}
 			{#if impact.value != 0}
 				<li>
 					{key}: <b>{impact.value}</b>

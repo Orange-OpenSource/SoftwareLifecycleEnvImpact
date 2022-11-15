@@ -82,22 +82,18 @@
 		updateResource();
 	}
 
-	function getDuration() {
-		// let duration = 'for ';
-		// if (resource.days) duration += resource.days + (resource.days > 1 ? ' days,' : ' day,');
-		// if (resource.months) duration += resource.months + (resource.months > 1 ? ' months,' : ' month,');
-		// if (resource.years) duration += resource.years + (resource.years > 1 ? ' years,' : ' year,');
-		// if (duration == 'for ') return '';
-		// return duration.replace(/,$/, ''); // Remove trailing , if it exists
-		return 'todo getDuration'; // TODO
+	function getText() {
+		let test = resource.input.value + ' ' + resource.input.unit + '(s)';
+		if (resource.time_use && resource.time_use.value != undefined) test += ', ' + resource.time_use.value + ' ' + resource.time_use.unit + '(s)';
+		if (resource.frequency && resource.frequency.value != undefined) test += ' by ' + resource.frequency.value + ' ' + resource.frequency.unit + '(s)';
+		if (resource.duration && resource.duration.value != undefined) test += ' for ' + resource.duration.value + ' ' + resource.duration.unit + '(s)';
+		return test;
 	}
 </script>
 
 {#if !modify}
 	<p class="card-text">
-		{resource.input}
-		{resource.impact_source_id}
-		{getDuration()}
+		{getText()}
 	</p>
 {:else}
 	<form class="card-text needs-validation" novalidate on:submit|preventDefault={handleSubmit}>

@@ -12,7 +12,10 @@ export type ImpactName = string; // TODO should have an enum associated
 /**
  * Dict of impacts by impact name
  */
-export type AggregatedImpact = Record<ImpactName, Impact>;
+export interface EnvironmentalImpact {
+	// Impacts
+	impacts: Record<ImpactName, Impact>;
+}
 
 /**
  * All environmental impacts for a task
@@ -23,9 +26,9 @@ export interface TaskImpact {
 	 */
 	task_id: number;
 	/**
-	 * Aggregated impact for this task
+	 * Environmental impact for this task
 	 */
-	task_impact: AggregatedImpact;
+	task_impact: EnvironmentalImpact;
 	/**
 	 * All task subtask's impacts
 	 */
@@ -38,12 +41,12 @@ export interface TaskImpact {
 
 export type ResourceName = string;
 /**
- * Dict of aggregated impact by resource name
+ * Dict of environmental impact by resource name
  */
-export type ResourcesImpact = Record<ResourceName, AggregatedImpact>;
+export type ResourcesImpact = Record<ResourceName, EnvironmentalImpact>;
 
 export type Id = string;
 /**
- * Dict of aggregated impact by subtask id
+ * Dict of environmental impact by subtask id
  */
-export type SubtasksImpact = Record<Id, AggregatedImpact>;
+export type SubtasksImpact = Record<Id, EnvironmentalImpact>;

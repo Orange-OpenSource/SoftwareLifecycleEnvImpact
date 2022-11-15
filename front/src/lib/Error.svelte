@@ -2,4 +2,4 @@
 	export let message: string;
 </script>
 
-<p style="color: red">{message}</p>
+<p style="color: red  width: fit-content;">{message}</p>

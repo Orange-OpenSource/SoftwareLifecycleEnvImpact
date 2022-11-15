@@ -28,11 +28,11 @@
 
 				if (task != undefined) {
 					chartLabels.push(task.name);
-					if (impact['Climate change'] != undefined) {
+					if (impact.impacts['Climate change'] != undefined) {
 						/**For each task push it with its associated impact*/
 						chartData.push({
 							task: task,
-							impact: impact['Climate change'].value
+							impact: impact.impacts['Climate change'].value
 						});
 					}
 				}
