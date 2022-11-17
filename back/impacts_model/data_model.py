@@ -1,6 +1,6 @@
 import re
 from copy import copy
-from typing import Any, List, Optional
+from typing import Any, List
 
 from flask_marshmallow import Marshmallow as FlaskMarshmallow
 from flask_sqlalchemy import SQLAlchemy
@@ -8,10 +8,8 @@ from marshmallow import (
     Schema,
     ValidationError,
     fields,
-    post_dump,
     post_load,
     pre_dump,
-    pre_load,
     validates_schema,
 )
 from marshmallow_sqlalchemy.fields import Nested
@@ -334,7 +332,7 @@ class ResourceSchema(Schema):  # type: ignore
     @post_load
     def post_load(self, data, **kwargs):
         if "has_time_input" in data:
-            data.pop("has_time_input") # Delete hybrid property that can't be set
+            data.pop("has_time_input")  # Delete hybrid property that can't be set
         return Resource(**data)
 
     @validates_schema
@@ -620,7 +618,7 @@ class Project(db.Model):  # type: ignore
         db.DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
 
-    def __copy__(self):
+    def __copy__(self) -> Any:
         """Override of copy function to return a Project stripped of ids"""
         models_copy = [copy(model) for model in self.models]
         project = Project(name=self.name, models=models_copy)

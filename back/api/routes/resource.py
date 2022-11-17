@@ -112,7 +112,7 @@ def delete_resource(resource_id: int) -> Any:
         )
 
 
-def get_resource_impacts(resource_id: int):
+def get_resource_impacts(resource_id: int) -> Any:
     resource = Resource.query.filter(Resource.id == resource_id).one_or_none()
 
     if resource is not None:

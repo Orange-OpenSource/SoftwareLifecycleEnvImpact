@@ -164,7 +164,10 @@ def test_get_task_impact_list(
     "impacts_model.data_model.impact_source_factory",
     MagicMock(
         return_value=ImpactSource(
-            id="testImpactSource", name="test", unit=SERVER, climate_change=1000 * KG_CO2E
+            id="testImpactSource",
+            name="test",
+            unit=SERVER,
+            climate_change=1000 * KG_CO2E,
         )
     ),
 )

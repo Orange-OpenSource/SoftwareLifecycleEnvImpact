@@ -103,6 +103,7 @@ class EnvironmentalImpactSchema(Schema):
 
     impacts = fields.Dict(keys=fields.Str(), values=Nested("QuantitySchema"))
 
+
 class TaskImpact:
     def __init__(
         self,
@@ -134,6 +135,4 @@ class TaskImpactSchema(Schema):
 
 ResourceName = str
 
-EnvironmentalImpactByResource = dict[
-    ResourceName, EnvironmentalImpact
-]
+EnvironmentalImpactByResource = dict[ResourceName, EnvironmentalImpact]

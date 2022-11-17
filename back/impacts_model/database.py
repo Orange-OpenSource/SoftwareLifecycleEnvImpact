@@ -30,4 +30,5 @@ def insert_model_db(model: Model) -> Model:
     db.session.commit()
     return model
 
+
 # TODO  all database functions should be there ?

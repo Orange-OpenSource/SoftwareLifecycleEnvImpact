@@ -22,6 +22,7 @@ def task_fixture(db: SQLAlchemy) -> Task:
     db.session.commit()
     return task
 
+
 def test_task_schema(task_fixture: Task):
     """Test that a TaskSchema can dump and load correctly"""
     schema = TaskSchema()

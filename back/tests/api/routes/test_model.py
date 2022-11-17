@@ -33,7 +33,7 @@ def model_fixture(db: SQLAlchemy) -> Model:
     )
     task.resources = [resource]
     model.root_task = task
-    db.session.add_all([project, task, model,resource])
+    db.session.add_all([project, task, model, resource])
     db.session.commit()
     return model
 

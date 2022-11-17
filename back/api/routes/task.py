@@ -10,7 +10,11 @@ from impacts_model.data_model import (
     Task,
     TaskSchema,
 )
-from impacts_model.impacts import EnvironmentalImpactSchema, TaskImpact, TaskImpactSchema
+from impacts_model.impacts import (
+    EnvironmentalImpactSchema,
+    TaskImpact,
+    TaskImpactSchema,
+)
 from impacts_model.templates import get_task_template_by_id, TaskTemplate
 from typing import Optional
 
@@ -73,7 +77,7 @@ def update_task(task_id: int) -> Any:
         )
 
 
-def get_task_impacts(task_id: int):  # TODO update test
+def get_task_impacts(task_id: int) -> Any:  # TODO update test
     """
     GET /tasks/<task_id>/impacts
     Get a task environmental impact
@@ -98,7 +102,7 @@ def get_task_impacts(task_id: int):  # TODO update test
         )
 
 
-def get_task_subtasks_impacts(task_id: int):
+def get_task_subtasks_impacts(task_id: int) -> Any:
     task = Task.query.filter(Task.id == task_id).one_or_none()
 
     if task is not None:
@@ -143,7 +147,7 @@ def delete_task(task_id: int) -> Any:
 
 def insert_task_db(
     new_task: Task, template_id: Optional[int] = None
-):  # TODO remove from here
+) -> None:  # TODO remove from here
     if template_id is not None:
         task_template: TaskTemplate = get_task_template_by_id(template_id)
 

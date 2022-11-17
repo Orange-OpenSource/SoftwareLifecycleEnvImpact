@@ -23,7 +23,7 @@ def test_impact(client: FlaskClient) -> None:
     """
     client.get(debug_root + "/reset")
     models = client.get(projects_root)
-    model_id = models.json[0]["models"][0]["id"] # retrieve the id of the first model
-    
+    model_id = models.json[0]["models"][0]["id"]  # retrieve the id of the first model
+
     response = client.get(models_root + "/" + str(model_id) + "/impact")
     assert response.status_code == 200

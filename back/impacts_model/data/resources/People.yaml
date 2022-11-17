@@ -1,7 +1,0 @@
-id: 3
-name: People
-unit: man/day
-impact_factors:
-- OfficeImpactSource
-- TransportImpactSource
-- LaptopImpactSource

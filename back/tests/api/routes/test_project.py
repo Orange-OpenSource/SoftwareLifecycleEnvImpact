@@ -15,6 +15,7 @@ def project_fixture(db: SQLAlchemy):
     db.session.commit()
     return project
 
+
 def test_project_schema(project_fixture: Project):
     """Test that a ProjectSchema can dump and load correctly"""
     schema = ProjectSchema()
@@ -22,6 +23,7 @@ def test_project_schema(project_fixture: Project):
     dump = schema.dump(project_fixture)
     load = schema.load(dump)
     dump = schema.dump(load)
+
 
 def test_get_projects(client: FlaskClient, project_fixture: Project) -> None:
     """

@@ -75,4 +75,4 @@ def get_task_template_by_id(template_id: int) -> Optional[TaskTemplate]:
     :param template_id: id of the TaskTemplate to retrieve
     :return: TaskTemplate if it exists with id, or None
     """
-    return  next((x for x in load_tasks_templates() if x.id == template_id), None)
+    return next((x for x in load_tasks_templates() if x.id == template_id), None)

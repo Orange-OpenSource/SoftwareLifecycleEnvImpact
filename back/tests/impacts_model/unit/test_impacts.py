@@ -63,14 +63,14 @@ def test_merge_impacts_lists() -> None:
     }
 '''
 
+
 def test_impact_category_str() -> None:
     """
     Test for each category that it has an associated str
     """
     for e in ImpactCategory:
         assert e.name not in str(e)
-        assert 'not implemented' not in str(e) 
-
+        assert "not implemented" not in str(e)
 
 
 ###################
