@@ -1,6 +1,4 @@
-import type { Model } from '$lib/api/model/model';
-import type { PatchDocument } from '$lib/api/model/patchDocument';
-import type { Task } from '$lib/api/model/task';
+import type { Model, PatchDocument, Task } from '$lib/api/dataModel';
 import { get, post, patch, del } from './api';
 
 export async function getModelTasksRequest(modelId: number): Promise<Task> {

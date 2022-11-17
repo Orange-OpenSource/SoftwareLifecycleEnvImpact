@@ -5,12 +5,11 @@
 	import Impact from '$lib/Impact/Impact.svelte';
 	import Split from 'split.js';
 	import { onMount } from 'svelte';
-	import type { Task } from '$lib/api/model/task';
-	import type { Model } from '$lib/api/model/model';
 	import Error from '$lib/Error.svelte';
 	import Spinner from '$lib/Spinner.svelte';
 	import ModelComparison from '$lib/Model/Comparison/ModelsComparison.svelte';
 	import { getProjectRequest } from '$lib/api/project';
+	import type { Model, Task } from '$lib/api/dataModel';
 
 	let projectId = $page.params.id; // id of project clicked on (arg in URL "/project/X")
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { scaleLinear, scaleOrdinal, schemeSet1, schemeSet2, schemeSet3, treemap, type HierarchyNode } from 'd3';
+	import { scaleLinear, scaleOrdinal, schemeSet3, treemap, type HierarchyNode } from 'd3';
 	import { select } from 'd3-selection';
 	import { onMount } from 'svelte';
 

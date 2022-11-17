@@ -1,6 +1,5 @@
 <script lang="ts">
-	import type { Model } from '$lib/api/model/model';
-	import type { Task } from '$lib/api/model/task';
+	import type { Model, Task } from '$lib/api/dataModel';
 	import { changeTaskParent } from '$lib/api/task';
 	import ResourceList from '$lib/Resource/ResourceList.svelte';
 

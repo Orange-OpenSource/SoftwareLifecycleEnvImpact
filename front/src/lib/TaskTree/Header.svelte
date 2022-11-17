@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { Model } from '$lib/api/model/model';
-	import type { Task } from '$lib/api/model/task';
+	import type { Model, Task } from "$lib/api/dataModel";
+
 
 	export let selectedModel: Model;
 

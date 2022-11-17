@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { createModelRequest } from '$lib/api/model';
 	import Modal from '$lib/Modal.svelte';
-	import type { Model } from '$lib/api/model/model';
-	import type { Project } from '$lib/api/model/project';
+	import type { Model, Project } from '$lib/api/dataModel';
 	import Error from '$lib/Error.svelte';
 
 	/* Bound vars */

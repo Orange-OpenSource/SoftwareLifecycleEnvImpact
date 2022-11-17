@@ -2,10 +2,9 @@
 	import Header from './Header.svelte';
 	import { getModelTasksRequest } from '$lib/api/model';
 	import TaskComponent from '$lib/Task/Task.svelte';
-	import type { Task } from '$lib/api/model/task';
-	import type { Model } from '$lib/api/model/model';
 	import Error from '$lib/Error.svelte';
 	import Spinner from '$lib/Spinner.svelte';
+	import type { Model, Task } from '$lib/api/dataModel';
 
 	/*Bound vars*/
 	export let selectedModel: Model;

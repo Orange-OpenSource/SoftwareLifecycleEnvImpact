@@ -2,9 +2,8 @@
 	import ImpactByIndicator from './ImpactByIndicator.svelte';
 	import ImpactBySubtask from './ImpactBySubtask.svelte';
 	import ImpactByResource from './ImpactByResource.svelte';
-	import type { Task } from '$lib/api/model/task';
 	import { getTaskImpact } from '$lib/api/task';
-	import type { TaskImpact } from '$lib/api/model/impacts';
+	import type { TaskImpact, Task } from '$lib/api/dataModel';
 	import Error from '$lib/Error.svelte';
 	import Spinner from '$lib/Spinner.svelte';
 

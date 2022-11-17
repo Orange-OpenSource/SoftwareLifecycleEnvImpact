@@ -1,5 +1,5 @@
 import { get } from './api';
-import type { ImpactSource } from './model/resource';
+import type { ImpactSource } from './dataModel';
 
 export async function getImpactSources(): Promise<ImpactSource[]> {
 	const res = await get('impactsources');

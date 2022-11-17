@@ -1,5 +1,4 @@
-import type { PatchDocument } from '$lib/api/model/patchDocument';
-import type { Project } from '$lib/api/model/project';
+import type { PatchDocument, Project } from '$lib/api/dataModel';
 import { del, get, patch, post } from './api';
 
 export async function getProjectsRequest(): Promise<Project[]> {

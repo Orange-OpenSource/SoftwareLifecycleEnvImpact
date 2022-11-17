@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Spinner from '$lib/Spinner.svelte';
-	import type { ResourcesImpact } from '$lib/api/model/impacts';
-	import type { Model } from '$lib/api/model/model';
+	import type { ResourcesImpact, Model } from '$lib/api/dataModel';
 	import ResourcesTreemap from './ResourcesTreemap.svelte';
 	import Error from '$lib/Error.svelte';
 	import { getTaskImpact } from '$lib/api/task';

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { getLastUpdate } from '$lib/utils';
-	import type { Model } from '$lib/api/model/model';
-	import type { Project } from '$lib/api/model/project';
+	import type { Model, Project } from '$lib/api/dataModel';
 
 	import CreateModel from './CreateModel.svelte';
 	import DeleteModel from './DeleteModel.svelte';

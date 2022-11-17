@@ -1,5 +1,5 @@
-import type { Model } from '$lib/api/model/model';
-import type { Project } from '$lib/api/model/project';
+import type { Model } from '$lib/api/dataModel';
+import type { Project } from '$lib/api/dataModel';
 
 /**
  * Returns the last updated date (or creation date if null).

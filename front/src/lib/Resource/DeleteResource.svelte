@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { deleteResourceRequest } from '$lib/api/resource';
 	import Modal from '$lib/Modal.svelte';
-	import type { Resource } from '$lib/api/model/resource';
-	import type { Task } from '$lib/api/model/task';
 	import Error from '$lib/Error.svelte';
+	import type { Resource, Task } from '$lib/api/dataModel';
 
 	/*Bound var*/
 	export let task: Task;

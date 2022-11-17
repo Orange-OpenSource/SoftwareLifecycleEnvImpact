@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Resource } from '$lib/api/model/resource';
+	import type { Resource } from '$lib/api/dataModel';
 	import { updateResourceInputRequest } from '$lib/api/resource';
 	import Error from '$lib/Error.svelte';
 	import TimeunitInput from './TimeunitInput.svelte';

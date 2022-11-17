@@ -1,4 +1,4 @@
-import type { TaskTemplate } from '$lib/api/model/task';
+import type { TaskTemplate } from '$lib/api/dataModel';
 import { get } from './api';
 
 export async function getTaskTemplatesRequest(): Promise<Array<TaskTemplate>> {

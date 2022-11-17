@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { duplicateModelRequest } from '$lib/api/model';
 	import Modal from '$lib/Modal.svelte';
-	import type { Model } from '$lib/api/model/model';
+	import type { Model } from '$lib/apidataModel';
 	import Error from '$lib/Error.svelte';
 
 	/*Bound var*/

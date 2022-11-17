@@ -1,6 +1,4 @@
-import type { TaskImpact } from '$lib/api/model/impacts';
-import type { PatchDocument } from '$lib/api/model/patchDocument';
-import type { Task } from '$lib/api/model/task';
+import type { TaskImpact, PatchDocument, Task } from '$lib/api/dataModel';
 import { patch, get, del, post } from './api';
 
 export async function renameTaskRequest(task: Task, newName: string): Promise<Task> {

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { ResourcesImpact } from '$lib/api/model/impacts';
+	import type { ResourcesImpact } from '$lib/api/dataModel';
 	import ImpactByIndicator from './ImpactByIndicator.svelte';
 
 	export let impactByResource: ResourcesImpact;

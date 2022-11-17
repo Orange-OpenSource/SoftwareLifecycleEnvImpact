@@ -1,11 +1,10 @@
 <script lang="ts">
 	import Modal from '$lib/Modal.svelte';
 	import { getImpactSources } from '$lib/api/impactSources';
-	import type { Task } from '$lib/api/model/task';
 	import { addResourceRequest } from '$lib/api/resource';
 	import Error from '$lib/Error.svelte';
 	import Spinner from '$lib/Spinner.svelte';
-	import type { ImpactSource } from '$lib/api/model/resource';
+	import type { ImpactSource, Task } from '$lib/api/dataModel';
 
 	/*Bound var*/
 	export let task: Task;

@@ -1,7 +1,6 @@
 <script lang="ts">
-	import type { Project } from '$lib/api/model/project';
+	import type { Project } from '$lib/api/dataModel';
 	import Error from '$lib/Error.svelte';
-	import Icon from '@iconify/svelte';
 	import { exportProjectRequest } from '$lib/api/project';
 	import { exportJson } from '$lib/utils';
 

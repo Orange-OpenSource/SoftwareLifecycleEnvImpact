@@ -1,6 +1,6 @@
 import { dev } from '$app/environment';
 import { env } from '$env/dynamic/public';
-import type { PatchDocument } from './model/patchDocument';
+import type { PatchDocument } from '$lib/api/dataModel';
 
 const base = (dev ? env.PUBLIC_API_DEV_URL + ':' + env.PUBLIC_API_DEV_PORT : '') + '/api/v1';
 

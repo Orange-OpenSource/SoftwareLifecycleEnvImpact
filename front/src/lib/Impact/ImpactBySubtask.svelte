@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { Chart, registerables } from 'chart.js';
-	import type { Task } from '$lib/api/model/task';
-	import type { SubtasksImpact } from '$lib/api/model/impacts';
+	import type { Task, SubtasksImpact } from '$lib/api/dataModel';
 
 	export let impactBySubtask: SubtasksImpact;
 

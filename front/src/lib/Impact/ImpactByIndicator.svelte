@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { EnvironmentalImpact } from '$lib/api/model/impacts';
+	import type { EnvironmentalImpact } from '$lib/api/dataModel';
 
 	export let environmentalImpact: EnvironmentalImpact;
 </script>

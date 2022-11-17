@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { createTaskFromTemplateRequest, createTaskRequest } from '$lib/api/task';
 	import { getTaskTemplatesRequest } from '$lib/api/taskTemplates';
-	import type { Task, TaskTemplate } from '$lib/api/model/task';
 	import Error from '$lib/Error.svelte';
 	import Spinner from '$lib/Spinner.svelte';
 	import Modal from '$lib/Modal.svelte';
+	import type { Task, TaskTemplate } from '$lib/api/dataModel';
 
 	/* Bound var */
 	export let parentTask: Task;

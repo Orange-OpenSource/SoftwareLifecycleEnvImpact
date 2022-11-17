@@ -1,7 +1,5 @@
-import type { PatchDocument } from '$lib/api/model/patchDocument';
+import { type PatchDocument, type ImpactSource, type Resource, TIME_UNITS } from '$lib/api/dataModel';
 import { patch, post, del } from './api';
-import type { ImpactSource, Resource } from './model/resource';
-import { TIME_UNITS } from '$lib/api/model/resource';
 
 export async function renameResourceRequest(resource: Resource, newName: string): Promise<Resource> {
 	const patchDocument: PatchDocument = {

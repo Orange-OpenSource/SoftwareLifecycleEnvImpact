@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Model } from '$lib/api/model/model';
+	import type { Model } from '$lib/api/dataModel';
 
 	export let models: Model[];
 </script>

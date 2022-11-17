@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { getLastUpdate } from '$lib/utils';
 	import DeleteProject from './DeleteProject.svelte';
-	import type { Project } from '$lib/api/model/project';
+	import type { Project } from '$lib/api/dataModel';
 	import ErrorComponent from '$lib/Error.svelte';
 	import Spinner from '$lib/Spinner.svelte';
 	import ExportProject from './ExportProject.svelte';

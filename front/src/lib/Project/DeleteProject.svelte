@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { deleteProjectRequest } from '$lib/api/project';
 	import Modal from '$lib/Modal.svelte';
-	import type { Project } from '$lib/api/model/project';
 	import Error from '$lib/Error.svelte';
+	import type { Project } from '$lib/api/dataModel';
 
 	/* Bound var */
 	export let projects: Project[];

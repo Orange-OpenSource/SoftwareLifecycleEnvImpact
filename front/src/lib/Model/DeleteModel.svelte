@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { deleteModelRequest } from '$lib/api/model';
 	import Modal from '$lib/Modal.svelte';
-	import type { Model } from '$lib/api/model/model';
+	import type { Model } from '$lib/api/dataModel';
 	import Error from '$lib/Error.svelte';
 
 	/*Bound var*/

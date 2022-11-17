@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { deleteTaskRequest } from '$lib/api/task';
 	import Modal from '$lib/Modal.svelte';
-	import type { Task } from '$lib/api/model/task';
 	import Error from '$lib/Error.svelte';
+	import type { Task } from '$lib/api/dataModel';
 
 	/* Bound var */
 	export let parentTask: Task;

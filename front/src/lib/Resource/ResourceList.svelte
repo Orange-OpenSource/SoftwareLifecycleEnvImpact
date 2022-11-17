@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { Task } from '$lib/api/model/task';
 	import AddResource from './AddResource.svelte';
 	import DeleteResource from './DeleteResource.svelte';
 	import Error from '$lib/Error.svelte';
 	import ResourceInput from './ResourceInput.svelte';
+	import type { Task } from '$lib/api/dataModel';
 
 	/*Bound var*/
 	export let task: Task;

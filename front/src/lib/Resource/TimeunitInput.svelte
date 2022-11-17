@@ -1,5 +1,8 @@
 <script lang="ts">
-	import { TIME_UNITS } from "$lib/api/model/resource";
+	import { TIME_UNITS } from "$lib/api/dataModel";
+
+
+
 
 	/*Bound var*/
 	export let inputUnit: string;

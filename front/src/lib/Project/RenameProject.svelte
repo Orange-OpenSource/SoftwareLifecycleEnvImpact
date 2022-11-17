@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Project } from '$lib/api/model/project';
+	import type { Project } from '$lib/api/dataModel';
 	import Error from '$lib/Error.svelte';
 	import { renameProjectRequest } from '$lib/api/project';
 	import Modal from '$lib/Modal.svelte';
