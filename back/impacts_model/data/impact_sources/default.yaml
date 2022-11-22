@@ -51,6 +51,102 @@ source:
 methodology:
 ---
 !ImpactSource
+id: "vCPUrm"
+name: "vCPU Rueil-Malmaison"
+unit: vcpu * month
+climate_change: "4.506211 kg_co2e"
+resource_depletion: "8.78E-07 kg_Sbe"
+acidification: "0.015592121 mol_Hpos"
+fine_particles: "1.11281E-07 disease_incidence"
+ionizing_radiations: "0.15738558 kg_Bq_u235e"
+water_depletion: "8.61050442 cubic_meter"
+electronic_waste: "3.087493 electronic_waste"
+primary_energy_consumption: "498.310296 primary_MJ"
+raw_materials: "10.2950296 tonne_mips"
+source: Orange (APL)
+methodology:
+---
+!ImpactSource
+id: "vCPUvdr"
+name: "vCPU Val-de-Reuil"
+unit: vcpu * month
+climate_change: "0.2206123 kg_co2e"
+resource_depletion: "4.85E-08 kg_Sbe"
+acidification: "0.000766107 mol_Hpos"
+fine_particles: "5.44803E-09 disease_incidence"
+ionizing_radiations: "0.007705325 kg_Bq_u235e"
+water_depletion: "0.416680258 cubic_meter"
+electronic_waste: "0.1496829 electronic_waste"
+primary_energy_consumption: "24.0944172 primary_MJ"
+raw_materials: "0.51490173 tonne_mips"
+source: Orange (APL)
+methodology:
+---
+!ImpactSource
+id: "RAMrm"
+name: "RAM Rueil-Malmaison"
+unit: gigabyte * month
+climate_change: "0.5186616 kg_co2e"
+resource_depletion: "1.055E-08 kg_Sbe"
+acidification: "0.002105015 mol_Hpos"
+fine_particles: "1.15591E-08 disease_incidence"
+ionizing_radiations: "0.00596069 kg_Bq_u235e"
+water_depletion: "0.228200547 cubic_meter"
+electronic_waste: "0.0243686 electronic_waste"
+primary_energy_consumption: "7.8400366 primary_MJ"
+raw_materials: "0.12390367 tonne_mips"
+source: Orange (APL)
+methodology:
+---
+!ImpactSource
+id: "RAMvdr"
+name: "RAM Val-De-Rueil"
+unit: gigabyte * month
+climate_change: "0.267726 kg_co2e"
+resource_depletion: "4.58E-09 kg_Sbe"
+acidification: "0.001086803 mol_Hpos"
+fine_particles: "5.97501E-09 disease_incidence"
+ionizing_radiations: "0.002916121 kg_Bq_u235e"
+water_depletion: "0.109300096 cubic_meter"
+electronic_waste: "0.00895852 electronic_waste"
+primary_energy_consumption: "3.49000642 primary_MJ"
+raw_materials: "0.053100643 tonne_mips"
+source: Orange (APL)
+methodology:
+---
+!ImpactSource
+id: "storageRm"
+name: "Storage Rueil-Malmaison"
+unit: gigabyte * month
+climate_change: "1.1922143 kg_co2e"
+resource_depletion: "8.4877E-07 kg_Sbe"
+acidification: "0.004756408 mol_Hpos"
+fine_particles: "2.585E-08 disease_incidence"
+ionizing_radiations: "0.041780379 kg_Bq_u235e"
+water_depletion: "0.4456003 cubic_meter"
+electronic_waste: "0.1535267 electronic_waste"
+primary_energy_consumption: "12.1600201 primary_MJ"
+raw_materials: "0.53460201 tonne_mips"
+source: Orange (APL)
+methodology:
+---
+!ImpactSource
+id: "storageVdr"
+name: "Storage Val-De-Rueil"
+unit: gigabyte * month
+climate_change: "0.27820336 kg_co2e"
+resource_depletion: "1.9103E-07 kg_Sbe"
+acidification: "0.001095802 mol_Hpos"
+fine_particles: "6.06201E-09 disease_incidence"
+ionizing_radiations: "0.009720089 kg_Bq_u235e"
+water_depletion: "0.121600071 cubic_meter"
+electronic_waste: "0.04220627 electronic_waste"
+primary_energy_consumption: "4.00000472 primary_MJ"
+raw_materials: "0.147600473 tonne_mips"
+source: Orange (APL)
+methodology:
+---
+!ImpactSource
 id: "electricity"
 name: "Electricity"
 unit: kWh
@@ -64,7 +160,7 @@ electronic_waste: "0.0952 electronic_waste"
 primary_energy_consumption: "15.5 primary_MJ"
 raw_materials: "0.298 tonne_mips"
 source: >
-  Orange
+  Orange(APL)
 methodology:
 ---
 !ImpactSource
