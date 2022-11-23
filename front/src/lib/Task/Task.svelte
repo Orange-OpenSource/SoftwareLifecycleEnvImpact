@@ -32,6 +32,16 @@
 		oldParent?: Task;
 	}
 
+	function handleMouseDown(e) {
+		// The the task as draggable only when cliking on the header
+		e.target.parentNode.setAttribute('draggable', 'true');
+	}
+
+	function handleMouseUp(e) {
+		// When click on header over, task is not draggable anymore
+		e.target.parentNode.setAttribute('draggable', 'false');
+	}
+
 	function handleDragStart(e: any) {
 		e.dataTransfer.dropEffect = 'move';
 		draggedObject = {
@@ -65,6 +75,7 @@
 
 	function handleDragEnd(e: any) {
 		draggedObject = {};
+		e.target.setAttribute('draggable', 'false'); //Task not draggable anymore
 	}
 </script>
 
@@ -75,11 +86,11 @@
 		<div
 			on:click|stopPropagation={() => (selectedTask = task)}
 			class="col-8 card {selectedTask.id == task.id ? 'border-primary' : ''}"
-			draggable={modify}
 			on:dragstart={handleDragStart}
 			on:dragend={handleDragEnd}
 			style="min-width: 15rem; width: fit-content;"
 		>
+			<div id="mydivheader" class="card-header" hidden={!modify} style="cursor: move;" on:mousedown={handleMouseDown} on:mouseup={handleMouseUp}>Click here to drag</div>
 			<div class="card-body">
 				<div class="card-title row">
 					<div class="col">
@@ -95,7 +106,7 @@
 
 					{#if modify && !dragging}
 						<div class="col-2">
-							<DeleteTask {task} bind:parentTask bind:selectedTask/>
+							<DeleteTask {task} bind:parentTask bind:selectedTask />
 						</div>
 					{/if}
 				</div>
