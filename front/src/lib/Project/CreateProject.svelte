@@ -26,8 +26,12 @@
 				var reader = new FileReader();
 				reader.readAsText(files[0], 'UTF-8');
 				reader.onload = async function (event) {
-					if (reader.result != null) {
-						res = await importProjectRequest(reader.result.toString());
+					try {
+						if (reader.result != null) {
+							res = await importProjectRequest(reader.result.toString());
+						}
+					} catch (e: any) {
+						error = e.message;
 					}
 				};
 			} else {
