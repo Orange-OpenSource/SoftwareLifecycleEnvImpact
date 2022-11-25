@@ -270,15 +270,22 @@ class QuantitySchema(Schema):
                 "unit": data.units,
             }
         else:  # mean its a string
-            split = data.split()
-            data = {
-                "value": round(float(split[0]), 2),
-                "unit": split[1],
-            }
+            try:
+                split = data.split()
+                data = {
+                    "value": round(float(split[0]), 2),
+                    "unit": split[1],
+                }
+            except:
+                return data
         return data
 
     @validates_schema
     def validate_quantities(self, data, **kwargs):
+        if "value" not in data or data["value"] == '':
+            raise ValidationError("Missing value")
+        if "unit" not in data["unit"] == '':
+            raise ValidationError("Missing unit")
         try:
             deserialize_quantity(str(data["value"]) + " " + data["unit"])
         except TypeError:
@@ -401,7 +408,7 @@ class ResourceSchema(Schema):  # type: ignore
 
                         # If time in ImpactSourceUnit, duration should be set
                         if duration is None:
-                            errors["_duration"] = [
+                            errors["duration"] = [
                                 "Impact source unit is "
                                 + str(impact_source.unit)
                                 + ", duration is needed"
@@ -409,17 +416,17 @@ class ResourceSchema(Schema):  # type: ignore
                         else:
                             # If duration is set, frequency and (time use and frequency) can be set, not time_use alone
                             if time_use is not None and frequency is None:
-                                errors["_time_use"] = [
+                                errors["frequency"] = [
                                     "If time_use is set, frequency should be set"
                                 ]
                     else:
                         # No time in ImpactSource unit
-                        errors["_input"] = [
+                        errors["input"] = [
                             "Input unit should be " + str(impact_source.unit)
                         ]
                 elif units_split_len == 1:
                     # Wrong unit
-                    errors["_input"] = [
+                    errors["input"] = [
                         "Input unit should be " + str(impact_source.unit)
                     ]
         except ImpactSourceError:

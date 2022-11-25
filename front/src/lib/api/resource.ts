@@ -72,8 +72,14 @@ export async function updateResourceInputRequest(resource: Resource): Promise<Re
 			value: { value: resource.duration.value, unit: resource.duration.unit }
 		});
 
-	const res = await patch('resources/' + resource.id, patchDocument);
-	return res.text().then((json: string) => {
-		return JSON.parse(json);
-	});
+	try {
+		const res = await patch('resources/' + resource.id, patchDocument);
+		return res.text().then((json: string) => {
+			return JSON.parse(json);
+		});
+	} catch (e) {
+		return Promise.reject({
+			errors: JSON.parse(e.message)
+		});
+	}
 }

@@ -40,7 +40,6 @@
 	}
 
 	function updateName() {
-		console.log(files);
 		if (files != undefined && files[0] != undefined && files[0].name != undefined) projectName = files[0].name.replace('.json', '');
 	}
 </script>

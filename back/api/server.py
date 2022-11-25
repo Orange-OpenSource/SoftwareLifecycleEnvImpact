@@ -1,10 +1,23 @@
+import json
 import connexion
 import flask
 from flask_cors import CORS
+from marshmallow import ValidationError
 
 from api import config
 from api.config import DevelopmentConfig, ProdConfig, TestConfig
 from impacts_model import data_model
+
+
+def handle_validation_exceptions(error):
+    """Handle invalid marshmallow validation request exception."""
+    # return error.messages, 400
+    response = flask.Response()
+    # replace the body with JSON
+    response.status = 400   
+    response.data = json.dumps(error.messages)
+    response.content_type = "application/json"
+    return response
 
 
 def create_app(env: str = "") -> flask.app.Flask:
@@ -32,4 +45,8 @@ def create_app(env: str = "") -> flask.app.Flask:
 
     with app.app_context():
         data_model.db.create_all()
+
+    # Register validation exceptions
+    app.register_error_handler(ValidationError, handle_validation_exceptions)
+
     return app

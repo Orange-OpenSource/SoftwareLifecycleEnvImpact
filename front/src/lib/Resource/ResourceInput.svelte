@@ -8,7 +8,7 @@
 	export let resource: Resource;
 
 	export let modify: boolean;
-	let error = '';
+	let errors: { [key: string]: string } = {};
 
 	let timeUseValue: number;
 	let timeUseUnit: string;
@@ -19,20 +19,29 @@
 	let durationValue: number;
 	let durationUnit: string;
 
+	$: modify, cleanError(); // Clean error message when modify eddit button is untriggered
+
+	function cleanError() {
+		if (!modify) errors = {};
+	}
+
 	$: frequencyRequired =
 		(resource.has_time_input && resource.time_use && resource.time_use.unit != undefined) || (!resource.has_time_input && resource.duration && resource.duration.value != undefined);
 	$: durationRequired = resource.has_time_input || (!resource.has_time_input && resource.frequency && resource.frequency.value != undefined);
 
 	$: if (timeUseValue == 0) {
 		timeUseValue = undefined;
+		timeUseUnit = undefined;
 	}
 
 	$: if (frequencyValue == 0) {
 		frequencyValue = undefined;
+		frequencyUnit = undefined;
 	}
 
 	$: if (durationValue == 0) {
 		durationValue = undefined;
+		durationUnit =  undefined;
 	}
 
 	$: {
@@ -70,11 +79,14 @@
 			resource.duration.unit = durationUnit;
 		}
 	}
+
 	async function updateResource() {
 		try {
-			await updateResourceInputRequest(resource);
+			//reset errors
+			errors = {};
+			resource = await updateResourceInputRequest(resource);
 		} catch (e: any) {
-			error = e.message;
+			errors = e.errors;
 		}
 	}
 
@@ -96,15 +108,18 @@
 		{getText()}
 	</p>
 {:else}
-	<form class="card-text needs-validation" novalidate on:submit|preventDefault={handleSubmit}>
+	<form class="card-text needs-validation" on:submit|preventDefault={handleSubmit}>
 		<div class="row">
 			<div class="col col-sm-2 col-form-label">
 				<div class="form-label is-required">{resource.input.unit}:</div>
 			</div>
 			<div class="col-sm-10">
 				<!-- <label for="inputValue" class="form-label is-required">Value:</label> -->
-				<input type="number" id="inputValue" class="form-control" bind:value={resource.input.value} required min="0" on:click|stopPropagation={() => {}} />
+				<input type="number" id="inputValue" class="form-control {errors.input ? 'is-invalid' : ''}" bind:value={resource.input.value} required min="1" on:click|stopPropagation={() => {}} />
 			</div>
+			{#each errors.input || [] as error}
+				<div class="invalid-feedback"><Error message={error} /></div>
+			{/each}
 		</div>
 		{#if resource.has_time_input}
 			<div class="row">
@@ -112,11 +127,22 @@
 					<div class="form-label">Used:</div>
 				</div>
 				<div class="col-sm-5">
-					<input type="number" id="timeUseValue" class="form-control" bind:value={timeUseValue} on:click|stopPropagation={() => {}} />
+					<input type="number" id="timeUseValue" class="form-control {errors.time_use ? 'is-invalid' : ''}" bind:value={timeUseValue} on:click|stopPropagation={() => {}} />
 				</div>
 				<div class="col-sm-5">
-					<TimeunitInput bind:inputUnit={timeUseUnit} isRequired={false} />
+					<TimeunitInput bind:inputUnit={timeUseUnit} isRequired={false} isInvalid={errors.time_use} />
 				</div>
+				{#if errors.time_use}
+					<!-- Quantity errors -->
+					{#if errors.time_use._schema}
+						<Error message={errors.time_use._schema} />
+					{:else}
+						<!-- Logic error -->
+						{#each errors.time_use || [] as error}
+							<Error message={error} />
+						{/each}
+					{/if}
+				{/if}
 			</div>
 		{/if}
 		<div class="row">
@@ -126,11 +152,30 @@
 			</div>
 
 			<div class="col-sm-5">
-				<input type="number" id="frequencyValue" class="form-control" bind:value={frequencyValue} required={frequencyRequired} min="0" on:click|stopPropagation={() => {}} />
+				<input
+					type="number"
+					id="frequencyValue"
+					class="form-control {errors.frequency ? 'is-invalid' : ''}"
+					bind:value={frequencyValue}
+					required={frequencyRequired}
+					min="0"
+					on:click|stopPropagation={() => {}}
+				/>
 			</div>
 			<div class="col-sm-5">
-				<TimeunitInput bind:inputUnit={frequencyUnit} isRequired={frequencyRequired} />
+				<TimeunitInput bind:inputUnit={frequencyUnit} isRequired={frequencyRequired} isInvalid={errors.frequency} />
 			</div>
+			{#if errors.frequency}
+				<!-- Quantity errors -->
+				{#if errors.frequency._schema}
+					<Error message={errors.frequency._schema} />
+				{:else}
+					<!-- Logic error -->
+					{#each errors.frequency || [] as error}
+						<Error message={error} />
+					{/each}
+				{/if}
+			{/if}
 		</div>
 		<div class="row">
 			<div class="col col-sm-2 col-form-label">
@@ -144,10 +189,9 @@
 				<TimeunitInput bind:inputUnit={durationUnit} isRequired={durationRequired} />
 			</div>
 		</div>
+		{#each errors.generic || [] as error}
+			<Error message={error} />
+		{/each}
 		<button type="submit" class="btn btn-primary">Submit</button>
 	</form>
-{/if}
-
-{#if error}
-	<Error message={error} />
 {/if}
