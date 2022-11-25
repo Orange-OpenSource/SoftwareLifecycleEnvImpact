@@ -2,7 +2,7 @@
 	import { TIME_UNITS } from '$lib/api/dataModel';
 
 	/*Bound var*/
-	export let inputUnit: string;
+	export let inputUnit: string | undefined;
 
 	export let isRequired: boolean;
 	export let isInvalid: any;

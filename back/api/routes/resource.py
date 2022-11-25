@@ -70,27 +70,22 @@ def update_resource(resource_id: int) -> Any:
     :param resource_id: the id of the resource to update
     :return: The updated resource if it exists with id, 403 if the JSONPatch format is incorrect, 404 else
     """
-    resource = Resource.query.filter(Resource.id == resource_id).one_or_none()
+    resource = db.session.query(Resource).get_or_404(resource_id)
 
-    if resource is not None:
-        try:
-            resource_schema = ResourceSchema()
-            data = resource_schema.dump(resource)
+    try:
+        resource_schema = ResourceSchema()
+        data = resource_schema.dump(resource)
 
-            patch = jsonpatch.JsonPatch(request.json)
-            data = patch.apply(data)
+        patch = jsonpatch.JsonPatch(request.json)
+        data = patch.apply(data)
 
-            updated_resource = resource_schema.load(data)
-            db.session.commit()
+        resource = resource_schema.load(data)
+        db.session.merge(resource) # Required for quantites, updates not workging without
+        db.session.commit()
 
-            return resource_schema.dump(updated_resource)
-        except jsonpatch.JsonPatchConflict:
-            return abort(403, "Patch format is incorrect")
-    else:
-        return abort(
-            404,
-            "No resource found for Id: {resource_id}".format(resource_id=resource_id),
-        )
+        return resource_schema.dump(resource)
+    except jsonpatch.JsonPatchConflict:
+        return abort(403, "Patch format is incorrect")
 
 
 def delete_resource(resource_id: int) -> Any:

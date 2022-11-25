@@ -1,83 +1,42 @@
 <script lang="ts">
 	import type { Resource } from '$lib/api/dataModel';
-	import { updateResourceInputRequest } from '$lib/api/resource';
+	import { renameResourceRequest, updateResourceInputRequest } from '$lib/api/resource';
 	import Error from '$lib/Error.svelte';
 	import TimeunitInput from './TimeunitInput.svelte';
 
 	/*Bound var*/
 	export let resource: Resource;
-
 	export let modify: boolean;
+
 	let errors: { [key: string]: string } = {};
 
-	let timeUseValue: number;
-	let timeUseUnit: string;
+	// undefined values cannot be bind to html elements
+	$: if (resource.duration == undefined) resource.duration = {};
+	$: if (resource.frequency == undefined) resource.frequency = {};
+	$: if (resource.time_use == undefined) resource.time_use = {};
 
-	let frequencyValue: number;
-	let frequencyUnit: string;
+	// Clear duration quantity values when setting field to 0
+	$: if (resource.duration != undefined && resource.duration.value == 0) {
+		resource.duration.value = undefined;
+		resource.duration.unit = undefined;
+	}
+	$: if (resource.frequency != undefined && resource.frequency.value == 0) {
+		resource.frequency.value = undefined;
+		resource.frequency.unit = undefined;
+	}
+	$: if (resource.time_use != undefined && resource.time_use.value == 0) {
+		resource.time_use.value = undefined;
+		resource.time_use.unit = undefined;
+	}
 
-	let durationValue: number;
-	let durationUnit: string;
+	// Helpers bool with logic if frequency or duration field are required
+	$: frequencyRequired = (resource.has_time_input && resource.time_use.unit != undefined) || (!resource.has_time_input && resource.duration.value != undefined);
+	$: durationRequired = resource.has_time_input || (!resource.has_time_input && resource.frequency.value != undefined);
 
-	$: modify, cleanError(); // Clean error message when modify eddit button is untriggered
-
+	// Clean error message when modify eddit button is untriggered
+	$: modify, cleanError();
 	function cleanError() {
 		if (!modify) errors = {};
-	}
-
-	$: frequencyRequired =
-		(resource.has_time_input && resource.time_use && resource.time_use.unit != undefined) || (!resource.has_time_input && resource.duration && resource.duration.value != undefined);
-	$: durationRequired = resource.has_time_input || (!resource.has_time_input && resource.frequency && resource.frequency.value != undefined);
-
-	$: if (timeUseValue == 0) {
-		timeUseValue = undefined;
-		timeUseUnit = undefined;
-	}
-
-	$: if (frequencyValue == 0) {
-		frequencyValue = undefined;
-		frequencyUnit = undefined;
-	}
-
-	$: if (durationValue == 0) {
-		durationValue = undefined;
-		durationUnit =  undefined;
-	}
-
-	$: {
-		if (!resource.time_use) {
-			resource.time_use = {
-				value: timeUseValue,
-				unit: timeUseUnit
-			};
-		} else {
-			resource.time_use.value = timeUseValue;
-			resource.time_use.unit = timeUseUnit;
-		}
-	}
-
-	$: {
-		if (!resource.frequency) {
-			resource.frequency = {
-				value: frequencyValue,
-				unit: frequencyUnit
-			};
-		} else {
-			resource.frequency.value = frequencyValue;
-			resource.frequency.unit = frequencyUnit;
-		}
-	}
-
-	$: {
-		if (!resource.duration) {
-			resource.duration = {
-				value: durationValue,
-				unit: durationUnit
-			};
-		} else {
-			resource.duration.value = durationValue;
-			resource.duration.unit = durationUnit;
-		}
 	}
 
 	async function updateResource() {
@@ -96,9 +55,9 @@
 
 	function getText() {
 		let test = resource.input.value + ' ' + resource.input.unit + '(s)';
-		if (resource.time_use && resource.time_use.value != undefined) test += ', ' + resource.time_use.value + ' ' + resource.time_use.unit + '(s)';
-		if (resource.frequency && resource.frequency.value != undefined) test += ' by ' + resource.frequency.value + ' ' + resource.frequency.unit + '(s)';
-		if (resource.duration && resource.duration.value != undefined) test += ' for ' + resource.duration.value + ' ' + resource.duration.unit + '(s)';
+		if (resource.time_use.value != undefined) test += ', ' + resource.time_use.value + ' ' + resource.time_use.unit + '(s)';
+		if (resource.frequency.value != undefined) test += ' by ' + resource.frequency.value + ' ' + resource.frequency.unit + '(s)';
+		if (resource.duration.value != undefined) test += ' for ' + resource.duration.value + ' ' + resource.duration.unit + '(s)';
 		return test;
 	}
 </script>
@@ -127,10 +86,10 @@
 					<div class="form-label">Used:</div>
 				</div>
 				<div class="col-sm-5">
-					<input type="number" id="timeUseValue" class="form-control {errors.time_use ? 'is-invalid' : ''}" bind:value={timeUseValue} on:click|stopPropagation={() => {}} />
+					<input type="number" id="timeUseValue" class="form-control {errors.time_use ? 'is-invalid' : ''}" min="0" bind:value={resource.time_use.value} on:click|stopPropagation={() => {}} />
 				</div>
 				<div class="col-sm-5">
-					<TimeunitInput bind:inputUnit={timeUseUnit} isRequired={false} isInvalid={errors.time_use} />
+					<TimeunitInput bind:inputUnit={resource.time_use.unit} isRequired={false} isInvalid={errors.time_use} />
 				</div>
 				{#if errors.time_use}
 					<!-- Quantity errors -->
@@ -156,14 +115,14 @@
 					type="number"
 					id="frequencyValue"
 					class="form-control {errors.frequency ? 'is-invalid' : ''}"
-					bind:value={frequencyValue}
+					bind:value={resource.frequency.value}
 					required={frequencyRequired}
 					min="0"
 					on:click|stopPropagation={() => {}}
 				/>
 			</div>
 			<div class="col-sm-5">
-				<TimeunitInput bind:inputUnit={frequencyUnit} isRequired={frequencyRequired} isInvalid={errors.frequency} />
+				<TimeunitInput bind:inputUnit={resource.frequency.unit} isRequired={frequencyRequired} isInvalid={errors.frequency} />
 			</div>
 			{#if errors.frequency}
 				<!-- Quantity errors -->
@@ -183,10 +142,10 @@
 			</div>
 			<div class="col-sm-5">
 				<!-- <label for="durationValue" class="form-label {durationRequired() ? 'is-required' : ''}">Duration:</label> -->
-				<input type="number" id="durationValue" class="form-control" bind:value={durationValue} required={durationRequired} min="0" on:click|stopPropagation={() => {}} />
+				<input type="number" id="durationValue" class="form-control" bind:value={resource.duration.value} required={durationRequired} min="0" on:click|stopPropagation={() => {}} />
 			</div>
 			<div class="col-sm-5">
-				<TimeunitInput bind:inputUnit={durationUnit} isRequired={durationRequired} />
+				<TimeunitInput bind:inputUnit={resource.duration.unit} isRequired={durationRequired} />
 			</div>
 		</div>
 		{#each errors.generic || [] as error}
