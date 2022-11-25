@@ -30,7 +30,10 @@
 	}
 
 	// Helpers bool with logic if frequency or duration field are required
-	$: frequencyRequired = (resource.has_time_input && resource.time_use.unit != undefined) || (!resource.has_time_input && resource.duration.value != undefined);
+	// Frequency is required if time in impact source and time_use filled, or if no time if duration is filled
+	$: frequencyRequired = (resource.has_time_input && resource.time_use.value != undefined) || (!resource.has_time_input && resource.duration.value != undefined);
+
+	// Duration is required if time in impact source, of if not and frequency is set
 	$: durationRequired = resource.has_time_input || (!resource.has_time_input && resource.frequency.value != undefined);
 
 	// Clean error message when modify eddit button is untriggered
