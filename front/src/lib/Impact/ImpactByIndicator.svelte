@@ -9,7 +9,7 @@
 		{#each Object.entries(environmentalImpact.impacts) as [key, impact]}
 			{#if impact.value != 0}
 				<li>
-					{key}: <b>{impact.value}</b>
+					{key}: <b>{Math.round(impact.value * 100) / 100}</b>
 					{impact.unit}
 				</li>
 			{/if}

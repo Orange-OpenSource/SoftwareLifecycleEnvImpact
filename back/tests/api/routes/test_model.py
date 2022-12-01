@@ -1,3 +1,4 @@
+import time
 import pytest
 from flask.testing import FlaskClient
 from flask_sqlalchemy import SQLAlchemy
@@ -24,16 +25,8 @@ def model_fixture(db: SQLAlchemy) -> Model:
 
     task = Task(name="Test task")
 
-    resource = Resource(
-        name="TestResource",
-        impact_source_id="testid",
-        amount=1 * SERVER,
-        period=3 * DAY,
-        frequency=3 * MINUTE,
-    )
-    task.resources = [resource]
     model.root_task = task
-    db.session.add_all([project, task, model, resource])
+    db.session.add_all([project, model, task])
     db.session.commit()
     return model
 
@@ -136,7 +129,6 @@ def test_patch_model(client: FlaskClient, db: SQLAlchemy, model_fixture: Model) 
     :param db: SQLAlchemy database fixture
     :param model_fixture: Model fixture
     """
-
     response = client.patch(
         models_root + "/" + str(model_fixture.id),
         json=[{"op": "replace", "path": "/name", "value": "newer name"}],
@@ -207,4 +199,15 @@ def test_get_model_tasks(client: FlaskClient, db: SQLAlchemy) -> None:
     db.session.commit()
 
     response = client.get(models_root + "/" + str(model.id) + "/tasks")
+    assert response.status_code == 200
+
+
+def test_get_model_impact(client: FlaskClient, model_fixture: Model) -> None:
+    """
+    Test response of GET /models/<model_id>/impact
+    :param client: flask client fixture
+    :param db: SQLAlchemy database fixture
+    """
+
+    response = client.get(models_root + "/" + str(model_fixture.id) + "/impact")
     assert response.status_code == 200

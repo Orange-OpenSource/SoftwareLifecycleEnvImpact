@@ -216,7 +216,7 @@
                     "task_id": null,
                     "updated_at": null,
                     "impact_source_id": "userDevice",
-                    "amount": { "value": 100, "unit": "device" },
+                    "amount": { "value": 100, "unit": "user_device" },
                     "period": { "value": 10, "unit": "day" }
                   }
                 ],

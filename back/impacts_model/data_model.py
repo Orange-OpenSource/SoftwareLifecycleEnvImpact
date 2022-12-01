@@ -66,7 +66,7 @@ class Resource(db.Model):  # type: ignore
     @hybrid_property
     def has_time_input(self) -> bool:
         try:
-            return self.impact_source.has_time_amount
+            return self.impact_source.has_time_input
         except:
             print("no impactsource for " + self.impact_source_id)
             return False
@@ -228,8 +228,12 @@ class Resource(db.Model):  # type: ignore
         environmental_impact = EnvironmentalImpact()
 
         for key in self.impact_source.environmental_impact.impacts:
+            # Adding the impact to impact category indicator unit
             environmental_impact.add_impact(
-                key, self.impact_source.environmental_impact.impacts[key] * self.value()
+                key,
+                (
+                    self.impact_source.environmental_impact.impacts[key] * self.value()
+                ).to(key.value),
             )
 
         return environmental_impact

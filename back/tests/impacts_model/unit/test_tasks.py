@@ -107,6 +107,7 @@ def test_get_task_impact_by_category(
     # Mock task = 2 * TestResource (mocked) = 2 * (1000 + 776) = 3552
     result = single_task_fixture.get_category_impact(ImpactCategory.CLIMATE_CHANGE)
     assert isinstance(result, Quantity)
+    assert result.units == KG_CO2E
     assert result == 3552 * KG_CO2E
 
     # Test adding a subtask
@@ -115,6 +116,7 @@ def test_get_task_impact_by_category(
         ImpactCategory.CLIMATE_CHANGE
     )
     assert isinstance(result, Quantity)
+    assert result.units == KG_CO2E
     assert result == 5328 * KG_CO2E
 
 

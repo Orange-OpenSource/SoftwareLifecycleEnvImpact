@@ -180,19 +180,21 @@ def test_resource_copy(resource_fixture: Resource):
         )
     ),
 )
-def test_get_resource_impact(resource_fixture: Resource) -> None:
+def test_resource_get_environmental_impact(resource_fixture: Resource) -> None:
     """
     For Resource.get_co2_impact test computation, quantity change and resource adding
     :return: None
     """
     impact = resource_fixture.get_category_impact(ImpactCategory.CLIMATE_CHANGE)
     assert isinstance(impact, Quantity)
+    assert impact.units == KG_CO2E
     assert impact == (2332) * resource_fixture.value() * KG_CO2E
 
     # Test quantity change
     resource_fixture.amount = 12321.423 * SERVER
     impact = resource_fixture.get_category_impact(ImpactCategory.CLIMATE_CHANGE)
     assert isinstance(impact, Quantity)
+    assert impact.units == KG_CO2E
     assert impact == (2332) * 12321.423 * KG_CO2E
 
 
@@ -208,7 +210,7 @@ def test_get_resource_impact(resource_fixture: Resource) -> None:
         ),
     ),
 )
-def test_get_resource_environmental_impact(resource_fixture: Resource) -> None:
+def test_resource_get_category_impact(resource_fixture: Resource) -> None:
     """
     Test get_impacts computation by changing quantity and impacts_list
     :return:

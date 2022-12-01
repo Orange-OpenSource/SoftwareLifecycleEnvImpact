@@ -114,7 +114,7 @@ def test_resource_schema_validation_time_impactsource() -> None:
     """
     Test marshamllow validation when time in ImpactSource unit for:
         - Period is mandatory
-        - If duration is is set, frequency should also be set
+        - If time_use is is set, frequency should also be set
     """
     schema = ResourceSchema()
 
