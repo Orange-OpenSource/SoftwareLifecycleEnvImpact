@@ -139,7 +139,7 @@
 		<svelte:self bind:task={subtask} bind:draggedObject bind:selectedTask bind:parentTask={task} {modify} {selectedModel} />
 	{/each}
 
-	{#if draggedObject.task != undefined && draggedObject.task != task}
+	{#if draggedObject.task != undefined && draggedObject.task != task && draggedObject.task.parent_task_id != task.id}
 		<div class="task" on:drop={handleDragDrop} on:dragover={handleDragOver} on:dragleave={handleDragLeave}>
 			<div class="col-8 card {draggingOver ? 'border-success' : ''}" style="min-width: 15rem;">
 				<div class="card-body ">
