@@ -28,7 +28,7 @@ def resource_fixture(db: SQLAlchemy):
     resource = Resource(
         name="testResource",
         impact_source_id="testid",
-        input=1 * SERVER,
+        amount=1 * SERVER,
     )
     task.resources = [resource]
     model.root_task = task
@@ -77,12 +77,12 @@ def test_resource_schema_validation_no_time_impactsource() -> None:
     """
     schema = ResourceSchema()
 
-    # Wrong input unit should raise error
+    # Wrong amount unit should raise error
     with pytest.raises(ValidationError):
         dump = schema.dump(
             Resource(
                 impact_source_id="testid",
-                input=1 * SERVER * DAY,
+                amount=1 * SERVER * DAY,
             )
         )
         schema.load(dump)
@@ -90,14 +90,14 @@ def test_resource_schema_validation_no_time_impactsource() -> None:
     # Only frequency should raise error
     with pytest.raises(ValidationError):
         dump = schema.dump(
-            Resource(impact_source_id="testid", input=1 * SERVER, frequency=1 * DAY)
+            Resource(impact_source_id="testid", amount=1 * SERVER, frequency=1 * DAY)
         )
         schema.load(dump)
 
     # Only period should raise error
     with pytest.raises(ValidationError):
         dump = schema.dump(
-            Resource(impact_source_id="testid", input=1 * SERVER, period=1 * DAY)
+            Resource(impact_source_id="testid", amount=1 * SERVER, period=1 * DAY)
         )
         schema.load(dump)
 
@@ -118,25 +118,25 @@ def test_resource_schema_validation_time_impactsource() -> None:
     """
     schema = ResourceSchema()
 
-    # Wrong input unit should raise error
+    # Wrong amount unit should raise error
     with pytest.raises(ValidationError):
         dump = schema.dump(
             Resource(
                 impact_source_id="testid",
-                input=1 * SERVER * DAY,
+                amount=1 * SERVER * DAY,
             )
         )
         schema.load(dump)
 
     # No period should raise error
     with pytest.raises(ValidationError):
-        dump = schema.dump(Resource(impact_source_id="testid", input=1 * SERVER))
+        dump = schema.dump(Resource(impact_source_id="testid", amount=1 * SERVER))
         schema.load(dump)
 
     # No frequency when time_se should raise error
     with pytest.raises(ValidationError):
         dump = schema.dump(
-            Resource(impact_source_id="testid", input=1 * SERVER, time_use=1 * MINUTE)
+            Resource(impact_source_id="testid", amount=1 * SERVER, time_use=1 * MINUTE)
         )
         schema.load(dump)
 
@@ -176,7 +176,7 @@ def test_post_resources(
             "name": "testName",
             "task_id": resource_fixture.task_id,
             "impact_source_id": resource_fixture.impact_source_id,
-            "input": {"value": 3, "unit": "server"},
+            "amount": {"value": 3, "unit": "server"},
         },
     )
     assert response.status_code == 201
@@ -250,13 +250,13 @@ def test_patch_resource(
         json=[
             {
                 "op": "replace",
-                "path": "/input",
+                "path": "/amount",
                 "value": {"value": 8, "unit": "server"},
             },
         ],
     )
     assert response.status_code == 200
-    assert response.json["input"] == {"value": 8, "unit": "server"}
+    assert response.json["amount"] == {"value": 8, "unit": "server"}
 
     # Test wrong patch format
     response = client.patch(

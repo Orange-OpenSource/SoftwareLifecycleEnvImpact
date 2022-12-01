@@ -41,12 +41,12 @@ def single_task_fixture(db: SQLAlchemy) -> Task:
     resource1 = Resource(
         name="testResource 1",
         impact_source_id="TestImpactSource",
-        input=1 * SERVER,
+        amount=1 * SERVER,
     )
     resource2 = Resource(
         name="testResource 2",
         impact_source_id="TestImpactSource",
-        input=1 * SERVER,
+        amount=1 * SERVER,
     )
     task.resources = [resource1, resource2]
     model.root_task = task
@@ -67,19 +67,19 @@ def task_fixture_with_subtask(db: SQLAlchemy) -> Task:
     resource1 = Resource(
         name="testResource 3",
         impact_source_id="TestImpactSource",
-        input=1 * SERVER,
+        amount=1 * SERVER,
     )
     resource2 = Resource(
         name="testResource 4",
         impact_source_id="TestImpactSource",
-        input=1 * SERVER,
+        amount=1 * SERVER,
     )
     task.resources = [resource1, resource2]
     subtask = Task(name="Test task subtask")
     resource3 = Resource(
         name="testResource 4",
         impact_source_id="TestImpactSource",
-        input=1 * SERVER,
+        amount=1 * SERVER,
     )
     subtask.resources = [resource3]
 

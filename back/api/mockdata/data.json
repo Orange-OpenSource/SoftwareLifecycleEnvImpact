@@ -43,7 +43,7 @@
                         "task_id": null,
                         "updated_at": null,
                         "impact_source_id": "people",
-                        "input": { "value": 100, "unit": "people" },
+                        "amount": { "value": 100, "unit": "people" },
                         "period": { "value": 10, "unit": "day" }
                       }
                     ],
@@ -63,7 +63,7 @@
                         "task_id": null,
                         "updated_at": null,
                         "impact_source_id": "people",
-                        "input": { "value": 100, "unit": "people" },
+                        "amount": { "value": 100, "unit": "people" },
                         "period": { "value": 10, "unit": "day" }
                       }
                     ],
@@ -86,7 +86,7 @@
                     "task_id": null,
                     "updated_at": null,
                     "impact_source_id": "people",
-                    "input": { "value": 100, "unit": "people" },
+                    "amount": { "value": 100, "unit": "people" },
                     "period": { "value": 10, "unit": "day" }
                   }
                 ],
@@ -106,7 +106,7 @@
                     "task_id": null,
                     "updated_at": null,
                     "impact_source_id": "people",
-                    "input": { "value": 100, "unit": "people" },
+                    "amount": { "value": 100, "unit": "people" },
                     "period": { "value": 10, "unit": "day" }
                   }
                 ],
@@ -136,7 +136,7 @@
                     "task_id": null,
                     "updated_at": null,
                     "impact_source_id": "storage",
-                    "input": { "value": 10, "unit": "gigabyte" },
+                    "amount": { "value": 10, "unit": "gigabyte" },
                     "period": { "value": 100, "unit": "day" }
                   }
                 ],
@@ -154,7 +154,7 @@
                         "task_id": null,
                         "updated_at": null,
                         "impact_source_id": "server",
-                        "input": { "value": 10, "unit": "server" },
+                        "amount": { "value": 10, "unit": "server" },
                         "period": { "value": 100, "unit": "day" }
                       }
                     ],
@@ -174,7 +174,7 @@
                         "task_id": null,
                         "updated_at": null,
                         "impact_source_id": "storage",
-                        "input": { "value": 100, "unit": "gigabyte" },
+                        "amount": { "value": 100, "unit": "gigabyte" },
                         "period": { "value": 100, "unit": "day" }
                       }
                     ],
@@ -194,7 +194,7 @@
                         "task_id": null,
                         "updated_at": null,
                         "impact_source_id": "network",
-                        "input": { "value": 100, "unit": "gigabyte" }
+                        "amount": { "value": 100, "unit": "gigabyte" }
                       }
                     ],
                     "subtasks": [],
@@ -216,7 +216,7 @@
                     "task_id": null,
                     "updated_at": null,
                     "impact_source_id": "userDevice",
-                    "input": { "value": 100, "unit": "device" },
+                    "amount": { "value": 100, "unit": "device" },
                     "period": { "value": 10, "unit": "day" }
                   }
                 ],

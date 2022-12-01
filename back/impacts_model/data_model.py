@@ -38,7 +38,7 @@ ma = FlaskMarshmallow()
 
 class Resource(db.Model):  # type: ignore
     """
-    Resource object and table with a name, an impact source name and a computed value from period and input
+    Resource object and table with a name, an impact source name and a computed value from period and amount
     """
 
     __tablename__ = "resource"
@@ -48,7 +48,7 @@ class Resource(db.Model):  # type: ignore
 
     task_id = db.Column(db.Integer, db.ForeignKey("task.id"), nullable=False)
 
-    _input = db.Column(db.String, nullable=False)
+    _amount = db.Column(db.String, nullable=False)
     _time_use = db.Column(db.String)
     _frequency = db.Column(db.String)
     _period = db.Column(db.String)
@@ -66,39 +66,39 @@ class Resource(db.Model):  # type: ignore
     @hybrid_property
     def has_time_input(self) -> bool:
         try:
-            return self.impact_source.has_time_input
+            return self.impact_source.has_time_amount
         except:
             print("no impactsource for " + self.impact_source_id)
             return False
 
     @hybrid_property
-    def input(self) -> Quantity[Any]:
+    def amount(self) -> Quantity[Any]:
         # Pint does not deal with None values
-        if self._input is None:
+        if self._amount is None:
             return None
         else:
             # Quantity are stored as string in the database, deserialize it
-            return deserialize_quantity(self._input)
+            return deserialize_quantity(self._amount)
 
-    @input.setter
-    def input(self, input) -> None:
-        if input is None:
-            self._input = None
+    @amount.setter
+    def amount(self, amount) -> None:
+        if amount is None:
+            self._amount = None
             return
 
-        if not isinstance(input, Quantity):
+        if not isinstance(amount, Quantity):
             try:
-                input = deserialize_quantity(input)
+                amount = deserialize_quantity(amount)
             except Exception as err:
-                raise TypeError("Input must be a Quantity")
+                raise TypeError("Amount must be a Quantity")
 
         # Serialize the value to save in database
-        self._input = serialize_quantity(input)
+        self._amount = serialize_quantity(amount)
 
-    @input.expression
-    def input(self) -> str:
+    @amount.expression
+    def amount(self) -> str:
         # Used as filter by SQLAlchemy queries
-        return self._input
+        return self._amount
 
     @hybrid_property
     def time_use(self):
@@ -198,12 +198,12 @@ class Resource(db.Model):  # type: ignore
 
     def value(self) -> Quantity[Any]:
         """
-        Computed the value of the inputs, as a quantity
-        Value is of the form : input * time_use * (1/frequency) * period
+        Computed the value of the amounts, as a quantity
+        Value is of the form : amount * time_use * (1/frequency) * period
         time_use, frequency and period can be None
         """
         return (
-            self.input
+            self.amount
             * (self.time_use if self.time_use is not None else 1)
             / (self.frequency if self.frequency is not None else 1)
             * (self.period if self.period is not None else 1)
@@ -214,7 +214,7 @@ class Resource(db.Model):  # type: ignore
         return Resource(
             name=self.name,
             impact_source_id=self.impact_source_id,
-            _input=self._input,
+            _amount=self._amount,
             _time_use=self._time_use,
             _frequency=self._frequency,
             _period=self._period,
@@ -282,9 +282,9 @@ class QuantitySchema(Schema):
 
     @validates_schema
     def validate_quantities(self, data, **kwargs):
-        if "value" not in data or data["value"] == '':
+        if "value" not in data or data["value"] == "":
             raise ValidationError("Missing value")
-        if "unit" not in data["unit"] == '':
+        if "unit" not in data["unit"] == "":
             raise ValidationError("Missing unit")
         try:
             deserialize_quantity(str(data["value"]) + " " + data["unit"])
@@ -307,10 +307,10 @@ class ResourceSchema(Schema):  # type: ignore
     updated_at = fields.DateTime(allow_none=True)
     created_at = fields.DateTime(allow_none=True)
 
-    _input = Nested(
+    _amount = Nested(
         QuantitySchema,
-        data_key="input",
-        attribute="_input",
+        data_key="amount",
+        attribute="_amount",
         allow_none=False,
         many=False,
     )
@@ -358,7 +358,9 @@ class ResourceSchema(Schema):  # type: ignore
             impact_source = impact_source_factory(data["impact_source_id"])
 
             # Deserialize the quantities
-            input = deserialize_quantity(data["_input"]) if "_input" in data else None
+            amount = (
+                deserialize_quantity(data["_amount"]) if "_amount" in data else None
+            )
             period = (
                 deserialize_quantity(data["_period"]) if "_period" in data else None
             )
@@ -371,8 +373,8 @@ class ResourceSchema(Schema):  # type: ignore
                 else None
             )
 
-            # Validate that the input unit correspond to the ImpactSource one
-            if input.units == impact_source.unit:
+            # Validate that the amount unit correspond to the ImpactSource one
+            if amount.units == impact_source.unit:
                 # If it is the right unit, and they're is no time in resource_unit, should either have period and frequency or nothing
 
                 if period is None and frequency is not None:
@@ -387,10 +389,10 @@ class ResourceSchema(Schema):  # type: ignore
                         + str(impact_source.unit)
                         + ")"
                     ]
-                if (1 * input.units).check("[time]"):
+                if (1 * amount.units).check("[time]"):
                     # Should not happen, safeguard for the future
-                    errors["input"] = ["ImpactSource input can't be time"]
-            else:  # If the input unit is different from the ImpactSource one
+                    errors["amount"] = ["ImpactSource input can't be time"]
+            else:  # If the amount unit is different from the ImpactSource one
                 # Use the string to compare units
                 units_split = re.split(r"[*,/]", str(impact_source.unit))
                 units_split_len = len(units_split)
@@ -399,7 +401,7 @@ class ResourceSchema(Schema):  # type: ignore
                     # Should not happen, safeguard for the future
                     errors["impact_source"] = ["ImpactSource unit dimensionality > 2"]
                 elif units_split_len == 2:
-                    # Means that period should be set, or if no time in impactsource unit that input unit should match with a dimensionality of 2
+                    # Means that period should be set, or if no time in impactsource unit that the inputed unit should match with a dimensionality of 2
 
                     # Check that time is present in ImpactSource unit
                     if deserialize_quantity(1 * units_split[0]).check(
@@ -421,13 +423,13 @@ class ResourceSchema(Schema):  # type: ignore
                                 ]
                     else:
                         # No time in ImpactSource unit
-                        errors["input"] = [
-                            "Input unit should be " + str(impact_source.unit)
+                        errors["amount"] = [
+                            "Amount unit should be " + str(impact_source.unit)
                         ]
                 elif units_split_len == 1:
                     # Wrong unit
-                    errors["input"] = [
-                        "Input unit should be " + str(impact_source.unit)
+                    errors["amount"] = [
+                        "Amount unit should be " + str(impact_source.unit)
                     ]
         except ImpactSourceError:
             errors["impact_source_id"] = ["Wrong impact_source_id"]

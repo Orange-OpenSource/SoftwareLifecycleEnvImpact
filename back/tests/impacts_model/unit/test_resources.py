@@ -43,7 +43,7 @@ def resource_fixture(db: SQLAlchemy) -> Resource:
     resource = Resource(
         name="testResource",
         impact_source_id="testid",
-        input=2312 * SERVER,
+        amount=2312 * SERVER,
     )
 
     task.resources = [resource]
@@ -66,20 +66,20 @@ def test_resource_impact_source(resource_fixture: Resource):
     assert isinstance(resource_fixture.impact_source, ImpactSource)
 
 
-def test_resource_input(resource_fixture: Resource):
-    """Tests for resource input hybrid property"""
+def test_resource_amount(resource_fixture: Resource):
+    """Tests for resource amount hybrid property"""
 
-    assert resource_fixture.input is None or isinstance(
-        resource_fixture.input, Quantity
+    assert resource_fixture.amount is None or isinstance(
+        resource_fixture.amount, Quantity
     )
 
     # Test setter and getter
-    resource_fixture.input = 3 * SERVER
-    assert resource_fixture.input == 3 * SERVER
+    resource_fixture.amount = 3 * SERVER
+    assert resource_fixture.amount == 3 * SERVER
 
     # Test that an exception is raised in setting a wrong value
     with pytest.raises(TypeError):
-        resource_fixture.input = "oui"
+        resource_fixture.amount = "oui"
 
 
 def test_resource_time_use(resource_fixture: Resource):
@@ -134,8 +134,8 @@ def test_resource_value(resource_fixture: Resource):
     """Test computation of function value()"""
     assert isinstance(resource_fixture.value(), Quantity)
 
-    # Test with only input ( 3 servers)
-    resource_fixture.input = 3 * SERVER
+    # Test with only amount ( 3 servers)
+    resource_fixture.amount = 3 * SERVER
     assert resource_fixture.value() == 3 * SERVER
 
     # Test with period (3 servers during one month)
@@ -166,7 +166,7 @@ def test_resource_copy(resource_fixture: Resource):
 
     # Should be the same
     assert resource_copy.impact_source_id == resource_fixture.impact_source_id
-    assert resource_copy._input == resource_fixture._input
+    assert resource_copy._amount == resource_fixture._amount
     assert resource_copy._time_use == resource_fixture._time_use
     assert resource_copy._frequency == resource_fixture._frequency
     assert resource_copy._period == resource_fixture._period
@@ -190,7 +190,7 @@ def test_get_resource_impact(resource_fixture: Resource) -> None:
     assert impact == (2332) * resource_fixture.value() * KG_CO2E
 
     # Test quantity change
-    resource_fixture.input = 12321.423 * SERVER
+    resource_fixture.amount = 12321.423 * SERVER
     impact = resource_fixture.get_category_impact(ImpactCategory.CLIMATE_CHANGE)
     assert isinstance(impact, Quantity)
     assert impact == (2332) * 12321.423 * KG_CO2E
@@ -213,7 +213,7 @@ def test_get_resource_environmental_impact(resource_fixture: Resource) -> None:
     Test get_impacts computation by changing quantity and impacts_list
     :return:
     """
-    resource_fixture.input = 1 * SERVER
+    resource_fixture.amount = 1 * SERVER
     assert resource_fixture.get_environmental_impact().impacts == {
         ImpactCategory.CLIMATE_CHANGE: 10000.123 * KG_CO2E,
         ImpactCategory.RESOURCE_DEPLETION: 0 * KG_SBE,
@@ -227,7 +227,7 @@ def test_get_resource_environmental_impact(resource_fixture: Resource) -> None:
     }
 
     # Test quantity multiplication
-    resource_fixture.input = 10 * SERVER
+    resource_fixture.amount = 10 * SERVER
     assert resource_fixture.get_environmental_impact().impacts == {
         ImpactCategory.CLIMATE_CHANGE: (10 * 10000.123) * KG_CO2E,
         ImpactCategory.RESOURCE_DEPLETION: 0 * KG_SBE,

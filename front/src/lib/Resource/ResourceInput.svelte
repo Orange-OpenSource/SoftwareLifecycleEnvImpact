@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Resource } from '$lib/api/dataModel';
-	import { renameResourceRequest, updateResourceInputRequest } from '$lib/api/resource';
+	import { renameResourceRequest, updateResourceAmountRequest } from '$lib/api/resource';
 	import Error from '$lib/Error.svelte';
 	import TimeunitInput from './TimeunitInput.svelte';
 
@@ -46,7 +46,7 @@
 		try {
 			//reset errors
 			errors = {};
-			resource = await updateResourceInputRequest(resource);
+			resource = await updateResourceAmountRequest(resource);
 		} catch (e: any) {
 			errors = e.errors;
 		}
@@ -57,7 +57,7 @@
 	}
 
 	function getText() {
-		let test = resource.input.value + ' ' + resource.input.unit + '(s)';
+		let test = resource.amount.value + ' ' + resource.amount.unit + '(s)';
 		if (resource.time_use.value != undefined) test += ', ' + resource.time_use.value + ' ' + resource.time_use.unit + '(s)';
 		if (resource.frequency.value != undefined) test += ' by ' + resource.frequency.value + ' ' + resource.frequency.unit + '(s)';
 		if (resource.period.value != undefined) test += ' for ' + resource.period.value + ' ' + resource.period.unit + '(s)';
@@ -73,13 +73,13 @@
 	<form class="card-text needs-validation" on:submit|preventDefault={handleSubmit}>
 		<div class="row">
 			<div class="col col-sm-2 col-form-label">
-				<div class="form-label is-required">{resource.input.unit}:</div>
+				<div class="form-label is-required">{resource.amount.unit}:</div>
 			</div>
 			<div class="col-sm-10">
-				<!-- <label for="inputValue" class="form-label is-required">Value:</label> -->
-				<input type="number" id="inputValue" class="form-control {errors.input ? 'is-invalid' : ''}" bind:value={resource.input.value} required min="1" on:click|stopPropagation={() => {}} />
+				<!-- <label for="amountValue" class="form-label is-required">Value:</label> -->
+				<input type="number" id="amountValue" class="form-control {errors.amount ? 'is-invalid' : ''}" bind:value={resource.amount.value} required min="1" on:click|stopPropagation={() => {}} />
 			</div>
-			{#each errors.input || [] as error}
+			{#each errors.amount || [] as error}
 				<div class="invalid-feedback"><Error message={error} /></div>
 			{/each}
 		</div>

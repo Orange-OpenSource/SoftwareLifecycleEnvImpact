@@ -145,7 +145,7 @@ def insert_task_db(
             new_task.resources.append(
                 Resource(
                     impact_source_id=impact_source.id,
-                    input=1,
+                    amount=1,
                 )
             )
 

@@ -48,7 +48,7 @@ export interface Resource {
 	id: number;
 	name: string;
 	impact_source_id: string;
-	input: Quantity;
+	amount: Quantity;
 	has_time_input: boolean;
 	period: Quantity;
 	frequency: Quantity;
