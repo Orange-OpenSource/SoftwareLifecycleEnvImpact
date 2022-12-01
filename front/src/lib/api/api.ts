@@ -20,7 +20,16 @@ async function send(method: string, path: string, data: unknown = undefined) {
 	}
 	*/
 	const res = await fetch(`${base}/${path}`, opts);
-	if (!res.ok) throw new Error(await res.text());
+	// if (!res.ok) throw new Error(await res.text());
+	// if (!res.ok) throw new Error((await res.json())['detail']);
+
+	if (!res.ok) {
+		const json = await res.json();
+		if (json['detail']) {
+			throw new Error(json['detail']);
+		}
+		throw new Error(JSON.stringify(json));
+	}
 	return res;
 }
 
