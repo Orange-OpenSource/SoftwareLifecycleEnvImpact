@@ -6,8 +6,6 @@ def retrieve_all_models_db() -> List[Model]:
     return Model.query.all()
 
 
-def retrieve_model_db(model_id: int) -> Model:
-    return Model.query.filter(Model.id == model_id).one_or_none()
 
 
 def retrieve_similar_model_db(model_name: str, project_id: int) -> Model:

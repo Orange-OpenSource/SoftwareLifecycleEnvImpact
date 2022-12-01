@@ -6,11 +6,8 @@ from flask import abort, request
 
 from impacts_model.impacts import TaskImpact, TaskImpactSchema
 from api.routes.task import get_task
-from impacts_model.data_model import ModelSchema, db, Project, Task, TaskSchema
+from impacts_model.data_model import Model, ModelSchema, db, Project, Task, TaskSchema
 from impacts_model.database import (
-    retrieve_all_models_db,
-    retrieve_model_db,
-    retrieve_similar_model_db,
     insert_model_db,
 )
 
@@ -20,7 +17,7 @@ def get_models() -> Any:
     GET /models/
     :return: return all models in the. database
     """
-    models = retrieve_all_models_db()
+    models = Model.query.all()
 
     model_schema = ModelSchema(many=True)
     return model_schema.dump(models)
@@ -32,16 +29,9 @@ def get_model(model_id: int) -> Any:
     :param model_id: the id of the model to retrieve
     :return: Model it it exists with id, 404 else
     """
-    model = retrieve_model_db(model_id)
-
-    if model is not None:
-        model_schema = ModelSchema()
-        return model_schema.dump(model)
-    else:
-        return abort(
-            404,
-            "No model found for Id: {model_id}".format(model_id=model_id),
-        )
+    model = db.session.query(Model).get_or_404(model_id)
+    model_schema = ModelSchema()
+    return model_schema.dump(model)
 
 
 def get_model_impact(model_id: int) -> Any:
@@ -50,30 +40,16 @@ def get_model_impact(model_id: int) -> Any:
     :param model_id: the id of the model to retrieve the impact from
     :return: The impact it model exists with id, 404 else
     """
-    model = retrieve_model_db(model_id)
+    model = db.session.query(Model).get_or_404(model_id)
 
-    if model is not None:
-        task = Task.query.filter(Task.id == model.root_task_id).one_or_none()
-
-        if task is not None:
-            task_impact = TaskImpact(
-                task.id,
-                task.get_environmental_impact(),
-                task.get_subtasks_impact(),
-                task.get_impact_by_resource_type(),
-            )
-            schema = TaskImpactSchema()
-            return schema.dump(task_impact)
-        else:
-            return abort(
-                404,
-                "No task found for Id: {task_id}".format(task_id=task.id),
-            )
-    else:
-        return abort(
-            404,
-            "No model found for Id: {model_id}".format(model_id=model_id),
-        )
+    task_impact = TaskImpact(
+        model.root_task.id,
+        model.root_task.get_environmental_impact(),
+        model.root_task.get_subtasks_impact(),
+        model.root_task.get_impact_by_resource_type(),
+    )
+    schema = TaskImpactSchema()
+    return schema.dump(task_impact)
 
 
 def update_model(model_id: int) -> Any:
@@ -83,36 +59,29 @@ def update_model(model_id: int) -> Any:
     :param model_id: the id of the model to update
     :return: The updated model if it exists with id, 403 if the JSONPatch format is incorrect, 404 else
     """
-    model = retrieve_model_db(model_id)
+    model = db.session.query(Model).get_or_404(model_id)
 
-    if model is not None:
-        try:
-            model_schema = ModelSchema()
-            data = model_schema.dump(model)
+    try:
+        model_schema = ModelSchema()
+        data = model_schema.dump(model)
 
-            patch = jsonpatch.JsonPatch(request.json)
-            data = patch.apply(data)
+        patch = jsonpatch.JsonPatch(request.json)
+        data = patch.apply(data)
 
-            if (
-                Project.query.filter(Project.id == model.project_id)
-                .filter(model.name == data["name"])
-                .one_or_none()
-                is not None
-            ):
-                return abort(403, "A model with this name already exists")
+        if (
+            Project.query.filter(Project.id == model.project_id)
+            .filter(model.name == data["name"])
+            .one_or_none()
+            is not None
+        ):
+            return abort(403, "A model with this name already exists")
 
-            model = model_schema.load(data)
-            db.session.commit()
+        model = model_schema.load(data)
+        db.session.commit()
 
-            return model_schema.dump(model)
-        except jsonpatch.JsonPatchConflict:
-            return abort(403, "Patch format is incorrect")
-
-    else:
-        return abort(
-            404,
-            "No model found for Id: {model_id}".format(model_id=model_id),
-        )
+        return model_schema.dump(model)
+    except jsonpatch.JsonPatchConflict:
+        return abort(403, "Patch format is incorrect")
 
 
 def delete_model(model_id: int) -> Any:
@@ -121,17 +90,10 @@ def delete_model(model_id: int) -> Any:
     :param model_id: the id of the model to delete
     :return: 200 if the model exists and is deleted, 404 else
     """
-    model = retrieve_model_db(model_id)
-
-    if model is not None:
-        db.session.delete(model)
-        db.session.commit()
-        return 200
-    else:
-        return abort(
-            404,
-            "No model found for Id: {model_id}".format(model_id=model_id),
-        )
+    model = db.session.query(Model).get_or_404(model_id)
+    db.session.delete(model)
+    db.session.commit()
+    return 200
 
 
 def get_tasks(model_id: int) -> Any:
@@ -140,15 +102,8 @@ def get_tasks(model_id: int) -> Any:
     :param model_id: id of the model to get the tasks
     :return: a list of tasks corresponding to a model id
     """
-    model = retrieve_model_db(model_id)
-
-    if model is not None:
-        return get_task(model.root_task_id)
-    else:
-        return abort(
-            404,
-            "No model found for Id: {model_id}".format(model_id=model_id),
-        )
+    model = db.session.query(Model).get_or_404(model_id)
+    return get_task(model.root_task_id)
 
 
 def create_model(model: dict[str, Any]) -> Any:
@@ -160,14 +115,27 @@ def create_model(model: dict[str, Any]) -> Any:
     name = model.get("name")
     project_id = model.get("project_id")
 
-    existing_model = retrieve_similar_model_db(name, project_id)
+    existing_model = (
+        Model.query.filter(Model.name == name)
+        .filter(Model.project_id == project_id)
+        .one_or_none()
+    )
 
     if existing_model is None:
         schema = ModelSchema()
-        new_model = insert_model_db(schema.load(model))
-        data = schema.dump(new_model)
+        model_loaded = schema.load(model)
 
-        return data, 201
+        if model_loaded.root_task == None:
+            # Create a model only with a name imply to create the associate root_task
+            root_task = Task(
+                name=model_loaded.name,
+            )
+            model_loaded.root_task = root_task
+
+        db.session.add(model_loaded)
+        db.session.commit()
+
+        return schema.dump(model_loaded), 201
     else:
         return abort(
             409,
@@ -181,17 +149,11 @@ def duplicate_model(model_id: int) -> Any:
     :param model_id: the id of the model to copy
     :return: Model it it exists with id, 404 else
     """
-    model = retrieve_model_db(model_id)
+    model = db.session.query(Model).get_or_404(model_id)
 
-    if model is not None:
-        model_copy = copy(model)
-        model_copy.name = model_copy.name + " copy"
-        model_copy.project_id = model.project_id
-        model_copy = insert_model_db(model_copy)
-        model_schema = ModelSchema()
-        return model_schema.dump(model_copy)
-    else:
-        return abort(
-            404,
-            "No model found for Id: {model_id}".format(model_id=model_id),
-        )
+    model_copy = copy(model)
+    model_copy.name = model_copy.name + " copy"
+    model_copy.project_id = model.project_id
+    model_copy = insert_model_db(model_copy)
+    model_schema = ModelSchema()
+    return model_schema.dump(model_copy)

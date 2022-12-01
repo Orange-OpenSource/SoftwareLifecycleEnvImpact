@@ -26,7 +26,7 @@ def model_fixture(db: SQLAlchemy) -> Model:
 
     resource = Resource(
         name="TestResource",
-        impact_source_id="TestResource",
+        impact_source_id="testid",
         input=1 * SERVER,
         duration=3 * DAY,
         frequency=3 * MINUTE,

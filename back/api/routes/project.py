@@ -32,29 +32,16 @@ def get_project(project_id: int) -> Any:
     :param project_id: id of the project to get
     :return: Project if it exists with id, 404 else
     """
-    project = Project.query.filter(Project.id == project_id).one_or_none()
-
-    if project is not None:
-        project_schema = ProjectSchema()
-        return project_schema.dump(project)
-    else:
-        return abort(
-            404,
-            "No project found for Id: {project_id}".format(project_id=project_id),
-        )
+    project = db.session.query(Project).get_or_404(project_id)
+    project_schema = ProjectSchema()
+    return project_schema.dump(project)
 
 
 def export_project(project_id: int) -> Any:
-    project = Project.query.filter(Project.id == project_id).one_or_none()
+    project = db.session.query(Project).get_or_404(project_id)
     project_copy = copy(project)
-    if project is not None:
-        project_schema = ProjectSchema()
-        return project_schema.dump(project_copy)
-    else:
-        return abort(
-            404,
-            "No project found for Id: {project_id}".format(project_id=project_id),
-        )
+    project_schema = ProjectSchema()
+    return project_schema.dump(project_copy)
 
 
 def update_project(project_id: int) -> Any:
@@ -64,33 +51,24 @@ def update_project(project_id: int) -> Any:
     :param project_id: the id of the project to update
     :return: The updated project if it exists with id, 403 if the JSONPatch format is incorrect, 404 else
     """
-    project = Project.query.filter(Project.id == project_id).one_or_none()
+    project = db.session.query(Project).get_or_404(project_id)
 
-    if project is not None:
-        try:
-            project_schema = ProjectSchema()
-            data = project_schema.dump(project)
+    try:
+        project_schema = ProjectSchema()
+        data = project_schema.dump(project)
 
-            patch = jsonpatch.JsonPatch(request.json)
-            data = patch.apply(data)
+        patch = jsonpatch.JsonPatch(request.json)
+        data = patch.apply(data)
 
-            if (
-                Project.query.filter(Project.name == data["name"]).one_or_none()
-                is not None
-            ):
-                return abort(403, "A model with this name already exists")
+        if Project.query.filter(Project.name == data["name"]).one_or_none() is not None:
+            return abort(403, "A model with this name already exists")
 
-            model = project_schema.load(data)
-            db.session.commit()
+        model = project_schema.load(data)
+        db.session.commit()
 
-            return project_schema.dump(model)
-        except jsonpatch.JsonPatchConflict:
-            return abort(403, "Patch format is incorrect")
-    else:
-        return abort(
-            404,
-            "No project found for Id: {project_id}".format(project_id=project_id),
-        )
+        return project_schema.dump(model)
+    except jsonpatch.JsonPatchConflict:
+        return abort(403, "Patch format is incorrect")
 
 
 def delete_project(project_id: int) -> Any:
@@ -99,17 +77,11 @@ def delete_project(project_id: int) -> Any:
     :param project_id: the id of the project to delete
     :return: 200 if the project exists and is deleted, 404 else
     """
-    project = Project.query.filter(Project.id == project_id).one_or_none()
+    project = db.session.query(Project).get_or_404(project_id)
 
-    if project is not None:
-        db.session.delete(project)
-        db.session.commit()
-        return 200
-    else:
-        return abort(
-            404,
-            "No project found for Id: {project_id}".format(project_id=project_id),
-        )
+    db.session.delete(project)
+    db.session.commit()
+    return 200
 
 
 def create_project(project: dict[str, Any]) -> Any:
@@ -184,13 +156,7 @@ def get_models(project_id: int) -> Any:
     :param project_id: id of the project to get the models
     :return: All the models for the project id
     """
-    project = Project.query.filter(Project.id == project_id).one_or_none()
+    project = db.session.query(Project).get_or_404(project_id)
 
-    if project is not None:
-        model_schema = ModelSchema(many=True)
-        return model_schema.dump(project.models)
-    else:
-        return abort(
-            404,
-            "No project found for Id: {project_id}".format(project_id=project_id),
-        )
+    model_schema = ModelSchema(many=True)
+    return model_schema.dump(project.models)

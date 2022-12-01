@@ -35,16 +35,9 @@ def get_task(task_id: int) -> Any:
     GET /tasks/<task_id>
     :return: Task if it exists with id, 404 else
     """
-    task = Task.query.filter(Task.id == task_id).one_or_none()
-
-    if task is not None:
-        task_schema = TaskSchema()
-        return task_schema.dump(task)
-    else:
-        return abort(
-            404,
-            "No task found for Id: {task_id}".format(task_id=task_id),
-        )
+    task = db.session.query(Task).get_or_404(task_id)
+    task_schema = TaskSchema()
+    return task_schema.dump(task)
 
 
 def update_task(task_id: int) -> Any:
@@ -70,7 +63,7 @@ def update_task(task_id: int) -> Any:
                 _exchange_parent(int(operation["value"]), task, old_parent)
         db.session.commit()
 
-        return task
+        return task_schema.dump(task)
     except jsonpatch.JsonPatchConflict:
         return abort(403, "Patch format is incorrect")
 
@@ -92,7 +85,6 @@ def _exchange_parent(parent_id_to_set: int, task: Task, old_parent_id: int) -> N
             task.subtasks[i].parent_task_id = old_parent_id
 
 
-
 def get_task_impacts(task_id: int) -> Any:  # TODO update test
     """
     GET /tasks/<task_id>/impacts
@@ -100,38 +92,26 @@ def get_task_impacts(task_id: int) -> Any:  # TODO update test
     :param task_id: the id of the task to get the impact
     :return: TaskImpact if task exist, 404 else
     """
-    task = Task.query.filter(Task.id == task_id).one_or_none()
+    task = db.session.query(Task).get_or_404(task_id)
 
-    if task is not None:
-        task_impact = TaskImpact(
-            task_id,
-            task.get_environmental_impact(),
-            task.get_subtasks_impact(),
-            task.get_impact_by_resource_type(),
-        )
-        schema = TaskImpactSchema()
-        return schema.dump(task_impact)
-    else:
-        return abort(
-            404,
-            "No task found for Id: {task_id}".format(task_id=task_id),
-        )
+    task_impact = TaskImpact(
+        task_id,
+        task.get_environmental_impact(),
+        task.get_subtasks_impact(),
+        task.get_impact_by_resource_type(),
+    )
+    schema = TaskImpactSchema()
+    return schema.dump(task_impact)
 
 
 def get_task_subtasks_impacts(task_id: int) -> Any:
-    task = Task.query.filter(Task.id == task_id).one_or_none()
+    task = db.session.query(Task).get_or_404(task_id)
 
-    if task is not None:
-        impacts_list = []
-        for subtask in task.subtasks:
-            impacts_list.append(subtask.get_environmental_impact())
-        schema = EnvironmentalImpactSchema(many=True)
-        return schema.dump(impacts_list)
-    else:
-        return abort(
-            404,
-            "No task found for Id: {task_id}".format(task_id=task_id),
-        )
+    impacts_list = []
+    for subtask in task.subtasks:
+        impacts_list.append(subtask.get_environmental_impact())
+    schema = EnvironmentalImpactSchema(many=True)
+    return schema.dump(impacts_list)
 
 
 def delete_task(task_id: int) -> Any:
@@ -140,25 +120,19 @@ def delete_task(task_id: int) -> Any:
     :param task_id: the id of the task to delete
     :return: 200 if the task exists and is deleted, 404 else
     """
-    task = Task.query.filter(Task.id == task_id).one_or_none()
+    task = db.session.query(Task).get_or_404(task_id)
 
-    if task is not None:
-        model = Model.query.filter(Model.root_task_id == task.id).one_or_none()
-        if model != None:
-            return abort(
-                403,
-                "Cannot delete task {task_id} as it is the root of model {model}".format(
-                    task_id=task_id, model=model.root_task_id
-                ),
-            )
-        db.session.delete(task)
-        db.session.commit()
-        return 200
-    else:
+    model = Model.query.filter(Model.root_task_id == task.id).one_or_none()
+    if model != None:
         return abort(
-            404,
-            "No task found for Id: {task_id}".format(task_id=task_id),
+            403,
+            "Cannot delete task {task_id} as it is the root of model {model}".format(
+                task_id=task_id, model=model.root_task_id
+            ),
         )
+    db.session.delete(task)
+    db.session.commit()
+    return 200
 
 
 def insert_task_db(

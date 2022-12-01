@@ -51,16 +51,9 @@ def get_resource(resource_id: int) -> Any:
     :param resource_id: Id of the resource to get
     :return: Resource if it exists with id, 404 else
     """
-    resource = Resource.query.filter(Resource.id == resource_id).one_or_none()
-
-    if resource is not None:
-        resource_schema = ResourceSchema()
-        return resource_schema.dump(resource)
-    else:
-        return abort(
-            404,
-            "No resource found for Id: {resource_id}".format(resource_id=resource_id),
-        )
+    resource = db.session.query(Resource).get_or_404(resource_id)
+    resource_schema = ResourceSchema()
+    return resource_schema.dump(resource)
 
 
 def update_resource(resource_id: int) -> Any:
@@ -80,7 +73,9 @@ def update_resource(resource_id: int) -> Any:
         data = patch.apply(data)
 
         resource = resource_schema.load(data)
-        db.session.merge(resource) # Required for quantites, updates not workging without
+        db.session.merge(
+            resource
+        )  # Required for quantites, updates not workging without
         db.session.commit()
 
         return resource_schema.dump(resource)
@@ -94,28 +89,14 @@ def delete_resource(resource_id: int) -> Any:
     :param resource_id: the id of the resource to delete
     :return: 200 if the resource exists and is deleted, 404 else
     """
-    resource = Resource.query.filter(Resource.id == resource_id).one_or_none()
-
-    if resource is not None:
-        db.session.delete(resource)
-        db.session.commit()
-        return 200
-    else:
-        return abort(
-            404,
-            "No resource found for Id: {resource_id}".format(resource_id=resource_id),
-        )
+    resource = db.session.query(Resource).get_or_404(resource_id)
+    db.session.delete(resource)
+    db.session.commit()
+    return 200
 
 
 def get_resource_impacts(resource_id: int) -> Any:
-    resource = Resource.query.filter(Resource.id == resource_id).one_or_none()
-
-    if resource is not None:
-        environmental_impact = resource.get_environmental_impact()
-        schema = EnvironmentalImpactSchema()
-        return schema.dump(environmental_impact)
-    else:
-        return abort(
-            404,
-            "No resource found for Id: {resource_id}".format(resource_id=resource_id),
-        )
+    resource = db.session.query(Resource).get_or_404(resource_id)
+    environmental_impact = resource.get_environmental_impact()
+    schema = EnvironmentalImpactSchema()
+    return schema.dump(environmental_impact)
