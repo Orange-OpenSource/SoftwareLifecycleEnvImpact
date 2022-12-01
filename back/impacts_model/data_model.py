@@ -38,7 +38,7 @@ ma = FlaskMarshmallow()
 
 class Resource(db.Model):  # type: ignore
     """
-    Resource object and table with a name, an impact source name and a computed value from duration and input
+    Resource object and table with a name, an impact source name and a computed value from period and input
     """
 
     __tablename__ = "resource"
@@ -51,7 +51,7 @@ class Resource(db.Model):  # type: ignore
     _input = db.Column(db.String, nullable=False)
     _time_use = db.Column(db.String)
     _frequency = db.Column(db.String)
-    _duration = db.Column(db.String)
+    _period = db.Column(db.String)
 
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
     updated_at = db.Column(
@@ -147,7 +147,7 @@ class Resource(db.Model):  # type: ignore
             self._frequency = None
             return
 
-        # Check the given duration is a pint.Quantity instance with a dimension of 'time'
+        # Check the given frequency is a pint.Quantity instance with a dimension of 'time'
         try:
             if not frequency.check("[time]"):  # TODO test this
                 raise ValueError(
@@ -165,48 +165,48 @@ class Resource(db.Model):  # type: ignore
         return self._frequency
 
     @hybrid_property
-    def duration(self):
+    def period(self):
         # Pint does not deal with None values
-        if self._duration is None:
+        if self._period is None:
             return None
         else:
             # Quantity are stored as string in the database, deserialize it
-            return deserialize_quantity(self._duration)
+            return deserialize_quantity(self._period)
 
-    @duration.setter
-    def duration(self, duration):
-        if duration is None:
-            self._duration = None
+    @period.setter
+    def period(self, period):
+        if period is None:
+            self.period = None
             return
 
-        # Check the given duration is a pint.Quantity instance with a dimension of 'time'
+        # Check the given period is a pint.Quantity instance with a dimension of 'time'
         try:
-            if not duration.check("[time]"):
+            if not period.check("[time]"):
                 raise ValueError(
-                    "Duration must be a Quantity with a dimensionality of [time]"
+                    "Period must be a Quantity with a dimensionality of [time]"
                 )
         except AttributeError:
-            raise TypeError("Duration must be a Quantity")
+            raise TypeError("Period must be a Quantity")
 
         # Serialize the value to save in database
-        self._duration = serialize_quantity(duration)
+        self._period = serialize_quantity(period)
 
-    @duration.expression
-    def duration(self):
+    @period.expression
+    def period(self):
         # Used as filter by SQLAlchemy queries
-        return self._duration
+        return self._period
 
     def value(self) -> Quantity[Any]:
         """
         Computed the value of the inputs, as a quantity
-        Value is of the form : input * time_use * (1/frequency) * duration
-        time_use, frequency and duration can be None
+        Value is of the form : input * time_use * (1/frequency) * period
+        time_use, frequency and period can be None
         """
         return (
             self.input
             * (self.time_use if self.time_use is not None else 1)
             / (self.frequency if self.frequency is not None else 1)
-            * (self.duration if self.duration is not None else 1)
+            * (self.period if self.period is not None else 1)
         )
 
     def __copy__(self):
@@ -217,7 +217,7 @@ class Resource(db.Model):  # type: ignore
             _input=self._input,
             _time_use=self._time_use,
             _frequency=self._frequency,
-            _duration=self._duration,
+            _period=self._period,
         )
 
     def get_environmental_impact(self) -> EnvironmentalImpact:
@@ -328,10 +328,10 @@ class ResourceSchema(Schema):  # type: ignore
         allow_none=True,
         many=False,
     )
-    _duration = Nested(
+    _period = Nested(
         QuantitySchema,
-        data_key="duration",
-        attribute="_duration",
+        data_key="period",
+        attribute="_period",
         allow_none=True,
         many=False,
     )
@@ -346,9 +346,9 @@ class ResourceSchema(Schema):  # type: ignore
     def validate_quantities(self, data, **kwargs):
         """
         Marshmallow schema validation to insure input follow the rules:
-        No time in ImpactSource unit: frequency AND duration OR none of them
+        No time in ImpactSource unit: frequency AND period OR none of them
         Time in ImpactSourceUnit:
-            - Duration is mandatory
+            - Period is mandatory
             - If time_use is is set, frequency should also be set
         """
         errors = {}
@@ -359,8 +359,8 @@ class ResourceSchema(Schema):  # type: ignore
 
             # Deserialize the quantities
             input = deserialize_quantity(data["_input"]) if "_input" in data else None
-            duration = (
-                deserialize_quantity(data["_duration"]) if "_duration" in data else None
+            period = (
+                deserialize_quantity(data["_period"]) if "_period" in data else None
             )
             time_use = (
                 deserialize_quantity(data["_time_use"]) if "_time_use" in data else None
@@ -373,17 +373,17 @@ class ResourceSchema(Schema):  # type: ignore
 
             # Validate that the input unit correspond to the ImpactSource one
             if input.units == impact_source.unit:
-                # If it is the right unit, and they're is no time in resource_unit, should either have duration and frequency or nothing
+                # If it is the right unit, and they're is no time in resource_unit, should either have period and frequency or nothing
 
-                if duration is None and frequency is not None:
-                    errors["duration"] = [
-                        "duration should not be none if frequency is set, as they're is no [time] the ImpactSource unit ("
+                if period is None and frequency is not None:
+                    errors["period"] = [
+                        "period should not be none if frequency is set, as they're is no [time] the ImpactSource unit ("
                         + str(impact_source.unit)
                         + ")"
                     ]
-                if frequency is None and duration is not None:
+                if frequency is None and period is not None:
                     errors["frequency"] = [
-                        "frequency should not be none if duration is set, as they're is no [time] the ImpactSource unit ("
+                        "frequency should not be none if period is set, as they're is no [time] the ImpactSource unit ("
                         + str(impact_source.unit)
                         + ")"
                     ]
@@ -399,22 +399,22 @@ class ResourceSchema(Schema):  # type: ignore
                     # Should not happen, safeguard for the future
                     errors["impact_source"] = ["ImpactSource unit dimensionality > 2"]
                 elif units_split_len == 2:
-                    # Means that duration should be set, or if no time in impactsource unit that input unit should match with a dimensionality of 2
+                    # Means that period should be set, or if no time in impactsource unit that input unit should match with a dimensionality of 2
 
                     # Check that time is present in ImpactSource unit
                     if deserialize_quantity(1 * units_split[0]).check(
                         "[time]"
                     ) or deserialize_quantity(1 * units_split[1]).check("[time]"):
 
-                        # If time in ImpactSourceUnit, duration should be set
-                        if duration is None:
-                            errors["duration"] = [
+                        # If time in ImpactSourceUnit, period should be set
+                        if period is None:
+                            errors["period"] = [
                                 "Impact source unit is "
                                 + str(impact_source.unit)
-                                + ", duration is needed"
+                                + ", period is needed"
                             ]
                         else:
-                            # If duration is set, frequency and (time use and frequency) can be set, not time_use alone
+                            # If period is set, frequency and (time use and frequency) can be set, not time_use alone
                             if time_use is not None and frequency is None:
                                 errors["frequency"] = [
                                     "If time_use is set, frequency should be set"

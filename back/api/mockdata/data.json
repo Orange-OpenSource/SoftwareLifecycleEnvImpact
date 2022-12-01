@@ -44,7 +44,7 @@
                         "updated_at": null,
                         "impact_source_id": "people",
                         "input": { "value": 100, "unit": "people" },
-                        "duration": { "value": 10, "unit": "day" }
+                        "period": { "value": 10, "unit": "day" }
                       }
                     ],
                     "subtasks": [],
@@ -64,7 +64,7 @@
                         "updated_at": null,
                         "impact_source_id": "people",
                         "input": { "value": 100, "unit": "people" },
-                        "duration": { "value": 10, "unit": "day" }
+                        "period": { "value": 10, "unit": "day" }
                       }
                     ],
                     "subtasks": [],
@@ -87,7 +87,7 @@
                     "updated_at": null,
                     "impact_source_id": "people",
                     "input": { "value": 100, "unit": "people" },
-                    "duration": { "value": 10, "unit": "day" }
+                    "period": { "value": 10, "unit": "day" }
                   }
                 ],
                 "subtasks": [],
@@ -107,7 +107,7 @@
                     "updated_at": null,
                     "impact_source_id": "people",
                     "input": { "value": 100, "unit": "people" },
-                    "duration": { "value": 10, "unit": "day" }
+                    "period": { "value": 10, "unit": "day" }
                   }
                 ],
                 "subtasks": [],
@@ -137,7 +137,7 @@
                     "updated_at": null,
                     "impact_source_id": "storage",
                     "input": { "value": 10, "unit": "gigabyte" },
-                    "duration": { "value": 100, "unit": "day" }
+                    "period": { "value": 100, "unit": "day" }
                   }
                 ],
                 "subtasks": [
@@ -155,7 +155,7 @@
                         "updated_at": null,
                         "impact_source_id": "server",
                         "input": { "value": 10, "unit": "server" },
-                        "duration": { "value": 100, "unit": "day" }
+                        "period": { "value": 100, "unit": "day" }
                       }
                     ],
                     "subtasks": [],
@@ -175,7 +175,7 @@
                         "updated_at": null,
                         "impact_source_id": "storage",
                         "input": { "value": 100, "unit": "gigabyte" },
-                        "duration": { "value": 100, "unit": "day" }
+                        "period": { "value": 100, "unit": "day" }
                       }
                     ],
                     "subtasks": [],
@@ -217,7 +217,7 @@
                     "updated_at": null,
                     "impact_source_id": "userDevice",
                     "input": { "value": 100, "unit": "device" },
-                    "duration": { "value": 10, "unit": "day" }
+                    "period": { "value": 10, "unit": "day" }
                   }
                 ],
                 "subtasks": [],

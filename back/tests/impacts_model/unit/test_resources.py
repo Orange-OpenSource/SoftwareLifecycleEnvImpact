@@ -114,20 +114,20 @@ def test_resource_frequency(resource_fixture: Resource):
         resource_fixture.frequency = "oui"
 
 
-def test_resource_duration(resource_fixture: Resource):
-    """Tests for resource duration hybrid property"""
+def test_resource_peiord(resource_fixture: Resource):
+    """Tests for resource period hybrid property"""
 
-    assert resource_fixture.duration is None or isinstance(
-        resource_fixture.duration, Quantity
+    assert resource_fixture.period is None or isinstance(
+        resource_fixture.period, Quantity
     )
 
     # Test setter and getter
-    resource_fixture.duration = 3 * YEAR
-    assert resource_fixture.duration == 3 * YEAR
+    resource_fixture.period = 3 * YEAR
+    assert resource_fixture.period == 3 * YEAR
 
     # Test that an exception is raised in setting a wrong value
     with pytest.raises(TypeError):
-        resource_fixture.duration = "oui"
+        resource_fixture.period = "oui"
 
 
 def test_resource_value(resource_fixture: Resource):
@@ -138,15 +138,15 @@ def test_resource_value(resource_fixture: Resource):
     resource_fixture.input = 3 * SERVER
     assert resource_fixture.value() == 3 * SERVER
 
-    # Test with duration (3 servers during one month)
-    resource_fixture.duration = 1 * MONTH
+    # Test with period (3 servers during one month)
+    resource_fixture.period = 1 * MONTH
     assert resource_fixture.value() == (3 * SERVER) * (1 * MONTH)
 
-    # Test with duration and frequency (3 servers per day during one month)
+    # Test with period and frequency (3 servers per day during one month)
     resource_fixture.frequency = 1 * DAY
     assert resource_fixture.value() == (3 * SERVER) / (1 * DAY) * (1 * MONTH)
 
-    # Test with time_use and frequency and duration (3 servers 2 hours per day during one month)
+    # Test with time_use and frequency and period (3 servers 2 hours per day during one month)
     resource_fixture.time_use = 2 * HOUR
     assert resource_fixture.value() == (3 * SERVER) * (2 * HOUR) / (1 * DAY) * (
         1 * MONTH
@@ -169,7 +169,7 @@ def test_resource_copy(resource_fixture: Resource):
     assert resource_copy._input == resource_fixture._input
     assert resource_copy._time_use == resource_fixture._time_use
     assert resource_copy._frequency == resource_fixture._frequency
-    assert resource_copy._duration == resource_fixture._duration
+    assert resource_copy._period == resource_fixture._period
 
 
 @mock.patch(

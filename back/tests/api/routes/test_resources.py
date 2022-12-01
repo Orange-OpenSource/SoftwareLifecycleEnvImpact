@@ -73,7 +73,7 @@ def test_resource_schema(resource_fixture: Resource) -> None:
 def test_resource_schema_validation_no_time_impactsource() -> None:
     """
     Test marshamllow validation when not time in ImpactSource unit for:
-        Frequency AND duration OR none of them
+        Frequency AND period OR none of them
     """
     schema = ResourceSchema()
 
@@ -94,10 +94,10 @@ def test_resource_schema_validation_no_time_impactsource() -> None:
         )
         schema.load(dump)
 
-    # Only duration should raise error
+    # Only period should raise error
     with pytest.raises(ValidationError):
         dump = schema.dump(
-            Resource(impact_source_id="testid", input=1 * SERVER, duration=1 * DAY)
+            Resource(impact_source_id="testid", input=1 * SERVER, period=1 * DAY)
         )
         schema.load(dump)
 
@@ -113,7 +113,7 @@ def test_resource_schema_validation_no_time_impactsource() -> None:
 def test_resource_schema_validation_time_impactsource() -> None:
     """
     Test marshamllow validation when time in ImpactSource unit for:
-        - Duration is mandatory
+        - Period is mandatory
         - If time_use is is set, frequency should also be set
     """
     schema = ResourceSchema()
@@ -128,7 +128,7 @@ def test_resource_schema_validation_time_impactsource() -> None:
         )
         schema.load(dump)
 
-    # No duration should raise error
+    # No period should raise error
     with pytest.raises(ValidationError):
         dump = schema.dump(Resource(impact_source_id="testid", input=1 * SERVER))
         schema.load(dump)

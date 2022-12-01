@@ -11,14 +11,14 @@
 	let errors: { [key: string]: string } = {};
 
 	// undefined values cannot be bind to html elements
-	$: if (resource.duration == undefined) resource.duration = {};
+	$: if (resource.period == undefined) resource.period = {};
 	$: if (resource.frequency == undefined) resource.frequency = {};
 	$: if (resource.time_use == undefined) resource.time_use = {};
 
-	// Clear duration quantity values when setting field to 0
-	$: if (resource.duration != undefined && resource.duration.value == 0) {
-		resource.duration.value = undefined;
-		resource.duration.unit = undefined;
+	// Clear period quantity values when setting field to 0
+	$: if (resource.period != undefined && resource.period.value == 0) {
+		resource.period.value = undefined;
+		resource.period.unit = undefined;
 	}
 	$: if (resource.frequency != undefined && resource.frequency.value == 0) {
 		resource.frequency.value = undefined;
@@ -29,12 +29,12 @@
 		resource.time_use.unit = undefined;
 	}
 
-	// Helpers bool with logic if frequency or duration field are required
-	// Frequency is required if time in impact source and time_use filled, or if no time if duration is filled
-	$: frequencyRequired = (resource.has_time_input && resource.time_use.value != undefined) || (!resource.has_time_input && resource.duration.value != undefined);
+	// Helpers bool with logic if frequency or period field are required
+	// Frequency is required if time in impact source and time_use filled, or if no time if period is filled
+	$: frequencyRequired = (resource.has_time_input && resource.time_use.value != undefined) || (!resource.has_time_input && resource.period.value != undefined);
 
-	// Duration is required if time in impact source, of if not and frequency is set
-	$: durationRequired = resource.has_time_input || (!resource.has_time_input && resource.frequency.value != undefined);
+	// Period is required if time in impact source, of if not and frequency is set
+	$: periodRequired = resource.has_time_input || (!resource.has_time_input && resource.frequency.value != undefined);
 
 	// Clean error message when modify eddit button is untriggered
 	$: modify, cleanError();
@@ -60,7 +60,7 @@
 		let test = resource.input.value + ' ' + resource.input.unit + '(s)';
 		if (resource.time_use.value != undefined) test += ', ' + resource.time_use.value + ' ' + resource.time_use.unit + '(s)';
 		if (resource.frequency.value != undefined) test += ' by ' + resource.frequency.value + ' ' + resource.frequency.unit + '(s)';
-		if (resource.duration.value != undefined) test += ' for ' + resource.duration.value + ' ' + resource.duration.unit + '(s)';
+		if (resource.period.value != undefined) test += ' for ' + resource.period.value + ' ' + resource.period.unit + '(s)';
 		return test;
 	}
 </script>
@@ -141,14 +141,14 @@
 		</div>
 		<div class="row">
 			<div class="col col-sm-2 col-form-label">
-				<div class="form-label {durationRequired ? 'is-required' : ''}">For:</div>
+				<div class="form-label {periodRequired ? 'is-required' : ''}">For:</div>
 			</div>
 			<div class="col-sm-5">
-				<!-- <label for="durationValue" class="form-label {durationRequired() ? 'is-required' : ''}">Duration:</label> -->
-				<input type="number" id="durationValue" class="form-control" bind:value={resource.duration.value} required={durationRequired} min="0" on:click|stopPropagation={() => {}} />
+				<!-- <label for="periodValue" class="form-label {periodRequired() ? 'is-required' : ''}">Period:</label> -->
+				<input type="number" id="periodValue" class="form-control" bind:value={resource.period.value} required={periodRequired} min="0" on:click|stopPropagation={() => {}} />
 			</div>
 			<div class="col-sm-5">
-				<TimeunitInput bind:inputUnit={resource.duration.unit} isRequired={durationRequired} />
+				<TimeunitInput bind:inputUnit={resource.period.unit} isRequired={periodRequired} />
 			</div>
 		</div>
 		{#each errors.generic || [] as error}

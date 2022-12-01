@@ -50,7 +50,7 @@ export interface Resource {
 	impact_source_id: string;
 	input: Quantity;
 	has_time_input: boolean;
-	duration: Quantity;
+	period: Quantity;
 	frequency: Quantity;
 	time_use: Quantity;
 	created_at: string;
