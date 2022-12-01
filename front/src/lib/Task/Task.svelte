@@ -68,6 +68,9 @@
 
 			const res = await changeTaskParent(taskToMove, task);
 			if (res) {
+				taskToMove.subtasks.forEach((_, index) => {
+					taskToMove.subtasks[index].parent_task_id = oldParent.id;
+				});
 				// Move card to this task subtasks
 				task.subtasks.push(taskToMove);
 				// Remove the card to move from its old parent
@@ -137,9 +140,9 @@
 	{/each}
 
 	{#if draggedObject.task != undefined && draggedObject.task != task}
-		<div class="task" on:drop={handleDragDrop} ondragover="return false">
-			<div class="col-8 card" style="min-width: 15rem;">
-				<div class="card-body">
+		<div class="task" on:drop={handleDragDrop} on:dragover={handleDragOver} on:dragleave={handleDragLeave}>
+			<div class="col-8 card {draggingOver ? 'border-success' : ''}" style="min-width: 15rem;">
+				<div class="card-body ">
 					<small>Drop here</small>
 				</div>
 			</div>
