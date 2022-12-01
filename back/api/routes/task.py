@@ -54,27 +54,43 @@ def update_task(task_id: int) -> Any:
     :param task_id: the id of the task to update
     :return: The updated task if it exists with id, 403 if the JSONPatch format is incorrect, 404 else
     """
-    task = Task.query.filter(Task.id == task_id).one_or_none()
+    task = db.session.query(Task).get_or_404(task_id)
+    old_parent = task.parent_task_id  # Parent task a to be saved before patch
 
-    if task is not None:
-        try:
-            task_schema = TaskSchema()
-            data = task_schema.dump(task)
+    try:
+        task_schema = TaskSchema()
+        data = task_schema.dump(task)
 
-            patch = jsonpatch.JsonPatch(request.json)
-            data = patch.apply(data)
+        patch = jsonpatch.JsonPatch(request.json)
+        data = patch.apply(data)
+        task = task_schema.load(data)
 
-            model = task_schema.load(data)
-            db.session.commit()
+        for operation in patch:
+            if operation["path"] == "/parent_task_id":
+                _exchange_parent(int(operation["value"]), task, old_parent)
+        db.session.commit()
 
-            return task_schema.dump(model)
-        except jsonpatch.JsonPatchConflict:
-            return abort(403, "Patch format is incorrect")
-    else:
-        return abort(
-            404,
-            "No task found for Id: {task_id}".format(task_id=task_id),
-        )
+        return task
+    except jsonpatch.JsonPatchConflict:
+        return abort(403, "Patch format is incorrect")
+
+
+def _exchange_parent(parent_id_to_set: int, task: Task, old_parent_id: int) -> None:
+    # Check when changing the parent of a task, if its by one of its subtasks
+    # If it is, it will set the subtask parent as this of the task
+    # For a tree 1 -> 2 -> 3 and task 2 goes under 3, 3 parent will be set as 1
+    # Recursive to check for all subtasks
+
+    # Iterate through subtasks
+    for i in range(len(task.subtasks)):
+        # Recursive call for each subtask
+        _exchange_parent(parent_id_to_set, task.subtasks[i], task.parent_task_id)
+
+        # If subtask id is the one we want to set as parent
+        if task.subtasks[i].id == parent_id_to_set:
+            # Replace subtask id by this of the task parent
+            task.subtasks[i].parent_task_id = old_parent_id
+
 
 
 def get_task_impacts(task_id: int) -> Any:  # TODO update test
