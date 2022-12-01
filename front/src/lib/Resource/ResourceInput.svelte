@@ -13,7 +13,7 @@
 	// undefined values cannot be bind to html elements
 	$: if (resource.period == undefined) resource.period = {};
 	$: if (resource.frequency == undefined) resource.frequency = {};
-	$: if (resource.time_use == undefined) resource.time_use = {};
+	$: if (resource.duration == undefined) resource.duration = {};
 
 	// Clear period quantity values when setting field to 0
 	$: if (resource.period != undefined && resource.period.value == 0) {
@@ -24,14 +24,14 @@
 		resource.frequency.value = undefined;
 		resource.frequency.unit = undefined;
 	}
-	$: if (resource.time_use != undefined && resource.time_use.value == 0) {
-		resource.time_use.value = undefined;
-		resource.time_use.unit = undefined;
+	$: if (resource.duration != undefined && resource.duration.value == 0) {
+		resource.duration.value = undefined;
+		resource.duration.unit = undefined;
 	}
 
 	// Helpers bool with logic if frequency or period field are required
-	// Frequency is required if time in impact source and time_use filled, or if no time if period is filled
-	$: frequencyRequired = (resource.has_time_input && resource.time_use.value != undefined) || (!resource.has_time_input && resource.period.value != undefined);
+	// Frequency is required if time in impact source and duration filled, or if no time if period is filled
+	$: frequencyRequired = (resource.has_time_input && resource.duration.value != undefined) || (!resource.has_time_input && resource.period.value != undefined);
 
 	// Period is required if time in impact source, of if not and frequency is set
 	$: periodRequired = resource.has_time_input || (!resource.has_time_input && resource.frequency.value != undefined);
@@ -58,7 +58,7 @@
 
 	function getText() {
 		let test = resource.amount.value + ' ' + resource.amount.unit + '(s)';
-		if (resource.time_use.value != undefined) test += ', ' + resource.time_use.value + ' ' + resource.time_use.unit + '(s)';
+		if (resource.duration.value != undefined) test += ', ' + resource.duration.value + ' ' + resource.duration.unit + '(s)';
 		if (resource.frequency.value != undefined) test += ' by ' + resource.frequency.value + ' ' + resource.frequency.unit + '(s)';
 		if (resource.period.value != undefined) test += ' for ' + resource.period.value + ' ' + resource.period.unit + '(s)';
 		return test;
@@ -89,18 +89,18 @@
 					<div class="form-label">Used:</div>
 				</div>
 				<div class="col-sm-5">
-					<input type="number" id="timeUseValue" class="form-control {errors.time_use ? 'is-invalid' : ''}" min="0" bind:value={resource.time_use.value} on:click|stopPropagation={() => {}} />
+					<input type="number" id="timeUseValue" class="form-control {errors.duration ? 'is-invalid' : ''}" min="0" bind:value={resource.duration.value} on:click|stopPropagation={() => {}} />
 				</div>
 				<div class="col-sm-5">
-					<TimeunitInput bind:inputUnit={resource.time_use.unit} isRequired={false} isInvalid={errors.time_use} />
+					<TimeunitInput bind:inputUnit={resource.duration.unit} isRequired={false} isInvalid={errors.duration} />
 				</div>
-				{#if errors.time_use}
+				{#if errors.duration}
 					<!-- Quantity errors -->
-					{#if errors.time_use._schema}
-						<Error message={errors.time_use._schema} />
+					{#if errors.duration._schema}
+						<Error message={errors.duration._schema} />
 					{:else}
 						<!-- Logic error -->
-						{#each errors.time_use || [] as error}
+						{#each errors.duration || [] as error}
 							<Error message={error} />
 						{/each}
 					{/if}

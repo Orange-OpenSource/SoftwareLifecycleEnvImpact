@@ -790,11 +790,11 @@ definitions:
       amount:
         type: object
         $ref: "#/definitions/Quantity"
-        description: Amount of the resource consumed
-      time_use:
+        description: Amount of the resource consumedinput
+      duration:
         type: object
         $ref: "#/definitions/Quantity"
-        description: Time use of the resource
+        description: uration of the resource
       frequency:
         type: object
         $ref: "#/definitions/Quantity"

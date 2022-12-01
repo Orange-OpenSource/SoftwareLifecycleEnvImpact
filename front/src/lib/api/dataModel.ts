@@ -52,7 +52,7 @@ export interface Resource {
 	has_time_input: boolean;
 	period: Quantity;
 	frequency: Quantity;
-	time_use: Quantity;
+	duration: Quantity;
 	created_at: string;
 	updated_at: string;
 }

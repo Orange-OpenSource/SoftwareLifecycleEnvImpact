@@ -82,20 +82,20 @@ def test_resource_amount(resource_fixture: Resource):
         resource_fixture.amount = "oui"
 
 
-def test_resource_time_use(resource_fixture: Resource):
-    """Tests for resource time_use hybrid property"""
+def test_resource_duration(resource_fixture: Resource):
+    """Tests for resource duration hybrid property"""
 
-    assert resource_fixture.time_use is None or isinstance(
-        resource_fixture.time_use, Quantity
+    assert resource_fixture.duration is None or isinstance(
+        resource_fixture.duration, Quantity
     )
 
     # Test setter and getter
-    resource_fixture.time_use = 3 * YEAR
-    assert resource_fixture.time_use == 3 * YEAR
+    resource_fixture.duration = 3 * YEAR
+    assert resource_fixture.duration == 3 * YEAR
 
     # Test that an exception is raised in setting a wrong value
     with pytest.raises(TypeError):
-        resource_fixture.time_use = "oui"
+        resource_fixture.duration = "oui"
 
 
 def test_resource_frequency(resource_fixture: Resource):
@@ -146,8 +146,8 @@ def test_resource_value(resource_fixture: Resource):
     resource_fixture.frequency = 1 * DAY
     assert resource_fixture.value() == (3 * SERVER) / (1 * DAY) * (1 * MONTH)
 
-    # Test with time_use and frequency and period (3 servers 2 hours per day during one month)
-    resource_fixture.time_use = 2 * HOUR
+    # Test with duration and frequency and period (3 servers 2 hours per day during one month)
+    resource_fixture.duration = 2 * HOUR
     assert resource_fixture.value() == (3 * SERVER) * (2 * HOUR) / (1 * DAY) * (
         1 * MONTH
     )
@@ -167,7 +167,7 @@ def test_resource_copy(resource_fixture: Resource):
     # Should be the same
     assert resource_copy.impact_source_id == resource_fixture.impact_source_id
     assert resource_copy._amount == resource_fixture._amount
-    assert resource_copy._time_use == resource_fixture._time_use
+    assert resource_copy._duration == resource_fixture._duration
     assert resource_copy._frequency == resource_fixture._frequency
     assert resource_copy._period == resource_fixture._period
 

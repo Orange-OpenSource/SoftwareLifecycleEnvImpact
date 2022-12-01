@@ -49,7 +49,7 @@ class Resource(db.Model):  # type: ignore
     task_id = db.Column(db.Integer, db.ForeignKey("task.id"), nullable=False)
 
     _amount = db.Column(db.String, nullable=False)
-    _time_use = db.Column(db.String)
+    _duration = db.Column(db.String)
     _frequency = db.Column(db.String)
     _period = db.Column(db.String)
 
@@ -101,23 +101,23 @@ class Resource(db.Model):  # type: ignore
         return self._amount
 
     @hybrid_property
-    def time_use(self):
+    def duration(self):
         # Pint does not deal with None values
-        if self._time_use is None:
+        if self._duration is None:
             return None
         else:
             # Quantity are stored as string in the database, deserialize it
-            return deserialize_quantity(self._time_use)
+            return deserialize_quantity(self._duration)
 
-    @time_use.setter
-    def time_use(self, time_use):
-        if time_use is None:
-            self._time_use = None
+    @duration.setter
+    def duration(self, duration):
+        if duration is None:
+            self._duration = None
             return
 
-        # Check the given time_use is a pint.Quantity instance with a dimension of 'time'
+        # Check the given duration is a pint.Quantity instance with a dimension of 'time'
         try:
-            if not time_use.check("[time]"):
+            if not duration.check("[time]"):
                 raise ValueError(
                     "Time use must be a Quantity with a dimensionality of [time]"
                 )
@@ -125,12 +125,12 @@ class Resource(db.Model):  # type: ignore
             raise TypeError("Time use must be a Quantity")
 
         # Serialize the value to save in database
-        self._time_use = serialize_quantity(time_use)
+        self._duration = serialize_quantity(duration)
 
-    @time_use.expression
-    def time_use(self):
+    @duration.expression
+    def duration(self):
         # Used as filter by SQLAlchemy queries
-        return self._time_use
+        return self._duration
 
     @hybrid_property
     def frequency(self):
@@ -199,12 +199,12 @@ class Resource(db.Model):  # type: ignore
     def value(self) -> Quantity[Any]:
         """
         Computed the value of the amounts, as a quantity
-        Value is of the form : amount * time_use * (1/frequency) * period
-        time_use, frequency and period can be None
+        Value is of the form : amount * duration * (1/frequency) * period
+        duration, frequency and period can be None
         """
         return (
             self.amount
-            * (self.time_use if self.time_use is not None else 1)
+            * (self.duration if self.duration is not None else 1)
             / (self.frequency if self.frequency is not None else 1)
             * (self.period if self.period is not None else 1)
         )
@@ -215,7 +215,7 @@ class Resource(db.Model):  # type: ignore
             name=self.name,
             impact_source_id=self.impact_source_id,
             _amount=self._amount,
-            _time_use=self._time_use,
+            _duration=self._duration,
             _frequency=self._frequency,
             _period=self._period,
         )
@@ -314,10 +314,10 @@ class ResourceSchema(Schema):  # type: ignore
         allow_none=False,
         many=False,
     )
-    _time_use = Nested(
+    _duration = Nested(
         QuantitySchema,
-        data_key="time_use",
-        attribute="_time_use",
+        data_key="duration",
+        attribute="_duration",
         allow_none=True,
         many=False,
     )
@@ -349,7 +349,7 @@ class ResourceSchema(Schema):  # type: ignore
         No time in ImpactSource unit: frequency AND period OR none of them
         Time in ImpactSourceUnit:
             - Period is mandatory
-            - If time_use is is set, frequency should also be set
+            - If duration is is set, frequency should also be set
         """
         errors = {}
 
@@ -364,8 +364,8 @@ class ResourceSchema(Schema):  # type: ignore
             period = (
                 deserialize_quantity(data["_period"]) if "_period" in data else None
             )
-            time_use = (
-                deserialize_quantity(data["_time_use"]) if "_time_use" in data else None
+            duration = (
+                deserialize_quantity(data["_duration"]) if "_duration" in data else None
             )
             frequency = (
                 deserialize_quantity(data["_frequency"])
@@ -416,10 +416,10 @@ class ResourceSchema(Schema):  # type: ignore
                                 + ", period is needed"
                             ]
                         else:
-                            # If period is set, frequency and (time use and frequency) can be set, not time_use alone
-                            if time_use is not None and frequency is None:
+                            # If period is set, frequency and (time use and frequency) can be set, not duration alone
+                            if duration is not None and frequency is None:
                                 errors["frequency"] = [
-                                    "If time_use is set, frequency should be set"
+                                    "If duration is set, frequency should be set"
                                 ]
                     else:
                         # No time in ImpactSource unit
