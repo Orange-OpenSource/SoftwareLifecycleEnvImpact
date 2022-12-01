@@ -17,6 +17,8 @@
 
 	export let draggedObject: DragObject = {};
 
+	let draggingOver = false;
+
 	$: dragging = draggedObject.task != undefined;
 
 	$: task, updateImpact();
@@ -30,6 +32,14 @@
 	interface DragObject {
 		task?: Task;
 		oldParent?: Task;
+	}
+
+	function handleDragOver(e) {
+		draggingOver = true;
+	}
+
+	function handleDragLeave(e) {
+		draggingOver = false;
 	}
 
 	function handleMouseDown(e) {
@@ -90,7 +100,7 @@
 			on:dragend={handleDragEnd}
 			style="min-width: 15rem; width: fit-content;"
 		>
-			<div id="mydivheader" class="card-header" hidden={!modify} style="cursor: move;" on:mousedown={handleMouseDown} on:mouseup={handleMouseUp}>Click here to drag</div>
+			<div id="mydivheader" class="card-header" hidden={!modify || dragging} style="cursor: move;" on:mousedown={handleMouseDown} on:mouseup={handleMouseUp}>Click here to drag</div>
 			<div class="card-body">
 				<div class="card-title row">
 					<div class="col">
