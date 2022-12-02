@@ -1,6 +1,6 @@
-# PJI Bilan carbone
+# Software life cycle environmental footprint
 
-Contribution to the development of a web application using a model to estimate the carbon emissions of a software development project.
+Web application to estimate the environmental footprint of a software development project life cycle.
 
 ## Installation
 
