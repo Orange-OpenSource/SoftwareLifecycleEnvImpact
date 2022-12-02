@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { ResourcesImpact } from '$lib/api/dataModel';
+	import Sunburst from '$lib/Dataviz/Sunburst.svelte';
 	import Treemap from '$lib/Dataviz/Treemap.svelte';
 	import { hierarchy, type HierarchyNode } from 'd3-hierarchy';
 	import ImpactByIndicator from './ImpactByIndicator.svelte';
@@ -22,6 +23,7 @@
 	}
 </script>
 
+<Sunburst hierarchy={convertResourcesImpactToHierarchy()}/>
 <Treemap hierarchy={convertResourcesImpactToHierarchy()}/>
 
 {#if impactByResource != undefined}

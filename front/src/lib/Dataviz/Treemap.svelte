@@ -92,7 +92,7 @@
 				return d.y0 + 35;
 			}) // +20 to adjust position (lower)
 			.text(function (d) {
-				return d.data.value;
+				return Math.round(d.data.value * 100) / 100 + ' kgCO2e';
 			})
 			.attr('font-size', valueFontSize + 'px')
 			.attr('fill', 'black');
