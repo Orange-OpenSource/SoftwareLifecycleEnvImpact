@@ -5,24 +5,28 @@
 
 	export let hierarchy: HierarchyNode;
 
-	let svgElement;
+	let svgElement: SVGSVGElement;
 
-	let size = 500;
+	// set the dimensions and margins of the graph
+	const margin = { top: 10, right: 10, bottom: 10, left: 10 },
+		width = 445 - margin.left - margin.right,
+		height = 445 - margin.top - margin.bottom;
+
+	const titleFontSize = width / 30;
+	const valueFontSize = width / 40;
 
 	async function drawTreeMap() {
+		// append the svg object to the body of the page
+		const svg = select(svgElement).append('g').attr('transform', `translate(${margin.left}, ${margin.top})`);
+
 		// Give the data to this cluster layout:
-		const root = hierarchy.sum((d) => d.value);
+		const root = hierarchy.sum((d: { value: any }) => d.value);
+
+		// Prepare rectangle names
 		let names: String[] = [];
 		root.each(function (node: any) {
 			names.push(node.data.name);
 		});
-
-		// Then d3.treemap computes the position of each element of the hierarch
-		const graph = treemap().size([size, size]).padding(2)(root);
-
-		const svg = select(svgElement);
-
-		svg.html('');
 
 		// prepare a color scale
 		const color = scaleOrdinal().domain(names).range(schemeSet3);
@@ -30,6 +34,11 @@
 		// And a opacity scale
 		const opacity = scaleLinear().domain([10, 30]).range([0.5, 1]);
 
+		// computes the position of each element of the hierarchy
+		// The coordinates are added to the root object above
+		treemap().size([width, height]).padding(4)(root);
+
+		// use this information to add rectangles:
 		svg
 			.selectAll('rect')
 			.data(root.leaves())
@@ -46,7 +55,6 @@
 			.attr('height', function (d) {
 				return d.y1 - d.y0;
 			})
-			.style('stroke', 'black')
 			.style('fill', function (d) {
 				return color(d.data.name);
 			})
@@ -69,8 +77,7 @@
 			.text(function (d) {
 				return d.data.name;
 			})
-			.attr('font-size', '19px')
-			.attr('fill', 'black');
+			.attr('font-size', titleFontSize + 'px');
 
 		// and to add the values
 		svg
@@ -87,7 +94,7 @@
 			.text(function (d) {
 				return d.data.value;
 			})
-			.attr('font-size', '11px')
+			.attr('font-size', valueFontSize + 'px')
 			.attr('fill', 'black');
 	}
 
@@ -97,5 +104,5 @@
 </script>
 
 <div>
-	<svg width="90%" viewBox="0 0 {size} {size}" bind:this={svgElement} />
+	<svg width={width + margin.left + margin.right} height={height + margin.top + margin.bottom} bind:this={svgElement} />
 </div>
