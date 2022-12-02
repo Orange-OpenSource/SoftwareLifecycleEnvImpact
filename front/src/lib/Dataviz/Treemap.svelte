@@ -104,5 +104,6 @@
 </script>
 
 <div>
-	<svg width={width + margin.left + margin.right} height={height + margin.top + margin.bottom} bind:this={svgElement} />
+	<!-- <svg width={width + margin.left + margin.right} height={height + margin.top + margin.bottom} bind:this={svgElement} /> -->
+	<svg bind:this={svgElement} viewBox="0 0 {width + margin.left + margin.right} {height + margin.left + margin.right}" preserveAspectRatio="xMidYMid meet" />
 </div>

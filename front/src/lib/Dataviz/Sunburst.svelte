@@ -7,9 +7,10 @@
 
 	let svgElement: SVGSVGElement;
 
-	const widthMin = 500,
-		heightMin = 500,
-		radius = 250;
+	const margin = { top: 10, right: 10, bottom: 10, left: 10 },
+		widthMin = 500 - margin.left - margin.right,
+		heightMin = 500 - margin.left - margin.right,
+		radius = heightMin / 2;
 
 	async function drawSunburst() {
 		// Construct svg attributes
@@ -124,5 +125,6 @@
 </script>
 
 <div>
-	<svg width={widthMin} height={heightMin} bind:this={svgElement} />
+	<!-- <svg width={widthMin} height={heightMin} bind:this={svgElement} /> -->
+	<svg bind:this={svgElement} viewBox="0 0 {widthMin + margin.left + margin.right} {heightMin + margin.left + margin.right}" preserveAspectRatio="xMidYMid meet" />
 </div>
