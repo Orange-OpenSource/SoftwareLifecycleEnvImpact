@@ -1,5 +1,4 @@
 <script lang="ts">
-	import ImpactByIndicator from './ImpactByIndicator.svelte';
 	import ImpactBySubtask from './ImpactBySubtask.svelte';
 	import ImpactByResource from './ImpactByResource.svelte';
 	import { getTaskImpact } from '$lib/api/task';
@@ -25,22 +24,32 @@
 	}
 </script>
 
-{#if selectedTask != undefined}
-	{#await impactPromise}
-		<Spinner />
-	{:then impact}
-		{#if impact != undefined}
-			<ImpactByIndicator environmentalImpact={impact.task_impact} />
-
-			<h5>Subtask</h5>
-			<ImpactBySubtask bind:selectedTask impactBySubtask={impact.subtasks} />
-
-			<h5>Resources</h5>
-			<ImpactByResource impactByResource={impact.resources} />
-		{/if}
-	{:catch error}
-		<Error message={error.message} />
-	{/await}
-{:else}
-	No task selected
-{/if}
+<div class="col">
+	{#if selectedTask != undefined}
+		{#await impactPromise}
+			<Spinner />
+		{:then impact}
+			{#if impact != undefined}
+				<div class="row">
+					<h1>{selectedTask.name}</h1>
+				</div>
+				<div class="row">
+					<h3>Tasks:</h3>
+				</div>
+				<div class="row">
+					<ImpactBySubtask impactBySubtask={impact.subtasks} {selectedTask} />
+				</div>
+				<div class="row">
+					<h3>Resources:</h3>
+				</div>
+				<div class="row">
+					<ImpactByResource impactByResource={impact.resources} />
+				</div>
+			{/if}
+		{:catch error}
+			<Error message={error.message} />
+		{/await}
+	{:else}
+		No element selected
+	{/if}
+</div>

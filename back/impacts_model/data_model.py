@@ -584,10 +584,9 @@ class Model(db.Model):  # type: ignore
 
     def __copy__(self):
         """Override of copy function to return a Model stripped of ids"""
-        return Model(
-            name=self.name,
-            root_task=copy(self.root_task),
-        )
+        copy_root = copy(self.root_task)
+        copy_root.name += " copy"
+        return Model(name=self.name + " copy", root_task=copy_root)
 
 
 class ModelSchema(ma.SQLAlchemyAutoSchema):  # type: ignore

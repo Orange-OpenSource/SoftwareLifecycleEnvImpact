@@ -2,7 +2,7 @@
 	import { hierarchy, type HierarchyNode } from 'd3';
 	import type { ResourcesImpact } from '$lib/api/dataModel';
 	import Error from '$lib/Error.svelte';
-	import Treemap from '$lib/Treemap.svelte';
+	import Treemap from '$lib/Dataviz/Treemap.svelte';
 
 	export let resourcesImpact: ResourcesImpact;
 	export let hierarchyPromise = convertToHierarchy();

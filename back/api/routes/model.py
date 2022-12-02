@@ -152,7 +152,6 @@ def duplicate_model(model_id: int) -> Any:
     model = db.session.query(Model).get_or_404(model_id)
 
     model_copy = copy(model)
-    model_copy.name = model_copy.name + " copy"
     model_copy.project_id = model.project_id
     model_copy = insert_model_db(model_copy)
     model_schema = ModelSchema()
