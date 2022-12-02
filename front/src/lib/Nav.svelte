@@ -17,16 +17,6 @@
 						<i class="ion-compose" />Projects
 					</a>
 				</li>
-				<li class="nav-item">
-					<a rel="prefetch" href="/serverconfig" class="nav-link" class:active={$page.url.pathname === '/serverconfig'}>
-						<i class="ion-compose" />Server config
-					</a>
-				</li>
-				<li class="nav-item">
-					<a rel="prefetch" href="/servermodel" class="nav-link" class:active={$page.url.pathname === '/servermodel'}>
-						<i class="ion-compose" />Server model
-					</a>
-				</li>
 			</ul>
 		</div>
 	</div>
