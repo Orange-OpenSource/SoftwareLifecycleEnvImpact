@@ -57,10 +57,10 @@
 	}
 
 	function getText() {
-		let test = resource.amount.value + ' ' + resource.amount.unit + '(s)';
-		if (resource.duration.value != undefined) test += ', ' + resource.duration.value + ' ' + resource.duration.unit + '(s)';
-		if (resource.frequency.value != undefined) test += ' by ' + resource.frequency.value + ' ' + resource.frequency.unit + '(s)';
-		if (resource.period.value != undefined) test += ' for ' + resource.period.value + ' ' + resource.period.unit + '(s)';
+		let test = resource.amount.value + ' ' + resource.amount.unit +(resource.amount.value && resource.amount.value > 1 ? 's' : '');
+		if (resource.duration.value != undefined) test += ', ' + resource.duration.value + ' ' + resource.duration.unit + (resource.duration.value > 1 ? 's' : '');
+		if (resource.frequency.value != undefined) test += ' by ' + resource.frequency.value + ' ' + resource.frequency.unit + (resource.frequency.value > 1 ? 's' : '');
+		if (resource.period.value != undefined) test += ' for ' + resource.period.value + ' ' + resource.period.unit + (resource.period.value > 1 ? 's' : '');
 		return test;
 	}
 </script>
