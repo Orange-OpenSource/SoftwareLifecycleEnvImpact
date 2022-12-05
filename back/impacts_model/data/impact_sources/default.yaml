@@ -355,6 +355,23 @@ source: >
 methodology:
 ---
 !ImpactSource
+id: "plane"
+name: "Plane"
+unit: km
+climate_change: "0.187 kg_co2e"
+resource_depletion:
+acidification:
+fine_particles:
+ionizing_radiations:
+water_depletion:
+electronic_waste:
+primary_energy_consumption:
+raw_materials:
+source: >
+  https://bilans-ges.ademe.fr/fr/accueil/documentation-gene/index/page/Aerien2
+methodology:
+---
+!ImpactSource
 id: "publicTransport"
 name: "Public transport"
 unit: km

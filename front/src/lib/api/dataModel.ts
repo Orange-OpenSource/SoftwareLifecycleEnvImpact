@@ -156,7 +156,7 @@ export interface TaskImpact {
 	/**
 	 * All task subtask's impacts
 	 */
-	subtasks: SubtasksImpact;
+	subtasks: TaskImpact[];
 	/**
 	 * Task impact by resource name
 	 */
@@ -170,11 +170,6 @@ export type ResourceName = string;
 export type ResourcesImpact = Record<ResourceName, EnvironmentalImpact>;
 
 export type Id = string;
-/**
- * Dict of environmental impact by subtask id
- */
-export type SubtasksImpact = Record<Id, EnvironmentalImpact>;
-
 /**
  * A JSONPatch document as defined by RFC 6902
  */

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Any
+from typing import Any, List
 from marshmallow_sqlalchemy.fields import Nested
 from marshmallow import fields, post_dump, Schema
 from pint import Quantity
@@ -109,7 +109,7 @@ class TaskImpact:
         self,
         task_id: int,
         task_impact: EnvironmentalImpact,
-        subtasks: dict[int, EnvironmentalImpact],
+        subtasks: List[TaskImpact],
         resources: EnvironmentalImpactByResource,
     ):
         self.task_id = task_id
@@ -121,9 +121,7 @@ class TaskImpact:
 class TaskImpactSchema(Schema):
     task_id = fields.Integer()
     task_impact = fields.Nested("EnvironmentalImpactSchema")
-    subtasks = fields.Dict(
-        keys=fields.Integer(), values=fields.Nested("EnvironmentalImpactSchema")
-    )
+    subtasks = values=fields.Nested("TaskImpactSchema", many=True)
     resources = fields.Dict(
         keys=fields.Str(), values=fields.Nested("EnvironmentalImpactSchema")
     )

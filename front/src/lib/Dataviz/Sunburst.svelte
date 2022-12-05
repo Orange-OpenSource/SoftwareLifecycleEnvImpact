@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { select } from 'd3-selection';
-	import { arc, scaleOrdinal, partition, type HierarchyNode, schemeSet3, selectAll } from 'd3';
+	import { arc, scaleOrdinal, partition, type HierarchyNode, schemeSet3, selectAll, quantize, interpolateRainbow, schemeSet2 } from 'd3';
 	import type { D3JSNode } from './d3js';
 
 	export let hierarchy: HierarchyNode<D3JSNode>;
@@ -73,7 +73,8 @@
 		legendHeight = (root.children ? root.children.length : 1) * legendLineHeight;
 
 		// prepare a color scale
-		const color = scaleOrdinal().domain(names).range(schemeSet3);
+		const color = scaleOrdinal().domain(names).range(schemeSet2);
+		// const color = scaleOrdinal(quantize(interpolateRainbow, names.length + 1))
 
 		// Create nodes
 		var nodes = partitionSvg(root)
@@ -88,11 +89,11 @@
 			.enter()
 			.append('path')
 			.attr('display', function (d) {
-				return d.depth ? null : 'none'; // Do not dislay root node, inner circle
+				return d.depth ? null : 'none'; // Do not dislay root node circle
 			})
 			.attr('d', svgArc)
 			.style('fill', (d) => {
-				while (d.depth > 1) d = d.parent;
+				// while (d.depth > 1) d = d.parent;
 				return color(d.data.name);
 			})
 			.on('mouseover', (event, d) => {

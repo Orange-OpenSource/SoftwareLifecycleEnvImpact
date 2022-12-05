@@ -26,6 +26,7 @@ from impacts_model.impacts import (
     EnvironmentalImpact,
     EnvironmentalImpactByResource,
     ImpactCategory,
+    TaskImpact,
 )
 from impacts_model.quantities.quantities import (
     deserialize_quantity,
@@ -477,6 +478,14 @@ class Task(db.Model):  # type: ignore
             resources=[copy(resource) for resource in self.resources],
         )
 
+    def get_impact(self) -> TaskImpact:
+        return TaskImpact(
+            self.id,
+            self.get_environmental_impact(),
+            self.get_subtasks_impact(),
+            self.get_impact_by_resource_type(),
+        )
+
     def get_environmental_impact(self) -> EnvironmentalImpact:
         """
         Get a Task complete Environmental impact via an EnvironmentalImpact object
@@ -492,13 +501,13 @@ class Task(db.Model):  # type: ignore
 
         return environmental_impact
 
-    def get_subtasks_impact(self) -> dict[int, EnvironmentalImpact]:
+    def get_subtasks_impact(self) -> List[TaskImpact]:
         """
-        Return a dict with all subtask ids as key, with their EnvironmentalImpact as values
+        Return a dict with all subtask ids as key, with their TaskImpact as values
         """
-        impacts_list = {}
+        impacts_list: List[TaskImpact] = []
         for subtask in self.subtasks:
-            impacts_list[subtask.id] = subtask.get_environmental_impact()
+            impacts_list.append(subtask.get_impact())
         return impacts_list
 
     def get_category_impact(self, category: ImpactCategory) -> Quantity[Any]:

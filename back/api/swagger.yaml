@@ -790,11 +790,11 @@ definitions:
       amount:
         type: object
         $ref: "#/definitions/Quantity"
-        description: Amount of the resource consumedinput
+        description: Amount of the resource consumed
       duration:
         type: object
         $ref: "#/definitions/Quantity"
-        description: uration of the resource
+        description: Duration of the resource
       frequency:
         type: object
         $ref: "#/definitions/Quantity"
@@ -838,8 +838,9 @@ definitions:
       task:
         $ref: "#/definitions/Task"
       subtasks:
-        type: object
-        $ref: "#/definitions/EnvironmentalImpact"
+        type: array
+        items:
+          $ref: "#/definitions/TaskImpact"
       resources:
         type: string
         additionalProperties:

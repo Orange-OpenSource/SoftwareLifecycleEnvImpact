@@ -93,13 +93,7 @@ def get_task_impacts(task_id: int) -> Any:  # TODO update test
     :return: TaskImpact if task exist, 404 else
     """
     task = db.session.query(Task).get_or_404(task_id)
-
-    task_impact = TaskImpact(
-        task_id,
-        task.get_environmental_impact(),
-        task.get_subtasks_impact(),
-        task.get_impact_by_resource_type(),
-    )
+    task_impact = task.get_impact()
     schema = TaskImpactSchema()
     return schema.dump(task_impact)
 
