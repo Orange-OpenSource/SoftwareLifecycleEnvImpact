@@ -27,14 +27,13 @@
 					returnValue.push({
 						name: task.name,
 						value: taskImpact.task_impact.impacts['Climate change'].value,
-						children: getChildrenNodes(task, taskImpact.subtasks)
+						children: getChildrenNodes(task, taskImpact.subtasks),
 					});
 				}
 			}
 		}
 		return returnValue;
 	}
-
 </script>
 
 <Sunburst hierarchy={subtaskHierarchy} />

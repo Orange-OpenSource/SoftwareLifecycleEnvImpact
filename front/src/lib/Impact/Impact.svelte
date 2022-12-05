@@ -33,12 +33,14 @@
 				<div class="row">
 					<h1>{selectedTask.name}</h1>
 				</div>
-				<div class="row">
-					<h3>Tasks:</h3>
-				</div>
-				<div class="row">
-					<ImpactBySubtask impactBySubtask={impact.subtasks} {selectedTask} />
-				</div>
+				{#if impact.subtasks.length > 0}
+					<div class="row">
+						<h3>Tasks:</h3>
+					</div>
+					<div class="row">
+						<ImpactBySubtask impactBySubtask={impact.subtasks} {selectedTask} />
+					</div>
+				{/if}
 				<div class="row">
 					<h3>Resources:</h3>
 				</div>

@@ -132,11 +132,11 @@
 	function addTextElement(vis) {
 		var textGroup = vis.append('g');
 
-		textGroup.append('text').attr('id', 'nameMiddle').attr('y', -50).attr('text-anchor', 'middle').style('font-size', '30px').style('font-weight', 'bold');
+		textGroup.append('text').attr('id', 'nameMiddle').attr('y', -50).attr('text-anchor', 'middle').style('font-size', '20px').style('font-weight', 'bold');
 
 		// textGroup.append('text').attr('id', 'type-amount').attr('y', -80).attr('class', 'type-amount').attr('text-anchor', 'middle');
 		// textGroup.append('text').attr('id', 'category-amount').attr('y', -60).attr('class', 'category-amount').attr('text-anchor', 'middle');
-		textGroup.append('text').attr('id', 'valueMiddle').attr('text-anchor', 'middle').style('font-size', '20px');
+		textGroup.append('text').attr('id', 'valueMiddle').attr('text-anchor', 'middle').style('font-size', '15px');
 	}
 
 	function drawLegend(vis, nodes, color) {
