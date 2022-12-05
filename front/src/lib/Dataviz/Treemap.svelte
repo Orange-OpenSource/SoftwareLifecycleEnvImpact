@@ -12,8 +12,8 @@
 		width = 445 - margin.left - margin.right,
 		height = 445 - margin.top - margin.bottom;
 
-	const titleFontSize = width / 30;
-	const valueFontSize = width / 40;
+	const titleFontSize = 0.8;
+	const valueFontSize = 0.7;
 
 	async function drawTreeMap() {
 		// append the svg object to the body of the page
@@ -83,7 +83,7 @@
 			.text(function (d) {
 				return d.data.name;
 			})
-			.attr('font-size', titleFontSize + 'px');
+			.attr('font-size', titleFontSize + 'em');
 
 		// and to add the values
 		svg
@@ -103,7 +103,7 @@
 			.text(function (d) {
 				return Math.round(d.data.value * 100) / 100 + ' kgCO2e';
 			})
-			.attr('font-size', valueFontSize + 'px')
+			.attr('font-size', valueFontSize + 'em')
 			.attr('fill', 'black');
 	}
 

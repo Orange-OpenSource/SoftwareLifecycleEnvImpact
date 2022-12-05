@@ -135,7 +135,7 @@
                     "name": "Storage",
                     "task_id": null,
                     "updated_at": null,
-                    "impact_source_id": "storage",
+                    "impact_source_id": "storageRm",
                     "amount": { "value": 10, "unit": "gigabyte" },
                     "period": { "value": 100, "unit": "day" }
                   }
@@ -153,8 +153,8 @@
                         "name": "Server",
                         "task_id": null,
                         "updated_at": null,
-                        "impact_source_id": "server",
-                        "amount": { "value": 10, "unit": "server" },
+                        "impact_source_id": "vCPUvdr",
+                        "amount": { "value": 10, "unit": "vcpu" },
                         "period": { "value": 100, "unit": "day" }
                       }
                     ],
@@ -173,7 +173,7 @@
                         "name": "Storage",
                         "task_id": null,
                         "updated_at": null,
-                        "impact_source_id": "storage",
+                        "impact_source_id": "storageRm",
                         "amount": { "value": 100, "unit": "gigabyte" },
                         "period": { "value": 100, "unit": "day" }
                       }
