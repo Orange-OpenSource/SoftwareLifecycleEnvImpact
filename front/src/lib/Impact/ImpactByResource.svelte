@@ -1,5 +1,6 @@
 <script lang="ts">
-	import type { ResourcesImpact } from '$lib/api/dataModel';
+	import type { EnvironmentalImpact, ResourcesImpact } from '$lib/api/dataModel';
+	import type { D3JSNode } from '$lib/Dataviz/d3js';
 	import Sunburst from '$lib/Dataviz/Sunburst.svelte';
 	import Treemap from '$lib/Dataviz/Treemap.svelte';
 	import { hierarchy, type HierarchyNode } from 'd3-hierarchy';
@@ -7,8 +8,8 @@
 
 	export let impactByResource: ResourcesImpact;
 
-	function convertResourcesImpactToHierarchy(): HierarchyNode {
-		let final = {
+	function convertResourcesImpactToHierarchy(): HierarchyNode<D3JSNode> {
+		let final: D3JSNode = {
 			name: 'root',
 			children: []
 		};
@@ -16,15 +17,17 @@
 		for (const [resourceName, environmentalImpact] of Object.entries(impactByResource)) {
 			final.children.push({
 				name: resourceName,
-				value: environmentalImpact.impacts['Climate change'].value
+				impact: environmentalImpact,
+				value: environmentalImpact.impacts['Climate change'].value,
+				children: []
 			});
 		}
 		return hierarchy(final);
 	}
 </script>
 
-<Sunburst hierarchy={convertResourcesImpactToHierarchy()}/>
-<Treemap hierarchy={convertResourcesImpactToHierarchy()}/>
+<Sunburst hierarchy={convertResourcesImpactToHierarchy()} />
+<Treemap hierarchy={convertResourcesImpactToHierarchy()} />
 
 {#if impactByResource != undefined}
 	<ul>

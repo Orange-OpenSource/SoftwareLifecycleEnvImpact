@@ -108,7 +108,6 @@
 	{#if !compareModels}
 		<div id="split-1">
 			<div class="col ps-2">
-				<h2 class="title sticky-top">Tasks</h2>
 				<TaskTree bind:selectedTask {selectedModel} />
 			</div>
 		</div>

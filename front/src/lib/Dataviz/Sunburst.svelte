@@ -2,8 +2,9 @@
 	import { onMount } from 'svelte';
 	import { select } from 'd3-selection';
 	import { arc, scaleOrdinal, partition, type HierarchyNode, schemeSet3, selectAll } from 'd3';
+	import type { D3JSNode } from './d3js';
 
-	export let hierarchy: HierarchyNode;
+	export let hierarchy: HierarchyNode<D3JSNode>;
 
 	let sunburstSVG: SVGSVGElement;
 	let legendSVG: SVGSVGElement;
@@ -69,7 +70,7 @@
 		});
 
 		// Set legend height in function of node amount
-		legendHeight = root.children.length * legendLineHeight;
+		legendHeight = (root.children ? root.children.length : 1) * legendLineHeight;
 
 		// prepare a color scale
 		const color = scaleOrdinal().domain(names).range(schemeSet3);
@@ -87,7 +88,7 @@
 			.enter()
 			.append('path')
 			.attr('display', function (d) {
-				return d.depth ? null : 'none'; // Do not dislay ùiddle circle
+				return d.depth ? null : 'none'; // Do not dislay root node, inner circle
 			})
 			.attr('d', svgArc)
 			.style('fill', (d) => {

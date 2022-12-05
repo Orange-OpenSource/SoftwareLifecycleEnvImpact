@@ -3,7 +3,7 @@
 	import { select } from 'd3-selection';
 	import { onMount } from 'svelte';
 
-	export let hierarchy: HierarchyNode;
+	export let hierarchy: HierarchyNode<D3JSNode>;
 
 	let svgElement: SVGSVGElement;
 
@@ -43,6 +43,9 @@
 			.selectAll('rect')
 			.data(root.leaves())
 			.join('rect')
+			.attr('display', function (d) {
+				return d.depth ? null : 'none'; // Do not dislay root node
+			})
 			.attr('x', function (d) {
 				return d.x0;
 			})
@@ -68,6 +71,9 @@
 			.data(root.leaves())
 			.enter()
 			.append('text')
+			.attr('display', function (d) {
+				return d.depth ? null : 'none'; // Do not dislay root node
+			})
 			.attr('x', function (d) {
 				return d.x0 + 10;
 			}) // +10 to adjust position (more right)
@@ -85,6 +91,9 @@
 			.data(root.leaves())
 			.enter()
 			.append('text')
+			.attr('display', function (d) {
+				return d.depth ? null : 'none'; // Do not dislay root node
+			})
 			.attr('x', function (d) {
 				return d.x0 + 10;
 			}) // +10 to adjust position (more right)

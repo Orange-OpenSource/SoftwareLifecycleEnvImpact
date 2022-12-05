@@ -36,7 +36,27 @@
 	{#if selectedModel == undefined}
 		No model selected
 	{:else if rootTask != undefined}
-		<Header bind:modify bind:selectedTask {selectedModel} />
+		<!-- <Header bind:modify bind:selectedTask {selectedModel} /> -->
+
+		<div class="row sticky-top">
+			<div class="col-9">
+				<h2 class="title">Tasks</h2>
+			</div>
+			<div class="col-3 form-switch">
+				<input class="form-check-input" type="checkbox" bind:checked={modify} id="editmodeSwitch" />
+				<label class="form-check-label" for="editmodeSwitch">Editing mode</label>
+			</div>
+		</div>
+
+		<div
+			on:click|stopPropagation={() => (selectedTask = selectedModel.root_task)}
+			class="card {selectedModel.root_task === selectedTask ? 'border-primary' : ''}"
+			style="min-width: 15rem; width: fit-content;"
+		>
+			<div class="card-body">
+				<h5>{selectedModel.name}</h5>
+			</div>
+		</div>
 		<div class="col scroll">
 			<TaskComponent task={rootTask} bind:selectedTask {modify} {selectedModel} parentTask={rootTask} />
 		</div>
