@@ -76,7 +76,8 @@
 		legendHeight = (root.children ? root.children.length : 1) * legendLineHeight;
 
 		// prepare a color scale
-		const color = scaleOrdinal().domain(names).range(schemeSet2);
+		// Different color scale if selected task is defined or not
+		const color = scaleOrdinal().domain(names).range(selectedTask != undefined ? schemeSet2 : schemeSet3);
 		// const color = scaleOrdinal(quantize(interpolateRainbow, names.length + 1))
 
 		// Create nodes
