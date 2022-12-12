@@ -121,7 +121,7 @@ class TaskImpact:
 class TaskImpactSchema(Schema):
     task_id = fields.Integer()
     task_impact = fields.Nested("EnvironmentalImpactSchema")
-    subtasks = values=fields.Nested("TaskImpactSchema", many=True)
+    subtasks = fields.Nested("TaskImpactSchema", many=True)
     resources = fields.Dict(
         keys=fields.Str(), values=fields.Nested("EnvironmentalImpactSchema")
     )

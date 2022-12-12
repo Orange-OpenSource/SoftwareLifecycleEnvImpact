@@ -25,14 +25,14 @@ class ImpactSource:
         name: str,
         unit: str,
         climate_change: str,
-        resource_depletion: str = "",
-        acidification: str = "",
-        fine_particles: str = "",
-        ionizing_radiations: str = "",
-        water_depletion: str = "",
-        electronic_waste: str = "",
-        primary_energy_consumption: str = "",
-        raw_materials: str = "",
+        resource_depletion: str = "0 " + ImpactCategory.RESOURCE_DEPLETION.value,
+        acidification: str = "0 " + ImpactCategory.ACIDIFICATION.value,
+        fine_particles: str = "0 " + ImpactCategory.FINE_PARTICLES.value,
+        ionizing_radiations: str = "0 " + ImpactCategory.IONIZING_RADIATIONS.value,
+        water_depletion: str = "0 " + ImpactCategory.WATER_DEPLETION.value,
+        electronic_waste: str = "0 " + ImpactCategory.ELECTRONIC_WASTE.value,
+        primary_energy_consumption: str = "0 " + ImpactCategory.PRIMARY_ENERGY.value,
+        raw_materials: str = "0 " + ImpactCategory.RAW_MATERIALS.value,
         source: str = "",
         methodology: str = "",
     ):
@@ -47,49 +47,41 @@ class ImpactSource:
         :param raw_materials: Raw materials consumed as Ton
         """
 
-        if (
-            climate_change is None or not climate_change
-        ):  # TODO try to put back in constructor
-            climate_change = 0 * deserialize_unit(ImpactCategory.CLIMATE_CHANGE.value)
-        if resource_depletion is None or not resource_depletion:
-            resource_depletion = 0 * deserialize_unit(
-                ImpactCategory.RESOURCE_DEPLETION.value
-            )
-        if acidification is None or not acidification:
-            acidification = 0 * deserialize_unit(ImpactCategory.ACIDIFICATION.value)
-        if fine_particles is None or not fine_particles:
-            fine_particles = 0 * deserialize_unit(ImpactCategory.FINE_PARTICLES.value)
-        if ionizing_radiations is None or not ionizing_radiations:
-            ionizing_radiations = 0 * deserialize_unit(
-                ImpactCategory.IONIZING_RADIATIONS.value
-            )
-        if water_depletion is None or not water_depletion:
-            water_depletion = 0 * deserialize_unit(ImpactCategory.WATER_DEPLETION.value)
-        if electronic_waste is None or not electronic_waste:
-            electronic_waste = 0 * deserialize_unit(
-                ImpactCategory.ELECTRONIC_WASTE.value
-            )
-        if primary_energy_consumption is None or not primary_energy_consumption:
-            primary_energy_consumption = 0 * deserialize_unit(
-                ImpactCategory.PRIMARY_ENERGY.value
-            )
-        if raw_materials is None or not raw_materials:
-            raw_materials = 0 * deserialize_unit(ImpactCategory.RAW_MATERIALS.value)
+        if resource_depletion is None:
+            resource_depletion = "0 " + ImpactCategory.RESOURCE_DEPLETION.value
+        if acidification is None:
+            acidification = "0 " + ImpactCategory.ACIDIFICATION.value
+        if fine_particles is None:
+            fine_particles = "0 " + ImpactCategory.FINE_PARTICLES.value
+        if ionizing_radiations is None:
+            ionizing_radiations = "0 " + ImpactCategory.IONIZING_RADIATIONS.value
+        if water_depletion is None:
+            water_depletion = "0 " + ImpactCategory.WATER_DEPLETION.value
+        if electronic_waste is None:
+            electronic_waste = "0 " + ImpactCategory.ELECTRONIC_WASTE.value
+        if primary_energy_consumption is None:
+            primary_energy_consumption = "0 " + ImpactCategory.PRIMARY_ENERGY.value
+        if raw_materials is None:
+            raw_materials = "0 " + ImpactCategory.RAW_MATERIALS.value
 
         self.id = id
         self.name = name
         self.unit = deserialize_unit(unit)
-        self.climate_change = deserialize_quantity(climate_change) / self.unit
-        self.resource_depletion = deserialize_quantity(resource_depletion) / self.unit
-        self.acidification = deserialize_quantity(acidification) / self.unit
-        self.fine_particles = deserialize_quantity(fine_particles) / self.unit
-        self.ionizing_radiations = deserialize_quantity(ionizing_radiations) / self.unit
-        self.water_depletion = deserialize_quantity(water_depletion) / self.unit
-        self.electronic_waste = deserialize_quantity(electronic_waste) / self.unit
-        self.primary_energy_consumption = (
-            deserialize_quantity(primary_energy_consumption) / self.unit
+        # Mandatory to let pint handle the division by unit in parsing,
+        # else bug with multi-dimension ones
+        self.climate_change = deserialize_quantity(climate_change + "/" + unit)
+        self.resource_depletion = deserialize_quantity(resource_depletion + "/" + unit)
+        self.acidification = deserialize_quantity(acidification + "/" + unit)
+        self.fine_particles = deserialize_quantity(fine_particles + "/" + unit)
+        self.ionizing_radiations = deserialize_quantity(
+            ionizing_radiations + "/" + unit
         )
-        self.raw_materials = deserialize_quantity(raw_materials) / self.unit
+        self.water_depletion = deserialize_quantity(water_depletion + "/" + unit)
+        self.electronic_waste = deserialize_quantity(electronic_waste + "/" + unit)
+        self.primary_energy_consumption = deserialize_quantity(
+            primary_energy_consumption + "/" + unit
+        )
+        self.raw_materials = deserialize_quantity(raw_materials + "/" + unit)
         self.source = source
         self.methodology = methodology
 
