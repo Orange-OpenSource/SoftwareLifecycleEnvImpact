@@ -15,7 +15,7 @@
 		radius = sunburstHeight / 2;
 
 	let legendHeight = 0;
-	const legendLineHeight = 25;
+	const legendLineHeight = 30;
 
 	async function drawSunburst() {
 		// Construct svg attributes
