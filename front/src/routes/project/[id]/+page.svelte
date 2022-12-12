@@ -64,7 +64,7 @@
 		if (split) split.destroy();
 		split = Split(['#split-0', '#split-1', '#split-2'], {
 			sizes: [25, 50, 25],
-			minSize: 0,
+			minSize: [0, 450, 0],
 			snapOffset: 150,
 			onDrag: function () {
 				for (let i = 0; i < 3; i++) {

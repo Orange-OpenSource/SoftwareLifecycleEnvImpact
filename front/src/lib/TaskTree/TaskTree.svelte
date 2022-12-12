@@ -39,10 +39,10 @@
 		<!-- <Header bind:modify bind:selectedTask {selectedModel} /> -->
 
 		<div class="row sticky-top">
-			<div class="col-9">
+			<div class="col-8">
 				<h2 class="title">Tasks</h2>
 			</div>
-			<div class="col-3 form-switch">
+			<div class="col-4 form-switch">
 				<input class="form-check-input" type="checkbox" bind:checked={modify} id="editmodeSwitch" />
 				<label class="form-check-label" for="editmodeSwitch">Editing mode</label>
 			</div>
