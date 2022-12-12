@@ -20,7 +20,7 @@ methodology:
 !ImpactSource
 id: "storage"
 name: "Storage"
-unit: gigabyte * day
+unit: gigabyte / day
 climate_change: "0.1 kg_co2e"
 resource_depletion:
 acidification:
@@ -37,7 +37,7 @@ methodology:
 !ImpactSource
 id: "server"
 name: "Server"
-unit: server * day
+unit: server / day
 climate_change: "0.1 kg_co2e"
 resource_depletion:
 acidification:
@@ -53,7 +53,7 @@ methodology:
 !ImpactSource
 id: "vCPUrm"
 name: "vCPU Rueil-Malmaison"
-unit: vcpu * month
+unit: vcpu / month
 climate_change: "4.506211 kg_co2e"
 resource_depletion: "8.78E-07 kg_Sbe"
 acidification: "0.015592121 mol_Hpos"
@@ -69,7 +69,7 @@ methodology:
 !ImpactSource
 id: "vCPUvdr"
 name: "vCPU Val-de-Reuil"
-unit: vcpu * month
+unit: vcpu / month
 climate_change: "0.2206123 kg_co2e"
 resource_depletion: "4.85E-08 kg_Sbe"
 acidification: "0.000766107 mol_Hpos"
@@ -85,7 +85,7 @@ methodology:
 !ImpactSource
 id: "RAMrm"
 name: "RAM Rueil-Malmaison"
-unit: gigabyte * month
+unit: gigabyte / month
 climate_change: "0.5186616 kg_co2e"
 resource_depletion: "1.055E-08 kg_Sbe"
 acidification: "0.002105015 mol_Hpos"
@@ -101,7 +101,7 @@ methodology:
 !ImpactSource
 id: "RAMvdr"
 name: "RAM Val-De-Rueil"
-unit: gigabyte * month
+unit: gigabyte / month
 climate_change: "0.267726 kg_co2e"
 resource_depletion: "4.58E-09 kg_Sbe"
 acidification: "0.001086803 mol_Hpos"
@@ -117,7 +117,7 @@ methodology:
 !ImpactSource
 id: "storageRm"
 name: "Storage Rueil-Malmaison"
-unit: gigabyte * month
+unit: gigabyte / month
 climate_change: "1.1922143 kg_co2e"
 resource_depletion: "8.4877E-07 kg_Sbe"
 acidification: "0.004756408 mol_Hpos"
@@ -133,7 +133,7 @@ methodology:
 !ImpactSource
 id: "storageVdr"
 name: "Storage Val-De-Rueil"
-unit: gigabyte * month
+unit: gigabyte / month
 climate_change: "0.27820336 kg_co2e"
 resource_depletion: "1.9103E-07 kg_Sbe"
 acidification: "0.001095802 mol_Hpos"
@@ -166,7 +166,7 @@ methodology:
 !ImpactSource
 id: "userDevice"
 name: "User device"
-unit: user_device * hour
+unit: user_device / hour
 climate_change: "0.03740583958581879 kg_co2e"
 resource_depletion:
 acidification:
@@ -193,7 +193,7 @@ methodology: >
 !ImpactSource
 id: "tablet"
 name: "Tablet"
-unit: tablet * hour
+unit: tablet / hour
 climate_change: "0.017303216974674882 kg_co2e"
 resource_depletion:
 acidification:
@@ -215,7 +215,7 @@ methodology: >
 !ImpactSource
 id: "laptop"
 name: "Laptop"
-unit: laptop * hour
+unit: laptop / hour
 climate_change: "0.027700236880868794 kg_co2e"
 resource_depletion:
 acidification:
@@ -236,7 +236,7 @@ methodology: >
 !ImpactSource
 id: "television"
 name: "Television"
-unit: television * hour
+unit: television / hour
 climate_change: "0.04563084645220169 kg_co2e"
 resource_depletion:
 acidification:
@@ -258,7 +258,7 @@ methodology: >
 !ImpactSource
 id: "smartphone"
 name: "Smartphone"
-unit: smartphone * hour
+unit: smartphone / hour
 climate_change: "0.03893978483300865 kg_co2e"
 resource_depletion:
 acidification:
@@ -281,7 +281,7 @@ methodology: >
 !ImpactSource
 id: "building"
 name: "Building"
-unit: (meter * meter) * day
+unit: (meter * meter) / day
 climate_change: "0.21355236139630387 kg_co2e"
 resource_depletion:
 acidification:
@@ -301,7 +301,7 @@ methodology: >
 !ImpactSource
 id: "office"
 name: "Office"
-unit: people * day
+unit: people / day
 climate_change: "5.491346435904957 kg_co2e"
 resource_depletion:
 acidification:
@@ -408,7 +408,7 @@ methodology:
 !ImpactSource
 id: "transportation"
 name: "Transportation"
-unit: people * day
+unit: people / day
 climate_change: "6.583113447812 kg_co2e"
 resource_depletion:
 acidification:
@@ -445,7 +445,7 @@ methodology: >
 !ImpactSource
 id: "people"
 name: "People"
-unit: people * day
+unit: people / day
 climate_change: "0.21355236139630387 kg_co2e"
 resource_depletion:
 acidification:
