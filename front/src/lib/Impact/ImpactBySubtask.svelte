@@ -15,7 +15,7 @@
 	});
 
 	function getChildrenNodes(parentTask: Task, taskImpacts: TaskImpact[]): D3JSNode[] {
-		let returnValue = [];
+		let returnValue: D3JSNode[] = [];
 		for (const taskImpact of taskImpacts) {
 			/*Retrieve task object from its id*/
 			let task = parentTask.subtasks.find((s) => s.id == Number(taskImpact.task_id))!;
@@ -26,8 +26,11 @@
 					/**For each task push it with its associated impact*/
 					returnValue.push({
 						name: task.name,
-						value: taskImpact.task_impact.impacts['Climate change'].value,
-						children: getChildrenNodes(task, taskImpact.subtasks),
+						task: task,
+						impact: taskImpact.task_impact,
+						// value: taskImpact.task_impact.impacts['Climate change'].value,
+						co2: taskImpact.task_impact.impacts['Climate change'].value,
+						children: getChildrenNodes(task, taskImpact.subtasks)
 					});
 				}
 			}
@@ -36,4 +39,4 @@
 	}
 </script>
 
-<Sunburst hierarchy={subtaskHierarchy} />
+<Sunburst bind:selectedTask hierarchy={subtaskHierarchy} />

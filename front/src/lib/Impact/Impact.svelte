@@ -38,7 +38,7 @@
 						<h3>Tasks:</h3>
 					</div>
 					<div class="row">
-						<ImpactBySubtask impactBySubtask={impact.subtasks} {selectedTask} />
+						<ImpactBySubtask bind:selectedTask impactBySubtask={impact.subtasks} />
 					</div>
 				{/if}
 				<div class="row">

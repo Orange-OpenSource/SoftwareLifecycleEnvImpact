@@ -3,6 +3,10 @@
 	import { select } from 'd3-selection';
 	import { arc, scaleOrdinal, partition, type HierarchyNode, schemeSet3, selectAll, quantize, interpolateRainbow, schemeSet2 } from 'd3';
 	import type { D3JSNode } from './d3js';
+	import type { Task } from '$lib/api/dataModel';
+
+	/*Bound var*/
+	export let selectedTask: Task;
 
 	export let hierarchy: HierarchyNode<D3JSNode>;
 
@@ -53,9 +57,8 @@
 
 		// Classifying elements
 		var root = hierarchy
-			.sum((d: { value: any }) => d.value)
+			.sum((d: D3JSNode) => d.co2)
 			.sort(function (a, b) {
-				// 2
 				if (a.depth === 1) {
 					return b.value - a.value;
 				} else {
@@ -102,8 +105,9 @@
 				var sequenceArray = d.ancestors().reverse();
 				sequenceArray.shift(); // suppression de la racine
 
+				// TODO ICI
 				vis.select('#nameMiddle').text(d.data.name);
-				vis.select('#valueMiddle').text(Math.round(d.data.value * 100) / 100 + ' kgCO2e');
+				vis.select('#valueMiddle').text(Math.round(d.data.co2 * 100) / 100 + ' kgCO2e');
 
 				vis
 					.selectAll('path') // Grey all segments
@@ -125,6 +129,12 @@
 
 				// Opacity
 				vis.selectAll('path').style('opacity', 1);
+			})
+			.on('click', (event, d) => {
+				// Select clicked task
+				if (d.data.task != undefined) {
+					selectedTask = d.data.task;
+				}
 			});
 		drawLegend(vis, nodes, color);
 	}

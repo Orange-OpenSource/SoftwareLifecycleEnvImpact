@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { EnvironmentalImpact, ResourcesImpact } from '$lib/api/dataModel';
+	import type { EnvironmentalImpact, ResourcesImpact, Task } from '$lib/api/dataModel';
 	import type { D3JSNode } from '$lib/Dataviz/d3js';
 	import Sunburst from '$lib/Dataviz/Sunburst.svelte';
 	import Treemap from '$lib/Dataviz/Treemap.svelte';
@@ -18,7 +18,8 @@
 			final.children.push({
 				name: resourceName,
 				impact: environmentalImpact,
-				value: environmentalImpact.impacts['Climate change'].value,
+				// value: environmentalImpact.impacts['Climate change'].value,
+				co2: environmentalImpact.impacts['Climate change'].value,
 				children: []
 			});
 		}
