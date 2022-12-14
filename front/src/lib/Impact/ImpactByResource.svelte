@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { EnvironmentalImpact, ResourcesImpact, Task } from '$lib/api/dataModel';
-	import type { D3JSHierarchyNode } from '$lib/Dataviz/d3js';
+	import type { D3JSHierarchyNode, D3JStackedData } from '$lib/Dataviz/d3js';
+	import StackedBarChart from '$lib/Dataviz/StackedBarChart.svelte';
 	import Sunburst from '$lib/Dataviz/Sunburst.svelte';
 	import Treemap from '$lib/Dataviz/Treemap.svelte';
 	import { hierarchy, type HierarchyNode } from 'd3-hierarchy';
@@ -25,8 +26,24 @@
 		}
 		return hierarchy(final);
 	}
+
+	function convertResourcesImpactToStackedData(): D3JStackedData[] {
+		let final: D3JStackedData[] = [];
+
+		for (const [resourceName, environmentalImpact] of Object.entries(impactByResource)) {
+			for (const [impactName, impactValue] of Object.entries(environmentalImpact.impacts)) {
+				final.push({
+					impactCategory: impactName,
+					category: resourceName,
+					value: impactValue.value
+				});
+			}
+		}
+		return final;
+	}
 </script>
 
+<StackedBarChart chartData={convertResourcesImpactToStackedData()} />
 <Sunburst hierarchy={convertResourcesImpactToHierarchy()} />
 <Treemap hierarchy={convertResourcesImpactToHierarchy()} />
 

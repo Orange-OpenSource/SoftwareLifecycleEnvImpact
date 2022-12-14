@@ -15,7 +15,7 @@ export interface D3JSLink {
 	value: number;
 }
 
-export interface D3JStackedBar {
+export interface D3JStackedData {
 	impactCategory: string;
 	category: string;
 	value: number;

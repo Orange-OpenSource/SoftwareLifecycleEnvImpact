@@ -2,18 +2,18 @@
 	import { onMount } from 'svelte';
 	import { select } from 'd3-selection';
 	import * as d3 from 'd3';
-	import type { D3JStackedBar } from './d3js';
+	import type { D3JStackedData } from './d3js';
 
-	export let chartData: D3JStackedBar[];
+	export let chartData: D3JStackedData[];
 
 	let stackedBarChartSVG: SVGSVGElement;
 
 	let width = 640,
 		height = 400,
-		marginTop = 30,
-		marginRight = 0,
+		marginTop = 20,
+		marginRight = 10,
 		marginBottom = 0,
-		marginLeft = 40;
+		marginLeft = 150;
 
 	function StackedBarChart() {
 		// Compute values
@@ -60,7 +60,7 @@
 		let xDomain = d3.extent(series.flat(2));
 
 		// Construct scales, axes, and formats.
-		const xScale = d3.scaleLinear(xDomain, [marginLeft, width - marginRight]);
+		const xScale = d3.scaleLinear(xDomain, [marginLeft, width + marginLeft - marginRight]);
 		const yScale = d3.scaleBand(yDomain, yRange).paddingInner(0.2);
 		const color = d3.scaleOrdinal(zDomain, colors);
 		const xAxis = d3.axisTop(xScale).ticks(width / 80, '%');
