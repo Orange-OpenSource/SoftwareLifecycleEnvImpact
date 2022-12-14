@@ -2,13 +2,13 @@
 	import { onMount } from 'svelte';
 	import { select } from 'd3-selection';
 	import { arc, scaleOrdinal, partition, type HierarchyNode, schemeSet3, selectAll, quantize, interpolateRainbow, schemeSet2 } from 'd3';
-	import type { D3JSNode } from './d3js';
+	import type { D3JSHierarchyNode } from './d3js';
 	import type { Task } from '$lib/api/dataModel';
 
 	/*Bound var*/
 	export let selectedTask: Task;
 
-	export let hierarchy: HierarchyNode<D3JSNode>;
+	export let hierarchy: HierarchyNode<D3JSHierarchyNode>;
 
 	let sunburstSVG: SVGSVGElement;
 	let legendSVG: SVGSVGElement;
@@ -57,7 +57,7 @@
 
 		// Classifying elements
 		var root = hierarchy
-			.sum((d: D3JSNode) => d.co2)
+			.sum((d: D3JSHierarchyNode) => d.co2)
 			.sort(function (a, b) {
 				if (a.depth === 1) {
 					return b.value - a.value;

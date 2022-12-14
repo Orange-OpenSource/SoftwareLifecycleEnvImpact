@@ -2,8 +2,9 @@
 	import { scaleLinear, scaleOrdinal, schemeSet3, treemap, type HierarchyNode } from 'd3';
 	import { select } from 'd3-selection';
 	import { onMount } from 'svelte';
+	import type { D3JSHierarchyNode } from './d3js';
 
-	export let hierarchy: HierarchyNode<D3JSNode>;
+	export let hierarchy: HierarchyNode<D3JSHierarchyNode>;
 
 	let svgElement: SVGSVGElement;
 
