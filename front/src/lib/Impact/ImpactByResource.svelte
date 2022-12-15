@@ -47,7 +47,7 @@
 <Sunburst hierarchy={convertResourcesImpactToHierarchy()} />
 <!-- <Treemap hierarchy={convertResourcesImpactToHierarchy()} /> -->
 
-{#if impactByResource != undefined}
+<!-- {#if impactByResource != undefined}
 	<ul>
 		{#each Object.entries(impactByResource) as [key, value]}
 			<li>
@@ -56,4 +56,4 @@
 			</li>
 		{/each}
 	</ul>
-{/if}
+{/if} -->
