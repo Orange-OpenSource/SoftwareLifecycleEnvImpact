@@ -45,7 +45,7 @@
 
 <StackedBarChart chartData={convertResourcesImpactToStackedData()} />
 <Sunburst hierarchy={convertResourcesImpactToHierarchy()} />
-<Treemap hierarchy={convertResourcesImpactToHierarchy()} />
+<!-- <Treemap hierarchy={convertResourcesImpactToHierarchy()} /> -->
 
 {#if impactByResource != undefined}
 	<ul>
