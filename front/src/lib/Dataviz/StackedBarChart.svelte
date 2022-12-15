@@ -15,7 +15,7 @@
 		marginBottom = 0,
 		marginLeft = 150;
 
-	function StackedBarChart() {
+	function drawStackedBar() {
 		// Compute values
 		const X = d3.map(chartData, (d) => d.value);
 		const Y = d3.map(chartData, (d) => d.impactCategory);
@@ -82,7 +82,12 @@
 			.attr('x', ([x1, x2]) => Math.min(xScale(x1), xScale(x2)))
 			.attr('y', ({ i }) => yScale(Y[i]))
 			.attr('width', ([x1, x2]) => Math.abs(xScale(x1) - xScale(x2)))
-			.attr('height', yScale.bandwidth());
+			.attr('height', yScale.bandwidth())
+			.append('title') // Node hover text
+			.text(function (d) {
+				return Z[d.i] +': '+ X[d.i];
+			});
+		// .text((d) => Math.round(d.value * 100) / 100 + ' kgCO2e');
 
 		// Add upper legend
 		svg
@@ -106,9 +111,8 @@
 	}
 
 	onMount(function () {
-		StackedBarChart();
+		drawStackedBar();
 	});
-	// TODO height NOK
 </script>
 
 <div>
