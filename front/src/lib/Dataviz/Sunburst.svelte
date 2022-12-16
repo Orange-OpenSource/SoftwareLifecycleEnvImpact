@@ -21,6 +21,8 @@
 	let legendHeight = 0;
 	const legendLineHeight = 30;
 
+	const legendRequired = selectedTask == undefined;
+
 	async function drawSunburst() {
 		// Construct svg attributes
 		const vis = select(sunburstSVG)
@@ -30,9 +32,6 @@
 
 		// Add defs to fill each segment differently
 		vis.append('defs').attr('id', 'defs');
-
-		// Add text box middle
-		addTextElement(vis);
 
 		// Init the arc
 		var svgArc = arc()
@@ -57,7 +56,11 @@
 
 		// Classifying elements
 		var root = hierarchy
-			.sum((d: D3JSHierarchyNode) => d.co2)
+			.sum(function (d: D3JSHierarchyNode) {
+				// Inputed values already contains the childrens, do not sum twice
+				return !d.children || d.children.length === 0 ? d.co2 : 0;
+			})
+			// .sum((d: D3JSHierarchyNode) => d.co2)
 			.sort(function (a, b) {
 				if (a.depth === 1) {
 					return b.value - a.value;
@@ -71,13 +74,22 @@
 		root.each(function (node: any) {
 			names.push(node.data.name);
 		});
+		console.log(root);
+		// Keep the total value, as it ill we be modified as the sum of all nodes later
+		const totalValue = root.value;
+
+		// Add text box middle
+		addTextElement(vis, totalValue);
 
 		// Set legend height in function of node amount
-		legendHeight = (root.children ? root.children.length : 1) * legendLineHeight;
+		// No need for legend if legendRequired is false
+		legendHeight = !legendRequired ? 0 : (root.children ? root.children.length : 1) * legendLineHeight;
 
 		// prepare a color scale
 		// Different color scale if selected task is defined or not
-		const color = scaleOrdinal().domain(names).range(selectedTask != undefined ? schemeSet2 : schemeSet3);
+		const color = scaleOrdinal()
+			.domain(names)
+			.range(selectedTask != undefined ? schemeSet2 : schemeSet3);
 		// const color = scaleOrdinal(quantize(interpolateRainbow, names.length + 1))
 
 		// Create nodes
@@ -106,7 +118,6 @@
 				var sequenceArray = d.ancestors().reverse();
 				sequenceArray.shift(); // suppression de la racine
 
-				// TODO ICI
 				vis.select('#nameMiddle').text(d.data.name);
 				vis.select('#valueMiddle').text(Math.round(d.data.co2 * 100) / 100 + ' kgCO2e');
 
@@ -124,9 +135,10 @@
 			.on('mouseleave', (event, d) => {
 				// Set back to normal state
 
-				// Text
-				vis.select('#nameMiddle').text('');
-				vis.select('#valueMiddle').text('');
+				// // Text
+				// console.log(root);
+				vis.select('#nameMiddle').text('Total');
+				vis.select('#valueMiddle').text(Math.round(totalValue * 100) / 100 + ' kgCO2e');
 
 				// Opacity
 				vis.selectAll('path').style('opacity', 1);
@@ -137,17 +149,22 @@
 					selectedTask = d.data.task;
 				}
 			});
-		drawLegend(vis, nodes, color);
+		if (legendRequired) drawLegend(vis, nodes, color);
 	}
 
-	function addTextElement(vis) {
+	function addTextElement(vis, totalValue) {
 		var textGroup = vis.append('g');
 
-		textGroup.append('text').attr('id', 'nameMiddle').attr('y', -50).attr('text-anchor', 'middle').style('font-size', '20px').style('font-weight', 'bold');
+		textGroup.append('text').attr('id', 'nameMiddle').attr('y', -50).attr('text-anchor', 'middle').style('font-size', '20px').style('font-weight', 'bold').text('Total');
 
 		// textGroup.append('text').attr('id', 'type-amount').attr('y', -80).attr('class', 'type-amount').attr('text-anchor', 'middle');
 		// textGroup.append('text').attr('id', 'category-amount').attr('y', -60).attr('class', 'category-amount').attr('text-anchor', 'middle');
-		textGroup.append('text').attr('id', 'valueMiddle').attr('text-anchor', 'middle').style('font-size', '15px');
+		textGroup
+			.append('text')
+			.attr('id', 'valueMiddle')
+			.attr('text-anchor', 'middle')
+			.style('font-size', '15px')
+			.text(Math.round(totalValue * 100) / 100 + ' kgCO2e');
 	}
 
 	function drawLegend(vis, nodes, color) {

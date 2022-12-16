@@ -30,7 +30,6 @@
 
 		// Omit any data not present in the y- and z-domains.
 		const I = d3.range(X.length).filter((i) => yDomain.has(Y[i]) && zDomain.has(Z[i]));
-		console.log(I);
 
 		// If the height is not specified, derive it from the y-domain.
 		height = yDomain.size * 25 + marginTop + marginBottom;

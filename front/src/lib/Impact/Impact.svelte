@@ -31,12 +31,12 @@
 		{:then impact}
 			{#if impact != undefined}
 				<div class="row">
-					<h1>{selectedTask.name}</h1>
+					<h1 class="text-primary">{selectedTask.name}</h1>
 				</div>
 				{#if impact.subtasks.length > 0}
-					<div class="row">
+					<!-- <div class="row">
 						<h3>Tasks:</h3>
-					</div>
+					</div> -->
 					<div class="row">
 						<ImpactBySubtask bind:selectedTask impactBySubtask={impact.subtasks} />
 					</div>
