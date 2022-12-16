@@ -74,7 +74,6 @@
 		root.each(function (node: any) {
 			names.push(node.data.name);
 		});
-		console.log(root);
 		// Keep the total value, as it ill we be modified as the sum of all nodes later
 		const totalValue = root.value;
 
@@ -136,7 +135,6 @@
 				// Set back to normal state
 
 				// // Text
-				// console.log(root);
 				vis.select('#nameMiddle').text('Total');
 				vis.select('#valueMiddle').text(Math.round(totalValue * 100) / 100 + ' kgCO2e');
 
