@@ -9,6 +9,7 @@ from marshmallow import (
     ValidationError,
     fields,
     post_load,
+    pre_load,
     pre_dump,
     validates_schema,
 )
@@ -359,6 +360,16 @@ class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
         many=False,
     )
 
+    @pre_load
+    def pre_load(self, data, **kwargs):
+        if "has_time_input" in data:
+            data.pop("has_time_input")  # Delete hybrid property that can't be set
+        return data
+
+    # @post_load
+    # def post_load(self, data, **kwargs):
+    #     data.has_time_input = None  # Delete hybrid property that can't be set
+    #     return data
 
     @validates_schema
     def validate_quantities(self, data, **kwargs):
