@@ -70,7 +70,7 @@ export interface ImpactSource {
 	methodology: string;
 }
 
-export const TIME_UNITS = ['minute', 'hour', 'day', 'month', 'year'];
+export const TIME_UNITS = ['minute', 'hour', 'day', 'week', 'month', 'year'];
 
 export interface Task {
 	/**

@@ -48,6 +48,7 @@ ELECTRICITY_MIX = ureg.electricity_mix
 
 YEAR = ureg.year
 MONTH = ureg.month
+WEEK = ureg.week
 DAY = ureg.day
 HOUR = ureg.hour
 MINUTE = ureg.minute
