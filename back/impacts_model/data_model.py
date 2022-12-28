@@ -310,20 +310,25 @@ class QuantitySchema(Schema):
             raise ValidationError("Wrong quantity format")
 
 
-class ResourceSchema(Schema):  # type: ignore
+class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
     """
     Resource schema to serialize a Resource object
     """
 
+    class Meta(ma.SQLAlchemyAutoSchema.Meta):  # type: ignore
+        """Schema meta class"""
+
+        model = Resource
+        include_relationships = True
+        load_instance = True
+        include_fk = True
+        sqla_session = db.session
+
     id = fields.Integer(allow_none=True)
     task_id = fields.Integer(allow_none=True)
-    name = fields.String()
-
-    impact_source_id = fields.String()
-    has_time_input = fields.Bool()
-
     updated_at = fields.DateTime(allow_none=True)
     created_at = fields.DateTime(allow_none=True)
+    has_time_input = fields.Bool()
 
     _amount = Nested(
         QuantitySchema,
@@ -354,11 +359,6 @@ class ResourceSchema(Schema):  # type: ignore
         many=False,
     )
 
-    @post_load
-    def post_load(self, data, **kwargs):
-        if "has_time_input" in data:
-            data.pop("has_time_input")  # Delete hybrid property that can't be set
-        return Resource(**data)
 
     @validates_schema
     def validate_quantities(self, data, **kwargs):
@@ -474,9 +474,7 @@ class Task(db.Model):  # type: ignore
         "Task", foreign_keys=[parent_task_id], lazy=True, cascade="all"
     )
 
-    resources = db.relationship(
-        Resource, backref="task_input", lazy=True, cascade="all"
-    )
+    resources = db.relationship(Resource, backref="resource", lazy=True, cascade="all")
 
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
     updated_at = db.Column(
