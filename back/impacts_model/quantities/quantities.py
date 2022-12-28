@@ -46,6 +46,10 @@ def deserialize_unit(input: str) -> Unit:
 
 ELECTRICITY_MIX = ureg.electricity_mix
 
+BUSINESS_YEAR = ureg.business_year
+BUSINESS_MONTH = ureg.business_month
+BUSINESS_WEEK = ureg.business_week
+
 YEAR = ureg.year
 MONTH = ureg.month
 WEEK = ureg.week
