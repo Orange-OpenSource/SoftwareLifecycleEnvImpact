@@ -56,7 +56,7 @@
 		split = Split(['#split-0', '#split-1'], {
 			sizes: [25, 75],
 			minSize: 0,
-			snapOffset: 150
+			snapOffset: 200
 		});
 	}
 
@@ -64,9 +64,10 @@
 		if (split) split.destroy();
 		split = Split(['#split-0', '#split-1', '#split-2'], {
 			sizes: [25, 50, 25],
-			minSize: [0, 450, 0],
-			snapOffset: 150,
+			minSize: [0, 450, 200],
+			snapOffset: 200,
 			onDrag: function () {
+				//Function to hide split
 				for (let i = 0; i < 3; i++) {
 					let element = document.getElementById('split-' + i);
 					if (element != null) {
@@ -107,7 +108,7 @@
 
 	{#if !compareModels}
 		<div id="split-1">
-			<div class="col ps-2">
+			<div class="col ps-2" style="overflow-y: hidden;">
 				<TaskTree bind:selectedTask {selectedModel} />
 			</div>
 		</div>
