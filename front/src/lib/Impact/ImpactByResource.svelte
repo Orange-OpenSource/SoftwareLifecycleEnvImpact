@@ -3,9 +3,7 @@
 	import type { D3JSHierarchyNode, D3JStackedData } from '$lib/Dataviz/d3js';
 	import StackedBarChart from '$lib/Dataviz/StackedBarChart.svelte';
 	import Sunburst from '$lib/Dataviz/Sunburst.svelte';
-	import Treemap from '$lib/Dataviz/Treemap.svelte';
 	import { hierarchy, type HierarchyNode } from 'd3-hierarchy';
-	import ImpactByIndicator from './ImpactByIndicator.svelte';
 
 	export let impactByResource: ResourcesImpact;
 

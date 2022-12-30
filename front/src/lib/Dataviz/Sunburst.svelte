@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { select } from 'd3-selection';
-	import { arc, scaleOrdinal, partition, type HierarchyNode, schemeSet3, selectAll, quantize, interpolateRainbow, schemeSet2 } from 'd3';
+	import * as d3 from 'd3';
 	import type { D3JSHierarchyNode } from './d3js';
 	import type { Task } from '$lib/api/dataModel';
 
 	/*Bound var*/
 	export let selectedTask: Task;
 
-	export let hierarchy: HierarchyNode<D3JSHierarchyNode>;
+	export let hierarchy: d3.HierarchyNode<D3JSHierarchyNode>;
 
 	let sunburstSVG: SVGSVGElement;
 	let legendSVG: SVGSVGElement;
@@ -34,7 +34,7 @@
 		vis.append('defs').attr('id', 'defs');
 
 		// Init the arc
-		var svgArc = arc()
+		var svgArc = d3.arc()
 			.startAngle(function (d) {
 				return d.x0;
 			})
@@ -49,7 +49,7 @@
 			});
 
 		// Partition
-		var partitionSvg = partition().size([2 * Math.PI, radius * radius]);
+		var partitionSvg = d3.partition().size([2 * Math.PI, radius * radius]);
 
 		// Adding middle circle
 		vis.append('circle').attr('r', radius).style('opacity', 0);
@@ -86,9 +86,9 @@
 
 		// prepare a color scale
 		// Different color scale if selected task is defined or not
-		const color = scaleOrdinal()
+		const color = d3.scaleOrdinal()
 			.domain(names)
-			.range(selectedTask != undefined ? schemeSet2 : schemeSet3);
+			.range(selectedTask != undefined ? d3.schemeSet2 : d3.schemeSet3);
 		// const color = scaleOrdinal(quantize(interpolateRainbow, names.length + 1))
 
 		// Create nodes
