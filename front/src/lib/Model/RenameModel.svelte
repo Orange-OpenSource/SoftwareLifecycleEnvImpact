@@ -15,6 +15,7 @@
 
 	function clearModal() {
 		error = '';
+		newName = model.name;
 	}
 
 	async function renameModel() {

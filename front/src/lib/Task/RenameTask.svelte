@@ -15,7 +15,7 @@
 
 	function clearModal() {
 		error = '';
-		newName = '';
+		newName = task.name;
 	}
 
 	async function renameTask() {

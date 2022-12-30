@@ -16,6 +16,7 @@
 
 	function clearModal() {
 		error = '';
+		newName = project.name;
 	}
 
 	async function renameProject() {

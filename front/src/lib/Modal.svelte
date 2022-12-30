@@ -1,5 +1,5 @@
-<script>
-	export let showModal = false;
+<script lang="ts">
+	export let showModal: boolean;
 
 	function closeModal(event) {
 		event.stopPropagation();
