@@ -77,7 +77,7 @@
 			</div>
 			<div class="col-sm-10">
 				<!-- <label for="amountValue" class="form-label is-required">Value:</label> -->
-				<input type="number" id="amountValue" class="form-control {errors.amount ? 'is-invalid' : ''}" bind:value={resource.amount.value} required min="1" on:click|stopPropagation={() => {}} />
+				<input type="number" step="0.1" id="amountValue" class="form-control {errors.amount ? 'is-invalid' : ''}" bind:value={resource.amount.value} required min="1" on:click|stopPropagation={() => {}} />
 			</div>
 			{#each errors.amount || [] as error}
 				<div class="invalid-feedback"><Error message={error} /></div>
