@@ -98,10 +98,10 @@
 		<!--Highlight border if task selected-->
 		<div
 			on:click|stopPropagation={() => (selectedTask = task)}
-			class="col-8 card {selectedTask.id == task.id ? 'border-primary' : ''}"
+			class="card {selectedTask.id == task.id ? 'border-primary' : ''}"
 			on:dragstart={handleDragStart}
 			on:dragend={handleDragEnd}
-			style="min-width: 15rem; width: fit-content;"
+			style="width: fit-content;"
 		>
 			<div id="mydivheader" class="card-header" hidden={!modify || dragging} style="cursor: move;" on:mousedown={handleMouseDown} on:mouseup={handleMouseUp}>Click here to drag</div>
 			<div class="card-body">

@@ -15,10 +15,10 @@
 {#if error}
 	<Error message={error} />
 {/if}
-<ul class="list-group list-group-flush list-group-numbered">
+<ul class="list-group list-group-flush list-group-numbered ml-1">
 	{#if task.resources != null}
 		{#each task.resources as resource}
-			<li class="list-group-item d-flex">
+			<li class="list-group-item d-flex p-0">
 				<div class="ms-2">
 					<div class="row justify-content-start">
 						<div class="fw-bold col-md-auto">{resource.name}</div>
@@ -36,7 +36,7 @@
 		{/each}
 	{/if}
 	{#if modify}
-		<li class="list-group-item">
+		<li class="list-group-item p-0">
 			<AddResource bind:task />
 		</li>
 	{/if}
