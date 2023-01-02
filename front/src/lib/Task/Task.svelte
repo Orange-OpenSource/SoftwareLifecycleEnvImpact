@@ -126,8 +126,6 @@
 
 				{#if !dragging}
 					{#if task.resources.length > 0 || modify}
-						<h6 class="card-subtitle text-muted">Resources:</h6>
-
 						<ResourceList bind:task {modify} />
 					{/if}
 				{/if}
