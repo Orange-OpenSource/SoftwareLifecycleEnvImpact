@@ -1,0 +1,878 @@
+{
+  "created_at": null,
+  "id": null,
+  "models": [
+    {
+      "created_at": null,
+      "id": null,
+      "name": "1 million lines copy copy",
+      "project_id": null,
+      "root_task": {
+        "created_at": null,
+        "id": null,
+        "name": "1 million lines copy copy",
+        "parent_task_id": null,
+        "resources": [],
+        "subtasks": [
+          {
+            "created_at": null,
+            "id": null,
+            "name": "Inception",
+            "parent_task_id": null,
+            "resources": [],
+            "subtasks": [
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Management",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "people",
+                      "value": 49.2
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "people",
+                    "name": "People",
+                    "period": {
+                      "unit": "month",
+                      "value": 1.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Environment/CM",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "people",
+                      "value": 35.1
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "people",
+                    "name": "People",
+                    "period": {
+                      "unit": "month",
+                      "value": 1.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Requirements",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "people",
+                      "value": 133.5
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "people",
+                    "name": "People",
+                    "period": {
+                      "unit": "month",
+                      "value": 1.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Design",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "people",
+                      "value": 66.7
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "people",
+                    "name": "People",
+                    "period": {
+                      "unit": "month",
+                      "value": 1.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Implementation",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "people",
+                      "value": 28.1
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "people",
+                    "name": "People",
+                    "period": {
+                      "unit": "month",
+                      "value": 1.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Assessment",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "people",
+                      "value": 28.1
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "people",
+                    "name": "People",
+                    "period": {
+                      "unit": "month",
+                      "value": 1.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Deployment",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "people",
+                      "value": 10.5
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "people",
+                    "name": "People",
+                    "period": {
+                      "unit": "month",
+                      "value": 1.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              }
+            ],
+            "updated_at": null
+          },
+          {
+            "created_at": null,
+            "id": null,
+            "name": "Elaboration",
+            "parent_task_id": null,
+            "resources": [],
+            "subtasks": [
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Management",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "people",
+                      "value": 168.6
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "people",
+                    "name": "People",
+                    "period": {
+                      "unit": "month",
+                      "value": 1.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Environment/CM",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "people",
+                      "value": 112.4
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "people",
+                    "name": "People",
+                    "period": {
+                      "unit": "month",
+                      "value": 1.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Requirements",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "people",
+                      "value": 252.9
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "people",
+                    "name": "People",
+                    "period": {
+                      "unit": "month",
+                      "value": 1.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Design",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "people",
+                      "value": 505.8
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "people",
+                    "name": "People",
+                    "period": {
+                      "unit": "month",
+                      "value": 1.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Implementation",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "people",
+                      "value": 182.6
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "people",
+                    "name": "People",
+                    "period": {
+                      "unit": "month",
+                      "value": 1.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Assessment",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "people",
+                      "value": 140.5
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "people",
+                    "name": "People",
+                    "period": {
+                      "unit": "month",
+                      "value": 1.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Deployment",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "people",
+                      "value": 42.1
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "people",
+                    "name": "People",
+                    "period": {
+                      "unit": "month",
+                      "value": 1.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              }
+            ],
+            "updated_at": null
+          },
+          {
+            "created_at": null,
+            "id": null,
+            "name": "Construction",
+            "parent_task_id": null,
+            "resources": [],
+            "subtasks": [
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Management",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "people",
+                      "value": 444.9
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "people",
+                    "name": "People",
+                    "period": {
+                      "unit": "month",
+                      "value": 1.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Environment/CM",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "people",
+                      "value": 222.4
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "people",
+                    "name": "People",
+                    "period": {
+                      "unit": "month",
+                      "value": 1.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Requirements",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "people",
+                      "value": 355.9
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "people",
+                    "name": "People",
+                    "period": {
+                      "unit": "month",
+                      "value": 1.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Design",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "people",
+                      "value": 711.8
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "people",
+                    "name": "People",
+                    "period": {
+                      "unit": "month",
+                      "value": 1.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Implementation",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "people",
+                      "value": 1512.7
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "people",
+                    "name": "People",
+                    "period": {
+                      "unit": "month",
+                      "value": 1.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Assessment",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "people",
+                      "value": 1067.8
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "people",
+                    "name": "People",
+                    "period": {
+                      "unit": "month",
+                      "value": 1.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Deployment",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "people",
+                      "value": 133.5
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "people",
+                    "name": "People",
+                    "period": {
+                      "unit": "month",
+                      "value": 1.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              }
+            ],
+            "updated_at": null
+          },
+          {
+            "created_at": null,
+            "id": null,
+            "name": "Transition",
+            "parent_task_id": null,
+            "resources": [],
+            "subtasks": [
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Management",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "people",
+                      "value": 98.3
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "people",
+                    "name": "People",
+                    "period": {
+                      "unit": "month",
+                      "value": 1.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Environment/CM",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "people",
+                      "value": 35.1
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "people",
+                    "name": "People",
+                    "period": {
+                      "unit": "month",
+                      "value": 1.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Requirements",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "people",
+                      "value": 28.1
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "people",
+                    "name": "People",
+                    "period": {
+                      "unit": "month",
+                      "value": 1.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Design",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "people",
+                      "value": 28.1
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "people",
+                    "name": "People",
+                    "period": {
+                      "unit": "month",
+                      "value": 1.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Implementation",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "people",
+                      "value": 133.5
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "people",
+                    "name": "People",
+                    "period": {
+                      "unit": "month",
+                      "value": 1.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Assessment",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "people",
+                      "value": 168.6
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "people",
+                    "name": "People",
+                    "period": {
+                      "unit": "month",
+                      "value": 1.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Deployment",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "people",
+                      "value": 210.7
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "people",
+                    "name": "People",
+                    "period": {
+                      "unit": "month",
+                      "value": 1.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              }
+            ],
+            "updated_at": null
+          }
+        ],
+        "updated_at": null
+      },
+      "root_task_id": null,
+      "updated_at": null
+    }
+  ],
+  "name": "1 million lines",
+  "updated_at": null
+}
