@@ -4,6 +4,7 @@
 	import * as d3 from 'd3';
 	import type { D3JSHierarchyNode } from './d3js';
 	import type { Task } from '$lib/api/dataModel';
+	import { exportPdf } from '$lib/utils';
 
 	/*Bound var*/
 	export let selectedTask: Task;
@@ -34,7 +35,8 @@
 		vis.append('defs').attr('id', 'defs');
 
 		// Init the arc
-		var svgArc = d3.arc()
+		var svgArc = d3
+			.arc()
 			.startAngle(function (d) {
 				return d.x0;
 			})
@@ -86,7 +88,8 @@
 
 		// prepare a color scale
 		// Different color scale if selected task is defined or not
-		const color = d3.scaleOrdinal()
+		const color = d3
+			.scaleOrdinal()
 			.domain(names)
 			.range(selectedTask != undefined ? d3.schemeSet2 : d3.schemeSet3);
 		// const color = scaleOrdinal(quantize(interpolateRainbow, names.length + 1))
@@ -204,12 +207,16 @@
 			});
 	}
 
+	function exportSunburst() {
+		exportPdf(sunburstSVG, 'sunburst');
+	}
+
 	onMount(function () {
 		drawSunburst();
 	});
 </script>
 
-<div>
-	<!-- <svg width={widthMin} height={heightMin} bind:this={sunburstSVG} /> -->
-	<svg bind:this={sunburstSVG} viewBox="0 0 {sunburstWidth + margin.left + margin.right} {sunburstHeight + legendHeight + margin.left + margin.right}" preserveAspectRatio="xMidYMid meet" />
+<svg bind:this={sunburstSVG} viewBox="0 0 {sunburstWidth + margin.left + margin.right} {sunburstHeight + legendHeight + margin.left + margin.right}" preserveAspectRatio="xMidYMid meet" />
+<div class="d-flex justify-content-end">
+	<button class="btn" on:click|stopPropagation={exportSunburst} type="button">Export</button>
 </div>

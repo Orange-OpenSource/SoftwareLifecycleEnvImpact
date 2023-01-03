@@ -4,6 +4,7 @@
 	import * as d3Sankey from 'd3-sankey';
 	import * as d3 from 'd3';
 	import type { D3JSLink } from './d3js';
+	import { exportPdf } from '$lib/utils';
 
 	/*Bound var*/
 	export let links: D3JSLink[];
@@ -134,11 +135,16 @@
 		}
 	}
 
+	function exportSankey() {
+		exportPdf(sankeySVG, 'sankey');
+	}
+
 	onMount(function () {
 		drawSankey();
 	});
 </script>
 
-<div>
-	<svg bind:this={sankeySVG} viewBox="0 0 {width + marginLeft + marginRight} {height + marginBottom + marginTop}" preserveAspectRatio="xMidYMid meet" />
+<svg bind:this={sankeySVG} viewBox="0 0 {width + marginLeft + marginRight} {height + marginBottom + marginTop}" preserveAspectRatio="xMidYMid meet" />
+<div class="d-flex justify-content-end">
+	<button class="btn" on:click|stopPropagation={exportSankey} type="button">Export</button>
 </div>

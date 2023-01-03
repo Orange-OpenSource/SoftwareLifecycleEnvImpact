@@ -1,5 +1,7 @@
 import type { Model } from '$lib/api/dataModel';
 import type { Project } from '$lib/api/dataModel';
+import { jsPDF } from 'jspdf';
+import 'svg2pdf.js';
 
 /**
  * Returns the last updated date (or creation date if null).
@@ -49,4 +51,14 @@ export function exportJson(data: string, fileName: string) {
 		link.click();
 		document.body.removeChild(link);
 	}
+}
+
+export function exportPdf(data: SVGSVGElement, fileName: string) {
+	const doc = new jsPDF();
+	doc.svg(data).then(() => {
+		// save the created pdf
+		doc.save('myPDF.pdf');
+	});
+
+	doc.save(fileName + '.pdf');
 }

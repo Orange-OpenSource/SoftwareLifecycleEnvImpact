@@ -3,6 +3,7 @@
 	import { select } from 'd3-selection';
 	import * as d3 from 'd3';
 	import type { D3JStackedData } from './d3js';
+	import { exportPdf } from '$lib/utils';
 
 	export let chartData: D3JStackedData[];
 
@@ -111,11 +112,16 @@
 		}
 	}
 
+	function exportStackedBar() {
+		exportPdf(stackedBarChartSVG, 'stackedBarChart');
+	}
+
 	onMount(function () {
 		drawStackedBar();
 	});
 </script>
 
-<div>
-	<svg bind:this={stackedBarChartSVG} viewBox="0 0 {width + marginLeft + marginRight} {height + marginBottom + marginTop}" preserveAspectRatio="xMidYMid meet" />
+<svg bind:this={stackedBarChartSVG} viewBox="0 0 {width + marginLeft + marginRight} {height + marginBottom + marginTop}" preserveAspectRatio="xMidYMid meet" />
+<div class="d-flex justify-content-end">
+	<button class="btn" on:click|stopPropagation={exportStackedBar} type="button">Export</button>
 </div>
