@@ -9,35 +9,43 @@
 	export let task: Task;
 	export let modify: boolean;
 
+	let editResource = false;
+
+	$: if (!modify) editResource = false;
+
 	let error = '';
 </script>
 
 {#if error}
 	<Error message={error} />
 {/if}
-<ul class="list-group list-group-flush list-group-numbered ml-1">
+
+<ul class="list-group list-group-flush list-group-numbered">
 	{#if task.resources != null}
 		{#each task.resources as resource}
-			<li class="list-group-item d-flex p-0">
+			<li class="list-group-item d-flex p-1">
 				<div class="ms-2">
-					<div class="row justify-content-start">
-						<div class="fw-bold col-md-auto">{resource.name}</div>
+					<div class="d-flex justify-content-between">
+						<div class="fw-bold">{resource.name}</div>
 						{#if modify}
-							<div class="col">
+							<div>
+								<input on:click|stopPropagation={() => (editResource = !editResource)} type="image" src="/pencil.svg" width="25" height="25" alt="Pencil" loading="lazy" />
 								<DeleteResource bind:task {resource} />
 							</div>
 						{/if}
 					</div>
-					<div class="row ms-2">
-						<ResourceInput bind:resource {modify} />
+					<div class="ms-1">
+						<ResourceInput bind:resource modify={editResource} />
 					</div>
 				</div>
 			</li>
 		{/each}
 	{/if}
 	{#if modify}
-		<li class="list-group-item p-0">
-			<AddResource bind:task />
+		<li class="list-group-item d-flex p-1">
+			<div class="ms-2">
+				<AddResource bind:task />
+			</div>
 		</li>
 	{/if}
 </ul>
