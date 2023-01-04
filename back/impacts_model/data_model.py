@@ -204,22 +204,19 @@ class Resource(db.Model):  # type: ignore
         Value is of the form : amount * duration * (1/frequency) * period
         duration, frequency and period can be None
         """
-        try:
-            time = None
+        time = None
 
-            if self.duration is not None:
-                time = self.duration / self.frequency * self.period
-            elif self.frequency is not None:
-                time = (1 / self.frequency) * self.period
-            elif self.period is not None:
-                time = self.period
+        if self.duration is not None:
+            time = self.duration / self.frequency * self.period
+        elif self.frequency is not None:
+            time = (1 / self.frequency) * self.period
+        elif self.period is not None:
+            time = self.period
 
-            if time is None:
-                return self.amount
-            else:
-                return (self.amount * time).to_reduced_units()
-        except Exception as e:
-            print(e)
+        if time is None:
+            return self.amount
+        else:
+            return (self.amount * time).to_reduced_units()
 
     def __copy__(self):
         """Override of copy function to return a Resource stripped of ids"""
@@ -241,16 +238,13 @@ class Resource(db.Model):  # type: ignore
 
         for key in self.impact_source.environmental_impact.impacts:
             # Adding the impact to impact category indicator unit
-            try:
-                environmental_impact.add_impact(
-                    key,
-                    (
-                        self.impact_source.environmental_impact.impacts[key]
-                        * self.value()
-                    ).to_reduced_units(),
-                )
-            except Exception as e:
-                print(e)
+            environmental_impact.add_impact(
+                key,
+                (
+                    self.impact_source.environmental_impact.impacts[key]
+                    * self.value()
+                ).to_reduced_units(),
+            )
         return environmental_impact
 
     def get_category_impact(self, impact_category: ImpactCategory) -> Quantity[Any]:
