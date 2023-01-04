@@ -107,21 +107,21 @@
 	</div>
 
 	{#if !compareModels}
-		<div id="split-1">
-			<div class="col ps-2" style="overflow-y: hidden;">
+		<div id="split-1" class="overflow-auto">
+			<div class="ps-2">
 				<TaskTree bind:selectedTask {selectedModel} />
 			</div>
 		</div>
 
 		<div id="split-2">
-			<div class="col ps-2">
+			<div class="ps-2">
 				<h2 class="title sticky-top">Impact</h2>
 				<Impact bind:selectedTask />
 			</div>
 		</div>
 	{:else}
 		<div id="split-1">
-			<div class="col ps-2 ">
+			<div class="ps-2 ">
 				<h2 class="title">Compare</h2>
 				<ModelComparison models={selectedModels} />
 			</div>
