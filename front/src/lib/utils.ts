@@ -57,8 +57,6 @@ export function exportPdf(data: SVGSVGElement, fileName: string) {
 	const doc = new jsPDF();
 	doc.svg(data).then(() => {
 		// save the created pdf
-		doc.save('myPDF.pdf');
+		doc.save(fileName + '.pdf');
 	});
-
-	doc.save(fileName + '.pdf');
 }
