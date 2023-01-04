@@ -1,0 +1,344 @@
+{
+  "created_at": null,
+  "id": null,
+  "models": [
+    {
+      "created_at": null,
+      "id": null,
+      "name": "Paper copy",
+      "project_id": null,
+      "root_task": {
+        "created_at": null,
+        "id": null,
+        "name": "Paper copy",
+        "parent_task_id": null,
+        "resources": [],
+        "subtasks": [
+          {
+            "created_at": null,
+            "id": null,
+            "name": "Build",
+            "parent_task_id": null,
+            "resources": [],
+            "subtasks": [
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Selling",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "kilometer",
+                      "value": 1000.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": {
+                      "unit": "month",
+                      "value": 1.0
+                    },
+                    "has_time_input": false,
+                    "id": null,
+                    "impact_source_id": "plane",
+                    "name": "Plane",
+                    "period": {
+                      "unit": "month",
+                      "value": 6.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Development",
+                "parent_task_id": null,
+                "resources": [],
+                "subtasks": [
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Coding",
+                    "parent_task_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 10.0
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_year",
+                          "value": 1.0
+                        },
+                        "task_id": null,
+                        "updated_at": null
+                      },
+                      {
+                        "amount": {
+                          "unit": "server",
+                          "value": 1.0
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "server",
+                        "name": "Server",
+                        "period": {
+                          "unit": "month",
+                          "value": 10.0
+                        },
+                        "task_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subtasks": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Testing",
+                    "parent_task_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 5.0
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 6.0
+                        },
+                        "task_id": null,
+                        "updated_at": null
+                      },
+                      {
+                        "amount": {
+                          "unit": "server",
+                          "value": 3.0
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "server",
+                        "name": "Server",
+                        "period": {
+                          "unit": "month",
+                          "value": 6.0
+                        },
+                        "task_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subtasks": [],
+                    "updated_at": null
+                  }
+                ],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Design",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "people",
+                      "value": 2.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "people",
+                    "name": "People",
+                    "period": {
+                      "unit": "business_month",
+                      "value": 2.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              }
+            ],
+            "updated_at": null
+          },
+          {
+            "created_at": null,
+            "id": null,
+            "name": "Run",
+            "parent_task_id": null,
+            "resources": [],
+            "subtasks": [
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Hosting",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 10.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPUvdr",
+                    "name": "vCPU Val-de-Reuil",
+                    "period": {
+                      "unit": "year",
+                      "value": 3.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 100.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "RAMvdr",
+                    "name": "RAM Val-De-Rueil",
+                    "period": {
+                      "unit": "month",
+                      "value": 3.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 1000.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "storageVdr",
+                    "name": "Storage Val-De-Rueil",
+                    "period": {
+                      "unit": "year",
+                      "value": 3.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Maintenance",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "people",
+                      "value": 2.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "people",
+                    "name": "People",
+                    "period": {
+                      "unit": "business_year",
+                      "value": 1.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Users",
+                "parent_task_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "smartphone",
+                      "value": 1000.0
+                    },
+                    "created_at": null,
+                    "duration": {
+                      "unit": "minute",
+                      "value": 5.0
+                    },
+                    "frequency": {
+                      "unit": "day",
+                      "value": 1.0
+                    },
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "smartphone",
+                    "name": "Smartphone",
+                    "period": {
+                      "unit": "year",
+                      "value": 3.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subtasks": [],
+                "updated_at": null
+              }
+            ],
+            "updated_at": null
+          }
+        ],
+        "updated_at": null
+      },
+      "root_task_id": null,
+      "updated_at": null
+    }
+  ],
+  "name": "Paper",
+  "updated_at": null
+}
