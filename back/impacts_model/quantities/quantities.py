@@ -1,5 +1,5 @@
 import os as _os
-from typing import Any, Union
+from typing import Any, Optional, Union
 
 from pint import Context, Quantity, Unit, UnitRegistry
 
@@ -22,8 +22,8 @@ def serialize_quantity(input: Quantity[Any]) -> str:
 
 
 def deserialize_quantity(
-    input: Union[str, Quantity],
-) -> Quantity[Any]:
+    input: Union[str, Optional[Quantity[Any]]],
+) -> Optional[Quantity[Any]]:
     """Deserialize a pint quantity"""
     if input is None:
         return None
@@ -32,7 +32,7 @@ def deserialize_quantity(
     return ureg(input)
 
 
-def deserialize_unit(input: str) -> Unit:
+def deserialize_unit(input: Union[str, Unit]) -> Unit:
     if input is None:
         return None
     if isinstance(input, Unit):

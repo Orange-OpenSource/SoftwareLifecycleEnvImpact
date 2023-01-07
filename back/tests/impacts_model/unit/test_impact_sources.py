@@ -6,6 +6,7 @@ from impacts_model.impact_sources import (
     _get_all_impact_sources,
     impact_source_factory,
 )
+from impacts_model.impacts import ImpactValue
 
 from impacts_model.quantities.quantities import (
     DAY,
@@ -24,7 +25,10 @@ def test_impact_source_has_time_input() -> None:
     # Test without time
     assert (
         ImpactSource(
-            id="testid", name="test", unit=SERVER, climate_change=1776 * KG_CO2E
+            id="testid",
+            name="test",
+            unit=SERVER,
+            climate_change=ImpactValue(1776 * KG_CO2E),
         ).has_time_input
         == False
     )
@@ -35,7 +39,7 @@ def test_impact_source_has_time_input() -> None:
             id="testid",
             name="test",
             unit=DAY * SERVER,
-            climate_change=1776 * KG_CO2E,
+            climate_change=ImpactValue(use=1776 * KG_CO2E),
         ).has_time_input
         == True
     )
@@ -46,7 +50,7 @@ def test_impact_source_has_time_input() -> None:
             id="testid",
             name="test",
             unit=SERVER * DAY,
-            climate_change=1776 * KG_CO2E,
+            climate_change=ImpactValue(use=1776 * KG_CO2E),
         ).has_time_input
         == True
     )
@@ -57,7 +61,7 @@ def test_impact_source_has_time_input() -> None:
             id="testid",
             name="test",
             unit=SERVER * SERVER,
-            climate_change=1776 * KG_CO2E,
+            climate_change=ImpactValue(use=1776 * KG_CO2E),
         ).has_time_input
         == False
     )
@@ -77,17 +81,21 @@ def test_yaml_loading() -> None:
         assert impact_source.climate_change is not None
 
         for indicator in impact_source.environmental_impact.impacts:
-            # Test all environmentalImpact to see if they're rightly typed as quantities
+            # Test all environmentalImpact to see if they're rightly typed as ImpactValue
             assert isinstance(
-                impact_source.environmental_impact.impacts[indicator], Quantity
+                impact_source.environmental_impact.impacts[indicator], ImpactValue
             )
 
             # Test that we retrieve an impact with the right quantity if we remove the impact unit, ie for one unit
-            tmp = (
-                impact_source.environmental_impact.impacts[indicator]
-                * impact_source.unit
-            )
-            assert tmp.units == indicator.value or tmp.dimensionless
+            impact_value = impact_source.environmental_impact.impacts[indicator]
+            # For manufacture
+            if impact_value.manufacture is not None:
+                tmp = impact_value.manufacture * impact_source.unit
+                assert tmp.units == indicator.value or tmp.dimensionless
+
+            if impact_value.use is not None:
+                tmp = impact_value.use * impact_source.unit
+                assert tmp.units == indicator.value or tmp.dimensionless
 
 
 def test_impact_source_factory() -> None:

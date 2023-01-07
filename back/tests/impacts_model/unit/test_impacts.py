@@ -5,7 +5,7 @@ from impacts_model.impact_sources import (
 ##########
 # STATIC #
 ##########
-from impacts_model.impacts import ImpactCategory
+from impacts_model.impacts import ImpactCategory, ImpactValue
 from impacts_model.quantities.quantities import (
     CUBIC_METER,
     DISEASE_INCIDENCE,
@@ -105,9 +105,12 @@ def test_impact_category_str() -> None:
 def test_co2() -> None:
     """Test ImpactFactor co2 property getter"""
     i = ImpactSource(
-        id=0, name="test", unit=SERVER / DAY, climate_change=103.72 * KG_CO2E
+        id=0,
+        name="test",
+        unit=SERVER / DAY,
+        climate_change=ImpactValue(use=103.72 * KG_CO2E),
     )
-    assert i.climate_change == 103.72 * KG_CO2E / i.unit
+    assert i.climate_change.use == 103.72 * KG_CO2E / i.unit
 
 
 def test_impact_source_parameters() -> None:
@@ -117,29 +120,65 @@ def test_impact_source_parameters() -> None:
     :return:
     """
     i = ImpactSource(
-        id=0,
+        id="0",
         name="test",
         unit=SERVER / DAY,
-        climate_change=103.72 * KG_CO2E,
-        resource_depletion=312.23 * KG_SBE,
-        acidification=32443.2134 * MOL_HPOS,
-        fine_particles=24324.234324 * DISEASE_INCIDENCE,
-        ionizing_radiations=421312.123 * KG_BQ_U235E,
-        water_depletion=124.123 * CUBIC_METER,
-        electronic_waste=134242.12341 * ELECTRONIC_WASTE,
-        primary_energy_consumption=1234.23123 * PRIMARY_MJ,
-        raw_materials=124.123441 * TONNE_MIPS,
+        climate_change=ImpactValue(manufacture=103.72 * KG_CO2E, use=999103.72 * KG_CO2E),
+        resource_depletion=ImpactValue(manufacture=312.23 * KG_SBE, use=999312.23 * KG_SBE),
+        acidification=ImpactValue(
+            manufacture=32443.2134 * MOL_HPOS, use=99932443.2134 * MOL_HPOS
+        ),
+        fine_particles=ImpactValue(
+            manufacture=24324.234324 * DISEASE_INCIDENCE,
+            use=99924324.234324 * DISEASE_INCIDENCE,
+        ),
+        ionizing_radiations=ImpactValue(
+            manufacture=421312.123 * KG_BQ_U235E,
+            use=999421312.123 * KG_BQ_U235E,
+        ),
+        water_depletion=ImpactValue(
+            manufacture=124.123 * CUBIC_METER, use=999124.123 * CUBIC_METER
+        ),
+        electronic_waste=ImpactValue(
+            manufacture=134242.12341 * ELECTRONIC_WASTE,
+            use=999134242.12341 * ELECTRONIC_WASTE,
+        ),
+        primary_energy_consumption=ImpactValue(
+            manufacture=1234.23123 * PRIMARY_MJ,
+            use=9991234.23123 * PRIMARY_MJ,
+        ),
+        raw_materials=ImpactValue(
+            manufacture=124.123441 * TONNE_MIPS,
+            use=999124.123441 * TONNE_MIPS,
+        ),
     )
     assert i.unit == SERVER / DAY
-    assert i.climate_change == 103.72 * KG_CO2E / i.unit
-    assert i.resource_depletion == 312.23 * KG_SBE / i.unit
-    assert i.acidification == 32443.2134 * MOL_HPOS / i.unit
-    assert i.fine_particles == 24324.234324 * DISEASE_INCIDENCE / i.unit
-    assert i.ionizing_radiations == 421312.123 * KG_BQ_U235E / i.unit
-    assert i.water_depletion == 124.123 * CUBIC_METER / i.unit
-    assert i.electronic_waste == 134242.12341 * ELECTRONIC_WASTE / i.unit
-    assert i.primary_energy_consumption == 1234.23123 * PRIMARY_MJ / i.unit
-    assert i.raw_materials == 124.123441 * TONNE_MIPS / i.unit
+    assert i.climate_change.manufacture == 103.72 * KG_CO2E / i.unit
+    assert i.climate_change.use == 999103.72 * KG_CO2E / i.unit
+
+    assert i.resource_depletion.manufacture == 312.23 * KG_SBE / i.unit
+    assert i.resource_depletion.use == 999312.23 * KG_SBE / i.unit
+
+    assert i.acidification.manufacture == 32443.2134 * MOL_HPOS / i.unit
+    assert i.acidification.use == 99932443.2134 * MOL_HPOS / i.unit
+
+    assert i.fine_particles.manufacture == 24324.234324 * DISEASE_INCIDENCE / i.unit
+    assert i.fine_particles.use == 99924324.234324 * DISEASE_INCIDENCE / i.unit
+
+    assert i.ionizing_radiations.manufacture == 421312.123 * KG_BQ_U235E / i.unit
+    assert i.ionizing_radiations.use == 999421312.123 * KG_BQ_U235E / i.unit
+
+    assert i.water_depletion.manufacture == 124.123 * CUBIC_METER / i.unit
+    assert i.water_depletion.use == 999124.123 * CUBIC_METER / i.unit
+
+    assert i.electronic_waste.manufacture == 134242.12341 * ELECTRONIC_WASTE / i.unit
+    assert i.electronic_waste.use == 999134242.12341 * ELECTRONIC_WASTE / i.unit
+
+    assert i.primary_energy_consumption.manufacture == 1234.23123 * PRIMARY_MJ / i.unit
+    assert i.primary_energy_consumption.use == 9991234.23123 * PRIMARY_MJ / i.unit
+
+    assert i.raw_materials.manufacture == 124.123441 * TONNE_MIPS / i.unit
+    assert i.raw_materials.use == 999124.123441 * TONNE_MIPS / i.unit
 
 
 def test_get_impacts_quantities() -> None:
@@ -151,25 +190,63 @@ def test_get_impacts_quantities() -> None:
         id="testId",
         name="test",
         unit=SERVER / DAY,
-        climate_change=103.72 * KG_CO2E,
-        resource_depletion=312.23 * KG_SBE,
-        acidification=32443.2134 * MOL_HPOS,
-        fine_particles=24324.234324 * DISEASE_INCIDENCE,
-        ionizing_radiations=421312.123 * KG_BQ_U235E,
-        water_depletion=124.123 * CUBIC_METER,
-        electronic_waste=134242.12341 * ELECTRONIC_WASTE,
-        primary_energy_consumption=1234.23123 * PRIMARY_MJ,
-        raw_materials=124.123441 * TONNE_MIPS,
+        climate_change=ImpactValue(manufacture=103.72 * KG_CO2E, use=103.72 * KG_CO2E),
+        resource_depletion=ImpactValue(manufacture=312.23 * KG_SBE, use=312.23 * KG_SBE),
+        acidification=ImpactValue(manufacture=32443.2134 * MOL_HPOS, use=32443.2134 * MOL_HPOS),
+        fine_particles=ImpactValue(
+            manufacture=24324.234324 * DISEASE_INCIDENCE,
+            use=24324.234324 * DISEASE_INCIDENCE,
+        ),
+        ionizing_radiations=ImpactValue(
+            manufacture=421312.123 * KG_BQ_U235E, use=421312.123 * KG_BQ_U235E
+        ),
+        water_depletion=ImpactValue(
+            manufacture=124.123 * CUBIC_METER, use=124.123 * CUBIC_METER
+        ),
+        electronic_waste=ImpactValue(
+            manufacture=134242.12341 * ELECTRONIC_WASTE,
+            use=134242.12341 * ELECTRONIC_WASTE,
+        ),
+        primary_energy_consumption=ImpactValue(
+            manufacture=1234.23123 * PRIMARY_MJ, use=1234.23123 * PRIMARY_MJ
+        ),
+        raw_materials=ImpactValue(
+            manufacture=124.123441 * TONNE_MIPS, use=124.123441 * TONNE_MIPS
+        ),
     )
-
-    assert i.environmental_impact.impacts == {
-        ImpactCategory.CLIMATE_CHANGE: 103.72 * KG_CO2E / i.unit,
-        ImpactCategory.RESOURCE_DEPLETION: 312.23 * KG_SBE / i.unit,
-        ImpactCategory.ACIDIFICATION: 32443.2134 * MOL_HPOS / i.unit,
-        ImpactCategory.FINE_PARTICLES: 24324.234324 * DISEASE_INCIDENCE / i.unit,
-        ImpactCategory.IONIZING_RADIATIONS: 421312.123 * KG_BQ_U235E / i.unit,
-        ImpactCategory.WATER_DEPLETION: 124.123 * CUBIC_METER / i.unit,
-        ImpactCategory.ELECTRONIC_WASTE: 134242.12341 * ELECTRONIC_WASTE / i.unit,
-        ImpactCategory.PRIMARY_ENERGY: 1234.23123 * PRIMARY_MJ / i.unit,
-        ImpactCategory.RAW_MATERIALS: 124.123441 * TONNE_MIPS / i.unit,
-    }
+    assert (
+        i.environmental_impact.impacts[ImpactCategory.CLIMATE_CHANGE].manufacture
+        == 103.72 * KG_CO2E / i.unit
+    )
+    assert (
+        i.environmental_impact.impacts[ImpactCategory.RESOURCE_DEPLETION].manufacture
+        == 312.23 * KG_SBE / i.unit
+    )
+    assert (
+        i.environmental_impact.impacts[ImpactCategory.ACIDIFICATION].manufacture
+        == 32443.2134 * MOL_HPOS / i.unit
+    )
+    assert (
+        i.environmental_impact.impacts[ImpactCategory.FINE_PARTICLES].manufacture
+        == 24324.234324 * DISEASE_INCIDENCE / i.unit
+    )
+    assert (
+        i.environmental_impact.impacts[ImpactCategory.IONIZING_RADIATIONS].manufacture
+        == 421312.123 * KG_BQ_U235E / i.unit
+    )
+    assert (
+        i.environmental_impact.impacts[ImpactCategory.WATER_DEPLETION].manufacture
+        == 124.123 * CUBIC_METER / i.unit
+    )
+    assert (
+        i.environmental_impact.impacts[ImpactCategory.ELECTRONIC_WASTE].manufacture
+        == 134242.12341 * ELECTRONIC_WASTE / i.unit
+    )
+    assert (
+        i.environmental_impact.impacts[ImpactCategory.PRIMARY_ENERGY].manufacture
+        == 1234.23123 * PRIMARY_MJ / i.unit
+    )
+    assert (
+        i.environmental_impact.impacts[ImpactCategory.RAW_MATERIALS].manufacture
+        == 124.123441 * TONNE_MIPS / i.unit
+    )

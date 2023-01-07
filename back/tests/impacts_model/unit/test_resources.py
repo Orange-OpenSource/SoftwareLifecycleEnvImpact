@@ -8,7 +8,7 @@ from pint import Quantity
 
 from impacts_model.data_model import Model, Project, Resource, Task
 from impacts_model.impact_sources import ImpactSource
-from impacts_model.impacts import ImpactCategory
+from impacts_model.impacts import ImpactCategory, ImpactValue
 from impacts_model.quantities.quantities import (
     CUBIC_METER,
     DISEASE_INCIDENCE,
@@ -57,7 +57,7 @@ def resource_fixture(db: SQLAlchemy) -> Resource:
     "impacts_model.data_model.impact_source_factory",
     MagicMock(
         return_value=ImpactSource(
-            id="testid", name="test", unit=SERVER, climate_change=1776 * KG_CO2E
+            id="testid", name="test", unit=SERVER, climate_change=ImpactValue(use=1776 * KG_CO2E)
         ),
     ),
 )
@@ -177,7 +177,7 @@ def test_resource_copy(resource_fixture: Resource):
     "impacts_model.data_model.impact_source_factory",
     MagicMock(
         return_value=ImpactSource(
-            id="testid", name="test", unit=SERVER, climate_change=2332 * KG_CO2E
+            id="testid", name="test", unit=SERVER, climate_change=ImpactValue(manufacture=2332 * KG_CO2E, use=12332 * KG_CO2E)
         )
     ),
 )
@@ -187,16 +187,21 @@ def test_resource_get_environmental_impact(resource_fixture: Resource) -> None:
     :return: None
     """
     impact = resource_fixture.get_category_impact(ImpactCategory.CLIMATE_CHANGE)
-    assert isinstance(impact, Quantity)
-    assert impact.units == KG_CO2E
-    assert impact == (2332) * resource_fixture.value() * KG_CO2E
+    assert isinstance(impact, ImpactValue)
+    assert impact.manufacture is not None
+    assert impact.manufacture.units == KG_CO2E
+    assert impact.manufacture == (2332) * resource_fixture.value() * KG_CO2E
+    assert impact.use == (12332) * resource_fixture.value() * KG_CO2E
 
     # Test quantity change
     resource_fixture.amount = 12321.423 * SERVER
     impact = resource_fixture.get_category_impact(ImpactCategory.CLIMATE_CHANGE)
-    assert isinstance(impact, Quantity)
-    assert impact.units == KG_CO2E
-    assert impact == (2332) * 12321.423 * KG_CO2E
+    assert isinstance(impact, ImpactValue)
+    assert impact.manufacture is not None
+    assert impact.manufacture.units == KG_CO2E
+    assert impact.manufacture == (2332) * 12321.423 * KG_CO2E
+    assert impact.use == (12332) * resource_fixture.value() * KG_CO2E
+
 
 
 @mock.patch(
@@ -206,8 +211,8 @@ def test_resource_get_environmental_impact(resource_fixture: Resource) -> None:
             id="testid",
             name="test",
             unit=SERVER,
-            climate_change=10000.123 * KG_CO2E,
-            raw_materials=213.3 * TONNE_MIPS,
+            climate_change=ImpactValue(use=10000.123 * KG_CO2E),
+            raw_materials=ImpactValue(use=213.3 * TONNE_MIPS),
         ),
     ),
 )

@@ -3,7 +3,7 @@ from __future__ import annotations
 import importlib
 import inspect
 import re
-from impacts_model.impacts import EnvironmentalImpact, ImpactCategory
+from impacts_model.impacts import EnvironmentalImpact, ImpactCategory, ImpactValue
 from pint import Quantity, Unit
 from typing import Any, Optional
 import yaml
@@ -23,19 +23,43 @@ class ImpactSource:
         self,
         id: str,
         name: str,
-        unit: str,
-        climate_change: str,
-        resource_depletion: str = "0 " + ImpactCategory.RESOURCE_DEPLETION.value,
-        acidification: str = "0 " + ImpactCategory.ACIDIFICATION.value,
-        fine_particles: str = "0 " + ImpactCategory.FINE_PARTICLES.value,
-        ionizing_radiations: str = "0 " + ImpactCategory.IONIZING_RADIATIONS.value,
-        water_depletion: str = "0 " + ImpactCategory.WATER_DEPLETION.value,
-        electronic_waste: str = "0 " + ImpactCategory.ELECTRONIC_WASTE.value,
-        primary_energy_consumption: str = "0 " + ImpactCategory.PRIMARY_ENERGY.value,
-        raw_materials: str = "0 " + ImpactCategory.RAW_MATERIALS.value,
+        unit: str | Unit,
+        climate_change: ImpactValue,
+        resource_depletion: ImpactValue = ImpactValue(
+            manufacture="0 " + ImpactCategory.RESOURCE_DEPLETION.value,
+            use="0 " + ImpactCategory.RESOURCE_DEPLETION.value,
+        ),
+        acidification: ImpactValue = ImpactValue(
+            manufacture="0 " + ImpactCategory.ACIDIFICATION.value,
+            use="0 " + ImpactCategory.ACIDIFICATION.value,
+        ),
+        fine_particles: ImpactValue = ImpactValue(
+            manufacture="0 " + ImpactCategory.FINE_PARTICLES.value,
+            use="0 " + ImpactCategory.FINE_PARTICLES.value,
+        ),
+        ionizing_radiations: ImpactValue = ImpactValue(
+            manufacture="0 " + ImpactCategory.IONIZING_RADIATIONS.value,
+            use="0 " + ImpactCategory.IONIZING_RADIATIONS.value,
+        ),
+        water_depletion: ImpactValue = ImpactValue(
+            manufacture="0 " + ImpactCategory.WATER_DEPLETION.value,
+            use="0 " + ImpactCategory.WATER_DEPLETION.value,
+        ),
+        electronic_waste: ImpactValue = ImpactValue(
+            manufacture="0 " + ImpactCategory.ELECTRONIC_WASTE.value,
+            use="0 " + ImpactCategory.ELECTRONIC_WASTE.value,
+        ),
+        primary_energy_consumption: ImpactValue = ImpactValue(
+            manufacture="0 " + ImpactCategory.PRIMARY_ENERGY.value,
+            use="0 " + ImpactCategory.PRIMARY_ENERGY.value,
+        ),
+        raw_materials: ImpactValue = ImpactValue(
+            "0 " + ImpactCategory.RAW_MATERIALS.value,
+            "0 " + ImpactCategory.RAW_MATERIALS.value,
+        ),
         source: str = "",
         methodology: str = "",
-    ):
+    ) -> None:
         """
         :param climate_change: Climate change as kgeqCO2
         :param resource_depletion: Depletion of natural abiotic resources as kgeqSb
@@ -47,39 +71,63 @@ class ImpactSource:
         :param raw_materials: Raw materials consumed as Ton
         """
 
+        # TODO why this here ? Try to remove parts in yaml and see
         if resource_depletion is None:
-            resource_depletion = "0 " + ImpactCategory.RESOURCE_DEPLETION.value
+            resource_depletion = ImpactValue(
+                manufacture="0 " + ImpactCategory.RESOURCE_DEPLETION.value,
+                use="0 " + ImpactCategory.RESOURCE_DEPLETION.value,
+            )
         if acidification is None:
-            acidification = "0 " + ImpactCategory.ACIDIFICATION.value
+            acidification = ImpactValue(
+                manufacture="0 " + ImpactCategory.ACIDIFICATION.value,
+                use="0 " + ImpactCategory.ACIDIFICATION.value,
+            )
         if fine_particles is None:
-            fine_particles = "0 " + ImpactCategory.FINE_PARTICLES.value
+            fine_particles = ImpactValue(
+                manufacture="0 " + ImpactCategory.FINE_PARTICLES.value,
+                use="0 " + ImpactCategory.FINE_PARTICLES.value,
+            )
         if ionizing_radiations is None:
-            ionizing_radiations = "0 " + ImpactCategory.IONIZING_RADIATIONS.value
+            ionizing_radiations = ImpactValue(
+                manufacture="0 " + ImpactCategory.IONIZING_RADIATIONS.value,
+                use="0 " + ImpactCategory.IONIZING_RADIATIONS.value,
+            )
         if water_depletion is None:
-            water_depletion = "0 " + ImpactCategory.WATER_DEPLETION.value
+            water_depletion = ImpactValue(
+                manufacture="0 " + ImpactCategory.WATER_DEPLETION.value,
+                use="0 " + ImpactCategory.WATER_DEPLETION.value,
+            )
         if electronic_waste is None:
-            electronic_waste = "0 " + ImpactCategory.ELECTRONIC_WASTE.value
+            electronic_waste = ImpactValue(
+                manufacture="0 " + ImpactCategory.ELECTRONIC_WASTE.value,
+                use="0 " + ImpactCategory.ELECTRONIC_WASTE.value,
+            )
         if primary_energy_consumption is None:
-            primary_energy_consumption = "0 " + ImpactCategory.PRIMARY_ENERGY.value
+            primary_energy_consumption = ImpactValue(
+                manufacture="0 " + ImpactCategory.PRIMARY_ENERGY.value,
+                use="0 " + ImpactCategory.PRIMARY_ENERGY.value,
+            )
         if raw_materials is None:
-            raw_materials = "0 " + ImpactCategory.RAW_MATERIALS.value
+            raw_materials = ImpactValue(
+                "0 " + ImpactCategory.RAW_MATERIALS.value,
+                "0 " + ImpactCategory.RAW_MATERIALS.value,
+            )
 
         self.id = id
         self.name = name
         self.unit = deserialize_unit(unit)
-        # Mandatory to let pint handle the division by unit in parsing,
-        # else bug with multi-dimension ones
-        self.climate_change = deserialize_quantity(str(climate_change)) / self.unit
-        self.resource_depletion = deserialize_quantity(str(resource_depletion)) / self.unit
-        self.acidification = deserialize_quantity(str(acidification)) / self.unit
-        self.fine_particles = deserialize_quantity(str(fine_particles)) / self.unit
-        self.ionizing_radiations = deserialize_quantity(str(ionizing_radiations)) / self.unit
-        self.water_depletion = deserialize_quantity(str(water_depletion)) / self.unit
-        self.electronic_waste = deserialize_quantity(str(electronic_waste)) / self.unit
-        self.primary_energy_consumption = (
-            deserialize_quantity(str(primary_energy_consumption)) / self.unit
+
+        self.climate_change = climate_change.divided_by(self.unit)
+        self.resource_depletion = resource_depletion.divided_by(self.unit)
+        self.acidification = acidification.divided_by(self.unit)
+        self.fine_particles = fine_particles.divided_by(self.unit)
+        self.ionizing_radiations = ionizing_radiations.divided_by(self.unit)
+        self.water_depletion = water_depletion.divided_by(self.unit)
+        self.electronic_waste = electronic_waste.divided_by(self.unit)
+        self.primary_energy_consumption = primary_energy_consumption.divided_by(
+            self.unit
         )
-        self.raw_materials = deserialize_quantity(raw_materials) / self.unit
+        self.raw_materials = raw_materials.divided_by(self.unit)
 
         self.source = source
         self.methodology = methodology
@@ -135,7 +183,12 @@ def _get_all_impact_sources() -> list[ImpactSource]:
         fields = loader.construct_mapping(node)
         return ImpactSource(**fields)
 
+    def constructor2(loader, node) -> ImpactValue:
+        fields = loader.construct_mapping(node)
+        return ImpactValue(**fields)
+
     yaml.add_constructor("!ImpactSource", constructor)
+    yaml.add_constructor("!ImpactValue", constructor2)
 
     list = []
     with open("impacts_model/data/impact_sources/default.yaml", "r") as stream:

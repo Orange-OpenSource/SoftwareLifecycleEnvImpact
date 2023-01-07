@@ -6,6 +6,7 @@ from unittest import mock
 from unittest.mock import MagicMock
 from impacts_model.data_model import Model, ModelSchema, Project, Resource, Task
 from impacts_model.impact_sources import ImpactSource
+from impacts_model.impacts import ImpactValue
 from impacts_model.quantities.quantities import (
     KG_CO2E,
     DAY,
@@ -35,7 +36,7 @@ def model_fixture(db: SQLAlchemy) -> Model:
     "impacts_model.data_model.impact_source_factory",
     MagicMock(
         return_value=ImpactSource(
-            id="testid", name="test", unit=SERVER, climate_change=1776 * KG_CO2E
+            id="testid", name="test", unit=SERVER, climate_change=ImpactValue(use=1776 * KG_CO2E)
         ),
     ),
 )
@@ -105,7 +106,7 @@ def test_get_one_model(
     "impacts_model.data_model.impact_source_factory",
     MagicMock(
         return_value=ImpactSource(
-            id="testid", name="test", unit=SERVER, climate_change=1776 * KG_CO2E
+            id="testid", name="test", unit=SERVER, climate_change=ImpactValue(use=1776 * KG_CO2E)
         ),
     ),
 )
@@ -118,7 +119,7 @@ def test_get_model_impact(client: FlaskClient, model_fixture: Model) -> None:
     "impacts_model.data_model.impact_source_factory",
     MagicMock(
         return_value=ImpactSource(
-            id="testid", name="test", unit=SERVER, climate_change=1776 * KG_CO2E
+            id="testid", name="test", unit=SERVER, climate_change=ImpactValue(use=1776 * KG_CO2E)
         ),
     ),
 )

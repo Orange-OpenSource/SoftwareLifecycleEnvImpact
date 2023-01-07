@@ -7,6 +7,7 @@ from unittest.mock import MagicMock
 from impacts_model.impact_sources import ImpactSource, ImpactSourceError
 from impacts_model.data_model import QuantitySchema, Resource, ResourceSchema
 from impacts_model.data_model import Model, Project, Resource, Task
+from impacts_model.impacts import ImpactValue
 from impacts_model.quantities.quantities import (
     KG_CO2E,
     MINUTE,
@@ -49,7 +50,7 @@ def test_quantity_schema():
     "impacts_model.data_model.impact_source_factory",
     MagicMock(
         return_value=ImpactSource(
-            id="testid", name="test", unit=SERVER, climate_change=1776 * KG_CO2E
+            id="testid", name="test", unit=SERVER, climate_change=ImpactValue(use=1776 * KG_CO2E)
         ),
     ),
 )
@@ -66,7 +67,7 @@ def test_resource_schema(resource_fixture: Resource) -> None:
     "impacts_model.data_model.impact_source_factory",
     MagicMock(
         return_value=ImpactSource(
-            id="testid", name="test", unit=SERVER, climate_change=1776 * KG_CO2E
+            id="testid", name="test", unit=SERVER, climate_change=ImpactValue(use=1776 * KG_CO2E)
         ),
     ),
 )
@@ -106,7 +107,7 @@ def test_resource_schema_validation_no_time_impactsource() -> None:
     "impacts_model.data_model.impact_source_factory",
     MagicMock(
         return_value=ImpactSource(
-            id="testid", name="test", unit=SERVER * DAY, climate_change=1776 * KG_CO2E
+            id="testid", name="test", unit=SERVER * DAY, climate_change=ImpactValue(use=1776 * KG_CO2E)
         ),
     ),
 )
@@ -158,7 +159,7 @@ def test_get_resources(client: FlaskClient, resource_fixture: Resource) -> None:
     "impacts_model.data_model.impact_source_factory",
     MagicMock(
         return_value=ImpactSource(
-            id="testid", name="test", unit=SERVER, climate_change=1776 * KG_CO2E
+            id="testid", name="test", unit=SERVER, climate_change=ImpactValue(use=1776 * KG_CO2E)
         ),
     ),
 )
@@ -223,7 +224,7 @@ def test_get_one_resource(
     "impacts_model.data_model.impact_source_factory",
     MagicMock(
         return_value=ImpactSource(
-            id="testid", name="test", unit=SERVER, climate_change=2332 * KG_CO2E
+            id="testid", name="test", unit=SERVER, climate_change=ImpactValue(use=2332 * KG_CO2E)
         )
     ),
 )

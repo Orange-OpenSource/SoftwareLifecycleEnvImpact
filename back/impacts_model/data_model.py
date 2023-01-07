@@ -27,6 +27,7 @@ from impacts_model.impacts import (
     EnvironmentalImpact,
     EnvironmentalImpactByResource,
     ImpactCategory,
+    ImpactValue,
     TaskImpact,
 )
 from impacts_model.quantities.quantities import (
@@ -243,26 +244,19 @@ class Resource(db.Model):  # type: ignore
 
         for key in self.impact_source.environmental_impact.impacts:
             # Adding the impact to impact category indicator unit
-            environmental_impact.add_impact(
-                key,
-                (
-                    self.impact_source.environmental_impact.impacts[key]
-                    * self.value()
-                ).to_reduced_units(),
-            )
+            environmental_impact.add_impact(key, self.get_category_impact(key))
         return environmental_impact
 
-    def get_category_impact(self, impact_category: ImpactCategory) -> Quantity[Any]:
+    def get_category_impact(self, impact_category: ImpactCategory) -> ImpactValue:
         """
         Compute and return a resource environmental impact for an ImpactCategory
         :param resource: the Resource object to view to impact from
         :param impact_category: The ImpactCategory to retrieve the impact
         :return: A quantity corresponding to the resource ImpactCategory quantity
         """
-        return (
-            self.impact_source.environmental_impact.impacts[impact_category]
-            * self.value()
-        )
+        return self.impact_source.environmental_impact.impacts[
+            impact_category
+        ].multiplied_by(self.value())
 
 
 class QuantitySchema(Schema):
@@ -374,10 +368,12 @@ class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
     def validate_quantities(self, data, **kwargs):
         """
         Marshmallow schema validation to insure input follow the rules:
-        No time in ImpactSource unit: frequency AND period OR none of them
+        No time in ImpactSource unit:
+            - frequency AND period (to remove time)
+            - OR none of them
         Time in ImpactSourceUnit:
             - Period is mandatory
-            - If duration is is set, frequency should also be set
+            - frequency AND duration or none of them (to keep time)
         """
         errors = {}
 
@@ -402,8 +398,8 @@ class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
             )
 
             # Validate that the amount unit correspond to the ImpactSource one
-            if amount.units == impact_source.unit:
-                # If it is the right unit, and they're is no time in resource_unit, should either have period and frequency or nothing
+            if amount is not None and amount.units == impact_source.unit:
+                # If it is the right unit, mean that they're is no time in resource_unit, should either have period and frequency or nothing
 
                 if period is None and frequency is not None:
                     errors["period"] = [
@@ -420,7 +416,7 @@ class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
                 if (1 * amount.units).check("[time]"):
                     # Should not happen, safeguard for the future
                     errors["amount"] = ["ImpactSource input can't be time"]
-            else:  # If the amount unit is different from the ImpactSource one
+            else:  # If the amount unit is different from the ImpactSource one, mean that it contains time
                 # Use the string to compare units
                 units_split = re.split(r"[*,/]", str(impact_source.unit))
                 units_split_len = len(units_split)
@@ -429,7 +425,7 @@ class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
                     # Should not happen, safeguard for the future
                     errors["impact_source"] = ["ImpactSource unit dimensionality > 2"]
                 elif units_split_len == 2:
-                    # Means that period should be set, or if no time in impactsource unit that the inputed unit should match with a dimensionality of 2
+                    # Means that period is mandatory, or if no time in impactsource unit that the inputed unit should match with a dimensionality of 2
 
                     # Check that time is present in ImpactSource unit
                     if deserialize_quantity(1 * units_split[0]).check(
@@ -444,10 +440,14 @@ class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
                                 + ", period is needed"
                             ]
                         else:
-                            # If period is set, frequency and (time use and frequency) can be set, not duration alone
+                            # If period is set, either frequency and duration should be set, or none of them
                             if duration is not None and frequency is None:
                                 errors["frequency"] = [
                                     "If duration is set, frequency should be set"
+                                ]
+                            elif duration is None and frequency is not None:
+                                errors["duration"] = [
+                                    "If frequency is set, duration should be set"
                                 ]
                     else:
                         # No time in ImpactSource unit
@@ -531,20 +531,23 @@ class Task(db.Model):  # type: ignore
             impacts_list.append(subtask.get_impact())
         return impacts_list
 
-    def get_category_impact(self, category: ImpactCategory) -> Quantity[Any]:
+    def get_category_impact(self, category: ImpactCategory) -> ImpactValue:
         """
         Compute and return a Task impact for a given ImpactCategory
         :param category: the ImpactCategory to get the value for the task
         :return: A quantity corresponding to the task ImpactCategory chosen
         """
-        impacts_resources: List[Quantity[Any]] = [
-            r.get_category_impact(category) for r in self.resources
-        ]
-        impacts_subtasks: List[Quantity[Any]] = [
-            s.get_category_impact(category) for s in self.subtasks
-        ]
+        res_impact = ImpactValue()
 
-        return sum(impacts_resources) + sum(impacts_subtasks)
+        # Add this task resources impacts
+        for r in self.resources:
+            res_impact.add_impact(r.get_category_impact(category))
+
+        # Add subtasks impacts
+        for s in self.subtasks:
+            res_impact.add_impact(s.get_category_impact(category))
+
+        return res_impact
 
     def get_impact_by_resource_type(self) -> EnvironmentalImpactByResource:
         """

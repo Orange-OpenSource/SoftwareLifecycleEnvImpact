@@ -1,10 +1,11 @@
 from __future__ import annotations
+from dataclasses import dataclass
 
 from enum import Enum
-from typing import Any, List
+from typing import Any, List, Optional
 from marshmallow_sqlalchemy.fields import Nested
 from marshmallow import fields, post_dump, Schema
-from pint import Quantity
+from pint import Quantity, Unit
 
 from impacts_model.quantities.quantities import (
     CUBIC_METER,
@@ -16,6 +17,7 @@ from impacts_model.quantities.quantities import (
     MOL_HPOS,
     PRIMARY_MJ,
     TONNE_MIPS,
+    deserialize_quantity,
 )
 
 
@@ -52,6 +54,54 @@ class ImpactCategory(str, Enum):
         }.get(self.name, self.name + " not implemented")
 
 
+###############
+# ImpactValue #
+###############
+class ImpactValue:
+    def __init__(
+        self,
+        manufacture: Optional[Quantity[Any]] = None,
+        use: Optional[Quantity[Any]] = None,
+    ) -> None:
+        self.manufacture = deserialize_quantity(manufacture)
+        self.use = deserialize_quantity(use)
+
+    def add_impact(self, second_impact: ImpactValue) -> None:
+        if second_impact.manufacture is not None:
+            if self.manufacture is not None:
+                self.manufacture += second_impact.manufacture
+            else:
+                self.manufacture = second_impact.manufacture
+
+        if second_impact.use is not None:
+            if self.use is not None:
+                self.use += second_impact.use
+            else:
+                self.use = second_impact.use
+
+    def divided_by(self, unit: Unit) -> ImpactValue:
+        return ImpactValue(
+            manufacture=(
+                self.manufacture / unit if self.manufacture is not None else None
+            ),
+            use=(self.use / unit if self.use is not None else None),
+        )
+
+    def multiplied_by(self, value: Quantity[Any]) -> ImpactValue:
+        return ImpactValue(
+            manufacture=(
+                (self.manufacture * value).to_reduced_units()
+                if self.manufacture is not None
+                else None
+            ),
+            use=(
+                (self.use * value).to_reduced_units()
+                if self.use is not None
+                else None
+            ),
+        )
+
+
 #######################
 # EnvironmentalImpact #
 #######################
@@ -61,8 +111,9 @@ class EnvironmentalImpact:
     Helpers method to easily add a single impact, a list or another EnvironmentalImpact object
     """
 
-    def __init__(self, impacts: dict[ImpactCategory, Quantity[Any]] = None) -> None:
-        self.impacts: dict[ImpactCategory, Quantity[Any]] = (
+    def __init__(self, impacts: dict[ImpactCategory, ImpactValue] = None) -> None:
+        # KEEP NONE IN CONSTRUCTOR, else reference errors
+        self.impacts: dict[ImpactCategory, ImpactValue] = (
             impacts if impacts is not None else {}
         )
 
@@ -74,7 +125,7 @@ class EnvironmentalImpact:
         """
         self._add_dict(other.impacts)
 
-    def _add_dict(self, dict_to_add: dict[ImpactCategory, Quantity[Any]]) -> None:
+    def _add_dict(self, dict_to_add: dict[ImpactCategory, ImpactValue]) -> None:
         """
         Add another dict with a quantity for an ImpactCategory to this object impacts
         For each of its ImpactCategorys, append the quantity if it exists in the list, create it if not
@@ -84,7 +135,7 @@ class EnvironmentalImpact:
         for impact_category in dict_to_add:
             self.add_impact(impact_category, dict_to_add[impact_category])
 
-    def add_impact(self, category: ImpactCategory, value: Quantity[Any]) -> None:
+    def add_impact(self, category: ImpactCategory, value: ImpactValue) -> None:
         """
         Add an ImpactCategory with this quantity in self impacts
         For each of its ImpactCategorys, append the quantity if it exists in the list, create it if not
@@ -92,10 +143,9 @@ class EnvironmentalImpact:
         :param value: corresponding quantity
         :return: None
         """
-        if category in self.impacts:
-            self.impacts[category] += value
-        else:
-            self.impacts[category] = value
+        if category not in self.impacts:
+            self.impacts[category] = ImpactValue()
+        self.impacts[category].add_impact(value)
 
 
 class EnvironmentalImpactSchema(Schema):

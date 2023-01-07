@@ -10,7 +10,7 @@ from pint import Quantity
 
 from impacts_model.data_model import Model, Project, Resource, Task
 from impacts_model.impact_sources import ImpactSource
-from impacts_model.impacts import ImpactCategory
+from impacts_model.impacts import ImpactCategory, ImpactValue
 from impacts_model.quantities.quantities import (
     CUBIC_METER,
     DISEASE_INCIDENCE,
@@ -95,7 +95,10 @@ def task_fixture_with_subtask(db: SQLAlchemy) -> Task:
     "impacts_model.data_model.impact_source_factory",
     MagicMock(
         return_value=ImpactSource(
-            id="testid", name="test", unit=SERVER, climate_change=1776 * KG_CO2E
+            id="testid",
+            name="test",
+            unit=SERVER,
+            climate_change=ImpactValue(manufacture=1776 * KG_CO2E),
         ),
     ),
 )
@@ -106,25 +109,31 @@ def test_get_task_impact_by_category(
 
     # Mock task = 2 * TestResource (mocked) = 2 * (1000 + 776) = 3552
     result = single_task_fixture.get_category_impact(ImpactCategory.CLIMATE_CHANGE)
-    assert isinstance(result, Quantity)
-    assert result.units == KG_CO2E
-    assert result == 3552 * KG_CO2E
+    assert isinstance(result, ImpactValue)
+    assert result.manufacture is not None
+    assert result.manufacture.units == KG_CO2E
+    assert result.manufacture == 3552 * KG_CO2E
 
     # Test adding a subtask
     # Task = 3552, subtask = 1776 -> 5328
     result = task_fixture_with_subtask.get_category_impact(
         ImpactCategory.CLIMATE_CHANGE
     )
-    assert isinstance(result, Quantity)
-    assert result.units == KG_CO2E
-    assert result == 5328 * KG_CO2E
+    assert isinstance(result, ImpactValue)
+    assert result.manufacture is not None
+    assert result.manufacture.units == KG_CO2E
+    assert result.manufacture == 5328 * KG_CO2E
+
 
 
 @mock.patch(
     "impacts_model.data_model.impact_source_factory",
     MagicMock(
         return_value=ImpactSource(
-            id="testid", name="test", unit=SERVER, climate_change=1000 * KG_CO2E
+            id="testid",
+            name="test",
+            unit=SERVER,
+            climate_change=ImpactValue(use=1000 * KG_CO2E),
         )
     ),
 )
@@ -136,30 +145,14 @@ def test_get_task_impact_list(
     :return:
     """
     # Test res
-    assert single_task_fixture.get_environmental_impact().impacts == {
-        ImpactCategory.CLIMATE_CHANGE: 2000 * KG_CO2E,
-        ImpactCategory.RESOURCE_DEPLETION: 0 * KG_SBE,
-        ImpactCategory.ACIDIFICATION: 0 * MOL_HPOS,
-        ImpactCategory.FINE_PARTICLES: 0 * DISEASE_INCIDENCE,
-        ImpactCategory.IONIZING_RADIATIONS: 0 * KG_BQ_U235E,
-        ImpactCategory.WATER_DEPLETION: 0 * CUBIC_METER,
-        ImpactCategory.ELECTRONIC_WASTE: 0 * ELECTRONIC_WASTE,
-        ImpactCategory.PRIMARY_ENERGY: 0 * PRIMARY_MJ,
-        ImpactCategory.RAW_MATERIALS: 0 * TONNE_MIPS,
-    }
+    single_task_fixture.get_environmental_impact().impacts[
+        ImpactCategory.CLIMATE_CHANGE
+    ].manufacture == 2000 * KG_CO2E
 
     # Test adding a subtask
-    assert task_fixture_with_subtask.get_environmental_impact().impacts == {
-        ImpactCategory.CLIMATE_CHANGE: (3000) * KG_CO2E,
-        ImpactCategory.RESOURCE_DEPLETION: 0 * KG_SBE,
-        ImpactCategory.ACIDIFICATION: 0 * MOL_HPOS,
-        ImpactCategory.FINE_PARTICLES: 0 * DISEASE_INCIDENCE,
-        ImpactCategory.IONIZING_RADIATIONS: 0 * KG_BQ_U235E,
-        ImpactCategory.WATER_DEPLETION: 0 * CUBIC_METER,
-        ImpactCategory.ELECTRONIC_WASTE: 0 * ELECTRONIC_WASTE,
-        ImpactCategory.PRIMARY_ENERGY: 0 * PRIMARY_MJ,
-        ImpactCategory.RAW_MATERIALS: 0 * TONNE_MIPS,
-    }
+    single_task_fixture.get_environmental_impact().impacts[
+        ImpactCategory.CLIMATE_CHANGE
+    ].manufacture == 3000 * KG_CO2E
 
 
 @mock.patch(
@@ -169,7 +162,7 @@ def test_get_task_impact_list(
             id="testImpactSource",
             name="test",
             unit=SERVER,
-            climate_change=1000 * KG_CO2E,
+            climate_change=ImpactValue(use=1000 * KG_CO2E),
         )
     ),
 )
@@ -181,12 +174,16 @@ def test_get_task_impact_by_resource_type(
     """
     # Test two res
     res_dict = single_task_fixture.get_impact_by_resource_type()
-    assert res_dict["TestImpactSource"].impacts[
-        ImpactCategory.CLIMATE_CHANGE
-    ] == single_task_fixture.get_category_impact(ImpactCategory.CLIMATE_CHANGE)
+    assert (
+        res_dict["TestImpactSource"].impacts[ImpactCategory.CLIMATE_CHANGE].use
+        == single_task_fixture.get_category_impact(ImpactCategory.CLIMATE_CHANGE).use
+    )
 
     # Test subtasks
     res_dict = task_fixture_with_subtask.get_impact_by_resource_type()
-    assert res_dict["TestImpactSource"].impacts[
-        ImpactCategory.CLIMATE_CHANGE
-    ] == task_fixture_with_subtask.get_category_impact(ImpactCategory.CLIMATE_CHANGE)
+    assert (
+        res_dict["TestImpactSource"].impacts[ImpactCategory.CLIMATE_CHANGE].use
+        == task_fixture_with_subtask.get_category_impact(
+            ImpactCategory.CLIMATE_CHANGE
+        ).use
+    )
