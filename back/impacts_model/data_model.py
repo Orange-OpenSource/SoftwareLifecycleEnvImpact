@@ -203,20 +203,25 @@ class Resource(db.Model):  # type: ignore
         Computed the value of the amounts, as a quantity
         Value is of the form : amount * duration * (1/frequency) * period
         duration, frequency and period can be None
+        amount is never None
         """
-        time = None
 
         if self.duration is not None:
-            time = self.duration / self.frequency * self.period
+            # If duration is not None, frequency and period are mandatory
+            # Time computation will output a time quantity
+            time = (self.duration / self.frequency * self.period).to_reduced_units()
+            return self.amount / time
         elif self.frequency is not None:
-            time = (1 / self.frequency) * self.period
+            # If duration is not but not frequency, then time will be dimensionless
+            # Ex: every month for two years = 24 dimensionless
+            # Return amount unit
+            time = ((1 / self.frequency) * self.period).to_reduced_units()
+            return self.amount * time
         elif self.period is not None:
-            time = self.period
+            # Return amount unit / time
+            return (self.amount / self.period).to_reduced_units()
 
-        if time is None:
-            return self.amount
-        else:
-            return (self.amount * time).to_reduced_units()
+        return self.amount
 
     def __copy__(self):
         """Override of copy function to return a Resource stripped of ids"""

@@ -140,16 +140,17 @@ def test_resource_value(resource_fixture: Resource):
 
     # Test with period (3 servers during one month)
     resource_fixture.period = 1 * MONTH
-    assert resource_fixture.value() == (3 * SERVER) * (1 * MONTH)
+    assert resource_fixture.value() == (3 * SERVER) / (1 * MONTH)
 
     # Test with period and frequency (3 servers per day during one month)
+    # Value should not have time in it
     resource_fixture.frequency = 1 * DAY
-    assert resource_fixture.value() == (3 * SERVER) / (1 * DAY) * (1 * MONTH)
+    assert resource_fixture.value() == (3 * SERVER) * (1 * MONTH).to("day").magnitude
 
     # Test with duration and frequency and period (3 servers 2 hours per day during one month)
     resource_fixture.duration = 2 * HOUR
-    assert resource_fixture.value() == (3 * SERVER) * (2 * HOUR) / (1 * DAY) * (
-        1 * MONTH
+    assert resource_fixture.value() == (3 * SERVER) / (
+        (2 * HOUR) / (1 * DAY) * (1 * MONTH)
     )
 
 
