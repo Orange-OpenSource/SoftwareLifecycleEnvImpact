@@ -136,16 +136,16 @@ class ImpactSourceSchema(Schema):
 
 
 def _get_all_impact_sources() -> list[ImpactSource]:
-    def constructor(loader, node):
+    def impact_source_constructor(loader, node):
         fields = loader.construct_mapping(node)
         return ImpactSource(**fields)
 
-    def constructor2(loader, node) -> ImpactValue:
+    def impact_value_constructor(loader, node) -> ImpactValue:
         fields = loader.construct_mapping(node)
         return ImpactValue(**fields)
 
-    yaml.add_constructor("!ImpactSource", constructor)
-    yaml.add_constructor("!ImpactValue", constructor2)
+    yaml.add_constructor("!ImpactSource", impact_source_constructor)
+    yaml.add_constructor("!ImpactValue", impact_value_constructor)
 
     list = []
     with open("impacts_model/data/impact_sources/default.yaml", "r") as stream:
