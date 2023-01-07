@@ -26,37 +26,37 @@ class ImpactSource:
         unit: str | Unit,
         climate_change: ImpactValue,
         resource_depletion: ImpactValue = ImpactValue(
-            manufacture="0 " + ImpactCategory.RESOURCE_DEPLETION.value,
-            use="0 " + ImpactCategory.RESOURCE_DEPLETION.value,
+            manufacture=0 * ImpactCategory.RESOURCE_DEPLETION.value,
+            use=0 * ImpactCategory.RESOURCE_DEPLETION.value,
         ),
         acidification: ImpactValue = ImpactValue(
-            manufacture="0 " + ImpactCategory.ACIDIFICATION.value,
-            use="0 " + ImpactCategory.ACIDIFICATION.value,
-        ),
+                manufacture=0 * ImpactCategory.ACIDIFICATION.value,
+                use=0 * ImpactCategory.ACIDIFICATION.value,
+            ),
         fine_particles: ImpactValue = ImpactValue(
-            manufacture="0 " + ImpactCategory.FINE_PARTICLES.value,
-            use="0 " + ImpactCategory.FINE_PARTICLES.value,
-        ),
+                manufacture=0 * ImpactCategory.FINE_PARTICLES.value,
+                use=0 * ImpactCategory.FINE_PARTICLES.value,
+            ),
         ionizing_radiations: ImpactValue = ImpactValue(
-            manufacture="0 " + ImpactCategory.IONIZING_RADIATIONS.value,
-            use="0 " + ImpactCategory.IONIZING_RADIATIONS.value,
-        ),
+                manufacture=0 * ImpactCategory.IONIZING_RADIATIONS.value,
+                use=0 * ImpactCategory.IONIZING_RADIATIONS.value,
+            ),
         water_depletion: ImpactValue = ImpactValue(
-            manufacture="0 " + ImpactCategory.WATER_DEPLETION.value,
-            use="0 " + ImpactCategory.WATER_DEPLETION.value,
-        ),
+                manufacture=0 * ImpactCategory.WATER_DEPLETION.value,
+                use=0 * ImpactCategory.WATER_DEPLETION.value,
+            ),
         electronic_waste: ImpactValue = ImpactValue(
-            manufacture="0 " + ImpactCategory.ELECTRONIC_WASTE.value,
-            use="0 " + ImpactCategory.ELECTRONIC_WASTE.value,
-        ),
+                manufacture=0 * ImpactCategory.ELECTRONIC_WASTE.value,
+                use=0 * ImpactCategory.ELECTRONIC_WASTE.value,
+            ),
         primary_energy_consumption: ImpactValue = ImpactValue(
-            manufacture="0 " + ImpactCategory.PRIMARY_ENERGY.value,
-            use="0 " + ImpactCategory.PRIMARY_ENERGY.value,
-        ),
+                manufacture=0 * ImpactCategory.PRIMARY_ENERGY.value,
+                use=0 * ImpactCategory.PRIMARY_ENERGY.value,
+            ),
         raw_materials: ImpactValue = ImpactValue(
-            "0 " + ImpactCategory.RAW_MATERIALS.value,
-            "0 " + ImpactCategory.RAW_MATERIALS.value,
-        ),
+                0 * ImpactCategory.RAW_MATERIALS.value,
+                0 * ImpactCategory.RAW_MATERIALS.value,
+            ),
         source: str = "",
         methodology: str = "",
     ) -> None:
@@ -70,49 +70,6 @@ class ImpactSource:
         :param primary_energy_consumption: Primary energy consumed as MJ
         :param raw_materials: Raw materials consumed as Ton
         """
-
-        # TODO why this here ? Try to remove parts in yaml and see
-        if resource_depletion is None:
-            resource_depletion = ImpactValue(
-                manufacture="0 " + ImpactCategory.RESOURCE_DEPLETION.value,
-                use="0 " + ImpactCategory.RESOURCE_DEPLETION.value,
-            )
-        if acidification is None:
-            acidification = ImpactValue(
-                manufacture="0 " + ImpactCategory.ACIDIFICATION.value,
-                use="0 " + ImpactCategory.ACIDIFICATION.value,
-            )
-        if fine_particles is None:
-            fine_particles = ImpactValue(
-                manufacture="0 " + ImpactCategory.FINE_PARTICLES.value,
-                use="0 " + ImpactCategory.FINE_PARTICLES.value,
-            )
-        if ionizing_radiations is None:
-            ionizing_radiations = ImpactValue(
-                manufacture="0 " + ImpactCategory.IONIZING_RADIATIONS.value,
-                use="0 " + ImpactCategory.IONIZING_RADIATIONS.value,
-            )
-        if water_depletion is None:
-            water_depletion = ImpactValue(
-                manufacture="0 " + ImpactCategory.WATER_DEPLETION.value,
-                use="0 " + ImpactCategory.WATER_DEPLETION.value,
-            )
-        if electronic_waste is None:
-            electronic_waste = ImpactValue(
-                manufacture="0 " + ImpactCategory.ELECTRONIC_WASTE.value,
-                use="0 " + ImpactCategory.ELECTRONIC_WASTE.value,
-            )
-        if primary_energy_consumption is None:
-            primary_energy_consumption = ImpactValue(
-                manufacture="0 " + ImpactCategory.PRIMARY_ENERGY.value,
-                use="0 " + ImpactCategory.PRIMARY_ENERGY.value,
-            )
-        if raw_materials is None:
-            raw_materials = ImpactValue(
-                "0 " + ImpactCategory.RAW_MATERIALS.value,
-                "0 " + ImpactCategory.RAW_MATERIALS.value,
-            )
-
         self.id = id
         self.name = name
         self.unit = deserialize_unit(unit)
