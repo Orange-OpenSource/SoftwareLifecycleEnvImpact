@@ -57,7 +57,10 @@ def resource_fixture(db: SQLAlchemy) -> Resource:
     "impacts_model.data_model.impact_source_factory",
     MagicMock(
         return_value=ImpactSource(
-            id="testid", name="test", unit=SERVER, climate_change=ImpactValue(use=1776 * KG_CO2E)
+            id="testid",
+            name="test",
+            unit=SERVER,
+            climate_change=ImpactValue(use=1776 * KG_CO2E),
         ),
     ),
 )
@@ -130,6 +133,17 @@ def test_resource_peiord(resource_fixture: Resource):
         resource_fixture.period = "oui"
 
 
+@mock.patch(
+    "impacts_model.data_model.impact_source_factory",
+    MagicMock(
+        return_value=ImpactSource(
+            id="testid",
+            name="test",
+            unit=SERVER,
+            climate_change=ImpactValue(use=1776 * KG_CO2E),
+        ),
+    ),
+)
 def test_resource_value(resource_fixture: Resource):
     """Test computation of function value()"""
     assert isinstance(resource_fixture.value(), Quantity)
@@ -140,7 +154,7 @@ def test_resource_value(resource_fixture: Resource):
 
     # Test with period (3 servers during one month)
     resource_fixture.period = 1 * MONTH
-    assert resource_fixture.value() == (3 * SERVER) / (1 * MONTH)
+    assert resource_fixture.value() == (3 * SERVER) * (1 * MONTH)
 
     # Test with period and frequency (3 servers per day during one month)
     # Value should not have time in it
@@ -149,9 +163,9 @@ def test_resource_value(resource_fixture: Resource):
 
     # Test with duration and frequency and period (3 servers 2 hours per day during one month)
     resource_fixture.duration = 2 * HOUR
-    assert resource_fixture.value() == (3 * SERVER) / (
+    assert resource_fixture.value() == (3 * SERVER) * (
         (2 * HOUR) / (1 * DAY) * (1 * MONTH)
-    )
+    ).to_reduced_units()
 
 
 def test_resource_copy(resource_fixture: Resource):
@@ -177,7 +191,10 @@ def test_resource_copy(resource_fixture: Resource):
     "impacts_model.data_model.impact_source_factory",
     MagicMock(
         return_value=ImpactSource(
-            id="testid", name="test", unit=SERVER, climate_change=ImpactValue(manufacture=2332 * KG_CO2E, use=12332 * KG_CO2E)
+            id="testid",
+            name="test",
+            unit=SERVER,
+            climate_change=ImpactValue(manufacture=2332 * KG_CO2E, use=12332 * KG_CO2E),
         )
     ),
 )
@@ -201,7 +218,6 @@ def test_resource_get_environmental_impact(resource_fixture: Resource) -> None:
     assert impact.manufacture.units == KG_CO2E
     assert impact.manufacture == (2332) * 12321.423 * KG_CO2E
     assert impact.use == (12332) * resource_fixture.value() * KG_CO2E
-
 
 
 @mock.patch(

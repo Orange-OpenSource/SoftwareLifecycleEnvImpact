@@ -38,7 +38,7 @@ methodology:
 !ImpactSource
 id: "storage"
 name: "Storage"
-unit: gigabyte / day
+unit: gigabyte * day
 climate_change: !ImpactValue
   manufacture:
   use: "0.1 kg_co2e"
@@ -73,7 +73,7 @@ methodology:
 !ImpactSource
 id: "server"
 name: "Server"
-unit: server / day
+unit: server * day
 climate_change: !ImpactValue
   manufacture:
   use: "0.1 kg_co2e"
@@ -107,7 +107,7 @@ methodology:
 !ImpactSource
 id: "vCPUrm"
 name: "vCPU Rueil-Malmaison"
-unit: vcpu / month
+unit: vcpu * month
 climate_change: !ImpactValue
   manufacture:
   use: "4.506211 kg_co2e"
@@ -141,7 +141,7 @@ methodology:
 !ImpactSource
 id: "vCPUvdr"
 name: "vCPU Val-de-Reuil"
-unit: vcpu / month
+unit: vcpu * month
 climate_change: !ImpactValue
   manufacture:
   use: "0.2206123 kg_co2e"
@@ -175,7 +175,7 @@ methodology:
 !ImpactSource
 id: "RAMrm"
 name: "RAM Rueil-Malmaison"
-unit: gigabyte / month
+unit: gigabyte * month
 climate_change: !ImpactValue
   manufacture:
   use: "0.5186616 kg_co2e"
@@ -209,7 +209,7 @@ methodology:
 !ImpactSource
 id: "RAMvdr"
 name: "RAM Val-De-Rueil"
-unit: gigabyte / month
+unit: gigabyte * month
 climate_change: !ImpactValue
   manufacture:
   use: "0.267726 kg_co2e"
@@ -243,7 +243,7 @@ methodology:
 !ImpactSource
 id: "storageRm"
 name: "Storage Rueil-Malmaison"
-unit: gigabyte / month
+unit: gigabyte * month
 climate_change: !ImpactValue
   manufacture:
   use: "1.1922143 kg_co2e"
@@ -277,7 +277,7 @@ methodology:
 !ImpactSource
 id: "storageVdr"
 name: "Storage Val-De-Rueil"
-unit: gigabyte / month
+unit: gigabyte * month
 climate_change: !ImpactValue
   manufacture:
   use: "0.27820336 kg_co2e"
@@ -346,7 +346,7 @@ methodology:
 !ImpactSource
 id: "userDevice"
 name: "User device"
-unit: user_device / hour
+unit: user_device * hour
 climate_change: !ImpactValue
   manufacture:
   use: "0.03740583958581879 kg_co2e"
@@ -391,7 +391,7 @@ methodology: >
 !ImpactSource
 id: "tablet"
 name: "Tablet"
-unit: tablet / hour
+unit: tablet * hour
 climate_change: !ImpactValue
   manufacture:
   use: "0.017303216974674882 kg_co2e"
@@ -431,7 +431,7 @@ methodology: >
 !ImpactSource
 id: "laptop"
 name: "Laptop"
-unit: laptop / hour
+unit: laptop * hour
 climate_change: !ImpactValue
   manufacture:
   use: "0.027700236880868794 kg_co2e"
@@ -470,7 +470,7 @@ methodology: >
 !ImpactSource
 id: "television"
 name: "Television"
-unit: television / hour
+unit: television * hour
 climate_change: !ImpactValue
   manufacture:
   use: "0.04563084645220169 kg_co2e"
@@ -510,7 +510,7 @@ methodology: >
 !ImpactSource
 id: "smartphone"
 name: "Smartphone"
-unit: smartphone / hour
+unit: smartphone * hour
 climate_change: !ImpactValue
   manufacture:
   use: "0.03893978483300865 kg_co2e"
@@ -551,7 +551,7 @@ methodology: >
 !ImpactSource
 id: "building"
 name: "Building"
-unit: (meter * meter) / day
+unit: (meter * meter) * day
 climate_change: !ImpactValue
   manufacture:
   use: "0.21355236139630387 kg_co2e"
@@ -589,7 +589,7 @@ methodology: >
 !ImpactSource
 id: "office"
 name: "Office"
-unit: people / day
+unit: people * day
 climate_change: !ImpactValue
   manufacture:
   use: "5.491346435904957 kg_co2e"
@@ -804,7 +804,7 @@ methodology:
 !ImpactSource
 id: "transportation"
 name: "Transportation"
-unit: people / day
+unit: people * day
 climate_change: !ImpactValue
   manufacture:
   use: "6.583113447812 kg_co2e"
@@ -859,7 +859,7 @@ methodology: >
 !ImpactSource
 id: "people"
 name: "People"
-unit: people / day
+unit: people * day
 climate_change: !ImpactValue
   manufacture:
   use: "0.21355236139630387 kg_co2e"
