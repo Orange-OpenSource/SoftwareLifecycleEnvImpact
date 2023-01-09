@@ -95,11 +95,14 @@ class ImpactValue:
                 else None
             ),
             use=(
-                (self.use * value).to_reduced_units()
-                if self.use is not None
-                else None
+                (self.use * value).to_reduced_units() if self.use is not None else None
             ),
         )
+
+
+class ImpactValueSchema(Schema):
+    manufacture = Nested("QuantitySchema")
+    use = Nested("QuantitySchema")
 
 
 #######################
@@ -151,7 +154,7 @@ class EnvironmentalImpact:
 class EnvironmentalImpactSchema(Schema):
     """Marshmallow schema to serialize a EnvironmentalImpactSchema object"""
 
-    impacts = fields.Dict(keys=fields.Str(), values=Nested("QuantitySchema"))
+    impacts = fields.Dict(keys=fields.Str(), values=Nested("ImpactValueSchema"))
 
 
 class TaskImpact:
