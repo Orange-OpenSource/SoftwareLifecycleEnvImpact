@@ -1,3 +1,8 @@
+from genericpath import isfile
+import json
+from os import listdir
+from os.path import isfile, join
+from impacts_model.data_model import ProjectSchema
 from impacts_model.impact_sources import (
     ImpactSource,
 )
@@ -123,8 +128,12 @@ def test_impact_source_parameters() -> None:
         id="0",
         name="test",
         unit=SERVER / DAY,
-        climate_change=ImpactValue(manufacture=103.72 * KG_CO2E, use=999103.72 * KG_CO2E),
-        resource_depletion=ImpactValue(manufacture=312.23 * KG_SBE, use=999312.23 * KG_SBE),
+        climate_change=ImpactValue(
+            manufacture=103.72 * KG_CO2E, use=999103.72 * KG_CO2E
+        ),
+        resource_depletion=ImpactValue(
+            manufacture=312.23 * KG_SBE, use=999312.23 * KG_SBE
+        ),
         acidification=ImpactValue(
             manufacture=32443.2134 * MOL_HPOS, use=99932443.2134 * MOL_HPOS
         ),
@@ -191,8 +200,12 @@ def test_get_impacts_quantities() -> None:
         name="test",
         unit=SERVER / DAY,
         climate_change=ImpactValue(manufacture=103.72 * KG_CO2E, use=103.72 * KG_CO2E),
-        resource_depletion=ImpactValue(manufacture=312.23 * KG_SBE, use=312.23 * KG_SBE),
-        acidification=ImpactValue(manufacture=32443.2134 * MOL_HPOS, use=32443.2134 * MOL_HPOS),
+        resource_depletion=ImpactValue(
+            manufacture=312.23 * KG_SBE, use=312.23 * KG_SBE
+        ),
+        acidification=ImpactValue(
+            manufacture=32443.2134 * MOL_HPOS, use=32443.2134 * MOL_HPOS
+        ),
         fine_particles=ImpactValue(
             manufacture=24324.234324 * DISEASE_INCIDENCE,
             use=24324.234324 * DISEASE_INCIDENCE,
@@ -250,3 +263,15 @@ def test_get_impacts_quantities() -> None:
         i.environmental_impact.impacts[ImpactCategory.RAW_MATERIALS].manufacture
         == 124.123441 * TONNE_MIPS / i.unit
     )
+
+
+def test_example_impacts() -> None:
+    """Test that all projects in example folder can be loaded and their impact computed"""
+    path = "./examples"
+    for file in [f for f in listdir(path) if isfile(join(path, f))]:
+        f = open(path+"/"+file, "r")
+        data = json.load(f)
+        schema = ProjectSchema()
+        new_project = schema.load(data)
+        for model in new_project.models:
+            model.root_task.get_impact()

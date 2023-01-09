@@ -79,7 +79,7 @@
                         "impact_source_id": "people",
                         "name": "People",
                         "period": {
-                          "unit": "business_year",
+                          "unit": "year",
                           "value": 1.0
                         },
                         "task_id": null,
@@ -127,7 +127,7 @@
                         "impact_source_id": "people",
                         "name": "People",
                         "period": {
-                          "unit": "business_month",
+                          "unit": "month",
                           "value": 6.0
                         },
                         "task_id": null,
@@ -178,7 +178,7 @@
                     "impact_source_id": "people",
                     "name": "People",
                     "period": {
-                      "unit": "business_month",
+                      "unit": "month",
                       "value": 2.0
                     },
                     "task_id": null,
@@ -284,7 +284,7 @@
                     "impact_source_id": "people",
                     "name": "People",
                     "period": {
-                      "unit": "business_year",
+                      "unit": "year",
                       "value": 1.0
                     },
                     "task_id": null,
