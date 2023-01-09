@@ -28,6 +28,7 @@ server = []
 people = []
 vcpu = []
 
-business_week = 5 * day
-business_month = 4.348214285714285 * business_day
+business_day = day
+business_week = 5 * business_day
+business_month = 4.348214285714285 * business_week
 business_year = 12 * business_month
