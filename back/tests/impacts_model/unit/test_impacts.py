@@ -26,48 +26,6 @@ from impacts_model.quantities.quantities import (
     SERVER,
 )
 
-'''
-def test_merge_impacts_lists() -> None:
-    """
-    Test the merge_impacts_lists list function, assessing empty list, same types and different types merging are correct
-    :return:
-    """
-    first_list: ImpactsList = {}
-    second_list: ImpactsList = {
-        ImpactCategory.CLIMATE_CHANGE: 1000 * KG_CO2E,
-        ImpactCategory.ELECTRONIC_WASTE: 1000 * ELECTRONIC_WASTE,
-    }
-
-    # test with empty list
-    assert merge_impacts_lists(first_list, second_list) == {
-        ImpactCategory.CLIMATE_CHANGE: 1000 * KG_CO2E,
-        ImpactCategory.ELECTRONIC_WASTE: 1000 * ELECTRONIC_WASTE,
-    }
-
-    # test with same types
-    first_list = {
-        ImpactCategory.CLIMATE_CHANGE: 1000 * KG_CO2E,
-        ImpactCategory.ELECTRONIC_WASTE: 1000 * ELECTRONIC_WASTE,
-    }
-    assert merge_impacts_lists(first_list, second_list) == {
-        ImpactCategory.CLIMATE_CHANGE: 2000 * KG_CO2E,
-        ImpactCategory.ELECTRONIC_WASTE: 2000 * ELECTRONIC_WASTE,
-    }
-
-    # Test with other type
-    second_list = {
-        ImpactCategory.CLIMATE_CHANGE: 1000 * KG_CO2E,
-        ImpactCategory.ELECTRONIC_WASTE: 1000 * ELECTRONIC_WASTE,
-        ImpactCategory.WATER_DEPLETION: 21323 * CUBIC_METER,
-    }
-
-    assert merge_impacts_lists(first_list, second_list) == {
-        ImpactCategory.CLIMATE_CHANGE: 2000 * KG_CO2E,
-        ImpactCategory.ELECTRONIC_WASTE: 2000 * ELECTRONIC_WASTE,
-        ImpactCategory.WATER_DEPLETION: 21323 * CUBIC_METER,
-    }
-'''
-
 
 def test_impact_category_str() -> None:
     """
@@ -76,35 +34,6 @@ def test_impact_category_str() -> None:
     for e in ImpactCategory:
         assert e.name not in str(e)
         assert "not implemented" not in str(e)
-
-
-###################
-# ImpactsSourceRegistry #
-###################
-
-
-# def test_impact_registry_singleton() -> None:
-#     """Test that ImpactRegistry follow the singleton pattern"""
-#     ir1 = ImpactsSourceRegistry()
-#     ir2 = ImpactsSourceRegistry()
-
-#     assert ir1 == ir2
-#     ir1.pue = 3.4
-#     assert ir2.pue == 3.4
-#     ir2.electricity_mix = 2.1234 * ELECTRICITY_MIX
-#     assert ir1.electricity_mix == 2.1234 * ELECTRICITY_MIX
-
-#     ir1.electricity_mix = 2.12312312 * ELECTRICITY_MIX
-#     assert ir2.electricity_mix == 2.12312312 * ELECTRICITY_MIX
-
-#     assert ImpactsSourceRegistry().electricity_mix == 2.12312312 * ELECTRICITY_MIX
-#     ImpactsSourceRegistry().electricity_mix = 214234.31232 * ELECTRICITY_MIX
-#     assert ImpactsSourceRegistry().electricity_mix == 214234.31232 * ELECTRICITY_MIX
-
-
-################
-# ImpactFactor #
-################
 
 
 def test_co2() -> None:
@@ -269,9 +198,32 @@ def test_example_impacts() -> None:
     """Test that all projects in example folder can be loaded and their impact computed"""
     path = "./examples"
     for file in [f for f in listdir(path) if isfile(join(path, f))]:
-        f = open(path+"/"+file, "r")
+        f = open(path + "/" + file, "r")
         data = json.load(f)
         schema = ProjectSchema()
         new_project = schema.load(data)
         for model in new_project.models:
             model.root_task.get_impact()
+
+
+def test_gitlab_computation() -> None:
+    f = open("./examples/gitlab.json", "r")
+    data = json.load(f)
+    schema = ProjectSchema()
+    new_project = schema.load(data)
+
+    co2_nominal = 19364363.096746422 * KG_CO2E
+
+    value = (
+        new_project.models[0]
+        .root_task.get_impact()
+        .task_impact.impacts[ImpactCategory.CLIMATE_CHANGE]
+    )
+    if value.manufacture is not None and value.use is not None:
+        assert value.manufacture + value.use == co2_nominal
+    elif value.manufacture is not None:
+        assert value.manufacture == co2_nominal
+    elif value.use is not None:
+        assert value.use == co2_nominal
+    else:
+        raise Exception("Gitlab value manufacture and use are None")

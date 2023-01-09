@@ -862,7 +862,7 @@ name: "People"
 unit: people * day
 climate_change: !ImpactValue
   manufacture:
-  use: "0.21355236139630387 kg_co2e"
+  use: "12.268361541883039 kg_co2e"
 resource_depletion: !ImpactValue
   manufacture:
   use:
