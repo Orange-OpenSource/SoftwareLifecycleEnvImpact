@@ -6,7 +6,7 @@ from impacts_model.impact_sources import (
     _get_all_impact_sources,
     impact_source_factory,
 )
-from impacts_model.impacts import ImpactValue
+from impacts_model.impacts import EnvironmentalImpact, ImpactCategory, ImpactValue
 
 from impacts_model.quantities.quantities import (
     DAY,
@@ -28,7 +28,9 @@ def test_impact_source_has_time_input() -> None:
             id="testid",
             name="test",
             unit=SERVER,
-            climate_change=ImpactValue(1776 * KG_CO2E),
+            environmental_impact=EnvironmentalImpact(
+                climate_change=ImpactValue(1776 * KG_CO2E)
+            ),
         ).has_time_input
         == False
     )
@@ -39,7 +41,9 @@ def test_impact_source_has_time_input() -> None:
             id="testid",
             name="test",
             unit=DAY * SERVER,
-            climate_change=ImpactValue(use=1776 * KG_CO2E),
+            environmental_impact=EnvironmentalImpact(
+                climate_change=ImpactValue(use=1776 * KG_CO2E)
+            ),
         ).has_time_input
         == True
     )
@@ -50,7 +54,9 @@ def test_impact_source_has_time_input() -> None:
             id="testid",
             name="test",
             unit=SERVER * DAY,
-            climate_change=ImpactValue(use=1776 * KG_CO2E),
+            environmental_impact=EnvironmentalImpact(
+                climate_change=ImpactValue(use=1776 * KG_CO2E)
+            ),
         ).has_time_input
         == True
     )
@@ -61,7 +67,9 @@ def test_impact_source_has_time_input() -> None:
             id="testid",
             name="test",
             unit=SERVER * SERVER,
-            climate_change=ImpactValue(use=1776 * KG_CO2E),
+            environmental_impact=EnvironmentalImpact(
+                climate_change=ImpactValue(use=1776 * KG_CO2E)
+            ),
         ).has_time_input
         == False
     )
@@ -78,7 +86,10 @@ def test_yaml_loading() -> None:
         assert isinstance(impact_source.unit, Unit)
 
         # Assert that co2 is set for all
-        assert impact_source.climate_change is not None
+        assert (
+            impact_source.environmental_impact.impacts[ImpactCategory.CLIMATE_CHANGE]
+            is not None
+        )
 
         for indicator in impact_source.environmental_impact.impacts:
             # Test all environmentalImpact to see if they're rightly typed as ImpactValue

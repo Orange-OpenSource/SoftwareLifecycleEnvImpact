@@ -7,7 +7,7 @@ from unittest.mock import MagicMock
 from impacts_model.impact_sources import ImpactSource, ImpactSourceError
 from impacts_model.data_model import QuantitySchema, Resource, ResourceSchema
 from impacts_model.data_model import Model, Project, Resource, Task
-from impacts_model.impacts import ImpactValue
+from impacts_model.impacts import EnvironmentalImpact, ImpactValue
 from impacts_model.quantities.quantities import (
     KG_CO2E,
     MINUTE,
@@ -50,7 +50,12 @@ def test_quantity_schema():
     "impacts_model.data_model.impact_source_factory",
     MagicMock(
         return_value=ImpactSource(
-            id="testid", name="test", unit=SERVER, climate_change=ImpactValue(use=1776 * KG_CO2E)
+            id="testid",
+            name="test",
+            unit=SERVER,
+            environmental_impact=EnvironmentalImpact(
+                climate_change=ImpactValue(use=1776 * KG_CO2E)
+            ),
         ),
     ),
 )
@@ -67,7 +72,12 @@ def test_resource_schema(resource_fixture: Resource) -> None:
     "impacts_model.data_model.impact_source_factory",
     MagicMock(
         return_value=ImpactSource(
-            id="testid", name="test", unit=SERVER, climate_change=ImpactValue(use=1776 * KG_CO2E)
+            id="testid",
+            name="test",
+            unit=SERVER,
+            environmental_impact=EnvironmentalImpact(
+                climate_change=ImpactValue(use=1776 * KG_CO2E)
+            ),
         ),
     ),
 )
@@ -107,7 +117,12 @@ def test_resource_schema_validation_no_time_impactsource() -> None:
     "impacts_model.data_model.impact_source_factory",
     MagicMock(
         return_value=ImpactSource(
-            id="testid", name="test", unit=SERVER * DAY, climate_change=ImpactValue(use=1776 * KG_CO2E)
+            id="testid",
+            name="test",
+            unit=SERVER * DAY,
+            environmental_impact=EnvironmentalImpact(
+                climate_change=ImpactValue(use=1776 * KG_CO2E)
+            ),
         ),
     ),
 )
@@ -116,7 +131,7 @@ def test_resource_schema_validation_time_impactsource() -> None:
     Test marshamllow validation when time in ImpactSource unit for:
         - Period is mandatory
         - Frequency and duration, or none of them
-        - 
+        -
     """
     schema = ResourceSchema()
 
@@ -141,7 +156,7 @@ def test_resource_schema_validation_time_impactsource() -> None:
             Resource(impact_source_id="testid", amount=1 * SERVER, duration=1 * MINUTE)
         )
         schema.load(dump)
-    
+
     # No duration when frequency should raise error
     with pytest.raises(ValidationError):
         dump = schema.dump(
@@ -167,7 +182,12 @@ def test_get_resources(client: FlaskClient, resource_fixture: Resource) -> None:
     "impacts_model.data_model.impact_source_factory",
     MagicMock(
         return_value=ImpactSource(
-            id="testid", name="test", unit=SERVER, climate_change=ImpactValue(use=1776 * KG_CO2E)
+            id="testid",
+            name="test",
+            unit=SERVER,
+            environmental_impact=EnvironmentalImpact(
+                climate_change=ImpactValue(use=1776 * KG_CO2E)
+            ),
         ),
     ),
 )
@@ -232,7 +252,12 @@ def test_get_one_resource(
     "impacts_model.data_model.impact_source_factory",
     MagicMock(
         return_value=ImpactSource(
-            id="testid", name="test", unit=SERVER, climate_change=ImpactValue(use=2332 * KG_CO2E)
+            id="testid",
+            name="test",
+            unit=SERVER,
+            environmental_impact=EnvironmentalImpact(
+                climate_change=ImpactValue(use=2332 * KG_CO2E)
+            ),
         )
     ),
 )

@@ -24,92 +24,22 @@ class ImpactSource:
         id: str,
         name: str,
         unit: str | Unit,
-        climate_change: ImpactValue,
-        resource_depletion: ImpactValue = ImpactValue(
-            manufacture=0 * ImpactCategory.RESOURCE_DEPLETION.value,
-            use=0 * ImpactCategory.RESOURCE_DEPLETION.value,
-        ),
-        acidification: ImpactValue = ImpactValue(
-            manufacture=0 * ImpactCategory.ACIDIFICATION.value,
-            use=0 * ImpactCategory.ACIDIFICATION.value,
-        ),
-        fine_particles: ImpactValue = ImpactValue(
-            manufacture=0 * ImpactCategory.FINE_PARTICLES.value,
-            use=0 * ImpactCategory.FINE_PARTICLES.value,
-        ),
-        ionizing_radiations: ImpactValue = ImpactValue(
-            manufacture=0 * ImpactCategory.IONIZING_RADIATIONS.value,
-            use=0 * ImpactCategory.IONIZING_RADIATIONS.value,
-        ),
-        water_depletion: ImpactValue = ImpactValue(
-            manufacture=0 * ImpactCategory.WATER_DEPLETION.value,
-            use=0 * ImpactCategory.WATER_DEPLETION.value,
-        ),
-        electronic_waste: ImpactValue = ImpactValue(
-            manufacture=0 * ImpactCategory.ELECTRONIC_WASTE.value,
-            use=0 * ImpactCategory.ELECTRONIC_WASTE.value,
-        ),
-        primary_energy_consumption: ImpactValue = ImpactValue(
-            manufacture=0 * ImpactCategory.PRIMARY_ENERGY.value,
-            use=0 * ImpactCategory.PRIMARY_ENERGY.value,
-        ),
-        raw_materials: ImpactValue = ImpactValue(
-            0 * ImpactCategory.RAW_MATERIALS.value,
-            0 * ImpactCategory.RAW_MATERIALS.value,
-        ),
+        environmental_impact: EnvironmentalImpact,
+        uses: Any = "",
         source: str = "",
         methodology: str = "",
     ) -> None:
-        """
-        :param climate_change: Climate change as kgeqCO2
-        :param resource_depletion: Depletion of natural abiotic resources as kgeqSb
-        :param acidification: acidification (PEF-AP) as mol H+ eq
-        :param ionizing_radiations: ionizing radiations ( PEF-IR) as kBq U235 eq
-        :param water_depletion: Depletion of water resources (PEF-WU) as m3 world eq
-        :param electronic_waste: mass of electrical and electronic waste generated as Tonne
-        :param primary_energy_consumption: Primary energy consumed as MJ
-        :param raw_materials: Raw materials consumed as Ton
-        """
+
         self.id = id
         self.name = name
+        self.environmental_impact = environmental_impact
         self.unit = deserialize_unit(unit)
 
-        self.climate_change = climate_change.divided_by(self.unit)
-        self.resource_depletion = resource_depletion.divided_by(self.unit)
-        self.acidification = acidification.divided_by(self.unit)
-        self.fine_particles = fine_particles.divided_by(self.unit)
-        self.ionizing_radiations = ionizing_radiations.divided_by(self.unit)
-        self.water_depletion = water_depletion.divided_by(self.unit)
-        self.electronic_waste = electronic_waste.divided_by(self.unit)
-        self.primary_energy_consumption = primary_energy_consumption.divided_by(
-            self.unit
-        )
-        self.raw_materials = raw_materials.divided_by(self.unit)
+        # Set as impact per ImpactSource unit
+        self.environmental_impact.divide_by(self.unit)
 
         self.source = source
         self.methodology = methodology
-
-    @property
-    def environmental_impact(
-        self,
-    ) -> EnvironmentalImpact:
-        """
-        Getter for co2 property
-        :return: co2 as float
-        """
-        return EnvironmentalImpact(
-            impacts={
-                ImpactCategory.CLIMATE_CHANGE: self.climate_change,
-                ImpactCategory.RESOURCE_DEPLETION: self.resource_depletion,
-                ImpactCategory.ACIDIFICATION: self.acidification,
-                ImpactCategory.FINE_PARTICLES: self.fine_particles,
-                ImpactCategory.IONIZING_RADIATIONS: self.ionizing_radiations,
-                ImpactCategory.WATER_DEPLETION: self.water_depletion,
-                ImpactCategory.ELECTRONIC_WASTE: self.electronic_waste,
-                ImpactCategory.PRIMARY_ENERGY: self.primary_energy_consumption,
-                ImpactCategory.RAW_MATERIALS: self.raw_materials,
-            }
-        )
 
     @property
     def has_time_input(self) -> bool:
@@ -144,8 +74,13 @@ def _get_all_impact_sources() -> list[ImpactSource]:
         fields = loader.construct_mapping(node)
         return ImpactValue(**fields)
 
+    def environmental_impact_constructor(loader, node) -> EnvironmentalImpact:
+        fields = loader.construct_mapping(node)
+        return EnvironmentalImpact(**fields)
+
     yaml.add_constructor("!ImpactSource", impact_source_constructor)
     yaml.add_constructor("!ImpactValue", impact_value_constructor)
+    yaml.add_constructor("!EnvironmentalImpact", environmental_impact_constructor)
 
     list = []
     with open("impacts_model/data/impact_sources/default.yaml", "r") as stream:

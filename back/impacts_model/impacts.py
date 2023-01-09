@@ -79,13 +79,11 @@ class ImpactValue:
             else:
                 self.use = second_impact.use
 
-    def divided_by(self, unit: Unit) -> ImpactValue:
-        return ImpactValue(
-            manufacture=(
-                self.manufacture / unit if self.manufacture is not None else None
-            ),
-            use=(self.use / unit if self.use is not None else None),
+    def divide_by(self, unit: Unit) -> None:
+        self.manufacture = (
+            self.manufacture / unit if self.manufacture is not None else None
         )
+        self.use = self.use / unit if self.use is not None else None
 
     def multiplied_by(self, value: Quantity[Any]) -> ImpactValue:
         return ImpactValue(
@@ -114,11 +112,90 @@ class EnvironmentalImpact:
     Helpers method to easily add a single impact, a list or another EnvironmentalImpact object
     """
 
-    def __init__(self, impacts: dict[ImpactCategory, ImpactValue] = None) -> None:
-        # KEEP NONE IN CONSTRUCTOR, else reference errors
-        self.impacts: dict[ImpactCategory, ImpactValue] = (
-            impacts if impacts is not None else {}
-        )
+    def __init__(
+        self,
+        climate_change: ImpactValue = None,
+        resource_depletion: ImpactValue = None,
+        acidification: ImpactValue = None,
+        fine_particles: ImpactValue = None,
+        ionizing_radiations: ImpactValue = None,
+        water_depletion: ImpactValue = None,
+        electronic_waste: ImpactValue = None,
+        primary_energy_consumption: ImpactValue = None,
+        raw_materials: ImpactValue = None,
+    ) -> None:
+        """
+        :param climate_change: Climate change as kgeqCO2
+        :param resource_depletion: Depletion of natural abiotic resources as kgeqSb
+        :param acidification: acidification (PEF-AP) as mol H+ eq
+        :param ionizing_radiations: ionizing radiations ( PEF-IR) as kBq U235 eq
+        :param water_depletion: Depletion of water resources (PEF-WU) as m3 world eq
+        :param electronic_waste: mass of electrical and electronic waste generated as Tonne
+        :param primary_energy_consumption: Primary energy consumed as MJ
+        :param raw_materials: Raw materials consumed as Ton
+        """
+        # Do not put in constructor, pyyaml set them as None anyway
+        if climate_change is None:
+            climate_change = ImpactValue(
+                manufacture="0 " + ImpactCategory.CLIMATE_CHANGE.value,
+                use="0 " + ImpactCategory.CLIMATE_CHANGE.value,
+            )
+        if resource_depletion is None:
+            resource_depletion = ImpactValue(
+                manufacture="0 " + ImpactCategory.RESOURCE_DEPLETION.value,
+                use="0 " + ImpactCategory.RESOURCE_DEPLETION.value,
+            )
+        if acidification is None:
+            acidification = ImpactValue(
+                manufacture="0 " + ImpactCategory.ACIDIFICATION.value,
+                use="0 " + ImpactCategory.ACIDIFICATION.value,
+            )
+        if fine_particles is None:
+            fine_particles = ImpactValue(
+                manufacture="0 " + ImpactCategory.FINE_PARTICLES.value,
+                use="0 " + ImpactCategory.FINE_PARTICLES.value,
+            )
+        if ionizing_radiations is None:
+            ionizing_radiations = ImpactValue(
+                manufacture="0 " + ImpactCategory.IONIZING_RADIATIONS.value,
+                use="0 " + ImpactCategory.IONIZING_RADIATIONS.value,
+            )
+        if water_depletion is None:
+            water_depletion = ImpactValue(
+                manufacture="0 " + ImpactCategory.WATER_DEPLETION.value,
+                use="0 " + ImpactCategory.WATER_DEPLETION.value,
+            )
+        if electronic_waste is None:
+            electronic_waste = ImpactValue(
+                manufacture="0 " + ImpactCategory.ELECTRONIC_WASTE.value,
+                use="0 " + ImpactCategory.ELECTRONIC_WASTE.value,
+            )
+        if primary_energy_consumption is None:
+            primary_energy_consumption = ImpactValue(
+                manufacture="0 " + ImpactCategory.PRIMARY_ENERGY.value,
+                use="0 " + ImpactCategory.PRIMARY_ENERGY.value,
+            )
+        if raw_materials is None:
+            raw_materials = ImpactValue(
+                "0 " + ImpactCategory.RAW_MATERIALS.value,
+                "0 " + ImpactCategory.RAW_MATERIALS.value,
+            )
+
+        self.impacts: dict[ImpactCategory, ImpactValue] = {
+            ImpactCategory.CLIMATE_CHANGE: climate_change,
+            ImpactCategory.RESOURCE_DEPLETION: resource_depletion,
+            ImpactCategory.ACIDIFICATION: acidification,
+            ImpactCategory.FINE_PARTICLES: fine_particles,
+            ImpactCategory.IONIZING_RADIATIONS: ionizing_radiations,
+            ImpactCategory.WATER_DEPLETION: water_depletion,
+            ImpactCategory.ELECTRONIC_WASTE: electronic_waste,
+            ImpactCategory.PRIMARY_ENERGY: primary_energy_consumption,
+            ImpactCategory.RAW_MATERIALS: raw_materials,
+        }
+
+    def divide_by(self, unit: Unit) -> None:
+        for impact in self.impacts:
+            self.impacts[impact].divide_by(unit)
 
     def add(self, other: EnvironmentalImpact) -> None:
         """

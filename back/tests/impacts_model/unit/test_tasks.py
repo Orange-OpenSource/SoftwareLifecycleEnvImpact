@@ -10,7 +10,7 @@ from pint import Quantity
 
 from impacts_model.data_model import Model, Project, Resource, Task
 from impacts_model.impact_sources import ImpactSource
-from impacts_model.impacts import ImpactCategory, ImpactValue
+from impacts_model.impacts import EnvironmentalImpact, ImpactCategory, ImpactValue
 from impacts_model.quantities.quantities import (
     CUBIC_METER,
     DISEASE_INCIDENCE,
@@ -98,7 +98,9 @@ def task_fixture_with_subtask(db: SQLAlchemy) -> Task:
             id="testid",
             name="test",
             unit=SERVER,
-            climate_change=ImpactValue(manufacture=1776 * KG_CO2E),
+            environmental_impact=EnvironmentalImpact(
+                climate_change=ImpactValue(manufacture=1776 * KG_CO2E)
+            ),
         ),
     ),
 )
@@ -125,7 +127,6 @@ def test_get_task_impact_by_category(
     assert result.manufacture == 5328 * KG_CO2E
 
 
-
 @mock.patch(
     "impacts_model.data_model.impact_source_factory",
     MagicMock(
@@ -133,7 +134,9 @@ def test_get_task_impact_by_category(
             id="testid",
             name="test",
             unit=SERVER,
-            climate_change=ImpactValue(use=1000 * KG_CO2E),
+            environmental_impact=EnvironmentalImpact(
+                climate_change=ImpactValue(use=1000 * KG_CO2E)
+            ),
         )
     ),
 )
@@ -162,7 +165,9 @@ def test_get_task_impact_list(
             id="testImpactSource",
             name="test",
             unit=SERVER,
-            climate_change=ImpactValue(use=1000 * KG_CO2E),
+            environmental_impact=EnvironmentalImpact(
+                climate_change=ImpactValue(use=1000 * KG_CO2E)
+            ),
         )
     ),
 )

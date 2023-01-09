@@ -8,7 +8,7 @@ from pint import Quantity
 
 from impacts_model.data_model import Model, Project, Resource, Task
 from impacts_model.impact_sources import ImpactSource
-from impacts_model.impacts import ImpactCategory, ImpactValue
+from impacts_model.impacts import EnvironmentalImpact, ImpactCategory, ImpactValue
 from impacts_model.quantities.quantities import (
     CUBIC_METER,
     DISEASE_INCIDENCE,
@@ -60,7 +60,9 @@ def resource_fixture(db: SQLAlchemy) -> Resource:
             id="testid",
             name="test",
             unit=SERVER,
-            climate_change=ImpactValue(use=1776 * KG_CO2E),
+            environmental_impact=EnvironmentalImpact(
+                climate_change=ImpactValue(use=1776 * KG_CO2E)
+            ),
         ),
     ),
 )
@@ -140,7 +142,9 @@ def test_resource_peiord(resource_fixture: Resource):
             id="testid",
             name="test",
             unit=SERVER,
-            climate_change=ImpactValue(use=1776 * KG_CO2E),
+            environmental_impact=EnvironmentalImpact(
+                climate_change=ImpactValue(use=1776 * KG_CO2E)
+            ),
         ),
     ),
 )
@@ -163,9 +167,10 @@ def test_resource_value(resource_fixture: Resource):
 
     # Test with duration and frequency and period (3 servers 2 hours per day during one month)
     resource_fixture.duration = 2 * HOUR
-    assert resource_fixture.value() == (3 * SERVER) * (
-        (2 * HOUR) / (1 * DAY) * (1 * MONTH)
-    ).to_reduced_units()
+    assert (
+        resource_fixture.value()
+        == (3 * SERVER) * ((2 * HOUR) / (1 * DAY) * (1 * MONTH)).to_reduced_units()
+    )
 
 
 def test_resource_copy(resource_fixture: Resource):
@@ -194,7 +199,11 @@ def test_resource_copy(resource_fixture: Resource):
             id="testid",
             name="test",
             unit=SERVER,
-            climate_change=ImpactValue(manufacture=2332 * KG_CO2E, use=12332 * KG_CO2E),
+            environmental_impact=EnvironmentalImpact(
+                climate_change=ImpactValue(
+                    manufacture=2332 * KG_CO2E, use=12332 * KG_CO2E
+                )
+            ),
         )
     ),
 )
@@ -227,8 +236,10 @@ def test_resource_get_environmental_impact(resource_fixture: Resource) -> None:
             id="testid",
             name="test",
             unit=SERVER,
-            climate_change=ImpactValue(use=10000.123 * KG_CO2E),
-            raw_materials=ImpactValue(use=213.3 * TONNE_MIPS),
+            environmental_impact=EnvironmentalImpact(
+                climate_change=ImpactValue(use=10000.123 * KG_CO2E),
+                raw_materials=ImpactValue(use=213.3 * TONNE_MIPS),
+            ),
         ),
     ),
 )
