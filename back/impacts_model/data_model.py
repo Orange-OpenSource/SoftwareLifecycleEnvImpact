@@ -242,7 +242,7 @@ class Resource(db.Model):  # type: ignore
         """
         environmental_impact = EnvironmentalImpact()
 
-        for key in self.impact_source.environmental_impact.impacts:
+        for key in self.impact_source.get_environmental_impact().impacts:
             # Adding the impact to impact category indicator unit
             environmental_impact.add_impact(key, self.get_category_impact(key))
         return environmental_impact
@@ -254,7 +254,7 @@ class Resource(db.Model):  # type: ignore
         :param impact_category: The ImpactCategory to retrieve the impact
         :return: A quantity corresponding to the resource ImpactCategory quantity
         """
-        return self.impact_source.environmental_impact.impacts[
+        return self.impact_source.get_environmental_impact().impacts[
             impact_category
         ].multiplied_by(self.value())
 

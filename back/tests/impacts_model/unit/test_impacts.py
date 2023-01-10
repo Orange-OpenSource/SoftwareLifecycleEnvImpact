@@ -47,7 +47,7 @@ def test_co2() -> None:
         ),
     )
     assert (
-        i.environmental_impact.impacts[ImpactCategory.CLIMATE_CHANGE].use
+        i.get_environmental_impact().impacts[ImpactCategory.CLIMATE_CHANGE].use
         == 103.72 * KG_CO2E / i.unit
     )
 
@@ -96,39 +96,45 @@ def test_get_impacts_quantities() -> None:
         ),
     )
     assert (
-        i.environmental_impact.impacts[ImpactCategory.CLIMATE_CHANGE].manufacture
+        i.get_environmental_impact().impacts[ImpactCategory.CLIMATE_CHANGE].manufacture
         == 103.72 * KG_CO2E / i.unit
     )
     assert (
-        i.environmental_impact.impacts[ImpactCategory.RESOURCE_DEPLETION].manufacture
+        i.get_environmental_impact()
+        .impacts[ImpactCategory.RESOURCE_DEPLETION]
+        .manufacture
         == 312.23 * KG_SBE / i.unit
     )
     assert (
-        i.environmental_impact.impacts[ImpactCategory.ACIDIFICATION].manufacture
+        i.get_environmental_impact().impacts[ImpactCategory.ACIDIFICATION].manufacture
         == 32443.2134 * MOL_HPOS / i.unit
     )
     assert (
-        i.environmental_impact.impacts[ImpactCategory.FINE_PARTICLES].manufacture
+        i.get_environmental_impact().impacts[ImpactCategory.FINE_PARTICLES].manufacture
         == 24324.234324 * DISEASE_INCIDENCE / i.unit
     )
     assert (
-        i.environmental_impact.impacts[ImpactCategory.IONIZING_RADIATIONS].manufacture
+        i.get_environmental_impact()
+        .impacts[ImpactCategory.IONIZING_RADIATIONS]
+        .manufacture
         == 421312.123 * KG_BQ_U235E / i.unit
     )
     assert (
-        i.environmental_impact.impacts[ImpactCategory.WATER_DEPLETION].manufacture
+        i.get_environmental_impact().impacts[ImpactCategory.WATER_DEPLETION].manufacture
         == 124.123 * CUBIC_METER / i.unit
     )
     assert (
-        i.environmental_impact.impacts[ImpactCategory.ELECTRONIC_WASTE].manufacture
+        i.get_environmental_impact()
+        .impacts[ImpactCategory.ELECTRONIC_WASTE]
+        .manufacture
         == 134242.12341 * ELECTRONIC_WASTE / i.unit
     )
     assert (
-        i.environmental_impact.impacts[ImpactCategory.PRIMARY_ENERGY].manufacture
+        i.get_environmental_impact().impacts[ImpactCategory.PRIMARY_ENERGY].manufacture
         == 1234.23123 * PRIMARY_MJ / i.unit
     )
     assert (
-        i.environmental_impact.impacts[ImpactCategory.RAW_MATERIALS].manufacture
+        i.get_environmental_impact().impacts[ImpactCategory.RAW_MATERIALS].manufacture
         == 124.123441 * TONNE_MIPS / i.unit
     )
 

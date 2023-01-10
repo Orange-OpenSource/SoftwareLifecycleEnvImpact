@@ -1,3 +1,5 @@
+from unittest import mock
+from unittest.mock import MagicMock
 from pint import Quantity, Unit
 import yaml
 from impacts_model.impact_sources import (
@@ -11,6 +13,7 @@ from impacts_model.impacts import EnvironmentalImpact, ImpactCategory, ImpactVal
 from impacts_model.quantities.quantities import (
     DAY,
     KG_CO2E,
+    PEOPLE,
     SERVER,
     deserialize_quantity,
 )
@@ -87,23 +90,25 @@ def test_yaml_loading() -> None:
 
         # Assert that co2 is set for all
         assert (
-            impact_source.environmental_impact.impacts[ImpactCategory.CLIMATE_CHANGE]
+            impact_source.get_environmental_impact().impacts[
+                ImpactCategory.CLIMATE_CHANGE
+            ]
             is not None
         )
 
-        for indicator in impact_source.environmental_impact.impacts:
+        for indicator in impact_source.get_environmental_impact().impacts:
             # Test all environmentalImpact to see if they're rightly typed as ImpactValue
             assert isinstance(
-                impact_source.environmental_impact.impacts[indicator], ImpactValue
+                impact_source.get_environmental_impact().impacts[indicator], ImpactValue
             )
 
             # Test that we retrieve an impact with the right quantity if we remove the impact unit, ie for one unit
-            impact_value = impact_source.environmental_impact.impacts[indicator]
+            impact_value = impact_source.get_environmental_impact().impacts[indicator]
             # For manufacture
             if impact_value.manufacture is not None:
                 tmp = impact_value.manufacture * impact_source.unit
                 assert tmp.units == indicator.value or tmp.dimensionless
-
+            # For use
             if impact_value.use is not None:
                 tmp = impact_value.use * impact_source.unit
                 assert tmp.units == indicator.value or tmp.dimensionless
@@ -121,3 +126,64 @@ def test_impact_source_factory() -> None:
     for d in list:
         loaded_impact = impact_source_factory(d)
         assert isinstance(loaded_impact, ImpactSource)
+
+
+@mock.patch(
+    "impacts_model.impact_sources.impact_source_factory",
+    MagicMock(
+        return_value=ImpactSource(
+            id="testid",
+            name="test",
+            unit=SERVER,
+            environmental_impact=EnvironmentalImpact(
+                climate_change=ImpactValue(use=999 * KG_CO2E)
+            ),
+        ),
+    ),
+)
+def test_impact_source_get_environmental_impact() -> None:
+    # Test only direct impacts
+
+    a = (
+        ImpactSource(
+            id="testid",
+            name="test",
+            unit=SERVER,
+            environmental_impact=EnvironmentalImpact(
+                climate_change=ImpactValue(use=1776 * KG_CO2E)
+            ),
+        )
+        .get_environmental_impact()
+        .impacts[ImpactCategory.CLIMATE_CHANGE]
+        .use
+    )
+    assert a == 1776 * (KG_CO2E / SERVER)
+
+    # Test when using other resources
+    b = (
+        ImpactSource(
+            id="testid",
+            name="test",
+            unit=SERVER,
+            uses=[
+                {"quantity": "10 server", "resource_id": "testid"},
+                {"quantity": "34 server", "resource_id": "testid"},
+            ],
+            environmental_impact=EnvironmentalImpact(
+                climate_change=ImpactValue(use=1776 * KG_CO2E)
+            ),
+        )
+        .get_environmental_impact()
+        .impacts[ImpactCategory.CLIMATE_CHANGE]
+        .use
+    )
+    assert b == 1776 * (KG_CO2E / SERVER) + 10 * (999 * KG_CO2E) + 34 * (999 * KG_CO2E)
+
+
+def test_impact_source_computation() -> None:
+    assert impact_source_factory("people").get_environmental_impact().impacts[
+        ImpactCategory.CLIMATE_CHANGE
+    ].use == 12.26836154188304 * KG_CO2E / (PEOPLE * DAY)
+    assert impact_source_factory("transportation").get_environmental_impact().impacts[
+        ImpactCategory.CLIMATE_CHANGE
+    ].use == 6.583113447812001 * KG_CO2E / (PEOPLE * DAY)

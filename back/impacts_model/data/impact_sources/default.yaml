@@ -850,10 +850,14 @@ id: "transportation"
 name: "Transportation"
 unit: people * day
 uses:
+  - { quantity: 0.549765 * km, resource_id: bike }
+  - { quantity: 6.7547204 * km, resource_id: publicTransport }
+  - { quantity: 29.0618908 * km, resource_id: car }
+  - { quantity: 1.1085436 * km, resource_id: motorbike }
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
     manufacture:
-    use: "6.583113447812 kg_co2e"
+    use:
   resource_depletion: !ImpactValue
     manufacture:
     use:
@@ -880,26 +884,28 @@ environmental_impact: !EnvironmentalImpact
     use:
 source: >
   Transport share: https://www.statistiques.developpement-durable.gouv.fr/resultats-detailles-de-lenquete-mobilite-des-personnes-de-2019?rubrique=60&dossier=1345
-  Distance moyenne: https://www.observatoire-des-territoires.gouv.fr/kiosque/2019-mobilite-10-les-cadres-parcourent-chaque-annee-pres-de-3000-km-de-plus-que-les
+  Mean distance: https://www.observatoire-des-territoires.gouv.fr/kiosque/2019-mobilite-10-les-cadres-parcourent-chaque-annee-pres-de-3000-km-de-plus-que-les
 methodology: >
+  MEAN_DISTANCE = (19 * 2 * km) / day
+
   FOOT_PERCENTAGE = 1.3818
+  FOOT_KM = 0.525084
+
   BIKE_PERCENTAGE = 1.44675
+  BIKE_KM = 0.549765
+
   PUBLIC_TRANSPORT_PERCENTAGE = 17.77558
+  PUBLIC_TRANSPORT_KM = 6.7547204
+
+
   CAR_PERCENTAGE = (
       76.32407 + 0.15459
-  )
-  MOTORBIKE_PERCENTAGE = 2.91722
+  ) = 76.47866
+  CAR_KM = 29.0618908
 
-  MEAN_DISTANCE = 19 * 2 * km / day
-  (
-      FOOT_PERCENTAGE * 0 * kg_co2e / km
-      + BIKE_PERCENTAGE * 0.00348 * kg_co2e / km
-      + PUBLIC_TRANSPORT_PERCENTAGE * 0.00503 * kg_co2e / km
-      + CAR_PERCENTAGE * 0.218 * kg_co2e / km
-      + MOTORBIKE_PERCENTAGE * 0.191 * kg_co2e / km
-  )
-  / 100
-  * MEAN_DISTANCE
+  MOTORBIKE_PERCENTAGE = 2.91722
+  MOTORBIKE_KM = 1.1085436
+
   = 6.583113447812 kg_co2e / day
 ---
 !ImpactSource
@@ -907,10 +913,13 @@ id: "people"
 name: "People"
 unit: people * day
 uses:
+  - { quantity: 1 people * day, resource_id: office }
+  - { quantity: 1 people * day, resource_id: transportation }
+  - { quantity: 7 * laptop * hour, resource_id: laptop }
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
     manufacture:
-    use: "12.268361541883039 kg_co2e"
+    use:
   resource_depletion: !ImpactValue
     manufacture:
     use:

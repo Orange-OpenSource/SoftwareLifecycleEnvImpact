@@ -1,4 +1,5 @@
 from __future__ import annotations
+from copy import deepcopy
 
 import importlib
 import inspect
@@ -25,21 +26,51 @@ class ImpactSource:
         name: str,
         unit: str | Unit,
         environmental_impact: EnvironmentalImpact,
-        uses: Any = "",
+        uses=[],
         source: str = "",
         methodology: str = "",
     ) -> None:
 
         self.id = id
         self.name = name
-        self.environmental_impact = environmental_impact
+        self._environmental_impact = environmental_impact
+        self.uses = uses if uses is not None else []
         self.unit = deserialize_unit(unit)
 
         # Set as impact per ImpactSource unit
-        self.environmental_impact.divide_by(self.unit)
+        self._environmental_impact.divide_by(self.unit)
 
         self.source = source
         self.methodology = methodology
+
+    def get_environmental_impact(self) -> EnvironmentalImpact:
+        # If does not have element is uses, directly return the impact
+        if len(self.uses) == 0:
+            return self._environmental_impact
+
+        # Else, add impacts from uses
+
+        # Copy the ImpactSource impact to avoid modifying it directly
+        result = deepcopy(self._environmental_impact)
+
+        # Itearate through uses
+        for use in self.uses:
+            # deserialize the impact source and amount
+            impact_source = impact_source_factory(use["resource_id"])
+            amount = deserialize_quantity(use["quantity"])
+
+            if amount:
+                # For each impact
+                for (
+                    category,
+                    value,
+                ) in impact_source.get_environmental_impact().impacts.items():
+                    # Compute the other resource quantity consumed
+                    res = value.multiplied_by(amount)
+                    # Set as quantity per this ImpactSource unit
+                    res.divide_by(self.unit)
+                    result.add_impact(category, res)
+        return result
 
     @property
     def has_time_input(self) -> bool:
@@ -67,15 +98,15 @@ class ImpactSourceSchema(Schema):
 
 def _get_all_impact_sources() -> list[ImpactSource]:
     def impact_source_constructor(loader, node):
-        fields = loader.construct_mapping(node)
+        fields = loader.construct_mapping(node, deep=True)
         return ImpactSource(**fields)
 
     def impact_value_constructor(loader, node) -> ImpactValue:
-        fields = loader.construct_mapping(node)
+        fields = loader.construct_mapping(node, deep=True)
         return ImpactValue(**fields)
 
     def environmental_impact_constructor(loader, node) -> EnvironmentalImpact:
-        fields = loader.construct_mapping(node)
+        fields = loader.construct_mapping(node, deep=True)
         return EnvironmentalImpact(**fields)
 
     yaml.add_constructor("!ImpactSource", impact_source_constructor)
