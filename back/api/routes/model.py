@@ -42,12 +42,7 @@ def get_model_impact(model_id: int) -> Any:
     """
     model = db.session.query(Model).get_or_404(model_id)
 
-    task_impact = TaskImpact(
-        model.root_task.id,
-        model.root_task.get_environmental_impact(),
-        model.root_task.get_subtasks_impact(),
-        model.root_task.get_impact_by_resource_type(),
-    )
+    task_impact = model.root_task.get_impact()
     schema = TaskImpactSchema()
     return schema.dump(task_impact)
 
