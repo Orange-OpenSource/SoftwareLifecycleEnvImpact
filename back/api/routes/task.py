@@ -12,7 +12,6 @@ from impacts_model.data_model import (
 )
 from impacts_model.impacts import (
     EnvironmentalImpactSchema,
-    TaskImpact,
     TaskImpactSchema,
 )
 from impacts_model.templates import get_task_template_by_id, TaskTemplate

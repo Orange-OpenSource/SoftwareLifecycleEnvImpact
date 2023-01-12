@@ -25,7 +25,8 @@ from impacts_model.impact_sources import (
 )
 from impacts_model.impacts import (
     EnvironmentalImpact,
-    EnvironmentalImpactByResource,
+    ImpactSourceId,
+    ImpactSourcesImpact,
     ImpactCategory,
     ImpactValue,
     TaskImpact,
@@ -235,28 +236,23 @@ class Resource(db.Model):  # type: ignore
             _period=self._period,
         )
 
-    def get_environmental_impact(self) -> EnvironmentalImpact:
+    def get_environmental_impact(self) -> ImpactSourcesImpact:
         """
-        Get a resource complete environmental impact as an EnvironmentalImpact object
-        :return: an EnvironmentalImpact object with all resource impacts
+        Retrun aresource impact, as its value multiplied by the impact source impact
+        :return: an ImpactSourcesImpact to keep track of the impact source id
         """
-        environmental_impact = EnvironmentalImpact()
+        result: ImpactSourcesImpact = {self.impact_source_id: EnvironmentalImpact()}
 
-        for key in self.impact_source.get_environmental_impact().impacts:
-            # Adding the impact to impact category indicator unit
-            environmental_impact.add_impact(key, self.get_category_impact(key))
-        return environmental_impact
+        # Retrieve the ImpactSource complete impact
+        impact_source_total = self.impact_source.get_environmental_impact().get_total()
 
-    def get_category_impact(self, impact_category: ImpactCategory) -> ImpactValue:
-        """
-        Compute and return a resource environmental impact for an ImpactCategory
-        :param resource: the Resource object to view to impact from
-        :param impact_category: The ImpactCategory to retrieve the impact
-        :return: A quantity corresponding to the resource ImpactCategory quantity
-        """
-        return self.impact_source.get_environmental_impact().impacts[
-            impact_category
-        ].multiplied_by(self.value())
+        # Iterate through ImpactCategories to multiple each of them by the resource value
+        for category in impact_source_total:
+            # Multiplied by self.value() to obtain an impact, not an impact/unit
+            result[self.impact_source_id].add_impact(
+                category, impact_source_total[category].multiplied_by(self.value())
+            )
+        return result
 
 
 class QuantitySchema(Schema):
@@ -500,11 +496,22 @@ class Task(db.Model):  # type: ignore
         )
 
     def get_impact(self) -> TaskImpact:
+        impact = self.get_environmental_impact()
+
+        impact_sources_impact: dict[
+            ImpactSourceId, dict[ImpactCategory, ImpactValue]
+        ] = {}
+
+        for impact_source in impact.impact_sources_impact:
+            impact_sources_impact[impact_source] = impact.impact_sources_impact[
+                impact_source
+            ].get_total()
+
         return TaskImpact(
-            self.id,
-            self.get_environmental_impact(),
-            self.get_subtasks_impact(),
-            self.get_impact_by_resource_type(),
+            task_id=self.id,
+            task_impact=impact.get_total(),
+            subtasks=self.get_subtasks_impact(),
+            impact_sources=impact_sources_impact,
         )
 
     def get_environmental_impact(self) -> EnvironmentalImpact:
@@ -515,7 +522,7 @@ class Task(db.Model):  # type: ignore
         environmental_impact = EnvironmentalImpact()
 
         for r in self.resources:
-            environmental_impact.add(r.get_environmental_impact())
+            environmental_impact.add_impact_source_impact(r.get_environmental_impact())
 
         for s in self.subtasks:
             environmental_impact.add(s.get_environmental_impact())
@@ -530,49 +537,6 @@ class Task(db.Model):  # type: ignore
         for subtask in self.subtasks:
             impacts_list.append(subtask.get_impact())
         return impacts_list
-
-    def get_category_impact(self, category: ImpactCategory) -> ImpactValue:
-        """
-        Compute and return a Task impact for a given ImpactCategory
-        :param category: the ImpactCategory to get the value for the task
-        :return: A quantity corresponding to the task ImpactCategory chosen
-        """
-        res_impact = ImpactValue()
-
-        # Add this task resources impacts
-        for r in self.resources:
-            res_impact.add_impact(r.get_category_impact(category))
-
-        # Add subtasks impacts
-        for s in self.subtasks:
-            res_impact.add_impact(s.get_category_impact(category))
-
-        return res_impact
-
-    def get_impact_by_resource_type(self) -> EnvironmentalImpactByResource:
-        """
-        Return a class environmental impact classified by its Resource types
-        :param task: task to get the impact from
-        :return: EnvironmentalImpactByResource object, with EnvironmentalImpact objects by resource type
-        """
-        result: EnvironmentalImpactByResource = {}
-
-        for r in self.resources:
-            impacts_to_add = r.get_environmental_impact()
-            if r.impact_source_id in result:
-                result[r.impact_source_id].add(impacts_to_add)
-            else:
-                result[r.impact_source_id] = impacts_to_add
-
-        for s in self.subtasks:
-            subtasks_impacts = s.get_impact_by_resource_type()
-            for resource_type in subtasks_impacts:
-                if resource_type in result:
-                    result[resource_type].add(subtasks_impacts[resource_type])
-                else:
-                    result[resource_type] = subtasks_impacts[resource_type]
-
-        return result
 
 
 class TaskSchema(ma.SQLAlchemyAutoSchema):  # type: ignore

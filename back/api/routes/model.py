@@ -4,7 +4,7 @@ from copy import copy
 import jsonpatch
 from flask import abort, request
 
-from impacts_model.impacts import TaskImpact, TaskImpactSchema
+from impacts_model.impacts import TaskImpactSchema
 from api.routes.task import get_task
 from impacts_model.data_model import Model, ModelSchema, db, Project, Task, TaskSchema
 from impacts_model.database import (

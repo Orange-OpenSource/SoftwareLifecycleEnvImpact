@@ -110,7 +110,9 @@ def test_get_task_impact_by_category(
     """Test that task co2 impact is those of all _resources from itself and its children"""
 
     # Mock task = 2 * TestResource (mocked) = 2 * (1000 + 776) = 3552
-    result = single_task_fixture.get_category_impact(ImpactCategory.CLIMATE_CHANGE)
+    result = single_task_fixture.get_impact().task_impact.get_total()[
+        ImpactCategory.CLIMATE_CHANGE
+    ]
     assert isinstance(result, ImpactValue)
     assert result.manufacture is not None
     assert result.manufacture.units == KG_CO2E
@@ -118,9 +120,9 @@ def test_get_task_impact_by_category(
 
     # Test adding a subtask
     # Task = 3552, subtask = 1776 -> 5328
-    result = task_fixture_with_subtask.get_category_impact(
+    result = task_fixture_with_subtask.get_impact().task_impact.get_total()[
         ImpactCategory.CLIMATE_CHANGE
-    )
+    ]
     assert isinstance(result, ImpactValue)
     assert result.manufacture is not None
     assert result.manufacture.units == KG_CO2E
@@ -148,14 +150,20 @@ def test_get_task_impact_list(
     :return:
     """
     # Test res
-    single_task_fixture.get_environmental_impact().impacts[
-        ImpactCategory.CLIMATE_CHANGE
-    ].manufacture == 2000 * KG_CO2E
+    assert (
+        single_task_fixture.get_environmental_impact()
+        .get_total()[ImpactCategory.CLIMATE_CHANGE]
+        .use
+        == 2000 * KG_CO2E
+    )
 
     # Test adding a subtask
-    single_task_fixture.get_environmental_impact().impacts[
-        ImpactCategory.CLIMATE_CHANGE
-    ].manufacture == 3000 * KG_CO2E
+    assert (
+        task_fixture_with_subtask.get_environmental_impact()
+        .get_total()[ImpactCategory.CLIMATE_CHANGE]
+        .use
+        == 3000 * KG_CO2E
+    )
 
 
 @mock.patch(
@@ -171,24 +179,22 @@ def test_get_task_impact_list(
         )
     ),
 )
-def test_get_task_impact_by_resource_type(
+def test_get_task_impact_by_impact_source(
     single_task_fixture: Task, task_fixture_with_subtask: Task
 ) -> None:
     """
-    Test the function get_impact_by_resource_type with two resources and a subtask
+    Test the impact_source_impact property to get task by impactsource id with two resources and a subtask
     """
-    # Test two res
-    res_dict = single_task_fixture.get_impact_by_resource_type()
+    # Test two resources
+    res_dict = single_task_fixture.get_impact().task_impact.impact_sources_impact
     assert (
-        res_dict["TestImpactSource"].impacts[ImpactCategory.CLIMATE_CHANGE].use
-        == single_task_fixture.get_category_impact(ImpactCategory.CLIMATE_CHANGE).use
+        res_dict["TestImpactSource"].get_total()[ImpactCategory.CLIMATE_CHANGE].use
+        == 2000 * KG_CO2E
     )
 
     # Test subtasks
-    res_dict = task_fixture_with_subtask.get_impact_by_resource_type()
+    res_dict = task_fixture_with_subtask.get_impact().task_impact.impact_sources_impact
     assert (
-        res_dict["TestImpactSource"].impacts[ImpactCategory.CLIMATE_CHANGE].use
-        == task_fixture_with_subtask.get_category_impact(
-            ImpactCategory.CLIMATE_CHANGE
-        ).use
+        res_dict["TestImpactSource"].get_total()[ImpactCategory.CLIMATE_CHANGE].use
+        == 3000 * KG_CO2E
     )

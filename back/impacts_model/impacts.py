@@ -1,4 +1,5 @@
 from __future__ import annotations
+from copy import deepcopy
 from dataclasses import dataclass
 
 from enum import Enum
@@ -67,25 +68,36 @@ class ImpactValue:
         self.use = deserialize_quantity(use)
 
     def add_impact(self, second_impact: ImpactValue) -> None:
+        """
+        Add another impact_value to this one
+        """
         if second_impact.manufacture is not None:
             if self.manufacture is not None:
                 self.manufacture += second_impact.manufacture
             else:
+                # If self.manufacture is None, set it a the one to add
                 self.manufacture = second_impact.manufacture
 
         if second_impact.use is not None:
             if self.use is not None:
                 self.use += second_impact.use
             else:
+                # If self.use is None, set it a the one to add
                 self.use = second_impact.use
 
     def divide_by(self, unit: Unit) -> None:
+        """
+        Divide both manufacture and use by a unit, if they exists
+        """
         self.manufacture = (
             self.manufacture / unit if self.manufacture is not None else None
         )
         self.use = self.use / unit if self.use is not None else None
 
     def multiplied_by(self, value: Quantity[Any]) -> ImpactValue:
+        """
+        Return a a new ImpactValue multiplied by the Quantity as parameter
+        """
         return ImpactValue(
             manufacture=(
                 (self.manufacture * value).to_reduced_units()
@@ -108,21 +120,22 @@ class ImpactValueSchema(Schema):
 #######################
 class EnvironmentalImpact:
     """
-    Class to aggregate impact categorys with their associated quantities
+    Class to aggregate impact categories with their associated quantities
     Helpers method to easily add a single impact, a list or another EnvironmentalImpact object
     """
 
     def __init__(
         self,
-        climate_change: ImpactValue = None,
-        resource_depletion: ImpactValue = None,
-        acidification: ImpactValue = None,
-        fine_particles: ImpactValue = None,
-        ionizing_radiations: ImpactValue = None,
-        water_depletion: ImpactValue = None,
-        electronic_waste: ImpactValue = None,
-        primary_energy_consumption: ImpactValue = None,
-        raw_materials: ImpactValue = None,
+        climate_change: Optional[ImpactValue] = None,
+        resource_depletion: Optional[ImpactValue] = None,
+        acidification: Optional[ImpactValue] = None,
+        fine_particles: Optional[ImpactValue] = None,
+        ionizing_radiations: Optional[ImpactValue] = None,
+        water_depletion: Optional[ImpactValue] = None,
+        electronic_waste: Optional[ImpactValue] = None,
+        primary_energy_consumption: Optional[ImpactValue] = None,
+        raw_materials: Optional[ImpactValue] = None,
+        impact_sources_impact: Optional[ImpactSourcesImpact] = None,
     ) -> None:
         """
         :param climate_change: Climate change as kgeqCO2
@@ -133,87 +146,91 @@ class EnvironmentalImpact:
         :param electronic_waste: mass of electrical and electronic waste generated as Tonne
         :param primary_energy_consumption: Primary energy consumed as MJ
         :param raw_materials: Raw materials consumed as Ton
+        impact_sources_impact: sub impacts, with their respective impact_id as keys
         """
-        # Do not put in constructor, pyyaml set them as None anyway
-        if climate_change is None:
-            climate_change = ImpactValue(
-                manufacture="0 " + ImpactCategory.CLIMATE_CHANGE.value,
-                use="0 " + ImpactCategory.CLIMATE_CHANGE.value,
-            )
-        if resource_depletion is None:
-            resource_depletion = ImpactValue(
-                manufacture="0 " + ImpactCategory.RESOURCE_DEPLETION.value,
-                use="0 " + ImpactCategory.RESOURCE_DEPLETION.value,
-            )
-        if acidification is None:
-            acidification = ImpactValue(
-                manufacture="0 " + ImpactCategory.ACIDIFICATION.value,
-                use="0 " + ImpactCategory.ACIDIFICATION.value,
-            )
-        if fine_particles is None:
-            fine_particles = ImpactValue(
-                manufacture="0 " + ImpactCategory.FINE_PARTICLES.value,
-                use="0 " + ImpactCategory.FINE_PARTICLES.value,
-            )
-        if ionizing_radiations is None:
-            ionizing_radiations = ImpactValue(
-                manufacture="0 " + ImpactCategory.IONIZING_RADIATIONS.value,
-                use="0 " + ImpactCategory.IONIZING_RADIATIONS.value,
-            )
-        if water_depletion is None:
-            water_depletion = ImpactValue(
-                manufacture="0 " + ImpactCategory.WATER_DEPLETION.value,
-                use="0 " + ImpactCategory.WATER_DEPLETION.value,
-            )
-        if electronic_waste is None:
-            electronic_waste = ImpactValue(
-                manufacture="0 " + ImpactCategory.ELECTRONIC_WASTE.value,
-                use="0 " + ImpactCategory.ELECTRONIC_WASTE.value,
-            )
-        if primary_energy_consumption is None:
-            primary_energy_consumption = ImpactValue(
-                manufacture="0 " + ImpactCategory.PRIMARY_ENERGY.value,
-                use="0 " + ImpactCategory.PRIMARY_ENERGY.value,
-            )
-        if raw_materials is None:
-            raw_materials = ImpactValue(
-                "0 " + ImpactCategory.RAW_MATERIALS.value,
-                "0 " + ImpactCategory.RAW_MATERIALS.value,
-            )
-
-        self.impacts: dict[ImpactCategory, ImpactValue] = {
-            ImpactCategory.CLIMATE_CHANGE: climate_change,
-            ImpactCategory.RESOURCE_DEPLETION: resource_depletion,
-            ImpactCategory.ACIDIFICATION: acidification,
-            ImpactCategory.FINE_PARTICLES: fine_particles,
-            ImpactCategory.IONIZING_RADIATIONS: ionizing_radiations,
-            ImpactCategory.WATER_DEPLETION: water_depletion,
-            ImpactCategory.ELECTRONIC_WASTE: electronic_waste,
-            ImpactCategory.PRIMARY_ENERGY: primary_energy_consumption,
-            ImpactCategory.RAW_MATERIALS: raw_materials,
+        # DO NOT PUT DIRECTLY IN PARAMETERS, pyyaml set them as None anyway
+        self._impacts: dict[ImpactCategory, ImpactValue] = {
+            ImpactCategory.CLIMATE_CHANGE: climate_change
+            if climate_change is not None
+            else ImpactValue(),
+            ImpactCategory.RESOURCE_DEPLETION: resource_depletion
+            if resource_depletion is not None
+            else ImpactValue(),
+            ImpactCategory.ACIDIFICATION: acidification
+            if acidification is not None
+            else ImpactValue(),
+            ImpactCategory.FINE_PARTICLES: fine_particles
+            if fine_particles is not None
+            else ImpactValue(),
+            ImpactCategory.IONIZING_RADIATIONS: ionizing_radiations
+            if ionizing_radiations is not None
+            else ImpactValue(),
+            ImpactCategory.WATER_DEPLETION: water_depletion
+            if water_depletion is not None
+            else ImpactValue(),
+            ImpactCategory.ELECTRONIC_WASTE: electronic_waste
+            if electronic_waste is not None
+            else ImpactValue(),
+            ImpactCategory.PRIMARY_ENERGY: primary_energy_consumption
+            if primary_energy_consumption is not None
+            else ImpactValue(),
+            ImpactCategory.RAW_MATERIALS: raw_materials
+            if raw_materials is not None
+            else ImpactValue(),
         }
+        self.impact_sources_impact: ImpactSourcesImpact = (
+            {} if impact_sources_impact is None else impact_sources_impact
+        )
+
+    def get_total(self) -> dict[ImpactCategory, ImpactValue]:
+        """
+        Compute and return the total of direct impacts as well as sub ones, i.e. classified by ImpactSource id
+        """
+        # Copy self impact to avoid data tempering
+        result = deepcopy(self._impacts)
+
+        # Iterate through impact_sources_impact to add their respective impacts to the total
+        for impact_source_id in self.impact_sources_impact:
+            # Retrieve the total impact for each ImpactSource
+            total = self.impact_sources_impact[impact_source_id].get_total()
+
+            # For each category, add to result
+            for impact_category in total:
+                if impact_category not in result:
+                    result[impact_category] = ImpactValue()
+                result[impact_category].add_impact(total[impact_category])
+        return result
 
     def divide_by(self, unit: Unit) -> None:
-        for impact in self.impacts:
-            self.impacts[impact].divide_by(unit)
+        """
+        Divide both _impacts and impact_sources_impact by given unit
+        """
+        for impact in self._impacts:
+            self._impacts[impact].divide_by(unit)
+        for resource in self.impact_sources_impact:
+            self.impact_sources_impact[resource].divide_by(unit)
 
     def add(self, other: EnvironmentalImpact) -> None:
         """
-        Add another aggregated impact into this one. For each of its ImpactCategory, append the quantity if it exists in the list, create it if not
+        Merge another EnvironmentalImpact into this one.
         :param other: the EnvironmentalImpact object to add
         :return: None
         """
-        self._add_dict(other.impacts)
+        # Add resource
+        self.add_impact_source_impact(other.impact_sources_impact)
+        # Add impact for each category
+        for impact_category in other._impacts:
+            self.add_impact(impact_category, other._impacts[impact_category])
 
-    def _add_dict(self, dict_to_add: dict[ImpactCategory, ImpactValue]) -> None:
+    def add_impact_source_impact(self, other: ImpactSourcesImpact) -> None:
         """
-        Add another dict with a quantity for an ImpactCategory to this object impacts
-        For each of its ImpactCategorys, append the quantity if it exists in the list, create it if not
-        :param dict_to_add: the dict to add with self impacts
-        :return: None
+        Merge another impact_source_impact into this one
         """
-        for impact_category in dict_to_add:
-            self.add_impact(impact_category, dict_to_add[impact_category])
+        for resource in other:
+            if resource in self.impact_sources_impact:
+                self.impact_sources_impact[resource].add(other[resource])
+            else:
+                self.impact_sources_impact[resource] = other[resource]
 
     def add_impact(self, category: ImpactCategory, value: ImpactValue) -> None:
         """
@@ -223,9 +240,9 @@ class EnvironmentalImpact:
         :param value: corresponding quantity
         :return: None
         """
-        if category not in self.impacts:
-            self.impacts[category] = ImpactValue()
-        self.impacts[category].add_impact(value)
+        if category not in self._impacts:
+            self._impacts[category] = ImpactValue()
+        self._impacts[category].add_impact(value)
 
 
 class EnvironmentalImpactSchema(Schema):
@@ -238,29 +255,29 @@ class TaskImpact:
     def __init__(
         self,
         task_id: int,
-        task_impact: EnvironmentalImpact,
+        task_impact: dict[ImpactCategory, ImpactValue],
         subtasks: List[TaskImpact],
-        resources: EnvironmentalImpactByResource,
+        impact_sources: dict[ImpactSourceId, dict[ImpactCategory, ImpactValue]],
     ):
         self.task_id = task_id
         self.task_impact = task_impact
         self.subtasks = subtasks
-        self.resources = resources
+        self.impact_sources = impact_sources
 
 
 class TaskImpactSchema(Schema):
     task_id = fields.Integer()
-    task_impact = fields.Nested("EnvironmentalImpactSchema")
+    task_impact = fields.Dict(keys=fields.Str(), values=Nested("ImpactValueSchema"))
     subtasks = fields.Nested("TaskImpactSchema", many=True)
-    resources = fields.Dict(
-        keys=fields.Str(), values=fields.Nested("EnvironmentalImpactSchema")
+    impact_sources = fields.Dict(
+        keys=fields.Str(),
+        values=fields.Dict(keys=fields.Str(), values=Nested("ImpactValueSchema")),
     )
 
 
-##############################
-# EnvironmentalImpactByResource #
-##############################
+#######################
+# ImpactSourcesImpact #
+#######################
 
-ResourceName = str
-
-EnvironmentalImpactByResource = dict[ResourceName, EnvironmentalImpact]
+ImpactSourceId = str
+ImpactSourcesImpact = dict[ImpactSourceId, EnvironmentalImpact]

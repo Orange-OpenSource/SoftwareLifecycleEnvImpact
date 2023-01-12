@@ -1,12 +1,12 @@
 from __future__ import annotations
 from copy import deepcopy
-
-import importlib
-import inspect
 import re
-from impacts_model.impacts import EnvironmentalImpact, ImpactCategory, ImpactValue
-from pint import Quantity, Unit
-from typing import Any, Optional
+from impacts_model.impacts import (
+    EnvironmentalImpact,
+    ImpactSourceId,
+    ImpactValue,
+)
+from pint import Unit
 import yaml
 from impacts_model.quantities.quantities import (
     deserialize_quantity,
@@ -22,7 +22,7 @@ class ImpactSource:
 
     def __init__(
         self,
-        id: str,
+        id: ImpactSourceId,
         name: str,
         unit: str | Unit,
         environmental_impact: EnvironmentalImpact,
@@ -60,16 +60,20 @@ class ImpactSource:
             amount = deserialize_quantity(use["quantity"])
 
             if amount:
+                resource_impact = EnvironmentalImpact()
                 # For each impact
-                for (
-                    category,
-                    value,
-                ) in impact_source.get_environmental_impact().impacts.items():
+                for (category, value,) in (
+                    impact_source.get_environmental_impact().get_total().items()
+                ):
                     # Compute the other resource quantity consumed
                     res = value.multiplied_by(amount)
                     # Set as quantity per this ImpactSource unit
                     res.divide_by(self.unit)
-                    result.add_impact(category, res)
+                    # Add category and value to EnvironmentalImpact
+                    resource_impact.add_impact(category, res)
+
+                # Add this impact source and its impact to the result
+                result.add_impact_source_impact({impact_source.id: resource_impact})
         return result
 
     @property

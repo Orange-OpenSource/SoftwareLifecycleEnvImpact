@@ -814,11 +814,8 @@ definitions:
 
   EnvironmentalImpact:
     type: object
-    properties:
-      impacts:
-        type: object
-        additionalProperties:
-          $ref: "#/definitions/Quantity"
+    additionalProperties:
+      $ref: "#/definitions/Quantity"
     example:
       {
         "Acidification": "0 mol_Hpos",
@@ -835,13 +832,15 @@ definitions:
   TaskImpact:
     type: object
     properties:
-      task:
-        $ref: "#/definitions/Task"
+      task_id:
+        type: integer
+      task_impact:
+        $ref: "#/definitions/EnvironmentalImpact"
       subtasks:
         type: array
         items:
           $ref: "#/definitions/TaskImpact"
-      resources:
+      impact_sources:
         type: string
         additionalProperties:
           type: object
