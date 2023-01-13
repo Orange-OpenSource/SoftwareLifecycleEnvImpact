@@ -14,9 +14,9 @@
 	$: subtaskHierarchy = constructHierarchy(selectedImpactName);
 	$: subtasksLinks = constructLinks();
 
-	function constructHierarchy(tmp: string) {
+	function constructHierarchy(name: string) {
 		return hierarchy({
-			name: 'root',
+			name: name,
 			children: getHierarchyChildrenNodes(selectedTask, impactBySubtask)
 		});
 	}
@@ -80,7 +80,6 @@
 
 	function constructSubResourcesLinks(links: D3JSLink[], resourceImpact: ImpactSourceImpact, parentResourceName: string) {
 		const value = impactValueTotal(resourceImpact.total['Climate change']).value;
-		console.log('PushingSubResource ' + parentResourceName + '->' + resourceImpact.impact_source_id + ':' + value, resourceImpact);
 		if (value)
 			links.push({
 				source: parentResourceName,

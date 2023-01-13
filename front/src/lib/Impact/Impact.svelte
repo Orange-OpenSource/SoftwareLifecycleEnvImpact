@@ -1,6 +1,6 @@
 <script lang="ts">
 	import ImpactBySubtask from './ImpactBySubtask.svelte';
-	import ImpactByResource from './ImpactByResource.svelte';
+	import ImpactBySource from './ImpactBySource.svelte';
 	import { getTaskImpact } from '$lib/api/task';
 	import type { TaskImpact, Task } from '$lib/api/dataModel';
 	import Error from '$lib/Error.svelte';
@@ -52,9 +52,9 @@
 				<div class="row">
 					<h3>Resources:</h3>
 				</div>
-				<!-- <div class="row">
-					<ImpactByResource impactByResource={impact.impact_sources} />
-				</div> -->
+				<div class="row">
+					<ImpactBySource impactBySource={impact.impact_sources} />
+				</div>
 			{/if}
 		{:catch error}
 			<Error message={error.message} />
