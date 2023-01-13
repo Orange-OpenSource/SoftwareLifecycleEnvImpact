@@ -10,22 +10,27 @@
 	function convertResourcesImpactToHierarchy(): HierarchyNode<D3JSHierarchyNode> {
 		let final: D3JSHierarchyNode = {
 			name: 'root',
-			children: []
+			children: getHierarchyChildrenNodes(impactBySource)
 		};
 
-		for (const [sourceName, impact] of Object.entries(impactBySource)) {
+		return hierarchy(final);
+	}
+
+	function getHierarchyChildrenNodes(subImpacts: Record<ImpactSourceId, ImpactSourceImpact>): D3JSHierarchyNode[] {
+		let returnValue: D3JSHierarchyNode[] = [];
+		for (const [sourceName, impact] of Object.entries(subImpacts)) {
 			const total = impactValueTotal(impact.total['Climate change']).value;
 			if (total) {
-				final.children.push({
+				returnValue.push({
 					name: sourceName,
 					impact: impact.total,
 					// value: environmentalImpact['Climate change'].value,
 					co2: total,
-					children: []
+					children: getHierarchyChildrenNodes(impact.sub_impacts)
 				});
 			}
 		}
-		return hierarchy(final);
+		return returnValue;
 	}
 
 	function convertResourcesImpactToStackedData(): D3JStackedData[] {

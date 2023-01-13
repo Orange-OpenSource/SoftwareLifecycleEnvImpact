@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { hierarchy, type HierarchyNode } from 'd3';
-	import type { ResourcesImpact } from '$lib/api/dataModel';
+	import { impactValueTotal, type ResourcesImpact } from '$lib/api/dataModel';
 	import Error from '$lib/Error.svelte';
 	import Treemap from '$lib/Dataviz/Treemap.svelte';
 
@@ -15,10 +15,13 @@
 		};
 
 		for (const [resourceName, resourceImpact] of Object.entries(resourcesImpact)) {
-			final.children.push({
-				name: resourceName,
-				value: resourceImpact.impacts['Climate change'].value
-			});
+			const total = impactValueTotal(resourceImpact['Climate change']).value;
+			if (total) {
+				final.children.push({
+					name: resourceName,
+					value: total
+				});
+			}
 		}
 		return hierarchy(final);
 	}
