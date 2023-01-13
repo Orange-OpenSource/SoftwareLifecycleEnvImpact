@@ -88,7 +88,7 @@ def create_project(project: dict[str, Any]) -> Any:
     """
     POST /projects/
 
-    :param project: project to merge
+    :param project: project to create
     :return: the project inserted with its id
     """
     name = project.get("name")

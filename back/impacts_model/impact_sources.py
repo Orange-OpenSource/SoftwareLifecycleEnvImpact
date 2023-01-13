@@ -3,8 +3,11 @@ from copy import deepcopy
 import re
 from impacts_model.impacts import (
     EnvironmentalImpact,
+    ImpactCategory,
     ImpactSourceId,
+    ImpactSourceImpact,
     ImpactValue,
+    merge_env_impact,
 )
 from pint import Unit
 import yaml
@@ -33,47 +36,61 @@ class ImpactSource:
 
         self.id = id
         self.name = name
-        self._environmental_impact = environmental_impact
+        self._own_impact = environmental_impact
         self.uses = uses if uses is not None else []
         self.unit = deserialize_unit(unit)
-
-        # Set as impact per ImpactSource unit
-        self._environmental_impact.divide_by(self.unit)
 
         self.source = source
         self.methodology = methodology
 
-    def get_environmental_impact(self) -> EnvironmentalImpact:
-        # If does not have element is uses, directly return the impact
-        if len(self.uses) == 0:
-            return self._environmental_impact
+        # Set as impact per ImpactSource unit
+        for impact in self._own_impact:
+            self._own_impact[impact].divide_by(self.unit)
 
-        # Else, add impacts from uses
+    def get_impact(self) -> ImpactSourceImpact:
+        """
+        Return this impact source impact for one unit
+        """
+        sub_impacts = self._get_sub_impacts()
+        total = self._get_total(sub_impacts)
+        return ImpactSourceImpact(self.id, total, sub_impacts)
 
-        # Copy the ImpactSource impact to avoid modifying it directly
-        result = deepcopy(self._environmental_impact)
+    def _get_total(
+        self, sub_impacts: dict[ImpactSourceId, ImpactSourceImpact]
+    ) -> EnvironmentalImpact:
+        """
+        Return this ImpactSource EnvironmentalImpact, as the sum of its sub impact sources and own impact
+        """
+        # The result will always add this ImpactSource own impact
+        total = deepcopy(self._own_impact)
+        # Iterate though sub_impacts to sum them into the result
+        for sub_impact in sub_impacts:
+            total = merge_env_impact(total, sub_impacts[sub_impact].total)
+        return total
 
-        # Itearate through uses
+    def _get_sub_impacts(self) -> dict[ImpactSourceId, ImpactSourceImpact]:
+        """
+        Return a list of ImpactSourceImpact, for all the sub_impacts of this ImpactSource
+        """
+        result: dict[ImpactSourceId, ImpactSourceImpact] = {}
+
+        # Iterate through impact source used
         for use in self.uses:
             # deserialize the impact source and amount
             impact_source = impact_source_factory(use["resource_id"])
             amount = deserialize_quantity(use["quantity"])
 
             if amount:
-                resource_impact = EnvironmentalImpact()
-                # For each impact
-                for (category, value,) in (
-                    impact_source.get_environmental_impact().get_total().items()
-                ):
-                    # Compute the other resource quantity consumed
-                    res = value.multiplied_by(amount)
-                    # Set as quantity per this ImpactSource unit
-                    res.divide_by(self.unit)
-                    # Add category and value to EnvironmentalImpact
-                    resource_impact.add_impact(category, res)
-
-                # Add this impact source and its impact to the result
-                result.add_impact_source_impact({impact_source.id: resource_impact})
+                impact = impact_source.get_impact()
+                # Compute the other resource quantity consumed to remove its unit
+                impact.multiply_by(amount)
+                # Set as quantity per this ImpactSource unit
+                impact.divide_by(self.unit)
+                # Add to sub impacts list
+                if impact_source.id in result:
+                    result[impact_source.id].add(impact)
+                else:
+                    result[impact_source.id] = impact
         return result
 
     @property
@@ -110,8 +127,49 @@ def _get_all_impact_sources() -> list[ImpactSource]:
         return ImpactValue(**fields)
 
     def environmental_impact_constructor(loader, node) -> EnvironmentalImpact:
+        """
+        Useful to translate readable yaml categories to ImpactCategory
+        Ex: climate_change to kg_co2
+        """
         fields = loader.construct_mapping(node, deep=True)
-        return EnvironmentalImpact(**fields)
+        climate_change = fields["climate_change"]
+        resource_depletion = fields["resource_depletion"]
+        acidification = fields["acidification"]
+        fine_particles = fields["fine_particles"]
+        ionizing_radiations = fields["ionizing_radiations"]
+        water_depletion = fields["water_depletion"]
+        electronic_waste = fields["electronic_waste"]
+        primary_energy_consumption = fields["primary_energy_consumption"]
+        raw_materials = fields["raw_materials"]
+        return {
+            ImpactCategory.CLIMATE_CHANGE: climate_change
+            if climate_change is not None
+            else ImpactValue(),
+            ImpactCategory.RESOURCE_DEPLETION: resource_depletion
+            if resource_depletion is not None
+            else ImpactValue(),
+            ImpactCategory.ACIDIFICATION: acidification
+            if acidification is not None
+            else ImpactValue(),
+            ImpactCategory.FINE_PARTICLES: fine_particles
+            if fine_particles is not None
+            else ImpactValue(),
+            ImpactCategory.IONIZING_RADIATIONS: ionizing_radiations
+            if ionizing_radiations is not None
+            else ImpactValue(),
+            ImpactCategory.WATER_DEPLETION: water_depletion
+            if water_depletion is not None
+            else ImpactValue(),
+            ImpactCategory.ELECTRONIC_WASTE: electronic_waste
+            if electronic_waste is not None
+            else ImpactValue(),
+            ImpactCategory.PRIMARY_ENERGY: primary_energy_consumption
+            if primary_energy_consumption is not None
+            else ImpactValue(),
+            ImpactCategory.RAW_MATERIALS: raw_materials
+            if raw_materials is not None
+            else ImpactValue(),
+        }
 
     yaml.add_constructor("!ImpactSource", impact_source_constructor)
     yaml.add_constructor("!ImpactValue", impact_value_constructor)

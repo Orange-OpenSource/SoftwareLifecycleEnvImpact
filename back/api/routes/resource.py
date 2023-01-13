@@ -4,7 +4,7 @@ import jsonpatch
 from flask import abort, request
 
 from impacts_model.data_model import db, Resource, ResourceSchema, Task
-from impacts_model.impacts import EnvironmentalImpactSchema
+from impacts_model.impacts import ImpactSourceImpactSchema
 
 
 def get_resources() -> Any:
@@ -97,6 +97,6 @@ def delete_resource(resource_id: int) -> Any:
 
 def get_resource_impacts(resource_id: int) -> Any:
     resource = db.session.query(Resource).get_or_404(resource_id)
-    environmental_impact = resource.get_environmental_impact()
-    schema = EnvironmentalImpactSchema()
+    environmental_impact = resource.get_impact()
+    schema = ImpactSourceImpactSchema()
     return schema.dump(environmental_impact)

@@ -605,7 +605,7 @@ paths:
         200:
           description: Impacts
           schema:
-            $ref: "#/definitions/EnvironmentalImpact"
+            $ref: "#/definitions/ImpactSourceImpact"
 
   /impactsources:
     get:
@@ -834,7 +834,7 @@ definitions:
     properties:
       task_id:
         type: integer
-      task_impact:
+      total:
         $ref: "#/definitions/EnvironmentalImpact"
       subtasks:
         type: array
@@ -864,3 +864,17 @@ definitions:
       methodology:
         type: string
         description: Methodology of the impact source
+
+  ImpactSourceImpact:
+    type: object
+    properties:
+      impact_source_id:
+        type: string
+        description: Unique identifier
+      total:
+        $ref: "#/definitions/EnvironmentalImpact"
+      sub_impacts:
+        type: string
+        additionalProperties:
+          type: object
+          $ref: "#/definitions/EnvironmentalImpact"

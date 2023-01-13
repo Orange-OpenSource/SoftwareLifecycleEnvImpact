@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Header from './Header.svelte';
 	import { getModelTasksRequest } from '$lib/api/model';
 	import TaskComponent from '$lib/Task/Task.svelte';
 	import Error from '$lib/Error.svelte';

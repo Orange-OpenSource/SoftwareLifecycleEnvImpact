@@ -60,9 +60,9 @@ def resource_fixture(db: SQLAlchemy) -> Resource:
             id="testid",
             name="test",
             unit=SERVER,
-            environmental_impact=EnvironmentalImpact(
-                climate_change=ImpactValue(use=1776 * KG_CO2E)
-            ),
+            environmental_impact={
+                ImpactCategory.CLIMATE_CHANGE: ImpactValue(use=1776 * KG_CO2E)
+            },
         ),
     ),
 )
@@ -142,9 +142,9 @@ def test_resource_peiord(resource_fixture: Resource):
             id="testid",
             name="test",
             unit=SERVER,
-            environmental_impact=EnvironmentalImpact(
-                climate_change=ImpactValue(use=1776 * KG_CO2E)
-            ),
+            environmental_impact={
+                ImpactCategory.CLIMATE_CHANGE: ImpactValue(use=1776 * KG_CO2E)
+            },
         ),
     ),
 )
@@ -199,25 +199,24 @@ def test_resource_copy(resource_fixture: Resource):
             id="testid",
             name="test",
             unit=SERVER,
-            environmental_impact=EnvironmentalImpact(
-                climate_change=ImpactValue(
+            environmental_impact={
+                ImpactCategory.CLIMATE_CHANGE: ImpactValue(
                     manufacture=2332 * KG_CO2E, use=12332 * KG_CO2E
                 )
-            ),
+            },
         )
     ),
 )
-def test_resource_get_environmental_impact(resource_fixture: Resource) -> None:
+def test_resource_get_impact(resource_fixture: Resource) -> None:
     """
     For Resource.get_co2_impact test computation, quantity change and resource adding
     :return: None
     """
-    res_impact = resource_fixture.get_environmental_impact()
-    assert res_impact["testid"] is not None  # Test that dict contains the resource
+    res_impact = resource_fixture.get_impact()
+    assert res_impact is not None  # Test that dict contains the resource
 
-    impact = res_impact["testid"]
-    assert isinstance(impact, EnvironmentalImpact)
-    co2 = impact.get_total()[ImpactCategory.CLIMATE_CHANGE]
+    impact = res_impact.total
+    co2 = impact[ImpactCategory.CLIMATE_CHANGE]
     assert co2.manufacture is not None
     assert co2.manufacture.units == KG_CO2E
     assert co2.manufacture == (2332) * resource_fixture.value() * KG_CO2E
@@ -225,12 +224,11 @@ def test_resource_get_environmental_impact(resource_fixture: Resource) -> None:
 
     # Test quantity change
     resource_fixture.amount = 12321.423 * SERVER
-    res_impact = resource_fixture.get_environmental_impact()
-    assert res_impact["testid"] is not None  # Test that dict contains the resource
+    res_impact = resource_fixture.get_impact()
+    assert res_impact is not None  # Test that dict contains the resource
 
-    impact = res_impact["testid"]
-    assert isinstance(impact, EnvironmentalImpact)
-    co2 = impact.get_total()[ImpactCategory.CLIMATE_CHANGE]
+    impact = res_impact.total
+    co2 = impact[ImpactCategory.CLIMATE_CHANGE]
     assert co2.manufacture is not None
     assert co2.manufacture.units == KG_CO2E
     assert co2.manufacture == (2332) * 12321.423 * KG_CO2E
@@ -244,10 +242,10 @@ def test_resource_get_environmental_impact(resource_fixture: Resource) -> None:
             id="testid",
             name="test",
             unit=SERVER,
-            environmental_impact=EnvironmentalImpact(
-                climate_change=ImpactValue(use=10000.123 * KG_CO2E),
-                raw_materials=ImpactValue(use=213.3 * TONNE_MIPS),
-            ),
+            environmental_impact={
+                ImpactCategory.CLIMATE_CHANGE: ImpactValue(use=10000.123 * KG_CO2E),
+                ImpactCategory.RAW_MATERIALS: ImpactValue(use=213.3 * TONNE_MIPS),
+            },
         ),
     ),
 )
@@ -257,7 +255,7 @@ def test_resource_get_category_impact(resource_fixture: Resource) -> None:
     :return:
     """
     resource_fixture.amount = 1 * SERVER
-    assert resource_fixture.get_environmental_impact().get_total() == {
+    assert resource_fixture.get_impact().total == {
         ImpactCategory.CLIMATE_CHANGE: 10000.123 * KG_CO2E,
         ImpactCategory.RESOURCE_DEPLETION: 0 * KG_SBE,
         ImpactCategory.ACIDIFICATION: 0 * MOL_HPOS,
@@ -271,7 +269,7 @@ def test_resource_get_category_impact(resource_fixture: Resource) -> None:
 
     # Test quantity multiplication
     resource_fixture.amount = 10 * SERVER
-    assert resource_fixture.get_environmental_impact().get_total() == {
+    assert resource_fixture.get_impact.total == {
         ImpactCategory.CLIMATE_CHANGE: (10 * 10000.123) * KG_CO2E,
         ImpactCategory.RESOURCE_DEPLETION: 0 * KG_SBE,
         ImpactCategory.ACIDIFICATION: 0 * MOL_HPOS,

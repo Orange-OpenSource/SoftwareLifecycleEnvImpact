@@ -6,7 +6,7 @@ from unittest import mock
 from unittest.mock import MagicMock
 from impacts_model.data_model import Model, ModelSchema, Project, Resource, Task
 from impacts_model.impact_sources import ImpactSource
-from impacts_model.impacts import EnvironmentalImpact, ImpactValue
+from impacts_model.impacts import ImpactCategory, ImpactValue
 from impacts_model.quantities.quantities import (
     KG_CO2E,
     DAY,
@@ -39,9 +39,9 @@ def model_fixture(db: SQLAlchemy) -> Model:
             id="testid",
             name="test",
             unit=SERVER,
-            environmental_impact=EnvironmentalImpact(
-                climate_change=ImpactValue(use=1776 * KG_CO2E)
-            ),
+            environmental_impact={
+                ImpactCategory.CLIMATE_CHANGE: ImpactValue(use=1776 * KG_CO2E)
+            },
         ),
     ),
 )
@@ -114,9 +114,9 @@ def test_get_one_model(
             id="testid",
             name="test",
             unit=SERVER,
-            environmental_impact=EnvironmentalImpact(
-                climate_change=ImpactValue(use=1776 * KG_CO2E)
-            ),
+            environmental_impact={
+                ImpactCategory.CLIMATE_CHANGE: ImpactValue(use=1776 * KG_CO2E)
+            },
         ),
     ),
 )
@@ -132,9 +132,9 @@ def test_get_model_impact(client: FlaskClient, model_fixture: Model) -> None:
             id="testid",
             name="test",
             unit=SERVER,
-            environmental_impact=EnvironmentalImpact(
-                climate_change=ImpactValue(use=1776 * KG_CO2E)
-            ),
+            environmental_impact={
+                ImpactCategory.CLIMATE_CHANGE: ImpactValue(use=1776 * KG_CO2E)
+            },
         ),
     ),
 )

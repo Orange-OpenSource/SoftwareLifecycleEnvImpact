@@ -15,7 +15,6 @@ from impacts_model.quantities.quantities import (
     KG_CO2E,
     PEOPLE,
     SERVER,
-    deserialize_quantity,
 )
 
 
@@ -31,9 +30,9 @@ def test_impact_source_has_time_input() -> None:
             id="testid",
             name="test",
             unit=SERVER,
-            environmental_impact=EnvironmentalImpact(
-                climate_change=ImpactValue(1776 * KG_CO2E)
-            ),
+            environmental_impact={
+                ImpactCategory.CLIMATE_CHANGE: ImpactValue(use=1776 * KG_CO2E)
+            },
         ).has_time_input
         == False
     )
@@ -44,9 +43,9 @@ def test_impact_source_has_time_input() -> None:
             id="testid",
             name="test",
             unit=DAY * SERVER,
-            environmental_impact=EnvironmentalImpact(
-                climate_change=ImpactValue(use=1776 * KG_CO2E)
-            ),
+            environmental_impact={
+                ImpactCategory.CLIMATE_CHANGE: ImpactValue(use=1776 * KG_CO2E)
+            },
         ).has_time_input
         == True
     )
@@ -57,9 +56,9 @@ def test_impact_source_has_time_input() -> None:
             id="testid",
             name="test",
             unit=SERVER * DAY,
-            environmental_impact=EnvironmentalImpact(
-                climate_change=ImpactValue(use=1776 * KG_CO2E)
-            ),
+            environmental_impact={
+                ImpactCategory.CLIMATE_CHANGE: ImpactValue(use=1776 * KG_CO2E)
+            },
         ).has_time_input
         == True
     )
@@ -70,9 +69,9 @@ def test_impact_source_has_time_input() -> None:
             id="testid",
             name="test",
             unit=SERVER * SERVER,
-            environmental_impact=EnvironmentalImpact(
-                climate_change=ImpactValue(use=1776 * KG_CO2E)
-            ),
+            environmental_impact={
+                ImpactCategory.CLIMATE_CHANGE: ImpactValue(use=1776 * KG_CO2E)
+            },
         ).has_time_input
         == False
     )
@@ -89,7 +88,7 @@ def test_yaml_loading() -> None:
         assert isinstance(impact_source.unit, Unit)
 
         # Retrieve total
-        total = impact_source.get_environmental_impact().get_total()
+        total = impact_source.get_impact().total
 
         # Assert that co2 is set for all
         assert total[ImpactCategory.CLIMATE_CHANGE] is not None
@@ -134,45 +133,45 @@ def test_impact_source_factory() -> None:
             id="testid",
             name="test",
             unit=SERVER,
-            environmental_impact=EnvironmentalImpact(
-                climate_change=ImpactValue(use=999 * KG_CO2E)
-            ),
+            environmental_impact={
+                ImpactCategory.CLIMATE_CHANGE: ImpactValue(use=999 * KG_CO2E)
+            },
         ),
     ),
 )
-def test_impact_source_get_environmental_impact() -> None:
+def test_impact_source_get_impact() -> None:
     # Test only direct impacts
 
     a = (
         ImpactSource(
-            id="testid",
+            id="testidA",
             name="test",
             unit=SERVER,
-            environmental_impact=EnvironmentalImpact(
-                climate_change=ImpactValue(use=1776 * KG_CO2E)
-            ),
+            environmental_impact={
+                ImpactCategory.CLIMATE_CHANGE: ImpactValue(use=1776 * KG_CO2E)
+            },
         )
-        .get_environmental_impact()
-        .get_total()[ImpactCategory.CLIMATE_CHANGE]
+        .get_impact()
+        .total[ImpactCategory.CLIMATE_CHANGE]
         .use
     )
     assert a == 1776 * (KG_CO2E / SERVER)
 
     # Test when using other resources
     i = ImpactSource(
-        id="testid",
+        id="testidB",
         name="test",
         unit=SERVER,
         uses=[
             {"quantity": "10 server", "resource_id": "testid"},
             {"quantity": "34 server", "resource_id": "testid"},
         ],
-        environmental_impact=EnvironmentalImpact(
-            climate_change=ImpactValue(use=1776 * KG_CO2E)
-        ),
+        environmental_impact={
+            ImpactCategory.CLIMATE_CHANGE: ImpactValue(use=1776 * KG_CO2E)
+        },
     )
-    env_impact = i.get_environmental_impact()
-    total = env_impact.get_total()
+    env_impact = i.get_impact()
+    total = env_impact.total
     use = total[ImpactCategory.CLIMATE_CHANGE].use
 
     assert use == 1776 * (KG_CO2E / SERVER) + 10 * (999 * KG_CO2E) + 34 * (
@@ -181,13 +180,9 @@ def test_impact_source_get_environmental_impact() -> None:
 
 
 def test_impact_source_computation() -> None:
-    assert impact_source_factory("people").get_environmental_impact().get_total()[
+    assert impact_source_factory("people").get_impact().total[
         ImpactCategory.CLIMATE_CHANGE
     ].use == 12.26836154188304 * KG_CO2E / (PEOPLE * DAY)
-    assert impact_source_factory(
-        "transportation"
-    ).get_environmental_impact().get_total()[
+    assert impact_source_factory("transportation").get_impact().total[
         ImpactCategory.CLIMATE_CHANGE
-    ].use == 6.583113447812001 * KG_CO2E / (
-        PEOPLE * DAY
-    )
+    ].use == 6.583113447812001 * KG_CO2E / (PEOPLE * DAY)

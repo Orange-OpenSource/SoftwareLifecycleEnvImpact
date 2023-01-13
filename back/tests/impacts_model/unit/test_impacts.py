@@ -39,15 +39,15 @@ def test_impact_category_str() -> None:
 def test_co2() -> None:
     """Test ImpactFactor co2 property getter"""
     i = ImpactSource(
-        id=0,
+        id="0",
         name="test",
         unit=SERVER / DAY,
-        environmental_impact=EnvironmentalImpact(
-            climate_change=ImpactValue(use=103.72 * KG_CO2E)
-        ),
+        environmental_impact={
+            ImpactCategory.CLIMATE_CHANGE: ImpactValue(use=103.72 * KG_CO2E)
+        },
     )
     assert (
-        i.get_environmental_impact().get_total()[ImpactCategory.CLIMATE_CHANGE].use
+        i.get_impact().total[ImpactCategory.CLIMATE_CHANGE].use
         == 103.72 * KG_CO2E / i.unit
     )
 
@@ -63,82 +63,69 @@ def test_get_impacts_quantities() -> None:
         id="testId",
         name="test",
         unit=SERVER / DAY,
-        environmental_impact=EnvironmentalImpact(
-            climate_change=ImpactValue(
+        environmental_impact={
+            ImpactCategory.CLIMATE_CHANGE:ImpactValue(
                 manufacture=103.72 * KG_CO2E, use=103.72 * KG_CO2E
             ),
-            resource_depletion=ImpactValue(
+            ImpactCategory.RESOURCE_DEPLETION:ImpactValue(
                 manufacture=312.23 * KG_SBE, use=312.23 * KG_SBE
             ),
-            acidification=ImpactValue(
+            ImpactCategory.ACIDIFICATION:ImpactValue(
                 manufacture=32443.2134 * MOL_HPOS, use=32443.2134 * MOL_HPOS
             ),
-            fine_particles=ImpactValue(
+            ImpactCategory.FINE_PARTICLES:ImpactValue(
                 manufacture=24324.234324 * DISEASE_INCIDENCE,
                 use=24324.234324 * DISEASE_INCIDENCE,
             ),
-            ionizing_radiations=ImpactValue(
+            ImpactCategory.IONIZING_RADIATIONS:ImpactValue(
                 manufacture=421312.123 * KG_BQ_U235E, use=421312.123 * KG_BQ_U235E
             ),
-            water_depletion=ImpactValue(
+            ImpactCategory.WATER_DEPLETION:ImpactValue(
                 manufacture=124.123 * CUBIC_METER, use=124.123 * CUBIC_METER
             ),
-            electronic_waste=ImpactValue(
+            ImpactCategory.ELECTRONIC_WASTE:ImpactValue(
                 manufacture=134242.12341 * ELECTRONIC_WASTE,
                 use=134242.12341 * ELECTRONIC_WASTE,
             ),
-            primary_energy_consumption=ImpactValue(
+            ImpactCategory.PRIMARY_ENERGY:ImpactValue(
                 manufacture=1234.23123 * PRIMARY_MJ, use=1234.23123 * PRIMARY_MJ
             ),
-            raw_materials=ImpactValue(
+            ImpactCategory.RAW_MATERIALS:ImpactValue(
                 manufacture=124.123441 * TONNE_MIPS, use=124.123441 * TONNE_MIPS
             ),
-        ),
+        },
     )
-    total = i.get_environmental_impact().get_total()
+    total = i.get_impact().total
+    assert total[ImpactCategory.CLIMATE_CHANGE].manufacture == 103.72 * KG_CO2E / i.unit
     assert (
-        total[ImpactCategory.CLIMATE_CHANGE]
-        .manufacture
-        == 103.72 * KG_CO2E / i.unit
-    )
-    assert (
-        total[ImpactCategory.RESOURCE_DEPLETION]
-        .manufacture
-        == 312.23 * KG_SBE / i.unit
+        total[ImpactCategory.RESOURCE_DEPLETION].manufacture == 312.23 * KG_SBE / i.unit
     )
     assert (
-        total[ImpactCategory.ACIDIFICATION]
-        .manufacture
+        total[ImpactCategory.ACIDIFICATION].manufacture
         == 32443.2134 * MOL_HPOS / i.unit
     )
     assert (
-        total[ImpactCategory.FINE_PARTICLES]
-        .manufacture
+        total[ImpactCategory.FINE_PARTICLES].manufacture
         == 24324.234324 * DISEASE_INCIDENCE / i.unit
     )
     assert (
-        total[ImpactCategory.IONIZING_RADIATIONS]
-        .manufacture
+        total[ImpactCategory.IONIZING_RADIATIONS].manufacture
         == 421312.123 * KG_BQ_U235E / i.unit
     )
     assert (
-        total[ImpactCategory.WATER_DEPLETION]
-        .manufacture
+        total[ImpactCategory.WATER_DEPLETION].manufacture
         == 124.123 * CUBIC_METER / i.unit
     )
     assert (
-        total[ImpactCategory.ELECTRONIC_WASTE]
-        .manufacture
+        total[ImpactCategory.ELECTRONIC_WASTE].manufacture
         == 134242.12341 * ELECTRONIC_WASTE / i.unit
     )
     assert (
-        total[ImpactCategory.PRIMARY_ENERGY]
-        .manufacture
+        total[ImpactCategory.PRIMARY_ENERGY].manufacture
         == 1234.23123 * PRIMARY_MJ / i.unit
     )
     assert (
-        total[ImpactCategory.RAW_MATERIALS]
-        .manufacture
+        total[ImpactCategory.RAW_MATERIALS].manufacture
         == 124.123441 * TONNE_MIPS / i.unit
     )
 
@@ -162,11 +149,10 @@ def test_gitlab_computation() -> None:
     new_project = schema.load(data)
 
     co2_nominal = 19446017.680594422 * KG_CO2E
-    
 
     impact = new_project.models[0].root_task.get_impact()
 
-    value = impact.task_impact.get_total()[ImpactCategory.CLIMATE_CHANGE]
+    value = impact.total[ImpactCategory.CLIMATE_CHANGE]
     if value.manufacture is not None and value.use is not None:
         assert value.manufacture + value.use == co2_nominal
     elif value.manufacture is not None:

@@ -11,7 +11,6 @@ from impacts_model.data_model import (
     TaskSchema,
 )
 from impacts_model.impacts import (
-    EnvironmentalImpactSchema,
     TaskImpactSchema,
 )
 from impacts_model.templates import get_task_template_by_id, TaskTemplate
@@ -84,27 +83,17 @@ def _exchange_parent(parent_id_to_set: int, task: Task, old_parent_id: int) -> N
             task.subtasks[i].parent_task_id = old_parent_id
 
 
-def get_task_impacts(task_id: int) -> Any:  # TODO update test
+def get_task_impacts(task_id: int) -> Any:
     """
     GET /tasks/<task_id>/impacts
     Get a task environmental impact
     :param task_id: the id of the task to get the impact
     :return: TaskImpact if task exist, 404 else
     """
-    task = db.session.query(Task).get_or_404(task_id)
+    task: Task = db.session.query(Task).get_or_404(task_id)
     task_impact = task.get_impact()
     schema = TaskImpactSchema()
     return schema.dump(task_impact)
-
-
-def get_task_subtasks_impacts(task_id: int) -> Any:
-    task = db.session.query(Task).get_or_404(task_id)
-
-    impacts_list = []
-    for subtask in task.subtasks:
-        impacts_list.append(subtask.get_environmental_impact())
-    schema = EnvironmentalImpactSchema(many=True)
-    return schema.dump(impacts_list)
 
 
 def delete_task(task_id: int) -> Any:

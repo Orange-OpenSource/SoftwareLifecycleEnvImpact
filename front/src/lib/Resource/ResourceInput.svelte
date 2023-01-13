@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Resource } from '$lib/api/dataModel';
-	import { renameResourceRequest, updateResourceAmountRequest } from '$lib/api/resource';
+	import { updateResourceAmountRequest } from '$lib/api/resource';
 	import Error from '$lib/Error.svelte';
 	import TimeunitInput from './TimeunitInput.svelte';
 

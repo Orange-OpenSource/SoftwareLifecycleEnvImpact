@@ -9,8 +9,8 @@
 	/*Bound var*/
 	export let links: D3JSLink[];
 
-	let width = 640,
-		height = 400,
+	let width = 900,
+		height = 450,
 		marginTop = 5,
 		marginRight = 5,
 		marginBottom = 5,

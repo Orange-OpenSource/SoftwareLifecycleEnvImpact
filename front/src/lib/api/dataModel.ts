@@ -122,52 +122,50 @@ export interface TaskTemplate {
 	resources: Array<Resource>;
 }
 
-/**
- * Impact quantity
- */
-export interface Impact {
-	/*Impact unit */
-	unit: string;
-	/*Impact value*/
-	value: number;
+export interface ImpactValue {
+	manufacture?: Quantity;
+	use?: Quantity;
+}
+
+// Not a method of an ImpactValue class as Js cannot directly map JSON to objects
+export function impactValueTotal(impactValue: ImpactValue): Quantity {
+	if (impactValue.manufacture && impactValue.manufacture.value && impactValue.use && impactValue.use.value) {
+		return {
+			value: impactValue.manufacture.value + impactValue.use.value,
+			unit: impactValue.manufacture.unit
+		};
+	} else if (impactValue.manufacture && impactValue.manufacture.value && impactValue.manufacture.unit) {
+		return {
+			value: impactValue.manufacture.value,
+			unit: impactValue.manufacture.unit
+		};
+	} else if (impactValue.use && impactValue.use.value && impactValue.use.unit) {
+		return {
+			value: impactValue.use.value,
+			unit: impactValue.use.unit
+		};
+	}
+	return {};
 }
 
 export type ImpactName = string; // TODO should have an enum associated
-/**
- * Dict of impacts by impact name
- */
-export interface EnvironmentalImpact {
-	// Impacts
-	impacts: Record<ImpactName, Impact>;
+export type EnvironmentalImpact = Record<ImpactName, ImpactValue>;
+
+export type ImpactSourceId = string;
+export type ImpactSourcesImpact = Record<ImpactSourceId, EnvironmentalImpact>;
+
+export interface ImpactSourceImpact {
+	impact_source_id: string;
+	total: EnvironmentalImpact;
+	sub_impacts: Record<ImpactSourceId, ImpactSourceImpact>;
 }
 
-/**
- * All environmental impacts for a task
- */
 export interface TaskImpact {
-	/**
-	 * Id of the corresponding task
-	 */
 	task_id: number;
-	/**
-	 * Environmental impact for this task
-	 */
-	task_impact: EnvironmentalImpact;
-	/**
-	 * All task subtask's impacts
-	 */
-	subtasks: TaskImpact[];
-	/**
-	 * Task impact by resource name
-	 */
-	resources: ResourcesImpact;
+	total: EnvironmentalImpact;
+	sub_tasks: TaskImpact[];
+	impact_sources: Record<ImpactSourceId, ImpactSourceImpact>;
 }
-
-export type ResourceName = string;
-/**
- * Dict of environmental impact by resource name
- */
-export type ResourcesImpact = Record<ResourceName, EnvironmentalImpact>;
 
 export type Id = string;
 /**

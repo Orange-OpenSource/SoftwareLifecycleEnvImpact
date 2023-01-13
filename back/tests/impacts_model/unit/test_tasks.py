@@ -10,17 +10,9 @@ from pint import Quantity
 
 from impacts_model.data_model import Model, Project, Resource, Task
 from impacts_model.impact_sources import ImpactSource
-from impacts_model.impacts import EnvironmentalImpact, ImpactCategory, ImpactValue
+from impacts_model.impacts import ImpactCategory, ImpactValue
 from impacts_model.quantities.quantities import (
-    CUBIC_METER,
-    DISEASE_INCIDENCE,
-    ELECTRONIC_WASTE,
-    KG_BQ_U235E,
     KG_CO2E,
-    KG_SBE,
-    MOL_HPOS,
-    PRIMARY_MJ,
-    TONNE_MIPS,
     SERVER,
 )
 
@@ -40,12 +32,12 @@ def single_task_fixture(db: SQLAlchemy) -> Task:
 
     resource1 = Resource(
         name="testResource 1",
-        impact_source_id="TestImpactSource",
+        impact_source_id="testImpactSource",
         amount=1 * SERVER,
     )
     resource2 = Resource(
         name="testResource 2",
-        impact_source_id="TestImpactSource",
+        impact_source_id="testImpactSource",
         amount=1 * SERVER,
     )
     task.resources = [resource1, resource2]
@@ -66,19 +58,19 @@ def task_fixture_with_subtask(db: SQLAlchemy) -> Task:
 
     resource1 = Resource(
         name="testResource 3",
-        impact_source_id="TestImpactSource",
+        impact_source_id="testImpactSource",
         amount=1 * SERVER,
     )
     resource2 = Resource(
         name="testResource 4",
-        impact_source_id="TestImpactSource",
+        impact_source_id="testImpactSource",
         amount=1 * SERVER,
     )
     task.resources = [resource1, resource2]
     subtask = Task(name="Test task subtask")
     resource3 = Resource(
-        name="testResource 4",
-        impact_source_id="TestImpactSource",
+        name="testResource 5",
+        impact_source_id="testImpactSource",
         amount=1 * SERVER,
     )
     subtask.resources = [resource3]
@@ -95,12 +87,12 @@ def task_fixture_with_subtask(db: SQLAlchemy) -> Task:
     "impacts_model.data_model.impact_source_factory",
     MagicMock(
         return_value=ImpactSource(
-            id="testid",
+            id="testImpactSource",
             name="test",
             unit=SERVER,
-            environmental_impact=EnvironmentalImpact(
-                climate_change=ImpactValue(manufacture=1776 * KG_CO2E)
-            ),
+            environmental_impact={
+                ImpactCategory.CLIMATE_CHANGE: ImpactValue(manufacture=1776 * KG_CO2E)
+            },
         ),
     ),
 )
@@ -110,9 +102,7 @@ def test_get_task_impact_by_category(
     """Test that task co2 impact is those of all _resources from itself and its children"""
 
     # Mock task = 2 * TestResource (mocked) = 2 * (1000 + 776) = 3552
-    result = single_task_fixture.get_impact().task_impact.get_total()[
-        ImpactCategory.CLIMATE_CHANGE
-    ]
+    result = single_task_fixture.get_impact().total[ImpactCategory.CLIMATE_CHANGE]
     assert isinstance(result, ImpactValue)
     assert result.manufacture is not None
     assert result.manufacture.units == KG_CO2E
@@ -120,9 +110,7 @@ def test_get_task_impact_by_category(
 
     # Test adding a subtask
     # Task = 3552, subtask = 1776 -> 5328
-    result = task_fixture_with_subtask.get_impact().task_impact.get_total()[
-        ImpactCategory.CLIMATE_CHANGE
-    ]
+    result = task_fixture_with_subtask.get_impact().total[ImpactCategory.CLIMATE_CHANGE]
     assert isinstance(result, ImpactValue)
     assert result.manufacture is not None
     assert result.manufacture.units == KG_CO2E
@@ -133,12 +121,12 @@ def test_get_task_impact_by_category(
     "impacts_model.data_model.impact_source_factory",
     MagicMock(
         return_value=ImpactSource(
-            id="testid",
+            id="testImpactSource",
             name="test",
             unit=SERVER,
-            environmental_impact=EnvironmentalImpact(
-                climate_change=ImpactValue(use=1000 * KG_CO2E)
-            ),
+            environmental_impact={
+                ImpactCategory.CLIMATE_CHANGE: ImpactValue(use=1000 * KG_CO2E)
+            },
         )
     ),
 )
@@ -151,17 +139,13 @@ def test_get_task_impact_list(
     """
     # Test res
     assert (
-        single_task_fixture.get_environmental_impact()
-        .get_total()[ImpactCategory.CLIMATE_CHANGE]
-        .use
+        single_task_fixture.get_impact().total[ImpactCategory.CLIMATE_CHANGE].use
         == 2000 * KG_CO2E
     )
 
     # Test adding a subtask
     assert (
-        task_fixture_with_subtask.get_environmental_impact()
-        .get_total()[ImpactCategory.CLIMATE_CHANGE]
-        .use
+        task_fixture_with_subtask.get_impact().total[ImpactCategory.CLIMATE_CHANGE].use
         == 3000 * KG_CO2E
     )
 
@@ -173,9 +157,9 @@ def test_get_task_impact_list(
             id="testImpactSource",
             name="test",
             unit=SERVER,
-            environmental_impact=EnvironmentalImpact(
-                climate_change=ImpactValue(use=1000 * KG_CO2E)
-            ),
+            environmental_impact={
+                ImpactCategory.CLIMATE_CHANGE: ImpactValue(use=1000 * KG_CO2E)
+            },
         )
     ),
 )
@@ -186,15 +170,16 @@ def test_get_task_impact_by_impact_source(
     Test the impact_source_impact property to get task by impactsource id with two resources and a subtask
     """
     # Test two resources
-    res_dict = single_task_fixture.get_impact().task_impact.impact_sources_impact
+    res_dict = single_task_fixture.get_impact().impact_sources
     assert (
-        res_dict["TestImpactSource"].get_total()[ImpactCategory.CLIMATE_CHANGE].use
+        res_dict["testImpactSource"].total[ImpactCategory.CLIMATE_CHANGE].use
         == 2000 * KG_CO2E
     )
 
     # Test subtasks
-    res_dict = task_fixture_with_subtask.get_impact().task_impact.impact_sources_impact
+
+    res_dict = task_fixture_with_subtask.get_impact().impact_sources
     assert (
-        res_dict["TestImpactSource"].get_total()[ImpactCategory.CLIMATE_CHANGE].use
+        res_dict["testImpactSource"].total[ImpactCategory.CLIMATE_CHANGE].use
         == 3000 * KG_CO2E
     )

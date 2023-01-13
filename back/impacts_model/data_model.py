@@ -1,5 +1,5 @@
 import re
-from copy import copy
+from copy import copy, deepcopy
 from typing import Any, List
 
 from flask_marshmallow import Marshmallow as FlaskMarshmallow
@@ -26,10 +26,9 @@ from impacts_model.impact_sources import (
 from impacts_model.impacts import (
     EnvironmentalImpact,
     ImpactSourceId,
-    ImpactSourcesImpact,
-    ImpactCategory,
-    ImpactValue,
+    ImpactSourceImpact,
     TaskImpact,
+    merge_env_impact,
 )
 from impacts_model.quantities.quantities import (
     deserialize_quantity,
@@ -200,6 +199,17 @@ class Resource(db.Model):  # type: ignore
         # Used as filter by SQLAlchemy queries
         return self._period
 
+    def __copy__(self):
+        """Override of copy function to return a Resource stripped of ids"""
+        return Resource(
+            name=self.name,
+            impact_source_id=self.impact_source_id,
+            _amount=self._amount,
+            _duration=self._duration,
+            _frequency=self._frequency,
+            _period=self._period,
+        )
+
     def value(self) -> Quantity[Any]:
         """
         Computed the value of the amounts, as a quantity
@@ -225,33 +235,18 @@ class Resource(db.Model):  # type: ignore
 
         return (self.amount * time).to_reduced_units()
 
-    def __copy__(self):
-        """Override of copy function to return a Resource stripped of ids"""
-        return Resource(
-            name=self.name,
-            impact_source_id=self.impact_source_id,
-            _amount=self._amount,
-            _duration=self._duration,
-            _frequency=self._frequency,
-            _period=self._period,
-        )
-
-    def get_environmental_impact(self) -> ImpactSourcesImpact:
+    def get_impact(self) -> ImpactSourceImpact:
         """
+        Get the complete impact, as an ImpactSource
+        Environmental impact by self.impact_source_id
+        For each ImpactCategory of the ImpactSource, multiply by this resource value()
         Retrun aresource impact, as its value multiplied by the impact source impact
-        :return: an ImpactSourcesImpact to keep track of the impact source id
+        :return: an ImpactSourceImpact to keep track of the impact source id
         """
-        result: ImpactSourcesImpact = {self.impact_source_id: EnvironmentalImpact()}
+        result: ImpactSourceImpact = self.impact_source.get_impact()
+        value = self.value()
+        result.multiply_by(value)
 
-        # Retrieve the ImpactSource complete impact
-        impact_source_total = self.impact_source.get_environmental_impact().get_total()
-
-        # Iterate through ImpactCategories to multiple each of them by the resource value
-        for category in impact_source_total:
-            # Multiplied by self.value() to obtain an impact, not an impact/unit
-            result[self.impact_source_id].add_impact(
-                category, impact_source_total[category].multiplied_by(self.value())
-            )
         return result
 
 
@@ -480,7 +475,9 @@ class Task(db.Model):  # type: ignore
         "Task", foreign_keys=[parent_task_id], lazy=True, cascade="all"
     )
 
-    resources = db.relationship(Resource, backref="resource", lazy=True, cascade="all")
+    resources: list[Resource] = db.relationship(
+        Resource, backref="resource", lazy=True, cascade="all"
+    )
 
     created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
     updated_at = db.Column(
@@ -496,40 +493,65 @@ class Task(db.Model):  # type: ignore
         )
 
     def get_impact(self) -> TaskImpact:
-        impact = self.get_environmental_impact()
-
-        impact_sources_impact: dict[
-            ImpactSourceId, dict[ImpactCategory, ImpactValue]
-        ] = {}
-
-        for impact_source in impact.impact_sources_impact:
-            impact_sources_impact[impact_source] = impact.impact_sources_impact[
-                impact_source
-            ].get_total()
+        """
+        Compute and return this Task complete impact as a TaskImpact
+        """
+        subtasks = self._get_subtasks_impact()
+        resources = self._get_resources_impact(subtasks)
+        total = self._get_total(resources)
 
         return TaskImpact(
             task_id=self.id,
-            task_impact=impact.get_total(),
-            subtasks=self.get_subtasks_impact(),
-            impact_sources=impact_sources_impact,
+            total=total,
+            sub_tasks=subtasks,
+            impact_sources=resources,
         )
 
-    def get_environmental_impact(self) -> EnvironmentalImpact:
+    def _get_total(
+        self,
+        resources: dict[ImpactSourceId, ImpactSourceImpact],
+    ) -> EnvironmentalImpact:
         """
-        Get a Task complete Environmental impact via an EnvironmentalImpact object
-        :return: an EnvironmentalImpact object with all the task environmental impacts
+        Return the complete EnvironmentalImpact of the task as the sum of its resources
         """
-        environmental_impact = EnvironmentalImpact()
+        result: EnvironmentalImpact = {}
 
+        # Sum resources impacts
+        for resource in resources:
+            result = merge_env_impact(result, resources[resource].total)
+
+        return result
+
+    def _get_resources_impact(
+        self, subtasks_impacts: List[TaskImpact]
+    ) -> dict[ImpactSourceId, ImpactSourceImpact]:
+        """
+        Get resources impacts, sum of this one AND subtasks one
+        """
+        result: dict[ImpactSourceId, ImpactSourceImpact] = {}
+
+        # Sum subtasks resources
+        for subtaskImpact in subtasks_impacts:
+            subImpactSources = subtaskImpact.impact_sources
+            # Iterate trough id
+            for i in subImpactSources:
+                subImpactSource = subImpactSources[i]
+                # Add to result
+                if subImpactSource.impact_source_id not in result:
+                    result[subImpactSource.impact_source_id] = deepcopy(subImpactSource)
+                else:
+                    result[subImpactSource.impact_source_id].add(subImpactSource)
+
+        # Sum self resources
         for r in self.resources:
-            environmental_impact.add_impact_source_impact(r.get_environmental_impact())
+            if r.impact_source_id not in result:
+                result[r.impact_source_id] = r.get_impact()
+            else:
+                result[r.impact_source_id].add(r.get_impact())
 
-        for s in self.subtasks:
-            environmental_impact.add(s.get_environmental_impact())
+        return result
 
-        return environmental_impact
-
-    def get_subtasks_impact(self) -> List[TaskImpact]:
+    def _get_subtasks_impact(self) -> List[TaskImpact]:
         """
         Return a dict with all subtask ids as key, with their TaskImpact as values
         """

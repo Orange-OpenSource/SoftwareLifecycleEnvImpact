@@ -5,7 +5,6 @@
 
 	/* Bound var */
 	export let modify: boolean;
-	export let selectedTask: Task;
 </script>
 
 {#if selectedModel == undefined}

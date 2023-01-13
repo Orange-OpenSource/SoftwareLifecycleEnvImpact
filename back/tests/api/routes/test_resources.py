@@ -7,7 +7,7 @@ from unittest.mock import MagicMock
 from impacts_model.impact_sources import ImpactSource, ImpactSourceError
 from impacts_model.data_model import QuantitySchema, Resource, ResourceSchema
 from impacts_model.data_model import Model, Project, Resource, Task
-from impacts_model.impacts import EnvironmentalImpact, ImpactValue
+from impacts_model.impacts import ImpactCategory, ImpactValue
 from impacts_model.quantities.quantities import (
     KG_CO2E,
     MINUTE,
@@ -53,9 +53,9 @@ def test_quantity_schema():
             id="testid",
             name="test",
             unit=SERVER,
-            environmental_impact=EnvironmentalImpact(
-                climate_change=ImpactValue(use=1776 * KG_CO2E)
-            ),
+            environmental_impact={
+                ImpactCategory.CLIMATE_CHANGE: ImpactValue(use=1776 * KG_CO2E)
+            },
         ),
     ),
 )
@@ -75,9 +75,9 @@ def test_resource_schema(resource_fixture: Resource) -> None:
             id="testid",
             name="test",
             unit=SERVER,
-            environmental_impact=EnvironmentalImpact(
-                climate_change=ImpactValue(use=1776 * KG_CO2E)
-            ),
+            environmental_impact={
+                ImpactCategory.CLIMATE_CHANGE: ImpactValue(use=1776 * KG_CO2E)
+            },
         ),
     ),
 )
@@ -120,9 +120,9 @@ def test_resource_schema_validation_no_time_impactsource() -> None:
             id="testid",
             name="test",
             unit=SERVER * DAY,
-            environmental_impact=EnvironmentalImpact(
-                climate_change=ImpactValue(use=1776 * KG_CO2E)
-            ),
+            environmental_impact={
+                ImpactCategory.CLIMATE_CHANGE: ImpactValue(use=1776 * KG_CO2E)
+            },
         ),
     ),
 )
@@ -185,9 +185,9 @@ def test_get_resources(client: FlaskClient, resource_fixture: Resource) -> None:
             id="testid",
             name="test",
             unit=SERVER,
-            environmental_impact=EnvironmentalImpact(
-                climate_change=ImpactValue(use=1776 * KG_CO2E)
-            ),
+            environmental_impact={
+                ImpactCategory.CLIMATE_CHANGE: ImpactValue(use=1776 * KG_CO2E)
+            },
         ),
     ),
 )
@@ -255,9 +255,9 @@ def test_get_one_resource(
             id="testid",
             name="test",
             unit=SERVER,
-            environmental_impact=EnvironmentalImpact(
-                climate_change=ImpactValue(use=2332 * KG_CO2E)
-            ),
+            environmental_impact={
+                ImpactCategory.CLIMATE_CHANGE: ImpactValue(use=2332 * KG_CO2E)
+            },
         )
     ),
 )
