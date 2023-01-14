@@ -30,6 +30,9 @@
 	}
 
 	// Helpers bool with logic if frequency or period field are required
+	// Duration is required if has time and frequency is filled
+	$: durationRequired = resource.has_time_input && resource.frequency.value != undefined;
+
 	// Frequency is required if time in impact source and duration filled, or if no time if period is filled
 	$: frequencyRequired = (resource.has_time_input && resource.duration.value != undefined) || (!resource.has_time_input && resource.period.value != undefined);
 
@@ -57,7 +60,7 @@
 	}
 
 	function getText() {
-		let test = resource.amount.value + ' ' + resource.amount.unit +(resource.amount.value && resource.amount.value > 1 ? 's' : '');
+		let test = resource.amount.value + ' ' + resource.amount.unit + (resource.amount.value && resource.amount.value > 1 ? 's' : '');
 		if (resource.duration.value != undefined) test += ', ' + resource.duration.value + ' ' + resource.duration.unit + (resource.duration.value > 1 ? 's' : '');
 		if (resource.frequency.value != undefined) test += ' by ' + resource.frequency.value + ' ' + resource.frequency.unit + (resource.frequency.value > 1 ? 's' : '');
 		if (resource.period.value != undefined) test += ' for ' + resource.period.value + ' ' + resource.period.unit + (resource.period.value > 1 ? 's' : '');
@@ -77,7 +80,16 @@
 			</div>
 			<div class="col-sm-10">
 				<!-- <label for="amountValue" class="form-label is-required">Value:</label> -->
-				<input type="number" step="0.1" id="amountValue" class="form-control {errors.amount ? 'is-invalid' : ''}" bind:value={resource.amount.value} required min="1" on:click|stopPropagation={() => {}} />
+				<input
+					type="number"
+					step="0.1"
+					id="amountValue"
+					class="form-control {errors.amount ? 'is-invalid' : ''}"
+					bind:value={resource.amount.value}
+					required
+					min="1"
+					on:click|stopPropagation={() => {}}
+				/>
 			</div>
 			{#each errors.amount || [] as error}
 				<div class="invalid-feedback"><Error message={error} /></div>
@@ -85,14 +97,14 @@
 		</div>
 		{#if resource.has_time_input}
 			<div class="row">
-				<div class="col-sm-2 col-form-label">
+				<div class="col-sm-2 col-form-label {durationRequired ? 'is-required' : ''}">
 					<div class="form-label">Used:</div>
 				</div>
 				<div class="col-sm-5">
 					<input type="number" id="timeUseValue" class="form-control {errors.duration ? 'is-invalid' : ''}" min="0" bind:value={resource.duration.value} on:click|stopPropagation={() => {}} />
 				</div>
 				<div class="col-sm-5">
-					<TimeunitInput bind:inputUnit={resource.duration.unit} isRequired={false} isInvalid={errors.duration} />
+					<TimeunitInput bind:inputUnit={resource.duration.unit} isRequired={durationRequired} isInvalid={errors.duration} />
 				</div>
 				{#if errors.duration}
 					<!-- Quantity errors -->
