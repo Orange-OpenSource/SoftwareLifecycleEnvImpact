@@ -121,7 +121,9 @@
 	});
 </script>
 
-<svg bind:this={stackedBarChartSVG} viewBox="0 0 {width + marginLeft + marginRight} {height + marginBottom + marginTop}" preserveAspectRatio="xMidYMid meet" />
-<div class="d-flex justify-content-end">
-	<button class="btn" on:click|stopPropagation={exportStackedBar} type="button">Export</button>
-</div>
+{#if chartData && chartData.length > 0}
+	<svg bind:this={stackedBarChartSVG} viewBox="0 0 {width + marginLeft + marginRight} {height + marginBottom + marginTop}" preserveAspectRatio="xMidYMid meet" />
+	<div class="d-flex justify-content-end">
+		<button class="btn" on:click|stopPropagation={exportStackedBar} type="button">Export</button>
+	</div>
+{/if}

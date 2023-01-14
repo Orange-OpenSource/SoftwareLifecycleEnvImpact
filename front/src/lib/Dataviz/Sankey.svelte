@@ -144,7 +144,9 @@
 	});
 </script>
 
-<svg bind:this={sankeySVG} viewBox="0 0 {width + marginLeft + marginRight} {height + marginBottom + marginTop}" preserveAspectRatio="xMidYMid meet" />
-<div class="d-flex justify-content-end">
-	<button class="btn" on:click|stopPropagation={exportSankey} type="button">Export</button>
-</div>
+{#if links && links.length > 0}
+	<svg bind:this={sankeySVG} viewBox="0 0 {width + marginLeft + marginRight} {height + marginBottom + marginTop}" preserveAspectRatio="xMidYMid meet" />
+	<div class="d-flex justify-content-end">
+		<button class="btn" on:click|stopPropagation={exportSankey} type="button">Export</button>
+	</div>
+{/if}
