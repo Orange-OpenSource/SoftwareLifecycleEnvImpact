@@ -30,7 +30,7 @@
 		{#await impactPromise}
 			<Spinner />
 		{:then impact}
-			{#if impact != undefined}
+			{#if impact != undefined && Object.keys(impact.impact_sources).length}
 				<div class="row">
 					<h1 class="text-primary">{selectedTask.name}</h1>
 				</div>
@@ -46,15 +46,14 @@
 						<h3>Tasks:</h3>
 					</div> -->
 					<div class="row">
-						<ImpactBySubtask bind:selectedTask impactBySubtask={impact.sub_tasks} {selectedImpactName}/>
+						<ImpactBySubtask bind:selectedTask impactBySubtask={impact.sub_tasks} {selectedImpactName} />
 					</div>
 				{/if}
 				<div class="row">
-					<h3>Resources:</h3>
-				</div>
-				<div class="row">
 					<ImpactBySource impactBySource={impact.impact_sources} />
 				</div>
+			{:else}
+				No impact
 			{/if}
 		{:catch error}
 			<Error message={error.message} />

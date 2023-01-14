@@ -52,6 +52,12 @@
 	}
 </script>
 
-<StackedBarChart chartData={convertResourcesImpactToStackedData()} />
-<Sunburst hierarchy={convertResourcesImpactToHierarchy()} />
-<!-- <Treemap hierarchy={convertResourcesImpactToHierarchy()} /> -->
+{#if Object.keys(impactBySource).length}
+	<div class="row">
+		<h3>Resources:</h3>
+	</div>
+
+	<StackedBarChart chartData={convertResourcesImpactToStackedData()} />
+	<Sunburst hierarchy={convertResourcesImpactToHierarchy()} />
+	<!-- <Treemap hierarchy={convertResourcesImpactToHierarchy()} /> -->
+{/if}

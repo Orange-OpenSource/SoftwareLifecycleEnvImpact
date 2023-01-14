@@ -111,5 +111,7 @@
 	}
 </script>
 
-<Sunburst bind:selectedTask hierarchy={subtaskHierarchy} />
-<Sankey links={subtasksLinks} />
+{#if impactBySubtask.length > 0}
+	<Sunburst bind:selectedTask hierarchy={subtaskHierarchy} />
+	<Sankey links={subtasksLinks} />
+{/if}
