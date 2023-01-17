@@ -62,8 +62,6 @@ services:
     container_name: "traefik"
     command:
       - --entrypoints.web.address=:80
-      - --api.insecure=true
-      - --api.dashboard=true
       - --providers.docker=true
     ports:
       - "80:80"
