@@ -5,12 +5,12 @@
     {
       "created_at": null,
       "id": null,
-      "name": "Up to 50,000",
+      "name": "Up to 50,000 copy",
       "project_id": null,
       "root_task": {
         "created_at": null,
         "id": null,
-        "name": "Up to 500",
+        "name": "Up to 500 copy",
         "parent_task_id": null,
         "resources": [],
         "subtasks": [
@@ -250,7 +250,7 @@
                       {
                         "amount": {
                           "unit": "people",
-                          "value": 1263
+                          "value": 1263.0
                         },
                         "created_at": null,
                         "duration": null,
@@ -279,7 +279,7 @@
                       {
                         "amount": {
                           "unit": "people",
-                          "value": 842
+                          "value": 842.0
                         },
                         "created_at": null,
                         "duration": null,
@@ -337,7 +337,7 @@
                       {
                         "amount": {
                           "unit": "people",
-                          "value": 3789
+                          "value": 3789.0
                         },
                         "created_at": null,
                         "duration": null,
@@ -608,7 +608,7 @@
                       {
                         "amount": {
                           "unit": "people",
-                          "value": 7999
+                          "value": 7999.0
                         },
                         "created_at": null,
                         "duration": null,
@@ -821,7 +821,7 @@
                       {
                         "amount": {
                           "unit": "people",
-                          "value": 1263
+                          "value": 1263.0
                         },
                         "created_at": null,
                         "duration": null,
@@ -926,6 +926,25 @@
                     },
                     "task_id": null,
                     "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 10.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "storageVdr",
+                    "name": "Storage Val-De-Rueil",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
                   }
                 ],
                 "subtasks": [],
@@ -974,6 +993,25 @@
                     },
                     "task_id": null,
                     "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 30.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "storageVdr",
+                    "name": "Storage Val-De-Rueil",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
                   }
                 ],
                 "subtasks": [],
@@ -1007,7 +1045,7 @@
                   {
                     "amount": {
                       "unit": "gigabyte",
-                      "value": 360
+                      "value": 360.0
                     },
                     "created_at": null,
                     "duration": null,
@@ -1016,6 +1054,25 @@
                     "id": null,
                     "impact_source_id": "RAMvdr",
                     "name": "RAM Val-De-Rueil",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 30.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "storageVdr",
+                    "name": "Storage Val-De-Rueil",
                     "period": {
                       "unit": "year",
                       "value": 15.0
@@ -1070,6 +1127,25 @@
                     },
                     "task_id": null,
                     "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 30.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "storageVdr",
+                    "name": "Storage Val-De-Rueil",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
                   }
                 ],
                 "subtasks": [],
@@ -1118,6 +1194,25 @@
                     },
                     "task_id": null,
                     "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 10.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "storageVdr",
+                    "name": "Storage Val-De-Rueil",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
                   }
                 ],
                 "subtasks": [],
@@ -1151,7 +1246,7 @@
                   {
                     "amount": {
                       "unit": "gigabyte",
-                      "value": 195
+                      "value": 195.0
                     },
                     "created_at": null,
                     "duration": null,
@@ -1160,6 +1255,25 @@
                     "id": null,
                     "impact_source_id": "RAMvdr",
                     "name": "RAM Val-De-Rueil",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 30.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "storageVdr",
+                    "name": "Storage Val-De-Rueil",
                     "period": {
                       "unit": "year",
                       "value": 15.0
@@ -1199,7 +1313,7 @@
                   {
                     "amount": {
                       "unit": "gigabyte",
-                      "value": 195
+                      "value": 195.0
                     },
                     "created_at": null,
                     "duration": null,
@@ -1208,6 +1322,25 @@
                     "id": null,
                     "impact_source_id": "RAMvdr",
                     "name": "RAM Val-De-Rueil",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 10.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "storageVdr",
+                    "name": "Storage Val-De-Rueil",
                     "period": {
                       "unit": "year",
                       "value": 15.0
@@ -1247,7 +1380,7 @@
                   {
                     "amount": {
                       "unit": "gigabyte",
-                      "value": 720
+                      "value": 720.0
                     },
                     "created_at": null,
                     "duration": null,
@@ -1256,6 +1389,25 @@
                     "id": null,
                     "impact_source_id": "RAMvdr",
                     "name": "RAM Val-De-Rueil",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 30.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "storageVdr",
+                    "name": "Storage Val-De-Rueil",
                     "period": {
                       "unit": "year",
                       "value": 15.0
@@ -1310,6 +1462,25 @@
                     },
                     "task_id": null,
                     "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 30.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "storageVdr",
+                    "name": "Storage Val-De-Rueil",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
                   }
                 ],
                 "subtasks": [],
@@ -1358,6 +1529,25 @@
                     },
                     "task_id": null,
                     "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 10.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "storage",
+                    "name": "Storage",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
                   }
                 ],
                 "subtasks": [],
@@ -1391,7 +1581,7 @@
                   {
                     "amount": {
                       "unit": "gigabyte",
-                      "value": 60
+                      "value": 60.0
                     },
                     "created_at": null,
                     "duration": null,
@@ -1400,6 +1590,25 @@
                     "id": null,
                     "impact_source_id": "RAMvdr",
                     "name": "RAM Val-De-Rueil",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 40.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "storageVdr",
+                    "name": "Storage Val-De-Rueil",
                     "period": {
                       "unit": "year",
                       "value": 15.0
@@ -1420,7 +1629,7 @@
                   {
                     "amount": {
                       "unit": "vcpu",
-                      "value": 384
+                      "value": 384.0
                     },
                     "created_at": null,
                     "duration": null,
@@ -1454,6 +1663,25 @@
                     },
                     "task_id": null,
                     "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 120.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "storageVdr",
+                    "name": "Storage Val-De-Rueil",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
                   }
                 ],
                 "subtasks": [],
@@ -1468,7 +1696,7 @@
                   {
                     "amount": {
                       "unit": "vcpu",
-                      "value": 4
+                      "value": 4.0
                     },
                     "created_at": null,
                     "duration": null,
@@ -1496,6 +1724,25 @@
                     "id": null,
                     "impact_source_id": "RAMvdr",
                     "name": "RAM Val-De-Rueil",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "task_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 10.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "storageVdr",
+                    "name": "Storage Val-De-Rueil",
                     "period": {
                       "unit": "year",
                       "value": 15.0
