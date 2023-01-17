@@ -4,7 +4,7 @@
 	import * as d3 from 'd3';
 	import type { D3JSHierarchyNode } from './d3js';
 	import type { Task } from '$lib/api/dataModel';
-	import { exportPdf } from '$lib/utils';
+	import { exportSvg } from '$lib/utils';
 
 	/*Bound var*/
 	export let selectedTask: Task;
@@ -151,7 +151,7 @@
 						selectedTask = d.data.task;
 					}
 				});
-			if (legendRequired) drawLegend(vis, nodes, color);
+			drawLegend(vis, nodes, color);
 		}
 	}
 
@@ -179,7 +179,7 @@
 			.attr('display', function (d) {
 				return d.depth ? null : 'none'; // Do not dislay root node
 			})
-			.attr('cx', 120)
+			.attr('cx', -(sunburstWidth / 2) + margin.left)
 			.attr('cy', function (d, i) {
 				return sunburstWidth / 2 + i * legendLineHeight;
 			})
@@ -210,7 +210,7 @@
 	}
 
 	function exportSunburst() {
-		exportPdf(sunburstSVG, 'sunburst');
+		exportSvg(sunburstSVG.outerHTML, 'sunburst');
 	}
 
 	onMount(function () {

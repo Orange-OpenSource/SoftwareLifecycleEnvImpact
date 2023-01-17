@@ -3,7 +3,7 @@
 	import { select } from 'd3-selection';
 	import * as d3 from 'd3';
 	import type { D3JStackedData } from './d3js';
-	import { exportPdf } from '$lib/utils';
+	import { exportSvg } from '$lib/utils';
 
 	export let chartData: D3JStackedData[];
 
@@ -113,7 +113,7 @@
 	}
 
 	function exportStackedBar() {
-		exportPdf(stackedBarChartSVG, 'stackedBarChart');
+		exportSvg(stackedBarChartSVG.outerHTML, 'stackedBarChart');
 	}
 
 	onMount(function () {

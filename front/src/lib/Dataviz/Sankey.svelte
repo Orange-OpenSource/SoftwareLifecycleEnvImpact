@@ -4,7 +4,7 @@
 	import * as d3Sankey from 'd3-sankey';
 	import * as d3 from 'd3';
 	import type { D3JSLink } from './d3js';
-	import { exportPdf } from '$lib/utils';
+	import { exportSvg } from '$lib/utils';
 
 	/*Bound var*/
 	export let links: D3JSLink[];
@@ -136,7 +136,7 @@
 	}
 
 	function exportSankey() {
-		exportPdf(sankeySVG, 'sankey');
+		exportSvg(sankeySVG.outerHTML, 'sankey');
 	}
 
 	onMount(function () {
