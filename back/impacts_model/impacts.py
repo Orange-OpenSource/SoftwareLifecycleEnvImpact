@@ -11,13 +11,11 @@ from pint import Quantity, Unit
 from impacts_model.quantities.quantities import (
     CUBIC_METER,
     DISEASE_INCIDENCE,
-    ELECTRONIC_WASTE,
     KG_BQ_U235E,
     KG_CO2E,
     KG_SBE,
     MOL_HPOS,
-    PRIMARY_MJ,
-    TONNE_MIPS,
+    KG_MIPS,
     deserialize_quantity,
 )
 
@@ -33,9 +31,7 @@ class ImpactCategory(str, Enum):
     FINE_PARTICLES = DISEASE_INCIDENCE
     IONIZING_RADIATIONS = KG_BQ_U235E
     WATER_DEPLETION = CUBIC_METER
-    ELECTRONIC_WASTE = ELECTRONIC_WASTE
-    PRIMARY_ENERGY = PRIMARY_MJ
-    RAW_MATERIALS = TONNE_MIPS
+    RAW_MATERIALS = KG_MIPS
 
     def __str__(self) -> Any:
         """
@@ -49,8 +45,6 @@ class ImpactCategory(str, Enum):
             "FINE_PARTICLES": "Fine particles",
             "IONIZING_RADIATIONS": "Ionizing radiations",
             "WATER_DEPLETION": "Water depletion",
-            "ELECTRONIC_WASTE": "Electronic waste",
-            "PRIMARY_ENERGY": "Primary energy consumption",
             "RAW_MATERIALS": "Raw materials",
         }.get(self.name, self.name + " not implemented")
 

@@ -65,9 +65,7 @@ MOL_HPOS = ureg.mol_Hpos
 DISEASE_INCIDENCE = ureg.disease_incidence
 KG_BQ_U235E = ureg.kg_Bq_u235e
 CUBIC_METER = ureg.cubic_meter
-ELECTRONIC_WASTE = ureg.electronic_waste
-PRIMARY_MJ = ureg.primary_MJ
-TONNE_MIPS = ureg.tonne_mips
+KG_MIPS = ureg.kg_mips
 
 USER_DEVICE = ureg.user_device
 DEVICE = ureg.device

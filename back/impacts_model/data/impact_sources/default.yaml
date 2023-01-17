@@ -1,7 +1,7 @@
 ---
 !ImpactSource
-id: "network"
-name: "Network"
+id: "fixed_network"
+name: "Fixed network"
 unit: gigabyte
 uses:
 environmental_impact: !EnvironmentalImpact
@@ -23,18 +23,13 @@ environmental_impact: !EnvironmentalImpact
   water_depletion: !ImpactValue
     manufacture:
     use:
-  electronic_waste: !ImpactValue
-    manufacture:
-    use:
-  primary_energy_consumption: !ImpactValue
-    manufacture:
-    use:
   raw_materials: !ImpactValue
     manufacture:
     use:
 source: >
-  Orange
-methodology:
+  Negaoctet
+methodology: >
+  Fixed-line network; at consumer; xDSL, FFTx average mix
 ---
 # TODO improve value, random number actually
 !ImpactSource
@@ -59,12 +54,6 @@ environmental_impact: !EnvironmentalImpact
     manufacture:
     use:
   water_depletion: !ImpactValue
-    manufacture:
-    use:
-  electronic_waste: !ImpactValue
-    manufacture:
-    use:
-  primary_energy_consumption: !ImpactValue
     manufacture:
     use:
   raw_materials: !ImpactValue
@@ -98,12 +87,6 @@ environmental_impact: !EnvironmentalImpact
   water_depletion: !ImpactValue
     manufacture:
     use:
-  electronic_waste: !ImpactValue
-    manufacture:
-    use:
-  primary_energy_consumption: !ImpactValue
-    manufacture:
-    use:
   raw_materials: !ImpactValue
     manufacture:
     use:
@@ -134,15 +117,9 @@ environmental_impact: !EnvironmentalImpact
   water_depletion: !ImpactValue
     manufacture:
     use: "8.61050442 cubic_meter"
-  electronic_waste: !ImpactValue
-    manufacture:
-    use: "3.087493 electronic_waste"
-  primary_energy_consumption: !ImpactValue
-    manufacture:
-    use: "498.310296 primary_MJ"
   raw_materials: !ImpactValue
     manufacture:
-    use: "10.2950296 tonne_mips"
+    use: "10.2950296 kg_mips"
 source: Orange (APL)
 methodology:
 ---
@@ -170,15 +147,9 @@ environmental_impact: !EnvironmentalImpact
   water_depletion: !ImpactValue
     manufacture:
     use: "0.416680258 cubic_meter"
-  electronic_waste: !ImpactValue
-    manufacture:
-    use: "0.1496829 electronic_waste"
-  primary_energy_consumption: !ImpactValue
-    manufacture:
-    use: "24.0944172 primary_MJ"
   raw_materials: !ImpactValue
     manufacture:
-    use: "0.51490173 tonne_mips"
+    use: "0.51490173 kg_mips"
 source: Orange (APL)
 methodology:
 ---
@@ -206,15 +177,9 @@ environmental_impact: !EnvironmentalImpact
   water_depletion: !ImpactValue
     manufacture:
     use: "0.228200547 cubic_meter"
-  electronic_waste: !ImpactValue
-    manufacture:
-    use: "0.0243686 electronic_waste"
-  primary_energy_consumption: !ImpactValue
-    manufacture:
-    use: "7.8400366 primary_MJ"
   raw_materials: !ImpactValue
     manufacture:
-    use: "0.12390367 tonne_mips"
+    use: "0.12390367 kg_mips"
 source: Orange (APL)
 methodology:
 ---
@@ -242,15 +207,9 @@ environmental_impact: !EnvironmentalImpact
   water_depletion: !ImpactValue
     manufacture:
     use: "0.109300096 cubic_meter"
-  electronic_waste: !ImpactValue
-    manufacture:
-    use: "0.00895852 electronic_waste"
-  primary_energy_consumption: !ImpactValue
-    manufacture:
-    use: "3.49000642 primary_MJ"
   raw_materials: !ImpactValue
     manufacture:
-    use: "0.053100643 tonne_mips"
+    use: "0.053100643 kg_mips"
 source: Orange (APL)
 methodology:
 ---
@@ -278,15 +237,9 @@ environmental_impact: !EnvironmentalImpact
   water_depletion: !ImpactValue
     manufacture:
     use: "0.4456003 cubic_meter"
-  electronic_waste: !ImpactValue
-    manufacture:
-    use: "0.1535267 electronic_waste"
-  primary_energy_consumption: !ImpactValue
-    manufacture:
-    use: "12.1600201 primary_MJ"
   raw_materials: !ImpactValue
     manufacture:
-    use: "0.53460201 tonne_mips"
+    use: "0.53460201 kg_mips"
 source: Orange (APL)
 methodology:
 ---
@@ -314,15 +267,9 @@ environmental_impact: !EnvironmentalImpact
   water_depletion: !ImpactValue
     manufacture:
     use: "0.121600071 cubic_meter"
-  electronic_waste: !ImpactValue
-    manufacture:
-    use: "0.04220627 electronic_waste"
-  primary_energy_consumption: !ImpactValue
-    manufacture:
-    use: "4.00000472 primary_MJ"
   raw_materials: !ImpactValue
     manufacture:
-    use: "0.147600473 tonne_mips"
+    use: "0.147600473 kg_mips"
 source: Orange (APL)
 methodology:
 ---
@@ -333,32 +280,26 @@ unit: kWh
 uses:
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
-    manufacture:
-    use: "0.136 kg_co2e"
+    manufacture: 0.067 kg_co2e
+    use:
   resource_depletion: !ImpactValue
-    manufacture:
-    use: "0.000000017 kg_Sbe"
+    manufacture: 0.0000000316 kg_Sbe
+    use:
   acidification: !ImpactValue
-    manufacture:
-    use: "0.000468 mol_Hpos"
+    manufacture: 0.000385 mol_Hpos
+    use:
   fine_particles: !ImpactValue
-    manufacture:
-    use: "0.00000000337 disease_incidence"
+    manufacture: 0.000000015 disease_incidence
+    use:
   ionizing_radiations: !ImpactValue
-    manufacture:
-    use: "0.00478 kg_Bq_u235e"
+    manufacture: 1.73 kg_Bq_u235e
+    use:
   water_depletion: !ImpactValue
-    manufacture:
-    use: "0.267 cubic_meter"
-  electronic_waste: !ImpactValue
-    manufacture:
-    use: "0.0952 electronic_waste"
-  primary_energy_consumption: !ImpactValue
-    manufacture:
-    use: "15.5 primary_MJ"
+    manufacture: 0.00472 cubic_meter
+    use:
   raw_materials: !ImpactValue
-    manufacture:
-    use: "0.298 tonne_mips"
+    manufacture: 0.162 kg_mips
+    use:
 source: >
   Orange(APL)
 methodology:
@@ -385,12 +326,6 @@ environmental_impact: !EnvironmentalImpact
     manufacture:
     use:
   water_depletion: !ImpactValue
-    manufacture:
-    use:
-  electronic_waste: !ImpactValue
-    manufacture:
-    use:
-  primary_energy_consumption: !ImpactValue
     manufacture:
     use:
   raw_materials: !ImpactValue
@@ -434,12 +369,6 @@ environmental_impact: !EnvironmentalImpact
   water_depletion: !ImpactValue
     manufacture:
     use:
-  electronic_waste: !ImpactValue
-    manufacture:
-    use:
-  primary_energy_consumption: !ImpactValue
-    manufacture:
-    use:
   raw_materials: !ImpactValue
     manufacture:
     use:
@@ -476,12 +405,6 @@ environmental_impact: !EnvironmentalImpact
   water_depletion: !ImpactValue
     manufacture:
     use:
-  electronic_waste: !ImpactValue
-    manufacture:
-    use:
-  primary_energy_consumption: !ImpactValue
-    manufacture:
-    use:
   raw_materials: !ImpactValue
     manufacture:
     use:
@@ -515,12 +438,6 @@ environmental_impact: !EnvironmentalImpact
     manufacture:
     use:
   water_depletion: !ImpactValue
-    manufacture:
-    use:
-  electronic_waste: !ImpactValue
-    manufacture:
-    use:
-  primary_energy_consumption: !ImpactValue
     manufacture:
     use:
   raw_materials: !ImpactValue
@@ -559,12 +476,6 @@ environmental_impact: !EnvironmentalImpact
   water_depletion: !ImpactValue
     manufacture:
     use:
-  electronic_waste: !ImpactValue
-    manufacture:
-    use:
-  primary_energy_consumption: !ImpactValue
-    manufacture:
-    use:
   raw_materials: !ImpactValue
     manufacture:
     use:
@@ -572,8 +483,7 @@ source: >
   Fabrication: https://github.com/Boavizta/environmental-footprint-data
   Daily use: https://ieeexplore.ieee.org/abstract/document/6360448
 methodology: >
-  Fabrication: 88.75 * kg_co2e
-  Life expectancy: 2 * year
+  Fabrication: 33 * kg_co2e / year
   Daily use: 3.12 * hour / day
   Hours used: Life expectancy * Daily use = 2 years * 3.12 hours / day = 2279.16 hour
   Amortization = Fabrication / Hours used = 307.37 * kg_co2e / 2279.16 hour = 0.03893978483300865 kg_co2e / hour
@@ -600,12 +510,6 @@ environmental_impact: !EnvironmentalImpact
     manufacture:
     use:
   water_depletion: !ImpactValue
-    manufacture:
-    use:
-  electronic_waste: !ImpactValue
-    manufacture:
-    use:
-  primary_energy_consumption: !ImpactValue
     manufacture:
     use:
   raw_materials: !ImpactValue
@@ -640,12 +544,6 @@ environmental_impact: !EnvironmentalImpact
     manufacture:
     use:
   water_depletion: !ImpactValue
-    manufacture:
-    use:
-  electronic_waste: !ImpactValue
-    manufacture:
-    use:
-  primary_energy_consumption: !ImpactValue
     manufacture:
     use:
   raw_materials: !ImpactValue
@@ -684,12 +582,6 @@ environmental_impact: !EnvironmentalImpact
   water_depletion: !ImpactValue
     manufacture:
     use:
-  electronic_waste: !ImpactValue
-    manufacture:
-    use:
-  primary_energy_consumption: !ImpactValue
-    manufacture:
-    use:
   raw_materials: !ImpactValue
     manufacture:
     use:
@@ -719,12 +611,6 @@ environmental_impact: !EnvironmentalImpact
     manufacture:
     use:
   water_depletion: !ImpactValue
-    manufacture:
-    use:
-  electronic_waste: !ImpactValue
-    manufacture:
-    use:
-  primary_energy_consumption: !ImpactValue
     manufacture:
     use:
   raw_materials: !ImpactValue
@@ -758,12 +644,6 @@ environmental_impact: !EnvironmentalImpact
   water_depletion: !ImpactValue
     manufacture:
     use:
-  electronic_waste: !ImpactValue
-    manufacture:
-    use:
-  primary_energy_consumption: !ImpactValue
-    manufacture:
-    use:
   raw_materials: !ImpactValue
     manufacture:
     use:
@@ -795,12 +675,6 @@ environmental_impact: !EnvironmentalImpact
   water_depletion: !ImpactValue
     manufacture:
     use:
-  electronic_waste: !ImpactValue
-    manufacture:
-    use:
-  primary_energy_consumption: !ImpactValue
-    manufacture:
-    use:
   raw_materials: !ImpactValue
     manufacture:
     use:
@@ -830,12 +704,6 @@ environmental_impact: !EnvironmentalImpact
     manufacture:
     use:
   water_depletion: !ImpactValue
-    manufacture:
-    use:
-  electronic_waste: !ImpactValue
-    manufacture:
-    use:
-  primary_energy_consumption: !ImpactValue
     manufacture:
     use:
   raw_materials: !ImpactValue
@@ -871,12 +739,6 @@ environmental_impact: !EnvironmentalImpact
     manufacture:
     use:
   water_depletion: !ImpactValue
-    manufacture:
-    use:
-  electronic_waste: !ImpactValue
-    manufacture:
-    use:
-  primary_energy_consumption: !ImpactValue
     manufacture:
     use:
   raw_materials: !ImpactValue
@@ -933,12 +795,6 @@ environmental_impact: !EnvironmentalImpact
     manufacture:
     use:
   water_depletion: !ImpactValue
-    manufacture:
-    use:
-  electronic_waste: !ImpactValue
-    manufacture:
-    use:
-  primary_energy_consumption: !ImpactValue
     manufacture:
     use:
   raw_materials: !ImpactValue

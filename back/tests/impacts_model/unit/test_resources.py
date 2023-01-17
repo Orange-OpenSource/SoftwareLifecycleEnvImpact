@@ -12,13 +12,11 @@ from impacts_model.impacts import EnvironmentalImpact, ImpactCategory, ImpactVal
 from impacts_model.quantities.quantities import (
     CUBIC_METER,
     DISEASE_INCIDENCE,
-    ELECTRONIC_WASTE,
     KG_BQ_U235E,
     KG_CO2E,
     KG_SBE,
     MOL_HPOS,
-    PRIMARY_MJ,
-    TONNE_MIPS,
+    KG_MIPS,
     DAY,
     SERVER,
     HOUR,
@@ -244,7 +242,7 @@ def test_resource_get_impact(resource_fixture: Resource) -> None:
             unit=SERVER,
             environmental_impact={
                 ImpactCategory.CLIMATE_CHANGE: ImpactValue(use=10000.123 * KG_CO2E),
-                ImpactCategory.RAW_MATERIALS: ImpactValue(use=213.3 * TONNE_MIPS),
+                ImpactCategory.RAW_MATERIALS: ImpactValue(use=213.3 * KG_MIPS),
             },
         ),
     ),
@@ -262,9 +260,7 @@ def test_resource_get_category_impact(resource_fixture: Resource) -> None:
         ImpactCategory.FINE_PARTICLES: 0 * DISEASE_INCIDENCE,
         ImpactCategory.IONIZING_RADIATIONS: 0 * KG_BQ_U235E,
         ImpactCategory.WATER_DEPLETION: 0 * CUBIC_METER,
-        ImpactCategory.ELECTRONIC_WASTE: 0 * ELECTRONIC_WASTE,
-        ImpactCategory.PRIMARY_ENERGY: 0 * PRIMARY_MJ,
-        ImpactCategory.RAW_MATERIALS: 213.3 * TONNE_MIPS,
+        ImpactCategory.RAW_MATERIALS: 213.3 * KG_MIPS,
     }
 
     # Test quantity multiplication
@@ -276,9 +272,7 @@ def test_resource_get_category_impact(resource_fixture: Resource) -> None:
         ImpactCategory.FINE_PARTICLES: 0 * DISEASE_INCIDENCE,
         ImpactCategory.IONIZING_RADIATIONS: 0 * KG_BQ_U235E,
         ImpactCategory.WATER_DEPLETION: 0 * CUBIC_METER,
-        ImpactCategory.ELECTRONIC_WASTE: 0 * ELECTRONIC_WASTE,
-        ImpactCategory.PRIMARY_ENERGY: 0 * PRIMARY_MJ,
-        ImpactCategory.RAW_MATERIALS: (10 * 213.3) * TONNE_MIPS,
+        ImpactCategory.RAW_MATERIALS: (10 * 213.3) * KG_MIPS,
     }
 
 

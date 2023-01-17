@@ -14,14 +14,11 @@ from impacts_model.impacts import EnvironmentalImpact, ImpactCategory, ImpactVal
 from impacts_model.quantities.quantities import (
     CUBIC_METER,
     DISEASE_INCIDENCE,
-    ELECTRICITY_MIX,
-    ELECTRONIC_WASTE,
     KG_BQ_U235E,
     KG_CO2E,
     KG_SBE,
     MOL_HPOS,
-    PRIMARY_MJ,
-    TONNE_MIPS,
+    KG_MIPS,
     DAY,
     SERVER,
 )
@@ -64,34 +61,27 @@ def test_get_impacts_quantities() -> None:
         name="test",
         unit=SERVER / DAY,
         environmental_impact={
-            ImpactCategory.CLIMATE_CHANGE:ImpactValue(
+            ImpactCategory.CLIMATE_CHANGE: ImpactValue(
                 manufacture=103.72 * KG_CO2E, use=103.72 * KG_CO2E
             ),
-            ImpactCategory.RESOURCE_DEPLETION:ImpactValue(
+            ImpactCategory.RESOURCE_DEPLETION: ImpactValue(
                 manufacture=312.23 * KG_SBE, use=312.23 * KG_SBE
             ),
-            ImpactCategory.ACIDIFICATION:ImpactValue(
+            ImpactCategory.ACIDIFICATION: ImpactValue(
                 manufacture=32443.2134 * MOL_HPOS, use=32443.2134 * MOL_HPOS
             ),
-            ImpactCategory.FINE_PARTICLES:ImpactValue(
+            ImpactCategory.FINE_PARTICLES: ImpactValue(
                 manufacture=24324.234324 * DISEASE_INCIDENCE,
                 use=24324.234324 * DISEASE_INCIDENCE,
             ),
-            ImpactCategory.IONIZING_RADIATIONS:ImpactValue(
+            ImpactCategory.IONIZING_RADIATIONS: ImpactValue(
                 manufacture=421312.123 * KG_BQ_U235E, use=421312.123 * KG_BQ_U235E
             ),
-            ImpactCategory.WATER_DEPLETION:ImpactValue(
+            ImpactCategory.WATER_DEPLETION: ImpactValue(
                 manufacture=124.123 * CUBIC_METER, use=124.123 * CUBIC_METER
             ),
-            ImpactCategory.ELECTRONIC_WASTE:ImpactValue(
-                manufacture=134242.12341 * ELECTRONIC_WASTE,
-                use=134242.12341 * ELECTRONIC_WASTE,
-            ),
-            ImpactCategory.PRIMARY_ENERGY:ImpactValue(
-                manufacture=1234.23123 * PRIMARY_MJ, use=1234.23123 * PRIMARY_MJ
-            ),
-            ImpactCategory.RAW_MATERIALS:ImpactValue(
-                manufacture=124.123441 * TONNE_MIPS, use=124.123441 * TONNE_MIPS
+            ImpactCategory.RAW_MATERIALS: ImpactValue(
+                manufacture=124.123441 * KG_MIPS, use=124.123441 * KG_MIPS
             ),
         },
     )
@@ -117,16 +107,7 @@ def test_get_impacts_quantities() -> None:
         == 124.123 * CUBIC_METER / i.unit
     )
     assert (
-        total[ImpactCategory.ELECTRONIC_WASTE].manufacture
-        == 134242.12341 * ELECTRONIC_WASTE / i.unit
-    )
-    assert (
-        total[ImpactCategory.PRIMARY_ENERGY].manufacture
-        == 1234.23123 * PRIMARY_MJ / i.unit
-    )
-    assert (
-        total[ImpactCategory.RAW_MATERIALS].manufacture
-        == 124.123441 * TONNE_MIPS / i.unit
+        total[ImpactCategory.RAW_MATERIALS].manufacture == 124.123441 * KG_MIPS / i.unit
     )
 
 
@@ -148,7 +129,7 @@ def test_gitlab_computation() -> None:
     schema = ProjectSchema()
     new_project = schema.load(data)
 
-    co2_nominal = 19446017.680594422 * KG_CO2E
+    co2_nominal = 19470525.540418424 * KG_CO2E
 
     impact = new_project.models[0].root_task.get_impact()
 

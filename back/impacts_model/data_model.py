@@ -451,7 +451,9 @@ class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
                         "Amount unit should be " + str(impact_source.unit)
                     ]
         except ImpactSourceError:
-            errors["impact_source_id"] = ["Wrong impact_source_id"]
+            errors["impact_source_id"] = [
+                "Wrong impact_source_id: " + data["impact_source_id"]
+            ]
 
         if errors:
             raise ValidationError(errors)

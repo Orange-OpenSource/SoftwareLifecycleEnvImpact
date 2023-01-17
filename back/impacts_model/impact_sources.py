@@ -138,8 +138,6 @@ def _get_all_impact_sources() -> list[ImpactSource]:
         fine_particles = fields["fine_particles"]
         ionizing_radiations = fields["ionizing_radiations"]
         water_depletion = fields["water_depletion"]
-        electronic_waste = fields["electronic_waste"]
-        primary_energy_consumption = fields["primary_energy_consumption"]
         raw_materials = fields["raw_materials"]
         return {
             ImpactCategory.CLIMATE_CHANGE: climate_change
@@ -159,12 +157,6 @@ def _get_all_impact_sources() -> list[ImpactSource]:
             else ImpactValue(),
             ImpactCategory.WATER_DEPLETION: water_depletion
             if water_depletion is not None
-            else ImpactValue(),
-            ImpactCategory.ELECTRONIC_WASTE: electronic_waste
-            if electronic_waste is not None
-            else ImpactValue(),
-            ImpactCategory.PRIMARY_ENERGY: primary_energy_consumption
-            if primary_energy_consumption is not None
             else ImpactValue(),
             ImpactCategory.RAW_MATERIALS: raw_materials
             if raw_materials is not None
