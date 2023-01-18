@@ -190,5 +190,5 @@ def impact_source_factory(id: str) -> ImpactSource:
     """
     res = next((x for x in impact_sources if x.id == id), None)
     if res is None:
-        raise ImpactSourceError("No corresponding impact source")
+        raise ImpactSourceError("No corresponding impact source: " + id)
     return res

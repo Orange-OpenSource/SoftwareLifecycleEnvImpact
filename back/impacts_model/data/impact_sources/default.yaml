@@ -1,97 +1,286 @@
 ---
 !ImpactSource
-id: "fixed_network"
-name: "Fixed network"
+id: "mobile_network"
+name: "Mobile network"
 unit: gigabyte
 uses:
+  - { quantity: 0.236 kWh, resource_id: electricity }
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
-    manufacture:
-    use: "0.0015 kg_co2e"
+    manufacture: 7.97E-03 kg_co2e
+    use:
   resource_depletion: !ImpactValue
-    manufacture:
+    manufacture: 1.8E-06 kg_Sbe
     use:
   acidification: !ImpactValue
-    manufacture:
+    manufacture: 2.02E-05 mol_Hpos
     use:
   fine_particles: !ImpactValue
-    manufacture:
+    manufacture: 2.78E-10 disease_incidence
     use:
   ionizing_radiations: !ImpactValue
-    manufacture:
+    manufacture: 3.43E-02 kg_Bq_u235e
     use:
   water_depletion: !ImpactValue
-    manufacture:
+    manufacture: 4.45E-01 cubic_meter
     use:
   raw_materials: !ImpactValue
-    manufacture:
+    manufacture: 5.25E-02 kg_mips
     use:
 source: >
   Negaoctet
 methodology: >
-  Fixed-line network; at consumer; xDSL, FFTx average mix
+  Mobile network 2G, 3G, 4G, 5G average mix in France
 ---
-# TODO improve value, random number actually
 !ImpactSource
-id: "storage"
-name: "Storage"
-unit: gigabyte * day
+id: "fixed_network"
+name: "Fixed-line network"
+unit: gigabyte
 uses:
+  - { quantity: 0.0687 kWh, resource_id: electricity }
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
-    manufacture:
-    use: "0.1 kg_co2e"
+    manufacture: 4,43E-03 kg_co2e
+    use:
   resource_depletion: !ImpactValue
-    manufacture:
+    manufacture: 1,68E-07 kg_Sbe
     use:
   acidification: !ImpactValue
-    manufacture:
+    manufacture: 2,04E-05 mol_Hpos
     use:
   fine_particles: !ImpactValue
-    manufacture:
+    manufacture: 1,76E-10 disease_incidence
     use:
   ionizing_radiations: !ImpactValue
-    manufacture:
+    manufacture: 1,75E-02 kg_Bq_u235e
     use:
   water_depletion: !ImpactValue
-    manufacture:
+    manufacture: 8,09E-02 cubic_meter
     use:
   raw_materials: !ImpactValue
-    manufacture:
+    manufacture: 2,75E-02 kg_mips
     use:
-source:
-methodology:
+source: >
+  Negaoctet
+methodology: >
+  Fixed-line network; at consumer; xDSL, FFTx average mix in France
 ---
-# TODO improve value, random number actually
+!ImpactSource
+id: "small_vm"
+name: "VM - small"
+unit: vm * hour
+uses:
+  - { quantity: 0.006274241387177732 kWh, resource_id: electricity }
+environmental_impact: !EnvironmentalImpact
+  climate_change: !ImpactValue
+    manufacture: 0.00043349304129591603 kg_co2e
+    use:
+  resource_depletion: !ImpactValue
+    manufacture: 1.027834816335843e-08 kg_Sbe
+    use:
+  acidification: !ImpactValue
+    manufacture: 2.4070271503536392e-06 mol_Hpos
+    use:
+  fine_particles: !ImpactValue
+    manufacture: 1.403148528405202e-11 disease_incidence
+    use:
+  ionizing_radiations: !ImpactValue
+    manufacture: 0.0006490987907825691 kg_Bq_u235e
+    use:
+  water_depletion: !ImpactValue
+    manufacture: 0.0018024184348619668 cubic_meter
+    use:
+  raw_materials: !ImpactValue
+    manufacture: 0.0020191649555099246 kg_mips
+    use:
+source: Négaoctet
+methodology: >
+  Impact by year of usage: 
+    consumption = 55 kilowatt_hour
+
+    resource_depletion = 9.01e-05 kg_Sbe
+    acidification = 0.0211 mol_Hpos
+    climate_change = 3.8 kg_co2e
+    ionizing_radiations = 5.69 kg_Bq_u235e
+    fine_particles = 1.23e-07 disease_incidence
+    water_depletion = 15.8 cubic_meter
+    raw_materials = 17.7 kg_mips
+
+  Daily usage = 24.0 hour / day, so impact by hour = impact by year / daily usage
+
+  Impact by hour of usage: 
+    consumption=0.006274241387177732 kilowatt_hour
+
+    resource_depletion = 1.027834816335843e-08 kg_Sbe
+    acidification = 2.4070271503536392e-06 mol_Hpos
+    climate_change = 0.00043349304129591603 kg_co2e
+    ionizing_radiations = 0.0006490987907825691 kg_Bq_u235e
+    fine_particles = 1.403148528405202e-11 disease_incidence
+    water_depletion = 0.0018024184348619668 cubic_meter
+    raw_materials = 0.0020191649555099246 kg_mips
+---
+!ImpactSource
+id: "medium_vm"
+name: "VM - medium"
+unit: vm * hour
+uses:
+  - { quantity: 0.05042208532968286 kWh, resource_id: electricity }
+environmental_impact: !EnvironmentalImpact
+  climate_change: !ImpactValue
+    manufacture: 0.0034223134839151265 kg_co2e
+    use:
+  resource_depletion: !ImpactValue
+    manufacture: 8.019621263974446e-08 kg_Sbe
+    use:
+  acidification: !ImpactValue
+    manufacture: 1.9050878393794207e-05 mol_Hpos
+    use:
+  fine_particles: !ImpactValue
+    manufacture: 1.107688797627196e-10 disease_incidence
+    use:
+  ionizing_radiations: !ImpactValue
+    manufacture: 0.005076431667807438 kg_Bq_u235e
+    use:
+  water_depletion: !ImpactValue
+    manufacture: 0.01403148528405202 cubic_meter
+    use:
+  raw_materials: !ImpactValue
+    manufacture: 0.01597079625827059 kg_mips
+    use:
+source: Négaoctet
+methodology: >
+  Impact by year of usage: 
+    consumption = 442 kilowatt_hour
+
+    resource_depletion = 0.000703 kg_Sbe
+    acidification = 0.167 mol_Hpos
+    climate_change = 30.0 kg_co2e
+    ionizing_radiations = 44.5 kg_Bq_u235e
+    fine_particles = 9.71e-07 disease_incidence
+    water_depletion = 123.0 cubic_meter
+    raw_materials = 140.0 kg_mips
+
+  Daily usage = 24.0 hour / day, so impact by hour = impact by year / daily usage
+
+  Impact by hour of usage: 
+    consumption=0.05042208532968286 kilowatt_hour
+
+    resource_depletion = 8.019621263974446e-08 kg_Sbe
+    acidification = 1.9050878393794207e-05 mol_Hpos
+    climate_change = 0.0034223134839151265 kg_co2e
+    ionizing_radiations = 0.005076431667807438 kg_Bq_u235e
+    fine_particles = 1.107688797627196e-10 disease_incidence
+    water_depletion = 0.01403148528405202 cubic_meter
+    raw_materials = 0.01597079625827059 kg_mips
+---
+!ImpactSource
+id: "big_vm"
+name: "VM - big"
+unit: vm * hour
+uses:
+  - { quantity: 0.30219028062970565 kWh, resource_id: electricity }
+environmental_impact: !EnvironmentalImpact
+  climate_change: !ImpactValue
+    manufacture: 0.02053388090349076 kg_co2e
+    use:
+  resource_depletion: !ImpactValue
+    manufacture: 4.814054300707277e-07 kg_Sbe
+    use:
+  acidification: !ImpactValue
+    manufacture: 0.00011407711613050422 mol_Hpos
+    use:
+  fine_particles: !ImpactValue
+    manufacture: 6.639288158795346e-10 disease_incidence
+    use:
+  ionizing_radiations: !ImpactValue
+    manufacture: 0.030458590006844626 kg_Bq_u235e
+    use:
+  water_depletion: !ImpactValue
+    manufacture: 0.08441706593657312 cubic_meter
+    use:
+  raw_materials: !ImpactValue
+    manufacture: 0.09548254620123203 kg_mips
+    use:
+source: Négaoctet
+methodology: >
+  Impact by year of usage: 
+    consumption = 2649 kilowatt_hour
+
+    resource_depletion = 0.00422 kg_Sbe
+    acidification = 1.0 mol_Hpos
+    climate_change = 180.0 kg_co2e
+    ionizing_radiations = 267.0 kg_Bq_u235e
+    fine_particles = 5.82e-06 disease_incidence
+    water_depletion = 740.0 cubic_meter
+    raw_materials = 837.0 kg_mips
+
+  Daily usage = 24.0 hour / day, so impact by hour = impact by year / daily usage
+
+  Impact by hour of usage: 
+    consumption=0.30219028062970565 kilowatt_hour
+
+    resource_depletion = 4.814054300707277e-07 kg_Sbe
+    acidification = 0.00011407711613050422 mol_Hpos
+    climate_change = 0.02053388090349076 kg_co2e
+    ionizing_radiations = 0.030458590006844626 kg_Bq_u235e
+    fine_particles = 6.639288158795346e-10 disease_incidence
+    water_depletion = 0.08441706593657312 cubic_meter
+    raw_materials = 0.09548254620123203 kg_mips
+
+---
 !ImpactSource
 id: "server"
 name: "Server"
-unit: server * day
+unit: server * hour
 uses:
+  - { quantity: 0.3564909879078257 kWh, resource_id: electricity }
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
-    manufacture:
-    use: "0.1 kg_co2e"
+    manufacture: 0.08350444900752908 kg_co2e
+    use:
   resource_depletion: !ImpactValue
-    manufacture:
+    manufacture: 8.624229979466119e-07 kg_Sbe
     use:
   acidification: !ImpactValue
-    manufacture:
+    manufacture: 0.0004483230663928816 mol_Hpos
     use:
   fine_particles: !ImpactValue
-    manufacture:
+    manufacture: 2.5781428245493955e-09 disease_incidence
     use:
   ionizing_radiations: !ImpactValue
-    manufacture:
+    manufacture: 0.052931781884553955 kg_Bq_u235e
     use:
   water_depletion: !ImpactValue
-    manufacture:
+    manufacture: 0.08464522016883413 cubic_meter
     use:
   raw_materials: !ImpactValue
-    manufacture:
+    manufacture: 0.24184348619666896 kg_mips
     use:
-source:
-methodology:
+source: Négaoctet
+methodology: >
+  Impact by year of usage: 
+    consumption = 3125 kilowatt_hour
+
+    resource_depletion = 0.00756 kg_Sbe
+    acidification = 3.93 mol_Hpos
+    climate_change = 732.0 kg_co2e
+    ionizing_radiations = 464.0 kg_Bq_u235e
+    fine_particles = 2.26e-05 disease_incidence
+    water_depletion = 742.0 cubic_meter
+    raw_materials = 2120.0 kg_mips
+
+  Daily usage = 24.0 hour / day, so impact by hour = impact by year / daily usage
+
+  Impact by hour of usage: 
+    consumption=0.3564909879078257 kilowatt_hour
+
+    resource_depletion = 8.624229979466119e-07 kg_Sbe
+    acidification = 0.0004483230663928816 mol_Hpos
+    climate_change = 0.08350444900752908 kg_co2e
+    ionizing_radiations = 0.052931781884553955 kg_Bq_u235e
+    fine_particles = 2.5781428245493955e-09 disease_incidence
+    water_depletion = 0.08464522016883413 cubic_meter
+    raw_materials = 0.24184348619666896 kg_mips
 ---
 !ImpactSource
 id: "vCPUrm"
@@ -301,7 +490,7 @@ environmental_impact: !EnvironmentalImpact
     manufacture: 0.162 kg_mips
     use:
 source: >
-  Orange(APL)
+  Negaoctet
 methodology:
 ---
 !ImpactSource
@@ -350,143 +539,328 @@ id: "tablet"
 name: "Tablet"
 unit: tablet * hour
 uses:
+  - { quantity: 0.05201916495550994 kWh, resource_id: electricity }
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
-    manufacture:
-    use: "0.017303216974674882 kg_co2e"
+    manufacture: 0.06926762491444219 kg_co2e
+    use:
   resource_depletion: !ImpactValue
-    manufacture:
+    manufacture: 3.4223134839151278e-06 kg_Sbe
     use:
   acidification: !ImpactValue
-    manufacture:
+    manufacture: 0.0004243668720054758 mol_Hpos
     use:
   fine_particles: !ImpactValue
-    manufacture:
+    manufacture: 2.3928815879534575e-09 disease_incidence
     use:
   ionizing_radiations: !ImpactValue
-    manufacture:
+    manufacture: 0.029568788501026705 kg_Bq_u235e
     use:
   water_depletion: !ImpactValue
-    manufacture:
+    manufacture: 0.07720739219712527 cubic_meter
     use:
   raw_materials: !ImpactValue
-    manufacture:
+    manufacture: 0.2546201232032855 kg_mips
     use:
 source: >
-  Fabrication: https://bilans-ges.ademe.fr/fr/basecarbone/donnees-consulter/liste-element?recherche=tablettej
+  Negaoctet
 methodology: >
-  Fabrication: 63.2 * kg_co2e
-  Life expectancy: 5 * year
-  Daily use: 1 * hour / day
-  Hours used: Life expectancy * Daily use = 5 years * 1 hours / day = 3652.5 hour
-  Amortization = Fabrication / Hours used = 63.2 * kg_co2e / 3652.5 hour = 0.017303216974674882 kg_co2e / hour
+  Impact by year of usage: 
+    consumption = 19 kilowatt_hour
+
+    resource_depletion = 0.00125 kg_Sbe
+    acidification = 0.155 mol_Hpos
+    climate_change = 25.3 kg_co2e
+    ionizing_radiations = 10.8 kg_Bq_u235e
+    fine_particles = 8.74e-07 disease_incidence
+    water_depletion = 28.2 cubic_meter
+    raw_materials = 93.0 kg_mips
+
+  Daily usage = 1.0 hour / day, so impact by hour = impact by year / daily usage
+
+  Impact by hour of usage: 
+    consumption=0.05201916495550994 kilowatt_hour
+
+    resource_depletion = 3.4223134839151278e-06 kg_Sbe
+    acidification = 0.0004243668720054758 mol_Hpos
+    climate_change = 0.06926762491444219 kg_co2e
+    ionizing_radiations = 0.029568788501026705 kg_Bq_u235e
+    fine_particles = 2.3928815879534575e-09 disease_incidence
+    water_depletion = 0.07720739219712527 cubic_meter
+    raw_materials = 0.2546201232032855 kg_mips
+---
+!ImpactSource
+id: "work_laptop"
+name: "Business laptop"
+unit: laptop * hour
+uses:
+  - { quantity: 0.012124767771585025 kWh, resource_id: electricity }
+environmental_impact: !EnvironmentalImpact
+  climate_change: !ImpactValue
+    manufacture: 0.01771780580815489 kg_co2e
+    use:
+  resource_depletion: !ImpactValue
+    manufacture: 3.4223134839151278e-06 kg_Sbe
+    use:
+  acidification: !ImpactValue
+    manufacture: 0.00010208272220592553 mol_Hpos
+    use:
+  fine_particles: !ImpactValue
+    manufacture: 5.945047423486851e-10 disease_incidence
+    use:
+  ionizing_radiations: !ImpactValue
+    manufacture: 0.00719663635474724 kg_Bq_u235e
+    use:
+  water_depletion: !ImpactValue
+    manufacture: 0.07939767282683097 cubic_meter
+    use:
+  raw_materials: !ImpactValue
+    manufacture: 0.0664906619732082 kg_mips
+    use:
+source: Negaoctet
+methodology: >
+  Impact by year of usage: 
+    consumption = 31 kilowatt_hour
+
+    resource_depletion = 0.00215 kg_Sbe
+    acidification = 0.261 mol_Hpos
+    climate_change = 45.3 kg_co2e
+    ionizing_radiations = 18.4 kg_Bq_u235e
+    fine_particles = 1.52e-06 disease_incidence
+    water_depletion = 203.0 cubic_meter
+    raw_materials = 170.0 kg_mips
+
+  Daily usage = 7.0 hour / day, so impact by hour = impact by year / daily usage
+
+  Impact by hour of usage: 
+    consumption=0.012124767771585025 kilowatt_hour
+
+    resource_depletion = 8.409113131905743e-07 kg_Sbe
+    acidification = 0.00010208272220592553 mol_Hpos
+    climate_change = 0.01771780580815489 kg_co2e
+    ionizing_radiations = 0.00719663635474724 kg_Bq_u235e
+    fine_particles = 5.945047423486851e-10 disease_incidence
+    water_depletion = 0.07939767282683097 cubic_meter
+    raw_materials = 0.0664906619732082 kg_mips
+---
+!ImpactSource
+id: "monitor"
+name: "Monitor"
+unit: monitor * hour
+uses:
+  - { quantity: 0.021120563215019074 kWh, resource_id: electricity }
+environmental_impact: !EnvironmentalImpact
+  climate_change: !ImpactValue
+    manufacture: 0.003836902317395132 kg_co2e
+    use:
+  resource_depletion: !ImpactValue
+    manufacture: 6.414393272709497e-07 kg_Sbe
+    use:
+  acidification: !ImpactValue
+    manufacture: 2.2645937224992673e-05 mol_Hpos
+    use:
+  fine_particles: !ImpactValue
+    manufacture: 1.521462794563411e-10 disease_incidence
+    use:
+  ionizing_radiations: !ImpactValue
+    manufacture: 0.00856556174831329 kg_Bq_u235e
+    use:
+  water_depletion: !ImpactValue
+    manufacture: 0.03793878947883056 cubic_meter
+    use:
+  raw_materials: !ImpactValue
+    manufacture: 0.025070890779309678 kg_mips
+    use:
+source: Negaoctet
+methodology: >
+  Impact by year of usage: 
+    consumption = 54 kilowatt_hour
+
+    resource_depletion = 0.00164 kg_Sbe
+    acidification = 0.0579 mol_Hpos
+    climate_change = 9.81 kg_co2e
+    ionizing_radiations = 21.9 kg_Bq_u235e
+    fine_particles = 3.89e-07 disease_incidence
+    water_depletion = 97.0 cubic_meter
+    raw_materials = 64.1 kg_mips
+
+  Daily usage = 7.0 hour / day, so impact by hour = impact by year / daily usage
+
+  Impact by hour of usage: 
+    consumption=0.021120563215019074 kilowatt_hour
+
+    resource_depletion = 6.414393272709497e-07 kg_Sbe
+    acidification = 2.2645937224992673e-05 mol_Hpos
+    climate_change = 0.003836902317395132 kg_co2e
+    ionizing_radiations = 0.00856556174831329 kg_Bq_u235e
+    fine_particles = 1.521462794563411e-10 disease_incidence
+    water_depletion = 0.03793878947883056 cubic_meter
+    raw_materials = 0.025070890779309678 kg_mips
 ---
 !ImpactSource
 id: "laptop"
 name: "Laptop"
 unit: laptop * hour
 uses:
+  - { quantity: 0.042436687200547586 kWh, resource_id: electricity }
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
-    manufacture:
-    use: "0.027700236880868794 kg_co2e"
+    manufacture: 0.047912388774811784 kg_co2e
+    use:
   resource_depletion: !ImpactValue
-    manufacture:
+    manufacture: 2.1902806297056817e-06 kg_Sbe
     use:
   acidification: !ImpactValue
-    manufacture:
+    manufacture: 0.0002724161533196442 mol_Hpos
     use:
   fine_particles: !ImpactValue
-    manufacture:
+    manufacture: 1.6016427104722797e-09 disease_incidence
     use:
   ionizing_radiations: !ImpactValue
-    manufacture:
+    manufacture: 0.02067077344284737 kg_Bq_u235e
     use:
   water_depletion: !ImpactValue
-    manufacture:
+    manufacture: 0.22450376454483237 cubic_meter
     use:
   raw_materials: !ImpactValue
-    manufacture:
+    manufacture: 0.18617385352498295 kg_mips
     use:
-source: "https://github.com/Boavizta/environmental-footprint-data"
+source: Negaoctet
 methodology: >
-  Fabrication: 307.37 * kg_co2e
-  Life expectancy: 4.34 * year
-  Daily use: 7 * hour / day
-  Hours used: Life expectancy * Daily use = 4.34 years * 7 hours / day = 11096.295 hour
-  Amortization = Fabrication / Hours used = 307.37 * kg_co2e / 11096.295 hour = 0.027700236880868794 kg_co2e / hour
+  Impact by year of usage: 
+    consumption = 31 kilowatt_hour
+
+    resource_depletion = 0.0016 kg_Sbe
+    acidification = 0.199 mol_Hpos
+    climate_change = 35.0 kg_co2e
+    ionizing_radiations = 15.1 kg_Bq_u235e
+    fine_particles = 1.17e-06 disease_incidence
+    water_depletion = 164.0 cubic_meter
+    raw_materials = 136.0 kg_mips
+
+  Daily usage = 2.0 hour / day, so impact by hour = impact by year / daily usage
+
+  Impact by hour of usage: 
+    consumption=0.042436687200547586 kilowatt_hour
+
+    resource_depletion = 2.1902806297056817e-06 kg_Sbe
+    acidification = 0.0002724161533196442 mol_Hpos
+    climate_change = 0.047912388774811784 kg_co2e
+    ionizing_radiations = 0.02067077344284737 kg_Bq_u235e
+    fine_particles = 1.6016427104722797e-09 disease_incidence
+    water_depletion = 0.22450376454483237 cubic_meter
+    raw_materials = 0.18617385352498295 kg_mips
 ---
 !ImpactSource
 id: "television"
 name: "Television"
 unit: television * hour
 uses:
+  - { quantity: 0.1633584302988821 kWh, resource_id: electricity }
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
-    manufacture:
-    use: "0.04563084645220169 kg_co2e"
+    manufacture: 0.04106776180698154 kg_co2e
+    use:
   resource_depletion: !ImpactValue
-    manufacture:
+    manufacture: 4.3714350901209235e-06 kg_Sbe
     use:
   acidification: !ImpactValue
-    manufacture:
+    manufacture: 0.00027104722792607814 mol_Hpos
     use:
   fine_particles: !ImpactValue
-    manufacture:
+    manufacture: 1.5879534565366196e-09 disease_incidence
     use:
   ionizing_radiations: !ImpactValue
-    manufacture:
+    manufacture: 0.1095140314852841 kg_Bq_u235e
     use:
   water_depletion: !ImpactValue
-    manufacture:
+    manufacture: 115.0 cubic_meter
     use:
   raw_materials: !ImpactValue
-    manufacture:
+    manufacture: 235.0 kg_mips
     use:
 source: >
   Fabrication: https://bilans-ges.ademe.fr/fr/basecarbone/donnees-consulter/liste-element?recherche=television
 methodology: >
-  Fabrication: 500 * kg_co2e
-  Life expectancy: 10 * year
-  Daily use: 3 * hour / day
-  Hours used: Life expectancy * Daily use = 10 years * 3 hours / day = 10957.5 hour
-  Amortization = Fabrication / Hours used = 500 * kg_co2e / 10957.5 hour = 0.04563084645220169  kg_co2e / hour
+  Impact by year of usage: 
+    consumption = 179 kilowatt_hour
+
+    resource_depletion = 0.00479 kg_Sbe
+    acidification = 0.297 mol_Hpos
+    climate_change = 45.0 kg_co2e
+    ionizing_radiations = 120.0 kg_Bq_u235e
+    fine_particles = 1.74e-06 disease_incidence
+    water_depletion = 115.0 cubic_meter
+    raw_materials = 235.0 kg_mips
+
+  Daily usage = 3.0 hour / day, so impact by hour = impact by year / daily usage
+
+  Impact by hour of usage: 
+    consumption=0.1633584302988821 kilowatt_hour
+
+    resource_depletion = 4.3714350901209235e-06 kg_Sbe
+    acidification = 0.00027104722792607814 mol_Hpos
+    climate_change = 0.04106776180698154 kg_co2e
+    ionizing_radiations = 0.1095140314852841 kg_Bq_u235e
+    fine_particles = 1.5879534565366196e-09 disease_incidence
+    water_depletion = 0.10495094684006392 cubic_meter
+    raw_materials = 0.21446497832534803 kg_mips
 ---
 !ImpactSource
 id: "smartphone"
 name: "Smartphone"
 unit: smartphone * hour
 uses:
+  - { quantity: 0.0035100651117078233 kWh, resource_id: electricity }
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
-    manufacture:
-    use: "0.03893978483300865 kg_co2e"
+    manufacture: 0.029484546938345714 kg_co2e
+    use:
   resource_depletion: !ImpactValue
-    manufacture:
+    manufacture: 7.186858316221768e-07 kg_Sbe
     use:
   acidification: !ImpactValue
-    manufacture:
+    manufacture: 0.0001684831253619755 mol_Hpos
     use:
   fine_particles: !ImpactValue
-    manufacture:
+    manufacture: 9.477175801611123e-10 disease_incidence
     use:
   ionizing_radiations: !ImpactValue
-    manufacture:
+    manufacture: 0.004791238877481179 kg_Bq_u235e
     use:
   water_depletion: !ImpactValue
-    manufacture:
+    manufacture: 0.037382193439688315 cubic_meter
     use:
   raw_materials: !ImpactValue
-    manufacture:
+    manufacture: 0.08775162779269557 kg_mips
     use:
 source: >
-  Fabrication: https://github.com/Boavizta/environmental-footprint-data
+  Negaoctet
   Daily use: https://ieeexplore.ieee.org/abstract/document/6360448
 methodology: >
-  Fabrication: 33 * kg_co2e / year
-  Daily use: 3.12 * hour / day
-  Hours used: Life expectancy * Daily use = 2 years * 3.12 hours / day = 2279.16 hour
-  Amortization = Fabrication / Hours used = 307.37 * kg_co2e / 2279.16 hour = 0.03893978483300865 kg_co2e / hour
+  Impact by year of usage: 
+    consumption = 4 kilowatt_hour
+
+    resource_depletion = 0.000819 kg_Sbe
+    acidification = 0.192 mol_Hpos
+    climate_change = 33.6 kg_co2e
+    ionizing_radiations = 5.46 kg_Bq_u235e
+    fine_particles = 1.08e-06 disease_incidence
+    water_depletion = 42.6 cubic_meter
+    raw_materials = 100.0 kg_mips
+
+  Daily usage = 3.12 hour / day, so impact by hour = impact by year / daily usage
+
+  Impact by hour of usage: 
+    consumption=0.0035100651117078233 kilowatt_hour
+
+    resource_depletion = 7.186858316221768e-07 kg_Sbe
+    acidification = 0.0001684831253619755 mol_Hpos
+    climate_change = 0.029484546938345714 kg_co2e
+    ionizing_radiations = 0.004791238877481179 kg_Bq_u235e
+    fine_particles = 9.477175801611123e-10 disease_incidence
+    water_depletion = 0.037382193439688315 cubic_meter
+    raw_materials = 0.08775162779269557 kg_mips
 ---
 !ImpactSource
 id: "building"

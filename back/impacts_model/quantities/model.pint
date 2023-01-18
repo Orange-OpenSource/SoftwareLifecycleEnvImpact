@@ -22,9 +22,11 @@ laptop = []
 smartphone = []
 tablet = []
 television = []
+monitor= []
 server = []
 people = []
 vcpu = []
+vm = []
 
 business_day = day
 business_week = 5 * business_day

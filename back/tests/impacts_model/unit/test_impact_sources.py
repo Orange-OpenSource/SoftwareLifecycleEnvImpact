@@ -182,7 +182,7 @@ def test_impact_source_get_impact() -> None:
 def test_impact_source_computation() -> None:
     assert impact_source_factory("people").get_impact().total[
         ImpactCategory.CLIMATE_CHANGE
-    ].use == 12.26836154188304 * KG_CO2E / (PEOPLE * DAY)
+    ].use == 12.074459883716958 * KG_CO2E / (PEOPLE * DAY)
     assert impact_source_factory("transportation").get_impact().total[
         ImpactCategory.CLIMATE_CHANGE
     ].use == 6.583113447812001 * KG_CO2E / (PEOPLE * DAY)

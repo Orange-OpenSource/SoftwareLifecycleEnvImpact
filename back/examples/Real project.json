@@ -190,10 +190,10 @@
                       {
                         "created_at": null,
                         "id": null,
-                        "name": "Network",
+                        "name": "Fixed network",
                         "task_id": null,
                         "updated_at": null,
-                        "impact_source_id": "network",
+                        "impact_source_id": "fixed_network",
                         "amount": { "value": 100, "unit": "gigabyte" }
                       }
                     ],

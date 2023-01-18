@@ -1,7 +1,5 @@
 import type { Model } from '$lib/api/dataModel';
 import type { Project } from '$lib/api/dataModel';
-import { jsPDF } from 'jspdf';
-import 'svg2pdf.js';
 
 /**
  * Returns the last updated date (or creation date if null).

@@ -129,16 +129,15 @@ def test_gitlab_computation() -> None:
     schema = ProjectSchema()
     new_project = schema.load(data)
 
-    co2_nominal = 19470525.540418424 * KG_CO2E
+    co2_nominal = 19719744.84802462 * KG_CO2E
 
     impact = new_project.models[0].root_task.get_impact()
 
     value = impact.total[ImpactCategory.CLIMATE_CHANGE]
     if value.manufacture is not None and value.use is not None:
         assert value.manufacture + value.use == co2_nominal
-    elif value.manufacture is not None:
-        assert value.manufacture == co2_nominal
-    elif value.use is not None:
-        assert value.use == co2_nominal
     else:
-        raise Exception("Gitlab value manufacture and use are None")
+        raise Exception("Gitlab value manufacture or use is None")
+
+
+19719744.84802462
