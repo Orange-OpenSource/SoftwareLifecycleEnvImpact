@@ -1178,3 +1178,66 @@ source: >
   https://resources.taloen.fr/resources/documents/7765_191210_poids_carbone_ACV_vdef.pdf
 methodology: >
   office + transport + laptop = 5.491346435904957 + 6.583113447812 + (0.027700236880868794 * 7) = 12.268361541883039 * kg_co2e * people * day
+---
+!ImpactSource
+id: "storage"
+name: "Storage"
+unit: gigabyte * day
+uses:
+  - { quantity: 2.9276822381930186e-06 kWh, resource_id: electricity }
+environmental_impact: !EnvironmentalImpact
+  climate_change: !ImpactValue
+    manufacture: 1.044407191136208e-05 kg_co2e
+    use:
+  resource_depletion: !ImpactValue
+    manufacture: 4.943527371378052e-11 kg_Sbe
+    use:
+  acidification: !ImpactValue
+    manufacture: 5.7558440755951024e-08 mol_Hpos
+    use:
+  fine_particles: !ImpactValue
+    manufacture: 3.191244195138414e-13 disease_incidence
+    use:
+  ionizing_radiations: !ImpactValue
+    manufacture: 4.235651386274622e-07 kg_Bq_u235e
+    use:
+  water_depletion: !ImpactValue
+    manufacture: 1.8219103223153853e-05 cubic_meter
+    use:
+  raw_materials: !ImpactValue
+    manufacture: 2.5413908317647732e-05 kg_mips
+    use:
+source: >
+  Negaoctet
+methodology: >
+  For a 48 disks of 2048 GB storage bay, by year of usage are
+    consumption = 2522.88 kilowatt_hour
+    resource_depletion = 0.0426 kg_Sbe
+    acidification = 49.6 mol_Hpos
+    climate_change = 9000.0 kg_co2e
+    ionizing_radiations = 365.0 kg_Bq_u235e
+    fine_particles = 0.000275 disease_incidence
+    water_depletion = 15700.0 cubic_meter
+    raw_materials = 21900.0 kg_mips
+
+  Impact by hour = impact by year / 8766.0 hour
+
+  So Impact by hour of usage: 
+    consumption=0.2878028747433265 kilowatt_hour
+    resource_depletion = 4.85968514715948e-06 kg_Sbe
+    acidification = 0.00565822496007301 mol_Hpos
+    climate_change = 1.0266940451745379 kg_co2e
+    ionizing_radiations = 0.04163814738763404 kg_Bq_u235e
+    fine_particles = 3.1371206935888665e-08 disease_incidence
+    water_depletion = 1.7910107232489163 cubic_meter
+    raw_materials = 2.4982888432580426 kg_mips
+
+  To obtain an impact by gigabyte/hour, storage bay total = 98304 so impact = 
+    consumption = 2.9276822381930186e-06 kilowatt_hour
+    resource_depletion = 4.943527371378052e-11 kg_Sbe
+    acidification = 5.7558440755951024e-08 mol_Hpos
+    climate_change = 1.044407191136208e-05 kg_co2e
+    ionizing_radiations = 4.235651386274622e-07 kg_Bq_u235e
+    fine_particles = 3.191244195138414e-13 disease_incidence
+    water_depletion = 1.8219103223153853e-05 cubic_meter
+    raw_materials = 2.5413908317647732e-05 kg_mips
