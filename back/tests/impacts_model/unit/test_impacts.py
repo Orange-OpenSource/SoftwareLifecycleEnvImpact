@@ -129,7 +129,7 @@ def test_gitlab_computation() -> None:
     schema = ProjectSchema()
     new_project = schema.load(data)
 
-    co2_nominal = 19719744.84802462 * KG_CO2E
+    co2_nominal = 19607396.388510715 * KG_CO2E
 
     impact = new_project.models[0].root_task.get_impact()
 

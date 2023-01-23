@@ -498,10 +498,14 @@ id: "userDevice"
 name: "User device"
 unit: user_device * hour
 uses:
+  - { quantity: 0.0784 tablet * hour, resource_id: tablet }
+  - { quantity: 0.1373 laptop * hour, resource_id: laptop }
+  - { quantity: 0.2549 television * hour, resource_id: television }
+  - { quantity: 0.5294 smartphone * hour, resource_id: smartphone }
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
     manufacture:
-    use: "0.03740583958581879 kg_co2e"
+    use:
   resource_depletion: !ImpactValue
     manufacture:
     use:
@@ -520,19 +524,12 @@ environmental_impact: !EnvironmentalImpact
   raw_materials: !ImpactValue
     manufacture:
     use:
-source:
+source: https://www.cisco.com/c/en/us/solutions/collateral/executive-perspectives/annual-internet-report/white-paper-c11-741490.html
 methodology: >
   RATIO_TABLET = 0.0784
   RATIO_PC = 0.1373
   RATIO_TV = 0.2549
   RATIO_SMARTPHONE = 0.5294
-
-  Climate change = (
-  RATIO_TABLET * 0.017303216974674882
-  + RATIO_PC * 0.027700236880868794
-  + RATIO_TV * 0.04563084645220169
-  + RATIO_SMARTPHONE * 0.03893978483300865
-  )
 ---
 !ImpactSource
 id: "tablet"
@@ -861,40 +858,59 @@ methodology: >
     fine_particles = 9.477175801611123e-10 disease_incidence
     water_depletion = 0.037382193439688315 cubic_meter
     raw_materials = 0.08775162779269557 kg_mips
----
-!ImpactSource
-id: "building"
-name: "Building"
-unit: (meter * meter) * day
-uses:
-environmental_impact: !EnvironmentalImpact
-  climate_change: !ImpactValue
-    manufacture:
-    use: "0.21355236139630387 kg_co2e"
-  resource_depletion: !ImpactValue
-    manufacture:
-    use:
-  acidification: !ImpactValue
-    manufacture:
-    use:
-  fine_particles: !ImpactValue
-    manufacture:
-    use:
-  ionizing_radiations: !ImpactValue
-    manufacture:
-    use:
-  water_depletion: !ImpactValue
-    manufacture:
-    use:
-  raw_materials: !ImpactValue
-    manufacture:
-    use:
-source: >
-  https://resources.taloen.fr/resources/documents/7765_191210_poids_carbone_ACV_vdef.pdf
-methodology: >
-  BUILDING_EMISSIONS = 3900 * (KG_CO2E / (m * m))
-  LIFE_EXPECTANCY = 50  # years 
-  BUILDING_EMISSIONS / LIFE_EXPECTANCY = 0.21355236139630387 kg_co2e / day
+# ---
+# !ImpactSource
+# id: "office"
+# name: "Office"
+# unit: (meter * meter) * day
+# uses:
+# environmental_impact: !EnvironmentalImpact
+#   climate_change: !ImpactValue
+#     manufacture:
+#     use: "0.21355236139630387 kg_co2e"
+#   resource_depletion: !ImpactValue
+#     manufacture:
+#     use:
+#   acidification: !ImpactValue
+#     manufacture:
+#     use:
+#   fine_particles: !ImpactValue
+#     manufacture:
+#     use:
+#   ionizing_radiations: !ImpactValue
+#     manufacture:
+#     use:
+#   water_depletion: !ImpactValue
+#     manufacture:
+#     use:
+#   raw_materials: !ImpactValue
+#     manufacture:
+#     use:
+# source: >
+#   Negaoctet
+# methodology: >
+#   Impact by year of usage: 
+#     consumption = 116.6 kilowatt_hour
+
+#     resource_depletion = 0.00107 kg_Sbe
+#     acidification = 1.46 mol_Hpos
+#     climate_change = 335.0 kg_co2e
+#     ionizing_radiations = 221.0 kg_Bq_u235e
+#     fine_particles = 7.37e-06 disease_incidence
+#     water_depletion = 107.0 cubic_meter
+#     raw_materials = 207.0 kg_mips
+#     Office used 5 days a week, so 260.8928571428571 days a year (52.18 weeks per year)
+
+#   Impact by day of usage: 
+#     consumption=0.44692676249144425 kilowatt_hour
+
+#     resource_depletion = 4.1013004791238885e-06 kg_Sbe
+#     acidification = 0.005596167008898016 mol_Hpos
+#     climate_change = 1.2840520191649556 kg_co2e
+#     ionizing_radiations = 0.8470910335386722 kg_Bq_u235e
+#     fine_particles = 2.8249144421629023e-08 disease_incidence
+#     water_depletion = 0.41013004791238883 cubic_meter
+#     raw_materials = 0.7934291581108831 kg_mips
 ---
 !ImpactSource
 id: "office"
@@ -939,8 +955,8 @@ unit: km
 uses:
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
-    manufacture:
-    use: "0.218 kg_co2e"
+    manufacture: 0.0256 kg_co2e
+    use: 0.19 kg_co2e
   resource_depletion: !ImpactValue
     manufacture:
     use:
@@ -964,45 +980,14 @@ source: >
 methodology:
 ---
 !ImpactSource
-id: "bike"
-name: "Bike"
-unit: km
-uses:
-environmental_impact: !EnvironmentalImpact
-  climate_change: !ImpactValue
-    manufacture:
-    use: "0.00348 kg_co2e"
-  resource_depletion: !ImpactValue
-    manufacture:
-    use:
-  acidification: !ImpactValue
-    manufacture:
-    use:
-  fine_particles: !ImpactValue
-    manufacture:
-    use:
-  ionizing_radiations: !ImpactValue
-    manufacture:
-    use:
-  water_depletion: !ImpactValue
-    manufacture:
-    use:
-  raw_materials: !ImpactValue
-    manufacture:
-    use:
-source: >
-  https://view.publitas.com/trek-bicycle/trek-bicycle-2021-sustainability-report/page/5
-methodology:
----
-!ImpactSource
 id: "plane"
 name: "Plane"
 unit: km
 uses:
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
-    manufacture:
-    use: "0.187 kg_co2e"
+    manufacture: 0.00036 kg_co2e
+    use: 0.1871 kg_co2e
   resource_depletion: !ImpactValue
     manufacture:
     use:
@@ -1032,8 +1017,8 @@ unit: km
 uses:
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
-    manufacture:
-    use: "0.00503 kg_co2e"
+    manufacture: 0.00031 kg_co2e
+    use: 0.00472 kg_co2e
   resource_depletion: !ImpactValue
     manufacture:
     use:
@@ -1063,8 +1048,8 @@ unit: km
 uses:
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
-    manufacture:
-    use: "0.191 kg_co2e"
+    manufacture: 0.0265 kg_co2e
+    use: "0.1648 kg_co2e"
   resource_depletion: !ImpactValue
     manufacture:
     use:
@@ -1092,7 +1077,7 @@ id: "transportation"
 name: "Transportation"
 unit: people * day
 uses:
-  - { quantity: 0.549765 * km, resource_id: bike }
+  # - { quantity: 0.549765 * km, resource_id: bike }
   - { quantity: 6.7547204 * km, resource_id: publicTransport }
   - { quantity: 29.0618908 * km, resource_id: car }
   - { quantity: 1.1085436 * km, resource_id: motorbike }
