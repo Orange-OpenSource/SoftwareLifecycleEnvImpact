@@ -70,7 +70,7 @@ id: "small_vm"
 name: "VM - small"
 unit: vm * hour
 uses:
-  - { quantity: 0.006274241387177732 kWh, resource_id: electricity }
+  - { quantity: 0.006274241387177732 kWh, resource_id: kWhIT }
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
     manufacture: 0.00043349304129591603 kg_co2e
@@ -124,7 +124,7 @@ id: "medium_vm"
 name: "VM - medium"
 unit: vm * hour
 uses:
-  - { quantity: 0.05042208532968286 kWh, resource_id: electricity }
+  - { quantity: 0.05042208532968286 kWh, resource_id: kWhIT }
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
     manufacture: 0.0034223134839151265 kg_co2e
@@ -178,7 +178,7 @@ id: "big_vm"
 name: "VM - big"
 unit: vm * hour
 uses:
-  - { quantity: 0.30219028062970565 kWh, resource_id: electricity }
+  - { quantity: 0.30219028062970565 kWh, resource_id: kWhIT }
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
     manufacture: 0.02053388090349076 kg_co2e
@@ -233,7 +233,7 @@ id: "server"
 name: "Server"
 unit: server * hour
 uses:
-  - { quantity: 0.3564909879078257 kWh, resource_id: electricity }
+  - { quantity: 0.3564909879078257 kWh, resource_id: kWhIT }
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
     manufacture: 0.08350444900752908 kg_co2e
@@ -858,6 +858,8 @@ methodology: >
     fine_particles = 9.477175801611123e-10 disease_incidence
     water_depletion = 0.037382193439688315 cubic_meter
     raw_materials = 0.08775162779269557 kg_mips
+
+
 # ---
 # !ImpactSource
 # id: "office"
@@ -889,7 +891,7 @@ methodology: >
 # source: >
 #   Negaoctet
 # methodology: >
-#   Impact by year of usage: 
+#   Impact by year of usage:
 #     consumption = 116.6 kilowatt_hour
 
 #     resource_depletion = 0.00107 kg_Sbe
@@ -901,7 +903,7 @@ methodology: >
 #     raw_materials = 207.0 kg_mips
 #     Office used 5 days a week, so 260.8928571428571 days a year (52.18 weeks per year)
 
-#   Impact by day of usage: 
+#   Impact by day of usage:
 #     consumption=0.44692676249144425 kilowatt_hour
 
 #     resource_depletion = 4.1013004791238885e-06 kg_Sbe
@@ -1169,7 +1171,7 @@ id: "storage"
 name: "Storage"
 unit: gigabyte * day
 uses:
-  - { quantity: 2.9276822381930186e-06 kWh, resource_id: electricity }
+  - { quantity: 2.9276822381930186e-06 kWh, resource_id: kWhIT }
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
     manufacture: 1.044407191136208e-05 kg_co2e
@@ -1226,3 +1228,407 @@ methodology: >
     fine_particles = 3.191244195138414e-13 disease_incidence
     water_depletion = 1.8219103223153853e-05 cubic_meter
     raw_materials = 2.5413908317647732e-05 kg_mips
+---
+!ImpactSource
+id: "kWhIT"
+name: "kWh IT"
+unit: kWh
+uses:
+  - { quantity: 1.75 kWh, resource_id: electricity }
+environmental_impact: !EnvironmentalImpact
+  climate_change: !ImpactValue
+    manufacture:
+    use:
+  resource_depletion: !ImpactValue
+    manufacture:
+    use:
+  acidification: !ImpactValue
+    manufacture:
+    use:
+  fine_particles: !ImpactValue
+    manufacture:
+    use:
+  ionizing_radiations: !ImpactValue
+    manufacture:
+    use:
+  water_depletion: !ImpactValue
+    manufacture:
+    use:
+  raw_materials: !ImpactValue
+    manufacture:
+    use:
+source: >
+  https://www.arcep.fr/uploads/tx_gspublication/etude-numerique-environnement-ademe-arcep-volet01_janv2022.pdf
+methodology: >
+  Weighted average
+---
+!ImpactSource
+id: "8vcpu_8ram"
+name: "VM - 8vCPU/8GO RAM"
+unit: vm * month
+uses:
+  - { quantity: 36.800000000000004 kWh, resource_id: kWhIT }
+environmental_impact: !EnvironmentalImpact
+  climate_change: !ImpactValue
+    manufacture: 1.325 kg_co2e
+    use:
+  resource_depletion: !ImpactValue
+    manufacture: 0.000155 kg_Sbe
+    use:
+  acidification: !ImpactValue
+    manufacture: 0.009083333333333334 mol_Hpos
+    use:
+  fine_particles: !ImpactValue
+    manufacture: 4.9e-08 disease_incidence
+    use:
+  ionizing_radiations: !ImpactValue
+    manufacture: 5.608333333333333 kg_Bq_u235e
+    use:
+  water_depletion: !ImpactValue
+    manufacture: 12.083333333333334 cubic_meter
+    use:
+  raw_materials: !ImpactValue
+    manufacture: 10.583333333333334 kg_mips
+    use:
+source: >
+  Negaoctet
+methodology: >
+  Impact by year of usage: 
+    consumption = 441.6 kilowatt_hour
+
+    resource_depletion = 0.00186 kg_Sbe
+    acidification = 0.109 mol_Hpos
+    climate_change = 15.9 kg_co2e
+    ionizing_radiations = 67.3 kg_Bq_u235e
+    fine_particles = 5.88e-07 disease_incidence
+    water_depletion = 145.0 cubic_meter
+    raw_materials = 127.0 kg_mips
+
+  Impact by month = impact by year / 12.0 month
+    consumption=36.800000000000004 kilowatt_hour
+
+    resource_depletion = 0.000155 kg_Sbe
+    acidification = 0.009083333333333334 mol_Hpos
+    climate_change = 1.325 kg_co2e
+    ionizing_radiations = 5.608333333333333 kg_Bq_u235e
+    fine_particles = 4.9e-08 disease_incidence
+    water_depletion = 12.083333333333334 cubic_meter
+    raw_materials = 10.583333333333334 kg_mips
+---
+!ImpactSource
+id: "2vcpu_2ram"
+name: "VM - 2vCPU/2GO RAM"
+unit: vm * month
+uses:
+  - { quantity: 9.200000000000001 kWh, resource_id: kWhIT }
+environmental_impact: !EnvironmentalImpact
+  climate_change: !ImpactValue
+    manufacture: 0.33083333333333337 kg_co2e
+    use:
+  resource_depletion: !ImpactValue
+    manufacture: 3.875e-05 kg_Sbe
+    use:
+  acidification: !ImpactValue
+    manufacture: 0.002275 mol_Hpos
+    use:
+  fine_particles: !ImpactValue
+    manufacture: 1.225e-08 disease_incidence
+    use:
+  ionizing_radiations: !ImpactValue
+    manufacture: 1.4000000000000001 kg_Bq_u235e
+    use:
+  water_depletion: !ImpactValue
+    manufacture: 3.016666666666667 cubic_meter
+    use:
+  raw_materials: !ImpactValue
+    manufacture: 2.6333333333333333 kg_mips
+    use:
+source: >
+  Negaoctet
+methodology: >
+  Impact by year of usage: 
+    consumption = 110.4 kilowatt_hour
+
+    resource_depletion = 0.000465 kg_Sbe
+    acidification = 0.0273 mol_Hpos
+    climate_change = 3.97 kg_co2e
+    ionizing_radiations = 16.8 kg_Bq_u235e
+    fine_particles = 1.47e-07 disease_incidence
+    water_depletion = 36.2 cubic_meter
+    raw_materials = 31.6 kg_mips
+
+  Impact by month = impact by year / 12.0 month
+    consumption=9.200000000000001 kilowatt_hour
+
+    resource_depletion = 3.875e-05 kg_Sbe
+    acidification = 0.002275 mol_Hpos
+    climate_change = 0.33083333333333337 kg_co2e
+    ionizing_radiations = 1.4000000000000001 kg_Bq_u235e
+    fine_particles = 1.225e-08 disease_incidence
+    water_depletion = 3.016666666666667 cubic_meter
+    raw_materials = 2.6333333333333333 kg_mips
+---
+!ImpactSource
+id: "32vcpu_120ram"
+name: "VM - 32vCPU/120GO RAM"
+unit: vm * month
+uses:
+  - { quantity: 147.20000000000002 kWh, resource_id: kWhIT }
+environmental_impact: !EnvironmentalImpact
+  climate_change: !ImpactValue
+    manufacture: 8.583333333333334 kg_co2e
+    use:
+  resource_depletion: !ImpactValue
+    manufacture: 0.0006875000000000001 kg_Sbe
+    use:
+  acidification: !ImpactValue
+    manufacture: 0.05525 mol_Hpos
+    use:
+  fine_particles: !ImpactValue
+    manufacture: 2.991666666666667e-07 disease_incidence
+    use:
+  ionizing_radiations: !ImpactValue
+    manufacture: 22.5 kg_Bq_u235e
+    use:
+  water_depletion: !ImpactValue
+    manufacture: 53.25 cubic_meter
+    use:
+  raw_materials: !ImpactValue
+    manufacture: 54.833333333333336 kg_mips
+    use:
+source: >
+  Negaoctet
+methodology: >
+  Impact by year of usage: 
+    consumption = 1766.4 kilowatt_hour
+
+    resource_depletion = 0.00825 kg_Sbe
+    acidification = 0.663 mol_Hpos
+    climate_change = 103.0 kg_co2e
+    ionizing_radiations = 270.0 kg_Bq_u235e
+    fine_particles = 3.59e-06 disease_incidence
+    water_depletion = 639.0 cubic_meter
+    raw_materials = 658.0 kg_mips
+
+  Impact by month = impact by year / 12.0 month
+    consumption=147.20000000000002 kilowatt_hour
+
+    resource_depletion = 0.0006875000000000001 kg_Sbe
+    acidification = 0.05525 mol_Hpos
+    climate_change = 8.583333333333334 kg_co2e
+    ionizing_radiations = 22.5 kg_Bq_u235e
+    fine_particles = 2.991666666666667e-07 disease_incidence
+    water_depletion = 53.25 cubic_meter
+    raw_materials = 54.833333333333336 kg_mips
+---
+!ImpactSource
+id: "4vcpu_15ram"
+name: "VM - 4vCPU/15GO RAM"
+unit: vm * month
+uses:
+  - { quantity: 18.400000000000002 kWh, resource_id: kWhIT }
+environmental_impact: !EnvironmentalImpact
+  climate_change: !ImpactValue
+    manufacture: 1.0666666666666667 kg_co2e
+    use:
+  resource_depletion: !ImpactValue
+    manufacture: 8.583333333333334e-05 kg_Sbe
+    use:
+  acidification: !ImpactValue
+    manufacture: 0.006908333333333333 mol_Hpos
+    use:
+  fine_particles: !ImpactValue
+    manufacture: 3.733333333333333e-08 disease_incidence
+    use:
+  ionizing_radiations: !ImpactValue
+    manufacture: 2.8166666666666664 kg_Bq_u235e
+    use:
+  water_depletion: !ImpactValue
+    manufacture: 6.6499999999999995 cubic_meter
+    use:
+  raw_materials: !ImpactValue
+    manufacture: 6.8500000000000005 kg_mips
+    use:
+source: >
+  Negaoctet
+methodology: >
+  Impact by year of usage: 
+    consumption = 220.8 kilowatt_hour
+
+    resource_depletion = 0.00103 kg_Sbe
+    acidification = 0.0829 mol_Hpos
+    climate_change = 12.8 kg_co2e
+    ionizing_radiations = 33.8 kg_Bq_u235e
+    fine_particles = 4.48e-07 disease_incidence
+    water_depletion = 79.8 cubic_meter
+    raw_materials = 82.2 kg_mips
+
+  Impact by month = impact by year / 12.0 month
+    consumption=18.400000000000002 kilowatt_hour
+
+    resource_depletion = 8.583333333333334e-05 kg_Sbe
+    acidification = 0.006908333333333333 mol_Hpos
+    climate_change = 1.0666666666666667 kg_co2e
+    ionizing_radiations = 2.8166666666666664 kg_Bq_u235e
+    fine_particles = 3.733333333333333e-08 disease_incidence
+    water_depletion = 6.6499999999999995 cubic_meter
+    raw_materials = 6.8500000000000005 kg_mips
+---
+!ImpactSource
+id: "64vcpu_240ram"
+name: "VM - 64vCPU/240GO RAM"
+unit: vm * month
+uses:
+  - { quantity: 294.40000000000003 kWh, resource_id: kWhIT }
+environmental_impact: !EnvironmentalImpact
+  climate_change: !ImpactValue
+    manufacture: 17.083333333333332 kg_co2e
+    use:
+  resource_depletion: !ImpactValue
+    manufacture: 0.0013750000000000001 kg_Sbe
+    use:
+  acidification: !ImpactValue
+    manufacture: 0.11083333333333334 mol_Hpos
+    use:
+  fine_particles: !ImpactValue
+    manufacture: 5.975e-07 disease_incidence
+    use:
+  ionizing_radiations: !ImpactValue
+    manufacture: 45.083333333333336 kg_Bq_u235e
+    use:
+  water_depletion: !ImpactValue
+    manufacture: 106.66666666666667 cubic_meter
+    use:
+  raw_materials: !ImpactValue
+    manufacture: 110.0 kg_mips
+    use:
+source: >
+  Negaoctet
+methodology: >
+  Impact by year of usage: 
+    consumption = 3532.8 kilowatt_hour
+
+    resource_depletion = 0.0165 kg_Sbe
+    acidification = 1.33 mol_Hpos
+    climate_change = 205.0 kg_co2e
+    ionizing_radiations = 541.0 kg_Bq_u235e
+    fine_particles = 7.17e-06 disease_incidence
+    water_depletion = 1280.0 cubic_meter
+    raw_materials = 1320.0 kg_mips
+
+  Impact by month = impact by year / 12.0 month
+    consumption=294.40000000000003 kilowatt_hour
+
+    resource_depletion = 0.0013750000000000001 kg_Sbe
+    acidification = 0.11083333333333334 mol_Hpos
+    climate_change = 17.083333333333332 kg_co2e
+    ionizing_radiations = 45.083333333333336 kg_Bq_u235e
+    fine_particles = 5.975e-07 disease_incidence
+    water_depletion = 106.66666666666667 cubic_meter
+    raw_materials = 110.0 kg_mips
+---
+!ImpactSource
+id: "4vcpu_4ram"
+name: "VM - 4vCPU/4GO RAM"
+unit: vm * month
+uses:
+  - { quantity: 18.400000000000002 kWh, resource_id: kWhIT }
+environmental_impact: !EnvironmentalImpact
+  climate_change: !ImpactValue
+    manufacture: 0.6616666666666667 kg_co2e
+    use:
+  resource_depletion: !ImpactValue
+    manufacture: 7.741666666666667e-05 kg_Sbe
+    use:
+  acidification: !ImpactValue
+    manufacture: 0.00455 mol_Hpos
+    use:
+  fine_particles: !ImpactValue
+    manufacture: 2.45e-08 disease_incidence
+    use:
+  ionizing_radiations: !ImpactValue
+    manufacture: 2.8083333333333336 kg_Bq_u235e
+    use:
+  water_depletion: !ImpactValue
+    manufacture: 6.0249999999999995 cubic_meter
+    use:
+  raw_materials: !ImpactValue
+    manufacture: 5.2749999999999995 kg_mips
+    use:
+source: >
+  Negaoctet
+methodology: >
+  Impact by year of usage: 
+    consumption = 220.8 kilowatt_hour
+
+    resource_depletion = 0.000929 kg_Sbe
+    acidification = 0.0546 mol_Hpos
+    climate_change = 7.94 kg_co2e
+    ionizing_radiations = 33.7 kg_Bq_u235e
+    fine_particles = 2.94e-07 disease_incidence
+    water_depletion = 72.3 cubic_meter
+    raw_materials = 63.3 kg_mips
+
+  Impact by month = impact by year / 12.0 month
+    consumption=18.400000000000002 kilowatt_hour
+
+    resource_depletion = 7.741666666666667e-05 kg_Sbe
+    acidification = 0.00455 mol_Hpos
+    climate_change = 0.6616666666666667 kg_co2e
+    ionizing_radiations = 2.8083333333333336 kg_Bq_u235e
+    fine_particles = 2.45e-08 disease_incidence
+    water_depletion = 6.0249999999999995 cubic_meter
+    raw_materials = 5.2749999999999995 kg_mips
+---
+!ImpactSource
+id: "32vcpu_30ram"
+name: "VM - 32vCPU/30GO RAM"
+unit: vm * month
+uses:
+  - { quantity: 147.20000000000002 kWh, resource_id: kWhIT }
+environmental_impact: !EnvironmentalImpact
+  climate_change: !ImpactValue
+    manufacture: 5.216666666666667 kg_co2e
+    use:
+  resource_depletion: !ImpactValue
+    manufacture: 0.0006183333333333334 kg_Sbe
+    use:
+  acidification: !ImpactValue
+    manufacture: 0.036 mol_Hpos
+    use:
+  fine_particles: !ImpactValue
+    manufacture: 1.9333333333333332e-07 disease_incidence
+    use:
+  ionizing_radiations: !ImpactValue
+    manufacture: 22.416666666666668 kg_Bq_u235e
+    use:
+  water_depletion: !ImpactValue
+    manufacture: 48.083333333333336 cubic_meter
+    use:
+  raw_materials: !ImpactValue
+    manufacture: 41.916666666666664 kg_mips
+    use:
+source: >
+  Negaoctet
+methodology: >
+  Impact by year of usage: 
+    consumption = 1766.4 kilowatt_hour
+
+    resource_depletion = 0.00742 kg_Sbe
+    acidification = 0.432 mol_Hpos
+    climate_change = 62.6 kg_co2e
+    ionizing_radiations = 269.0 kg_Bq_u235e
+    fine_particles = 2.32e-06 disease_incidence
+    water_depletion = 577.0 cubic_meter
+    raw_materials = 503.0 kg_mips
+
+  Impact by month = impact by year / 12.0 month
+    consumption=147.20000000000002 kilowatt_hour
+
+    resource_depletion = 0.0006183333333333334 kg_Sbe
+    acidification = 0.036 mol_Hpos
+    climate_change = 5.216666666666667 kg_co2e
+    ionizing_radiations = 22.416666666666668 kg_Bq_u235e
+    fine_particles = 1.9333333333333332e-07 disease_incidence
+    water_depletion = 48.083333333333336 cubic_meter
+    raw_materials = 41.916666666666664 kg_mips
