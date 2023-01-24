@@ -1,16 +1,22 @@
 <script lang="ts">
-	import { impactValueTotal, type ImpactSourceId, type ImpactSourceImpact, type Task } from '$lib/api/dataModel';
-	import type { D3JSHierarchyNode, D3JStackedData } from '$lib/Dataviz/d3js';
+	import { impactValueTotal, type ImpactSourceId, type ImpactSourceImpact, type Task, type TaskImpact } from '$lib/api/dataModel';
+	import { constructLinks, type D3JSHierarchyNode, type D3JStackedData } from '$lib/Dataviz/d3js';
+	import Sankey from '$lib/Dataviz/Sankey.svelte';
 	import StackedBarChart from '$lib/Dataviz/StackedBarChart.svelte';
 	import Sunburst from '$lib/Dataviz/Sunburst.svelte';
 	import { hierarchy, type HierarchyNode } from 'd3-hierarchy';
 
-	export let impactBySource: Record<ImpactSourceId, ImpactSourceImpact>;
+	export let impact: TaskImpact;
+
+	/*Bound var*/
+	export let selectedTask: Task;
+
+	$: sourcesLinks = constructLinks(selectedTask, impact.sub_tasks, false, true);
 
 	function convertResourcesImpactToHierarchy(): HierarchyNode<D3JSHierarchyNode> {
 		let final: D3JSHierarchyNode = {
 			name: 'root',
-			children: getHierarchyChildrenNodes(impactBySource)
+			children: getHierarchyChildrenNodes(impact.impact_sources)
 		};
 
 		return hierarchy(final);
@@ -36,8 +42,8 @@
 	function convertResourcesImpactToStackedData(): D3JStackedData[] {
 		let final: D3JStackedData[] = [];
 
-		for (const [sourceName, impact] of Object.entries(impactBySource)) {
-			for (const [impactCategory, impactValue] of Object.entries(impact.total)) {
+		for (const [sourceName, sourceImpact] of Object.entries(impact.impact_sources)) {
+			for (const [impactCategory, impactValue] of Object.entries(sourceImpact.total)) {
 				const total = impactValueTotal(impactValue).value;
 				if (total) {
 					final.push({
@@ -52,12 +58,13 @@
 	}
 </script>
 
-{#if Object.keys(impactBySource).length}
+{#if Object.keys(impact.impact_sources).length}
 	<div class="row">
 		<h3>Resources:</h3>
 	</div>
 
 	<StackedBarChart chartData={convertResourcesImpactToStackedData()} />
 	<Sunburst hierarchy={convertResourcesImpactToHierarchy()} />
+	<Sankey links={sourcesLinks} />
 	<!-- <Treemap hierarchy={convertResourcesImpactToHierarchy()} /> -->
 {/if}

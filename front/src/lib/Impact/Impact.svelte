@@ -5,6 +5,7 @@
 	import type { TaskImpact, Task } from '$lib/api/dataModel';
 	import Error from '$lib/Error.svelte';
 	import Spinner from '$lib/Spinner.svelte';
+	import ImpactComplete from './ImpactComplete.svelte';
 
 	/*Bound var*/
 	export let selectedTask: Task;
@@ -42,15 +43,15 @@
 					</select>
 				</div>
 				{#if impact.sub_tasks.length > 0}
-					<!-- <div class="row">
-						<h3>Tasks:</h3>
-					</div> -->
 					<div class="row">
-						<ImpactBySubtask bind:selectedTask impactBySubtask={impact.sub_tasks} {selectedImpactName} />
+						<ImpactComplete bind:selectedTask {impact} />
+					</div>
+					<div class="row">
+						<ImpactBySubtask bind:selectedTask impact={impact} {selectedImpactName} />
 					</div>
 				{/if}
 				<div class="row">
-					<ImpactBySource impactBySource={impact.impact_sources} />
+					<ImpactBySource bind:selectedTask impact={impact} />
 				</div>
 			{:else}
 				No impact
