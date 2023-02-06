@@ -520,7 +520,7 @@ class Task(db.Model):  # type: ignore
 
         # Sum resources impacts
         for resource in resources:
-            result = merge_env_impact(result, resources[resource].total)
+            result = merge_env_impact(result, resources[resource].total_impact)
 
         return result
 

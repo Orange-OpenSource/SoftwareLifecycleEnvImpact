@@ -172,7 +172,7 @@ def test_get_task_impact_by_impact_source(
     # Test two resources
     res_dict = single_task_fixture.get_impact().impact_sources
     assert (
-        res_dict["testImpactSource"].total[ImpactCategory.CLIMATE_CHANGE].use
+        res_dict["testImpactSource"].total_impact[ImpactCategory.CLIMATE_CHANGE].use
         == 2000 * KG_CO2E
     )
 
@@ -180,6 +180,6 @@ def test_get_task_impact_by_impact_source(
 
     res_dict = task_fixture_with_subtask.get_impact().impact_sources
     assert (
-        res_dict["testImpactSource"].total[ImpactCategory.CLIMATE_CHANGE].use
+        res_dict["testImpactSource"].total_impact[ImpactCategory.CLIMATE_CHANGE].use
         == 3000 * KG_CO2E
     )

@@ -213,7 +213,7 @@ def test_resource_get_impact(resource_fixture: Resource) -> None:
     res_impact = resource_fixture.get_impact()
     assert res_impact is not None  # Test that dict contains the resource
 
-    impact = res_impact.total
+    impact = res_impact.own_impact
     co2 = impact[ImpactCategory.CLIMATE_CHANGE]
     assert co2.manufacture is not None
     assert co2.manufacture.units == KG_CO2E
@@ -225,7 +225,7 @@ def test_resource_get_impact(resource_fixture: Resource) -> None:
     res_impact = resource_fixture.get_impact()
     assert res_impact is not None  # Test that dict contains the resource
 
-    impact = res_impact.total
+    impact = res_impact.own_impact
     co2 = impact[ImpactCategory.CLIMATE_CHANGE]
     assert co2.manufacture is not None
     assert co2.manufacture.units == KG_CO2E

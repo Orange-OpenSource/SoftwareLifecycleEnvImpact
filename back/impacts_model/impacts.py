@@ -128,18 +128,32 @@ class ImpactSourceImpact:
     def __init__(
         self,
         impact_source_id: str,
-        total: EnvironmentalImpact,
+        own_impact: EnvironmentalImpact,
         sub_impacts: dict[ImpactSourceId, ImpactSourceImpact],
     ) -> None:
         self.impact_source_id = impact_source_id
-        self.total = total
+        self.own_impact = own_impact
         self.sub_impacts = sub_impacts
+
+    @property
+    def total_impact(self) -> EnvironmentalImpact:
+        """
+        Return this ImpactSource EnvironmentalImpact, as the sum of its sub impact sources and own impact
+        """
+        # The result will always add this ImpactSource own impact
+        total = deepcopy(self.own_impact)
+        # Iterate though sub_impacts to sum them into the result
+        for sub_impact in self.sub_impacts:
+            total = merge_env_impact(total, self.sub_impacts[sub_impact].total_impact)
+            # Recursive call to compute sub_impacts impact
+            # total = merge_env_impact(total, self.sub_impacts[sub_impact].get_total())
+        return total
 
     def add(self, other: ImpactSourceImpact) -> None:
         """
         Add another ImpactSourceImpact into this one
         """
-        self.total = merge_env_impact(self.total, other.total)
+        self.own_impact = merge_env_impact(self.own_impact, other.own_impact)
 
         for sub_impact in other.sub_impacts:
             if sub_impact in self.sub_impacts:
@@ -151,9 +165,9 @@ class ImpactSourceImpact:
         """
         Multiply all impacts, and sub ones, by given amount
         """
-        # Multiply all category of total
-        for category in self.total:
-            self.total[category] = self.total[category].multiplied_by(amount)
+        # Multiply all category of own_impact
+        for category in self.own_impact:
+            self.own_impact[category] = self.own_impact[category].multiplied_by(amount)
 
         # Multiply sub impacts as well
         for sub_impact in self.sub_impacts:
@@ -163,9 +177,9 @@ class ImpactSourceImpact:
         """
         Divide all impacts, and sub ones, by given amount
         """
-        # Divide all category of total
-        for category in self.total:
-            self.total[category] = self.total[category].divided_by(unit)
+        # Divide all category of own_impact
+        for category in self.own_impact:
+            self.own_impact[category] = self.own_impact[category].divided_by(unit)
 
         # Divide sub impacts as well
         for sub_impact in self.sub_impacts:
@@ -174,7 +188,7 @@ class ImpactSourceImpact:
 
 class ImpactSourceImpactSchema(Schema):
     impact_source_id = fields.Str()
-    total = fields.Dict(keys=fields.Str(), values=Nested("ImpactValueSchema"))
+    own_impact = fields.Dict(keys=fields.Str(), values=Nested("ImpactValueSchema"))
     sub_impacts = fields.Dict(
         keys=fields.Str(), values=Nested("ImpactSourceImpactSchema")
     )

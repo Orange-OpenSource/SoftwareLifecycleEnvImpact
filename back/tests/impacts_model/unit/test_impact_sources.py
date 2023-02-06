@@ -87,24 +87,24 @@ def test_yaml_loading() -> None:
         # Assert unit is converted to a pint Unit
         assert isinstance(impact_source.unit, Unit)
 
-        # Retrieve total
+        # Retrieve own_impact
         try:
-            total = impact_source.get_impact().total
+            own_impact = impact_source.get_impact().own_impact
         except Exception:
             print("a")
 
         # Assert that co2 is set for all
-        assert total[ImpactCategory.CLIMATE_CHANGE] is not None
+        assert own_impact[ImpactCategory.CLIMATE_CHANGE] is not None
 
-        for indicator in total:
+        for indicator in own_impact:
             # Test all environmentalImpact to see if they're rightly typed as ImpactValue
             assert isinstance(
-                total[indicator],
+                own_impact[indicator],
                 ImpactValue,
             )
 
             # Test that we retrieve an impact with the right quantity if we remove the impact unit, ie for one unit
-            impact_value = total[indicator]
+            impact_value = own_impact[indicator]
             # For manufacture
             if impact_value.manufacture is not None:
                 tmp = impact_value.manufacture * impact_source.unit
@@ -155,7 +155,7 @@ def test_impact_source_get_impact() -> None:
             },
         )
         .get_impact()
-        .total[ImpactCategory.CLIMATE_CHANGE]
+        .total_impact[ImpactCategory.CLIMATE_CHANGE]
         .use
     )
     assert a == 1776 * (KG_CO2E / SERVER)
@@ -174,8 +174,8 @@ def test_impact_source_get_impact() -> None:
         },
     )
     env_impact = i.get_impact()
-    total = env_impact.total
-    use = total[ImpactCategory.CLIMATE_CHANGE].use
+    total_impact = env_impact.total_impact
+    use = total_impact[ImpactCategory.CLIMATE_CHANGE].use
 
     assert use == 1776 * (KG_CO2E / SERVER) + 10 * (999 * KG_CO2E) + 34 * (
         999 * KG_CO2E
@@ -183,9 +183,23 @@ def test_impact_source_get_impact() -> None:
 
 
 def test_impact_source_computation() -> None:
-    assert impact_source_factory("people").get_impact().total[
-        ImpactCategory.CLIMATE_CHANGE
-    ].use == 11.227675953472957 * KG_CO2E / (PEOPLE * DAY)
-    assert impact_source_factory("transportation").get_impact().total[
-        ImpactCategory.CLIMATE_CHANGE
-    ].use == 5.7363295175680005 * KG_CO2E / (PEOPLE * DAY)
+    # People
+    people = (
+        impact_source_factory("people")
+        .get_impact()
+        .total_impact[ImpactCategory.CLIMATE_CHANGE]
+    )
+    assert people.use + people.manufacture == 12.358420254397696 * KG_CO2E / (
+        PEOPLE * DAY
+    )
+
+    # Transportation
+    transportation = (
+        impact_source_factory("transportation")
+        .get_impact()
+        .total_impact[ImpactCategory.CLIMATE_CHANGE]
+    )
+    assert (
+        transportation.use + transportation.manufacture
+        == 6.511784290772001 * KG_CO2E / (PEOPLE * DAY)
+    )

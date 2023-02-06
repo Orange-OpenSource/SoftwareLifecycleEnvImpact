@@ -44,7 +44,7 @@ def test_co2() -> None:
         },
     )
     assert (
-        i.get_impact().total[ImpactCategory.CLIMATE_CHANGE].use
+        i.get_impact().own_impact[ImpactCategory.CLIMATE_CHANGE].use
         == 103.72 * KG_CO2E / i.unit
     )
 
@@ -85,7 +85,7 @@ def test_get_impacts_quantities() -> None:
             ),
         },
     )
-    total = i.get_impact().total
+    total = i.get_impact().own_impact
     assert total[ImpactCategory.CLIMATE_CHANGE].manufacture == 103.72 * KG_CO2E / i.unit
     assert (
         total[ImpactCategory.RESOURCE_DEPLETION].manufacture == 312.23 * KG_SBE / i.unit
@@ -129,7 +129,7 @@ def test_gitlab_computation() -> None:
     schema = ProjectSchema()
     new_project = schema.load(data)
 
-    co2_nominal = 19607396.388510715 * KG_CO2E
+    co2_nominal = 19784699.84920407 * KG_CO2E
 
     impact = new_project.models[0].root_task.get_impact()
 
@@ -138,6 +138,3 @@ def test_gitlab_computation() -> None:
         assert value.manufacture + value.use == co2_nominal
     else:
         raise Exception("Gitlab value manufacture or use is None")
-
-
-19719744.84802462

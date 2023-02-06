@@ -52,8 +52,8 @@ class ImpactSource:
         Return this impact source impact for one unit
         """
         sub_impacts = self._get_sub_impacts()
-        total = self._get_total(sub_impacts)
-        return ImpactSourceImpact(self.id, total, sub_impacts)
+        # total = self._get_total(sub_impacts)
+        return ImpactSourceImpact(self.id, deepcopy(self._own_impact), sub_impacts)
 
     def _get_total(
         self, sub_impacts: dict[ImpactSourceId, ImpactSourceImpact]
@@ -65,7 +65,7 @@ class ImpactSource:
         total = deepcopy(self._own_impact)
         # Iterate though sub_impacts to sum them into the result
         for sub_impact in sub_impacts:
-            total = merge_env_impact(total, sub_impacts[sub_impact].total)
+            total = merge_env_impact(total, sub_impacts[sub_impact].total_impact)
         return total
 
     def _get_sub_impacts(self) -> dict[ImpactSourceId, ImpactSourceImpact]:
