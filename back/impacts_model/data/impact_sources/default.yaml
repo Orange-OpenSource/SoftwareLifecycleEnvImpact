@@ -67,7 +67,7 @@ methodology: >
 ---
 !ImpactSource
 id: "small_vm"
-name: "VM - small"
+name: "VM - small (1vCPU/4GB RAM)"
 unit: vm * hour
 uses:
   - { quantity: 0.006274241387177732 kWh, resource_id: kWhIT }
@@ -121,7 +121,7 @@ methodology: >
 ---
 !ImpactSource
 id: "medium_vm"
-name: "VM - medium"
+name: "VM - medium (8vCPU/32GB RAM)"
 unit: vm * hour
 uses:
   - { quantity: 0.05042208532968286 kWh, resource_id: kWhIT }
@@ -175,7 +175,7 @@ methodology: >
 ---
 !ImpactSource
 id: "big_vm"
-name: "VM - big"
+name: "VM - big (48vCPU/192GB RAM)"
 unit: vm * hour
 uses:
   - { quantity: 0.30219028062970565 kWh, resource_id: kWhIT }
@@ -469,26 +469,26 @@ unit: kWh
 uses:
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
-    manufacture: 0.067 kg_co2e
-    use:
+    manufacture:
+    use: 6.70E-02 kg_co2e
   resource_depletion: !ImpactValue
-    manufacture: 0.0000000316 kg_Sbe
-    use:
+    manufacture:
+    use: 0.0000000316 kg_Sbe
   acidification: !ImpactValue
-    manufacture: 0.000385 mol_Hpos
-    use:
+    manufacture:
+    use: 0.000385 mol_Hpos
   fine_particles: !ImpactValue
-    manufacture: 0.000000015 disease_incidence
-    use:
+    manufacture:
+    use: 0.000000015 disease_incidence
   ionizing_radiations: !ImpactValue
-    manufacture: 1.73 kg_Bq_u235e
-    use:
+    manufacture:
+    use: 1.73 kg_Bq_u235e
   water_depletion: !ImpactValue
-    manufacture: 0.00472 cubic_meter
-    use:
+    manufacture:
+    use: 0.00472 cubic_meter
   raw_materials: !ImpactValue
-    manufacture: 0.162 kg_mips
-    use:
+    manufacture:
+    use: 0.162 kg_mips
 source: >
   Negaoctet
 methodology:
@@ -921,8 +921,8 @@ unit: people * day
 uses:
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
-    manufacture:
-    use: "5.491346435904957 kg_co2e"
+    manufacture: "5.491346435904957 kg_co2e"
+    use:
   resource_depletion: !ImpactValue
     manufacture:
     use:
