@@ -92,7 +92,7 @@
 				.selectAll('g')
 				.data(links)
 				.join('g')
-				.style('mix-blend-mode', 'multiply')
+				.style('mix-blend-mode', 'normal')
 				.on('mouseover', function (d) {
 					// Darken link on hover
 					d3.select(this).style('stroke-opacity', 1);
@@ -129,7 +129,7 @@
 				.append('path')
 				.attr('d', d3Sankey.sankeyLinkHorizontal())
 				.attr('stroke', ({ index: i }) => `url(#${uid}-link-${i})`)
-				.attr('stroke-width', (d) => Math.max(1, d.width))
+				.attr('stroke-width', (d) => Math.max(0.1, d.width))
 				.append('title') // Node hover text
 				.text((d) => Math.round(d.value * 100) / 100 + ' kgCO2e');
 		}

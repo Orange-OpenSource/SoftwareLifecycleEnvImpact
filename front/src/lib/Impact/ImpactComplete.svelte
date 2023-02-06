@@ -8,7 +8,7 @@
 	/*Bound var*/
 	export let selectedTask: Task;
 
-	$: subtasksLinks = constructLinks(selectedTask, impact.sub_tasks);
+	$: subtasksLinks = constructLinks(selectedTask, impact);
 </script>
 
 {#if impact.sub_tasks.length > 0}

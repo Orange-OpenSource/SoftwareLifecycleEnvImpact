@@ -11,27 +11,28 @@
 	/*Bound var*/
 	export let selectedTask: Task;
 
-	$: sourcesLinks = constructLinks(selectedTask, impact.sub_tasks, false, true);
+	$: sourcesLinks = constructLinks(selectedTask, impact, false, true);
 
 	function convertResourcesImpactToHierarchy(): HierarchyNode<D3JSHierarchyNode> {
 		let final: D3JSHierarchyNode = {
 			name: 'root',
 			children: getHierarchyChildrenNodes(impact.impact_sources)
 		};
-
 		return hierarchy(final);
 	}
 
 	function getHierarchyChildrenNodes(subImpacts: Record<ImpactSourceId, ImpactSourceImpact>): D3JSHierarchyNode[] {
 		let returnValue: D3JSHierarchyNode[] = [];
 		for (const [sourceName, impact] of Object.entries(subImpacts)) {
-			const total = impactValueTotal(impact.total['Climate change']).value;
+			const total = impact.own_impact['Climate change'];
+			const manufacture = total.manufacture && total.manufacture.value ? total.manufacture.value : 0;
+			const use = total.use && total.use.value ? total.use.value : 0;
 			if (total) {
 				returnValue.push({
 					name: sourceName,
-					impact: impact.total,
-					// value: environmentalImpact['Climate change'].value,
-					co2: total,
+					impact: impact.own_impact,
+					manufacture: manufacture,
+					use: use,
 					children: getHierarchyChildrenNodes(impact.sub_impacts)
 				});
 			}
@@ -41,15 +42,49 @@
 
 	function convertResourcesImpactToStackedData(): D3JStackedData[] {
 		let final: D3JStackedData[] = [];
+		getResourcesNodes(final, impact.impact_sources);
+		return final;
+	}
+
+	function getResourcesNodes(data: D3JStackedData[], impacts: Record<ImpactSourceId, ImpactSourceImpact>) {
+		if (impacts) {
+			for (const [sourceName, sourceImpact] of Object.entries(impacts)) {
+				for (const [impactCategory, impactValue] of Object.entries(sourceImpact.own_impact)) {
+					const total = impactValueTotal(impactValue).value;
+					console.log(impact, sourceName, impactCategory, total);
+					if (total) {
+						data.push({
+							impactCategory: impactCategory,
+							category: sourceName,
+							value: total
+						});
+					}
+				}
+				for (const [_, subImpact] of Object.entries(sourceImpact.sub_impacts)) {
+					// Recursive call for childrens
+					getResourcesNodes(data, subImpact.sub_impacts);
+				}
+			}
+		}
+	}
+
+	function TESTconvertResourcesImpactToStackedData(): D3JStackedData[] {
+		let final: D3JStackedData[] = [];
 
 		for (const [sourceName, sourceImpact] of Object.entries(impact.impact_sources)) {
-			for (const [impactCategory, impactValue] of Object.entries(sourceImpact.total)) {
-				const total = impactValueTotal(impactValue).value;
-				if (total) {
+			for (const [impactCategory, impactValue] of Object.entries(sourceImpact.own_impact)) {
+				if (impactValue.manufacture && impactValue.manufacture.value) {
 					final.push({
-						impactCategory: impactCategory,
+						impactCategory: 'Manufacture',
 						category: sourceName,
-						value: total
+						value: impactValue.manufacture.value
+					});
+				}
+				if (impactValue.use && impactValue.use.value) {
+					final.push({
+						impactCategory: 'Use',
+						category: sourceName,
+						value: impactValue.use.value
 					});
 				}
 			}
@@ -64,6 +99,7 @@
 	</div>
 
 	<StackedBarChart chartData={convertResourcesImpactToStackedData()} />
+	<!-- <StackedBarChart chartData={TESTconvertResourcesImpactToStackedData()} /> -->
 	<Sunburst hierarchy={convertResourcesImpactToHierarchy()} />
 	<Sankey links={sourcesLinks} />
 	<!-- <Treemap hierarchy={convertResourcesImpactToHierarchy()} /> -->

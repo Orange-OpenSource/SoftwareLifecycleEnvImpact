@@ -61,10 +61,10 @@
 			var root = hierarchy
 				.sum(function (d: D3JSHierarchyNode) {
 					// Inputed values already contains the childrens, do not sum twice
-					return !d.children || d.children.length === 0 ? d.co2 : 0;
+					return !d.children || d.children.length === 0 ? d.use + d.manufacture : 0;
 				})
-				// .sum((d: D3JSHierarchyNode) => d.co2)
-				.sort(function (a, b) {
+				// .sum((d: D3JSHierarchyNode) => (d.manufacture + d.use)d.co2)
+				.sort(function (a: d3.HierarchyNode<D3JSHierarchyNode>, b: d3.HierarchyNode<D3JSHierarchyNode>) {
 					if (a.depth === 1) {
 						return b.value - a.value;
 					} else {
@@ -122,7 +122,7 @@
 					sequenceArray.shift(); // suppression de la racine
 
 					vis.select('#nameMiddle').text(d.data.name);
-					vis.select('#valueMiddle').text(Math.round(d.data.co2 * 100) / 100 + ' kgCO2e');
+					vis.select('#valueMiddle').text(Math.round((d.data.manufacture + d.data.use) * 100) / 100 + ' kgCO2e');
 
 					vis
 						.selectAll('path') // Grey all segments
@@ -179,7 +179,7 @@
 			.attr('display', function (d) {
 				return d.depth ? null : 'none'; // Do not dislay root node
 			})
-			.attr('cx', -(sunburstWidth / 2) + margin.left)
+			.attr('cx', 120)
 			.attr('cy', function (d, i) {
 				return sunburstWidth / 2 + i * legendLineHeight;
 			})

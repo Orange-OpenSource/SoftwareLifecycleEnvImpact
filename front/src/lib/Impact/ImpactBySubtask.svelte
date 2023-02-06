@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { impactValueTotal, type ImpactSourceImpact, type Task, type TaskImpact } from '$lib/api/dataModel';
+	import { type Task, type TaskImpact } from '$lib/api/dataModel';
 	import { hierarchy } from 'd3-hierarchy';
 	import Sunburst from '$lib/Dataviz/Sunburst.svelte';
 	import { constructLinks, type D3JSHierarchyNode } from '$lib/Dataviz/d3js';
@@ -12,7 +12,7 @@
 	export let selectedTask: Task;
 
 	$: subtaskHierarchy = constructHierarchy(selectedImpactName);
-	$: subtasksLinks = constructLinks(selectedTask, impact.sub_tasks, true, false);
+	$: subtasksLinks = constructLinks(selectedTask, impact, true, false);
 
 	function constructHierarchy(name: string) {
 		return hierarchy({
@@ -31,14 +31,16 @@
 				// If retrieved, create node
 				if (taskImpact.total[selectedImpactName] != undefined) {
 					/**For each task push it with its associated impact*/
-					const total = impactValueTotal(taskImpact.total[selectedImpactName]).value;
+					const total = taskImpact.total[selectedImpactName];
+					const manufacture = total.manufacture && total.manufacture.value ? total.manufacture.value : 0;
+					const use = total.use && total.use.value ? total.use.value : 0;
 					if (total) {
 						returnValue.push({
 							name: task.name,
 							task: task,
 							impact: taskImpact.total,
-							// value: taskImpact.task_impact['Climate change'].value,
-							co2: total,
+							manufacture: manufacture,
+							use: use,
 							children: getHierarchyChildrenNodes(task, taskImpact.sub_tasks)
 						});
 					}

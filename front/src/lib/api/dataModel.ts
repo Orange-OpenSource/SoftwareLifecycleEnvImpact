@@ -156,7 +156,7 @@ export type ImpactSourcesImpact = Record<ImpactSourceId, EnvironmentalImpact>;
 
 export interface ImpactSourceImpact {
 	impact_source_id: string;
-	total: EnvironmentalImpact;
+	own_impact: EnvironmentalImpact;
 	sub_impacts: Record<ImpactSourceId, ImpactSourceImpact>;
 }
 
