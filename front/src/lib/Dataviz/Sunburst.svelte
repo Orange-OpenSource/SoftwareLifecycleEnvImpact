@@ -122,7 +122,7 @@
 					sequenceArray.shift(); // suppression de la racine
 
 					vis.select('#nameMiddle').text(d.data.name);
-					vis.select('#valueMiddle').text(Math.round((d.data.manufacture + d.data.use) * 100) / 100 + ' kgCO2e');
+					vis.select('#valueMiddle').text(Math.round(d.value * 100) / 100 + ' kgCO2e');
 
 					vis
 						.selectAll('path') // Grey all segments
