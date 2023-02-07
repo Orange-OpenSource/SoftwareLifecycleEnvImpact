@@ -70,7 +70,7 @@ id: "small_vm"
 name: "VM - small (1vCPU/4GB RAM)"
 unit: vm * hour
 uses:
-  - { quantity: 0.006274241387177732 kWh, resource_id: kWhIT }
+  - { quantity: 0.006274241387177732 kWh, resource_id: datacenter }
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
     manufacture: 0.00043349304129591603 kg_co2e
@@ -124,7 +124,7 @@ id: "medium_vm"
 name: "VM - medium (8vCPU/32GB RAM)"
 unit: vm * hour
 uses:
-  - { quantity: 0.05042208532968286 kWh, resource_id: kWhIT }
+  - { quantity: 0.05042208532968286 kWh, resource_id: datacenter }
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
     manufacture: 0.0034223134839151265 kg_co2e
@@ -178,7 +178,7 @@ id: "big_vm"
 name: "VM - big (48vCPU/192GB RAM)"
 unit: vm * hour
 uses:
-  - { quantity: 0.30219028062970565 kWh, resource_id: kWhIT }
+  - { quantity: 0.30219028062970565 kWh, resource_id: datacenter }
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
     manufacture: 0.02053388090349076 kg_co2e
@@ -233,7 +233,7 @@ id: "server"
 name: "Server"
 unit: server * hour
 uses:
-  - { quantity: 0.3564909879078257 kWh, resource_id: kWhIT }
+  - { quantity: 0.3564909879078257 kWh, resource_id: datacenter }
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
     manufacture: 0.08350444900752908 kg_co2e
@@ -1171,7 +1171,7 @@ id: "storage"
 name: "Storage"
 unit: gigabyte * day
 uses:
-  - { quantity: 2.9276822381930186e-06 kWh, resource_id: kWhIT }
+  - { quantity: 2.9276822381930186e-06 kWh, resource_id: datacenter }
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
     manufacture: 1.044407191136208e-05 kg_co2e
@@ -1230,8 +1230,8 @@ methodology: >
     raw_materials = 2.5413908317647732e-05 kg_mips
 ---
 !ImpactSource
-id: "kWhIT"
-name: "kWh IT"
+id: "datacenter"
+name: "Datacenter"
 unit: kWh
 uses:
   - { quantity: 1.75 kWh, resource_id: electricity }
@@ -1267,7 +1267,7 @@ id: "8vcpu_8ram"
 name: "VM - 8vCPU/8GO RAM"
 unit: vm * month
 uses:
-  - { quantity: 36.800000000000004 kWh, resource_id: kWhIT }
+  - { quantity: 36.800000000000004 kWh, resource_id: datacenter }
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
     manufacture: 1.325 kg_co2e
@@ -1320,7 +1320,7 @@ id: "2vcpu_2ram"
 name: "VM - 2vCPU/2GO RAM"
 unit: vm * month
 uses:
-  - { quantity: 9.200000000000001 kWh, resource_id: kWhIT }
+  - { quantity: 9.200000000000001 kWh, resource_id: datacenter }
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
     manufacture: 0.33083333333333337 kg_co2e
@@ -1373,7 +1373,7 @@ id: "32vcpu_120ram"
 name: "VM - 32vCPU/120GO RAM"
 unit: vm * month
 uses:
-  - { quantity: 147.20000000000002 kWh, resource_id: kWhIT }
+  - { quantity: 147.20000000000002 kWh, resource_id: datacenter }
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
     manufacture: 8.583333333333334 kg_co2e
@@ -1426,7 +1426,7 @@ id: "4vcpu_15ram"
 name: "VM - 4vCPU/15GO RAM"
 unit: vm * month
 uses:
-  - { quantity: 18.400000000000002 kWh, resource_id: kWhIT }
+  - { quantity: 18.400000000000002 kWh, resource_id: datacenter }
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
     manufacture: 1.0666666666666667 kg_co2e
@@ -1479,7 +1479,7 @@ id: "64vcpu_240ram"
 name: "VM - 64vCPU/240GO RAM"
 unit: vm * month
 uses:
-  - { quantity: 294.40000000000003 kWh, resource_id: kWhIT }
+  - { quantity: 294.40000000000003 kWh, resource_id: datacenter }
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
     manufacture: 17.083333333333332 kg_co2e
@@ -1532,7 +1532,7 @@ id: "4vcpu_4ram"
 name: "VM - 4vCPU/4GO RAM"
 unit: vm * month
 uses:
-  - { quantity: 18.400000000000002 kWh, resource_id: kWhIT }
+  - { quantity: 18.400000000000002 kWh, resource_id: datacenter }
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
     manufacture: 0.6616666666666667 kg_co2e
@@ -1585,7 +1585,7 @@ id: "32vcpu_30ram"
 name: "VM - 32vCPU/30GO RAM"
 unit: vm * month
 uses:
-  - { quantity: 147.20000000000002 kWh, resource_id: kWhIT }
+  - { quantity: 147.20000000000002 kWh, resource_id: datacenter }
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
     manufacture: 5.216666666666667 kg_co2e
