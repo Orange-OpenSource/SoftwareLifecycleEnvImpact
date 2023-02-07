@@ -12,17 +12,11 @@
 	export let hierarchy: d3.HierarchyNode<D3JSHierarchyNode>;
 
 	let sunburstSVG: SVGSVGElement;
-	let legendSVG: SVGSVGElement;
 
 	const margin = { top: 10, right: 10, bottom: 10, left: 10 },
 		sunburstWidth = 500 - margin.left - margin.right,
 		sunburstHeight = 500 - margin.left - margin.right,
 		radius = sunburstHeight / 2;
-
-	let legendHeight = 0;
-	const legendLineHeight = 30;
-
-	const legendRequired = selectedTask == undefined;
 
 	async function drawSunburst() {
 		if (hierarchy && hierarchy.children && hierarchy.children.length > 0) {
@@ -82,10 +76,6 @@
 
 			// Add text box middle
 			addTextElement(vis, totalValue);
-
-			// Set legend height in function of node amount
-			// No need for legend if legendRequired is false
-			legendHeight = !legendRequired ? 0 : (root.children ? root.children.length : 1) * legendLineHeight;
 
 			// prepare a color scale
 			// Different color scale if selected task is defined or not
@@ -151,7 +141,6 @@
 						selectedTask = d.data.task;
 					}
 				});
-			drawLegend(vis, nodes, color);
 		}
 	}
 
@@ -170,45 +159,6 @@
 			.text(Math.round(totalValue * 100) / 100 + ' kgCO2e');
 	}
 
-	function drawLegend(vis, nodes, color) {
-		vis
-			.selectAll('mydots')
-			.data(nodes)
-			.enter()
-			.append('circle')
-			.attr('display', function (d) {
-				return d.depth ? null : 'none'; // Do not dislay root node
-			})
-			.attr('cx', 120)
-			.attr('cy', function (d, i) {
-				return sunburstWidth / 2 + i * legendLineHeight;
-			})
-			.attr('r', 7)
-			.style('fill', function (d) {
-				return color(d.data.name);
-			});
-
-		// Add one dot in the legend for each name.
-		vis
-			.selectAll('mylabels')
-			.data(nodes)
-			.enter()
-			.append('text')
-			.attr('display', function (d) {
-				return d.depth ? null : 'none'; // Do not dislay ùiddle circle
-			})
-			.attr('x', 140)
-			.attr('y', function (d, i) {
-				return sunburstWidth / 2 + i * legendLineHeight + 4;
-			})
-			.style('fill', function (d) {
-				return 'black';
-			})
-			.text(function (d) {
-				return d.data.name;
-			});
-	}
-
 	function exportSunburst() {
 		exportSvg(sunburstSVG.outerHTML, 'sunburst');
 	}
@@ -219,7 +169,7 @@
 </script>
 
 {#if hierarchy && hierarchy.children && hierarchy.children.length > 0}
-	<svg bind:this={sunburstSVG} viewBox="0 0 {sunburstWidth + margin.left + margin.right} {sunburstHeight + legendHeight + margin.left + margin.right}" preserveAspectRatio="xMidYMid meet" />
+	<svg bind:this={sunburstSVG} viewBox="0 0 {sunburstWidth + margin.left + margin.right} {sunburstHeight + margin.left + margin.right}" preserveAspectRatio="xMidYMid meet" />
 	<div class="d-flex justify-content-end">
 		<button class="btn" on:click|stopPropagation={exportSunburst} type="button">Export</button>
 	</div>
