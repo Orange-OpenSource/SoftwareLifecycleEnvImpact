@@ -16,8 +16,8 @@
 		marginBottom = 10,
 		marginLeft = 0;
 
-	let legendHeight = 0;
 	const legendLineHeight = 30;
+	const legendHeight = legendLineHeight * 3;
 
 	function testStackedBar() {
 		if (chartData && chartData.length > 0) {
@@ -31,7 +31,11 @@
 			let zDomain = new d3.InternSet(Array.from(d3.union(Z))); // Unique category names
 
 			// Create color scale
-			let colors = d3.schemeSpectral[zDomain.size];
+			let colorScheme = d3.scaleOrdinal().domain(zDomain).range(d3.schemeSet3);
+			let colors: Array<String> = [];
+			zDomain.forEach((value) => {
+				colors.push(colorScheme(value));
+			});
 
 			// Omit any data not present in the x- and z-domains.
 			const I = d3.range(Y.length).filter((i) => xDomain.has(X[i]) && zDomain.has(Z[i]));
@@ -114,17 +118,13 @@
 			svg.append('g').attr('transform', `translate(${leftLegendWidth},0)`).call(yAxis);
 
 			// Add legend under
-			const uniqueNames = Z.filter((v, i, a) => a.indexOf(v) === i);
-			legendHeight = 200;
-			console.log(legendHeight);
-			console.log(uniqueNames.length);
 			const legendTextMargin = 15;
-			const bottomLegendMargin = 10
+			const bottomLegendMargin = 10;
 
 			var legend = svg
 				.append('g')
 				.attr('class', 'legend')
-				.attr('transform', 'translate(' + (marginLeft + 12) + ',' + (height) + ')');
+				.attr('transform', 'translate(' + (marginLeft + 12) + ',' + height + ')');
 
 			// Colored squares
 			legend
@@ -137,7 +137,7 @@
 					if (i < 3) return 0;
 					if (i < 6) return width / 4;
 					if (i < 9) return width / 2;
-					return 0;
+					return width - (width / 4);
 				})
 				.attr('y', function (d, i) {
 					return bottomLegendMargin + (i % 3) * legendLineHeight;
@@ -160,7 +160,7 @@
 					if (i < 3) return 0 + legendTextMargin;
 					if (i < 6) return width / 4 + legendTextMargin;
 					if (i < 9) return width / 2 + legendTextMargin;
-					return 0;
+					return width - (width / 4) + legendTextMargin;
 				})
 				.attr('y', function (d, i) {
 					return bottomLegendMargin + 11 + (i % 3) * legendLineHeight;

@@ -43,7 +43,6 @@
 	function convertResourcesImpactToStackedData(): D3JStackedData[] {
 		let final: D3JStackedData[] = [];
 		getResourcesNodes(final, impact.impact_sources);
-		console.log('final', final);
 		return final;
 	}
 
