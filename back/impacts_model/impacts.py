@@ -40,7 +40,7 @@ class ImpactCategory(str, Enum):
         """
         return {
             "CLIMATE_CHANGE": "Climate change",
-            "RESOURCE_DEPLETION": "Natural resources depletion",
+            "RESOURCE_DEPLETION": "Resource depletion",
             "ACIDIFICATION": "Acidification",
             "FINE_PARTICLES": "Fine particles",
             "IONIZING_RADIATIONS": "Ionizing radiations",

@@ -822,7 +822,7 @@ definitions:
         "Climate change": "1522.8450773144025 kg_co2e",
         "Fine particles": "0 disease_incidence",
         "Ionizing radiations": "0 kg_Bq_u235e",
-        "Natural resources depletion": "0 kg_Sbe",
+        "Resource depletion": "0 kg_Sbe",
         "Raw materials": "0 kg_mips",
         "Water depletion": "0 cubic_meter",
       }
