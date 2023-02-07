@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { renameModelRequest } from '$lib/api/model';
 	import Modal from '$lib/Modal.svelte';
-	import type { Model } from '$lib/api/model/model';
 	import Error from '$lib/Error.svelte';
+	import Icon from '@iconify/svelte';
+	import type { Model } from '$lib/api/dataModel';
 
 	/* Bound var */
 	export let model: Model;
@@ -30,7 +31,9 @@
 	}
 </script>
 
-<input on:click|stopPropagation={() => (showModal = true)} type="image" src="/pencil.svg" width="25" height="25" alt="Pencil" loading="lazy" />
+<button class="btn btn-sm" on:click|stopPropagation={() => (showModal = true)}>
+	<Icon icon="material-symbols:edit-outline" width="25" height="25" alt="Edit" loading="lazy" />
+</button>
 
 <Modal bind:showModal>
 	<span slot="title">Rename model</span>

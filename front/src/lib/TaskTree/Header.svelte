@@ -11,12 +11,7 @@
 	<div>No model selected</div>
 {:else}
 	<div class="row sticky-top">
-		<span class="col-9">
-
-		</span>
-		<div class="col-3 form-switch">
-			<input class="form-check-input" type="checkbox" bind:checked={modify} id="editmodeSwitch" />
-			<label class="form-check-label" for="editmodeSwitch">Editing mode</label>
-		</div>
+		<input class="form-check-input" type="checkbox" bind:checked={modify} id="editmodeSwitch" />
+		<label class="form-check-label" for="editmodeSwitch">Editing mode</label>
 	</div>
 {/if}

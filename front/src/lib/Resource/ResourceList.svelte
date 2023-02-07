@@ -4,6 +4,7 @@
 	import Error from '$lib/Error.svelte';
 	import ResourceInput from './ResourceInput.svelte';
 	import type { Task } from '$lib/api/dataModel';
+	import Icon from '@iconify/svelte';
 
 	/*Bound var*/
 	export let task: Task;
@@ -23,13 +24,15 @@
 <ul class="list-group list-group-flush list-group-numbered">
 	{#if task.resources != null}
 		{#each task.resources as resource}
-			<li class="list-group-item d-flex p-1">
+			<li class="list-group-item d-flex p-0">
 				<div class="ms-2">
 					<div class="d-flex justify-content-between">
 						<div class="fw-bold">{resource.name}</div>
 						{#if modify}
-							<div>
-								<input on:click|stopPropagation={() => (editResource = !editResource)} type="image" src="/pencil.svg" width="25" height="25" alt="Pencil" loading="lazy" />
+							<div class="d-flex">
+								<button class="btn p-0" on:click|stopPropagation={() => (editResource = !editResource)}>
+									<Icon icon="material-symbols:edit-outline" width="25" height="25" alt="Edit" loading="lazy" />
+								</button>
 								<DeleteResource bind:task {resource} />
 							</div>
 						{/if}

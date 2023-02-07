@@ -103,25 +103,22 @@
 			on:dragend={handleDragEnd}
 			style="width: fit-content;"
 		>
-			<div id="mydivheader" class="card-header" hidden={!modify || dragging} style="cursor: move;" on:mousedown={handleMouseDown} on:mouseup={handleMouseUp}>Click here to drag</div>
+			<div id="mydivheader" class="card-header" hidden={!modify || dragging}>
+				<div class="d-flex justify-content-between">
+					<div class="col-8" style="cursor: move;" on:mousedown={handleMouseDown} on:mouseup={handleMouseUp}>Click here to drag</div>
+					<div class="col-2"><DeleteTask {task} bind:parentTask bind:selectedTask /></div>
+				</div>
+			</div>
 			<div class="card-body">
-				<div class="card-title row">
-					<div class="col">
-						<div class="row justify-content-start">
-							<div class="col-md-auto"><h5>{task.name}</h5></div>
-							{#if modify && !dragging}
-								<div class="col">
-									<RenameTask bind:task />
-								</div>
-							{/if}
-						</div>
+				<div class="card-title">
+					<div class="d-flex flex-row">
+						<div class="p-0"><h5>{task.name}</h5></div>
+						{#if modify && !dragging}
+							<div class="p-0">
+								<RenameTask bind:task />
+							</div>
+						{/if}
 					</div>
-
-					{#if modify && !dragging}
-						<div class="col-2">
-							<DeleteTask {task} bind:parentTask bind:selectedTask />
-						</div>
-					{/if}
 				</div>
 
 				{#if !dragging}

@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { duplicateModelRequest } from '$lib/api/model';
 	import Modal from '$lib/Modal.svelte';
-	import type { Model } from '$lib/apidataModel';
+	import type { Model } from '$lib/api/dataModel';
 	import Error from '$lib/Error.svelte';
+	import Icon from '@iconify/svelte';
 
 	/*Bound var*/
 	export let models: Model[];
@@ -33,9 +34,12 @@
 	}
 </script>
 
-<input on:click|stopPropagation={() => (showModal = true)} type="image" src="/duplicate.svg" width="25" height="25" alt="Duplicate" loading="lazy" />
+<button class="btn" on:click|stopPropagation={() => (showModal = true)}>
+	<Icon icon="ion:duplicate-outline" width="25" height="25" alt="Duplicate" loading="lazy" />
+</button>
 
-<Modal bind:showModal>
+<Modal bind:showModal
+	>a
 	<span slot="title">Confirm duplicate</span>
 
 	<form slot="body" on:submit|preventDefault={duplicateModel}>

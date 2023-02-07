@@ -3,6 +3,7 @@
 	import { renameTaskRequest } from '$lib/api/task';
 	import Modal from '$lib/Modal.svelte';
 	import type { Task } from '$lib/api/dataModel';
+	import Icon from '@iconify/svelte';
 
 	/* Bound var */
 	export let task: Task;
@@ -30,8 +31,9 @@
 	}
 </script>
 
-<input on:click|stopPropagation={() => (showModal = true)} type="image" src="/pencil.svg" width="25" height="25" alt="Pencil" loading="lazy" />
-
+<button class="btn btn-sm" on:click|stopPropagation={() => (showModal = true)}>
+	<Icon icon="material-symbols:edit-outline" width="25" height="25" alt="Duplicate" loading="lazy" />
+</button>
 <Modal bind:showModal>
 	<span slot="title">Rename task</span>
 

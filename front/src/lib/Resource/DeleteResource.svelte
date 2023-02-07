@@ -3,6 +3,7 @@
 	import Modal from '$lib/Modal.svelte';
 	import Error from '$lib/Error.svelte';
 	import type { Resource, Task } from '$lib/api/dataModel';
+	import Icon from '@iconify/svelte';
 
 	/*Bound var*/
 	export let task: Task;
@@ -30,8 +31,9 @@
 	}
 </script>
 
-<input on:click|stopPropagation={() => (showModal = true)} type="image" src="/trash.svg" width="25" height="25" alt="Bin" loading="lazy" />
-
+<button class="btn" on:click|stopPropagation={() => (showModal = true)}>
+	<Icon icon="ion:trash-outline" width="25" height="25" alt="Delete" loading="lazy" />
+</button>
 <Modal bind:showModal>
 	<span slot="title">Confirm delete</span>
 
