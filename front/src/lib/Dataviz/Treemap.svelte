@@ -5,6 +5,7 @@
 	import type { D3JSHierarchyNode } from './d3js';
 
 	export let hierarchy: HierarchyNode<D3JSHierarchyNode>;
+	$: hierarchy, drawTreeMap();
 
 	let svgElement: SVGSVGElement;
 
@@ -16,7 +17,10 @@
 	const titleFontSize = 0.8;
 	const valueFontSize = 0.7;
 
-	async function drawTreeMap() {
+	function drawTreeMap() {
+		// Clear data for redraw
+		select(svgElement).selectAll('*').remove();
+
 		// append the svg object to the body of the page
 		const svg = select(svgElement).append('g').attr('transform', `translate(${margin.left}, ${margin.top})`);
 

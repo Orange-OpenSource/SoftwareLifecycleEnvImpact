@@ -4,11 +4,12 @@
 	import Sankey from '$lib/Dataviz/Sankey.svelte';
 
 	export let impact: TaskImpact;
+	export let selectedImpactCategory: string;
 
 	/*Bound var*/
 	export let selectedTask: Task;
 
-	$: subtasksLinks = constructLinks(selectedTask, impact);
+	$: subtasksLinks = constructLinks(selectedImpactCategory, selectedTask, impact);
 </script>
 
 {#if impact.sub_tasks.length > 0}

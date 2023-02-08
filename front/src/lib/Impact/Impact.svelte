@@ -12,7 +12,7 @@
 	let olderTask: Task;
 
 	let impactPromise: Promise<TaskImpact>;
-	let selectedImpactName = 'Climate change';
+	let selectedImpactCategory = 'Climate change';
 
 	/*Trigger update when selected task is updated*/
 	$: selectedTask, updateImpacts();
@@ -36,7 +36,7 @@
 					<h1 class="text-primary">{selectedTask.name}</h1>
 				</div>
 				<div class="row">
-					<select class="form-select" bind:value={selectedImpactName} required>
+					<select class="form-select" bind:value={selectedImpactCategory} required>
 						{#each Object.entries(impact.total) as [key, _]}
 							<option value={key} class="form-check-input">{key}</option>
 						{/each}
@@ -44,14 +44,14 @@
 				</div>
 				{#if impact.sub_tasks.length > 0}
 					<div class="row">
-						<ImpactComplete bind:selectedTask {impact} />
+						<ImpactComplete bind:selectedTask {impact} {selectedImpactCategory} />
 					</div>
 					<div class="row">
-						<ImpactBySubtask bind:selectedTask impact={impact} {selectedImpactName} />
+						<ImpactBySubtask bind:selectedTask {impact} {selectedImpactCategory} />
 					</div>
 				{/if}
 				<div class="row">
-					<ImpactBySource bind:selectedTask impact={impact} />
+					<ImpactBySource bind:selectedTask {impact} {selectedImpactCategory} />
 				</div>
 			{:else}
 				No impact

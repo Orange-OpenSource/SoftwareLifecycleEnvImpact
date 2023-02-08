@@ -11,6 +11,8 @@
 
 	export let hierarchy: d3.HierarchyNode<D3JSHierarchyNode>;
 
+	$: hierarchy, drawSunburst();
+
 	let sunburstSVG: SVGSVGElement;
 
 	const margin = { top: 10, right: 10, bottom: 10, left: 10 },
@@ -20,17 +22,21 @@
 
 	async function drawSunburst() {
 		if (hierarchy && hierarchy.children && hierarchy.children.length > 0) {
+			// Clear data for redraw
+			select(sunburstSVG).selectAll('*').remove();
+
 			// Construct svg attributes
 			const vis = select(sunburstSVG)
 				.append('g')
 				.attr('id', 'container')
 				.attr('transform', 'translate(' + sunburstWidth / 2 + ',' + sunburstHeight / 2 + ')');
+			// vis.selectAll('*').remove();
 
 			// Add defs to fill each segment differently
 			vis.append('defs').attr('id', 'defs');
 
 			// Init the arc
-			var svgArc = d3
+			const svgArc = d3
 				.arc()
 				.startAngle(function (d) {
 					return d.x0;
@@ -86,13 +92,13 @@
 			// const color = scaleOrdinal(quantize(interpolateRainbow, names.length + 1))
 
 			// Create nodes
-			var nodes = partitionSvg(root)
+			const nodes = partitionSvg(root)
 				.descendants()
 				.filter(function (d) {
 					return d.x1 - d.x0 > 0.005; // 0.005 radians = 0.29 degrees
 				});
 
-			var path = vis
+			const path = vis
 				.selectAll('path')
 				.data(nodes)
 				.enter()
@@ -171,6 +177,6 @@
 {#if hierarchy && hierarchy.children && hierarchy.children.length > 0}
 	<svg bind:this={sunburstSVG} viewBox="0 0 {sunburstWidth + margin.left + margin.right} {sunburstHeight + margin.left + margin.right}" preserveAspectRatio="xMidYMid meet" />
 	<div class="d-flex justify-content-end">
-		<button class="btn" on:click|stopPropagation={exportSunburst} type="button">Export</button>
+		<button class="btn btn-outline-primary" on:click|stopPropagation={exportSunburst} type="button">Export</button>
 	</div>
 {/if}

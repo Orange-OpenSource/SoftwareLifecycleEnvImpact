@@ -8,9 +8,10 @@
 
 	/*Bound var*/
 	export let links: D3JSLink[];
+	$: links, drawSankey();
 
-	let width = 900,
-		height = 450,
+	let width = 1000,
+		height = 500,
 		marginTop = 5,
 		marginRight = 5,
 		marginBottom = 5,
@@ -20,6 +21,9 @@
 
 	function drawSankey() {
 		if (links && links.length > 0) {
+			// Clear data for redraw
+			select(sankeySVG).selectAll('*').remove();
+
 			// Create nodes
 			const linksSources = d3.map(links, (d: D3JSLink) => d.source);
 			const linksTargets = d3.map(links, (d: D3JSLink) => d.target);
@@ -147,6 +151,6 @@
 {#if links && links.length > 0}
 	<svg bind:this={sankeySVG} viewBox="0 0 {width + marginLeft + marginRight} {height + marginBottom + marginTop}" preserveAspectRatio="xMidYMid meet" />
 	<div class="d-flex justify-content-end">
-		<button class="btn" on:click|stopPropagation={exportSankey} type="button">Export</button>
+		<button class="btn btn-outline-primary" on:click|stopPropagation={exportSankey} type="button">Export</button>
 	</div>
 {/if}

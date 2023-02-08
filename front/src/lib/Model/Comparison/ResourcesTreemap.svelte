@@ -5,6 +5,7 @@
 	import Treemap from '$lib/Dataviz/Treemap.svelte';
 
 	export let resourcesImpact: ResourcesImpact;
+	export let selectedImpactCategory: string;
 	export let hierarchyPromise = convertToHierarchy();
 	let svgElement: SVGSVGElement;
 
@@ -15,7 +16,7 @@
 		};
 
 		for (const [resourceName, resourceImpact] of Object.entries(resourcesImpact)) {
-			const total = impactValueTotal(resourceImpact['Climate change']).value;
+			const total = impactValueTotal(resourceImpact[selectedImpactCategory]).value;
 			if (total) {
 				final.children.push({
 					name: resourceName,

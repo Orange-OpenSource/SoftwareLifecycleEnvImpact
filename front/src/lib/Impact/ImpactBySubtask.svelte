@@ -6,13 +6,13 @@
 	import Sankey from '$lib/Dataviz/Sankey.svelte';
 
 	export let impact: TaskImpact;
-	export let selectedImpactName: string;
+	export let selectedImpactCategory: string;
 
 	/*Bound var*/
 	export let selectedTask: Task;
 
-	$: subtaskHierarchy = constructHierarchy(selectedImpactName);
-	$: subtasksLinks = constructLinks(selectedTask, impact, true, false);
+	$: subtaskHierarchy = constructHierarchy(selectedImpactCategory);
+	$: subtasksLinks = constructLinks(selectedImpactCategory, selectedTask, impact, true, false);
 
 	function constructHierarchy(name: string) {
 		return hierarchy({
@@ -29,9 +29,9 @@
 
 			if (task != undefined) {
 				// If retrieved, create node
-				if (taskImpact.total[selectedImpactName] != undefined) {
+				if (taskImpact.total[selectedImpactCategory] != undefined) {
 					/**For each task push it with its associated impact*/
-					const total = taskImpact.total[selectedImpactName];
+					const total = taskImpact.total[selectedImpactCategory];
 					const manufacture = total.manufacture && total.manufacture.value ? total.manufacture.value : 0;
 					const use = total.use && total.use.value ? total.use.value : 0;
 					if (total) {

@@ -7,11 +7,12 @@
 	import { hierarchy, type HierarchyNode } from 'd3-hierarchy';
 
 	export let impact: TaskImpact;
+	export let selectedImpactCategory: string;
 
 	/*Bound var*/
 	export let selectedTask: Task;
 
-	$: sourcesLinks = constructLinks(selectedTask, impact, false, true);
+	$: sourcesLinks = constructLinks(selectedImpactCategory, selectedTask, impact, false, true);
 
 	function convertResourcesImpactToHierarchy(): HierarchyNode<D3JSHierarchyNode> {
 		let final: D3JSHierarchyNode = {
@@ -24,7 +25,7 @@
 	function getHierarchyChildrenNodes(subImpacts: Record<ImpactSourceId, ImpactSourceImpact>): D3JSHierarchyNode[] {
 		let returnValue: D3JSHierarchyNode[] = [];
 		for (const [sourceName, impact] of Object.entries(subImpacts)) {
-			const total = impact.own_impact['Climate change'];
+			const total = impact.own_impact[selectedImpactCategory];
 			const manufacture = total.manufacture && total.manufacture.value ? total.manufacture.value : 0;
 			const use = total.use && total.use.value ? total.use.value : 0;
 			if (total) {
