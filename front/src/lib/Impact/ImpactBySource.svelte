@@ -67,30 +67,6 @@
 			}
 		}
 	}
-
-	function TESTconvertResourcesImpactToStackedData(): D3JStackedData[] {
-		let final: D3JStackedData[] = [];
-
-		for (const [sourceName, sourceImpact] of Object.entries(impact.impact_sources)) {
-			for (const [impactCategory, impactValue] of Object.entries(sourceImpact.own_impact)) {
-				if (impactValue.manufacture && impactValue.manufacture.value) {
-					final.push({
-						impactCategory: 'Manufacture',
-						category: sourceName,
-						value: impactValue.manufacture.value
-					});
-				}
-				if (impactValue.use && impactValue.use.value) {
-					final.push({
-						impactCategory: 'Use',
-						category: sourceName,
-						value: impactValue.use.value
-					});
-				}
-			}
-		}
-		return final;
-	}
 </script>
 
 {#if Object.keys(impact.impact_sources).length}

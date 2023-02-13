@@ -49,7 +49,7 @@
 
 		<div
 			on:click|stopPropagation={() => (selectedTask = selectedModel.root_task)}
-			class="card {selectedModel.root_task === selectedTask ? 'border-primary' : ''}"
+			class="card bg-light {selectedModel.root_task === selectedTask ? 'border-primary' : ''}"
 			style="min-width: 15rem; width: fit-content;"
 		>
 			<div class="card-body">

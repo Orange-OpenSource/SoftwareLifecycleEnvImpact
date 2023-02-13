@@ -98,7 +98,7 @@
 		<!--Highlight border if task selected-->
 		<div
 			on:click|stopPropagation={() => (selectedTask = task)}
-			class="card {selectedTask.id == task.id ? 'border-primary' : ''}"
+			class="card bg-light {selectedTask.id == task.id ? 'border-primary' : ''}"
 			on:dragstart={handleDragStart}
 			on:dragend={handleDragEnd}
 			style="width: fit-content;"

@@ -19,7 +19,7 @@
 	const legendLineHeight = 30;
 	const legendHeight = legendLineHeight * 3;
 
-	function testStackedBar() {
+	function drawStackedBar() {
 		if (chartData && chartData.length > 0) {
 			// Compute values
 			const X = d3.map(chartData, (d) => d.impactCategory);
@@ -27,25 +27,27 @@
 			const Z = d3.map(chartData, (d) => d.category);
 
 			// Compute default x- and z-domains, and unique them
-			let xDomain = new d3.InternSet(X);
-			let zDomain = new d3.InternSet(Array.from(d3.union(Z))); // Unique category names
+			const xDomain = new d3.InternSet(X);
+			const zDomain = new d3.InternSet(Array.from(d3.union(Z))); // Unique category names
 
 			// Create color scale
-			let colorScheme = d3.scaleOrdinal().domain(zDomain).range(d3.schemeSet3);
-			let colors: Array<String> = [];
+			const colorScheme: Function = d3.scaleOrdinal().domain(zDomain).range(d3.schemeSet3);
+			const colors: Array<String> = [];
 			zDomain.forEach((value) => {
+				// Correct a problem where weren't enough colors in the scheme
 				colors.push(colorScheme(value));
 			});
 
 			// Omit any data not present in the x- and z-domains.
 			const I = d3.range(Y.length).filter((i) => xDomain.has(X[i]) && zDomain.has(Z[i]));
 
-			// If the height is not specified, derive it from the x-domain.
-			// height = xDomain.size * 25 + marginTop + marginBottom;
-			let topLegendHeight = 100;
-			let leftLegendWidth = 40;
-			let xRange = [leftLegendWidth, width - marginRight];
-			let yRange = [topLegendHeight, height - marginBottom];
+			// Define spece required for legends
+			const topLegendHeight = 100;
+			const leftLegendWidth = 40;
+
+			// Define ranges [xMin, xMax]
+			const xRange = [leftLegendWidth, width - marginRight];
+			const yRange = [topLegendHeight, height - marginBottom];
 			// [marginTop, width + marginLeft - marginRight]
 
 			// Compute a nested array of series where each series is [[x1, x2], [x1, x2],
@@ -137,7 +139,7 @@
 					if (i < 3) return 0;
 					if (i < 6) return width / 4;
 					if (i < 9) return width / 2;
-					return width - (width / 4);
+					return width - width / 4;
 				})
 				.attr('y', function (d, i) {
 					return bottomLegendMargin + (i % 3) * legendLineHeight;
@@ -160,7 +162,7 @@
 					if (i < 3) return 0 + legendTextMargin;
 					if (i < 6) return width / 4 + legendTextMargin;
 					if (i < 9) return width / 2 + legendTextMargin;
-					return width - (width / 4) + legendTextMargin;
+					return width - width / 4 + legendTextMargin;
 				})
 				.attr('y', function (d, i) {
 					return bottomLegendMargin + 11 + (i % 3) * legendLineHeight;
@@ -175,8 +177,7 @@
 	}
 
 	onMount(function () {
-		// drawStackedBar();
-		testStackedBar();
+		drawStackedBar();
 	});
 </script>
 

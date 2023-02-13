@@ -12,7 +12,8 @@
 	let olderTask: Task;
 
 	let impactPromise: Promise<TaskImpact>;
-	let selectedImpactCategory = 'Climate change';
+	export let selectedImpactCategory = 'Climate change';
+	export let showImpactCategorySelector = true;
 
 	/*Trigger update when selected task is updated*/
 	$: selectedTask, updateImpacts();
@@ -26,7 +27,7 @@
 	}
 </script>
 
-<div class="col">
+<div class="col-md-auto">
 	{#if selectedTask != undefined}
 		{#await impactPromise}
 			<Spinner />
@@ -35,13 +36,15 @@
 				<div class="row">
 					<h1 class="text-primary">{selectedTask.name}</h1>
 				</div>
-				<div class="row">
-					<select class="form-select" bind:value={selectedImpactCategory} required>
-						{#each Object.entries(impact.total) as [key, _]}
-							<option value={key} class="form-check-input">{key}</option>
-						{/each}
-					</select>
-				</div>
+				{#if showImpactCategorySelector}
+					<div class="d-flex">
+						<select class="form-select" bind:value={selectedImpactCategory} required>
+							{#each Object.entries(impact.total) as [key, _]}
+								<option value={key} class="form-check-input">{key}</option>
+							{/each}
+						</select>
+					</div>
+				{/if}
 				{#if impact.sub_tasks.length > 0}
 					<div class="row">
 						<ImpactComplete bind:selectedTask {impact} {selectedImpactCategory} />

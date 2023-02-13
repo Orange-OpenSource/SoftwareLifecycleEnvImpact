@@ -22,8 +22,14 @@ export interface D3JStackedData {
 	value: number;
 }
 
+export interface D3JGroupedData {
+	resourceName: string;
+	modelName: string;
+	value: number;
+}
+
 export function constructLinks(selectedImpactCategory: string, task: Task, impact: TaskImpact, showTasks = true, showResources = true): D3JSLink[] {
-	let links: D3JSLink[] = [];
+	const links: D3JSLink[] = [];
 	constructSubLinksRecursive(selectedImpactCategory, links, task, impact, showTasks, showResources);
 	return links;
 }
