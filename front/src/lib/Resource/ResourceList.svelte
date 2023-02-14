@@ -20,11 +20,11 @@
 {#if error}
 	<Error message={error} />
 {/if}
-
+	
 <ul class="list-group list-group-flush list-group-numbered">
 	{#if task.resources != null}
 		{#each task.resources as resource}
-			<li class="list-group-item d-flex p-0">
+			<li class="list-group-item d-flex p-0 bg-light">
 				<div class="ms-2">
 					<div class="d-flex justify-content-between">
 						<div class="fw-bold">{resource.name}</div>

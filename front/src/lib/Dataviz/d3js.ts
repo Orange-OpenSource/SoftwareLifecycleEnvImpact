@@ -28,6 +28,12 @@ export interface D3JGroupedData {
 	value: number;
 }
 
+export interface D3JsDivergingData {
+	first: number;
+	second: number;
+	name: string;
+}
+
 export function constructLinks(selectedImpactCategory: string, task: Task, impact: TaskImpact, showTasks = true, showResources = true): D3JSLink[] {
 	const links: D3JSLink[] = [];
 	constructSubLinksRecursive(selectedImpactCategory, links, task, impact, showTasks, showResources);
