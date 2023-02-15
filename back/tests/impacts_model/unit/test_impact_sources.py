@@ -189,7 +189,7 @@ def test_impact_source_computation() -> None:
         .get_impact()
         .total_impact[ImpactCategory.CLIMATE_CHANGE]
     )
-    assert people.use + people.manufacture == 12.358420254397696 * KG_CO2E / (
+    assert people.use + people.manufacture == 12.395184114767307 * KG_CO2E / (
         PEOPLE * DAY
     )
 

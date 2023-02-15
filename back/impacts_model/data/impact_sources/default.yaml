@@ -40,30 +40,92 @@ uses:
   - { quantity: 0.0687 kWh, resource_id: electricity }
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
-    manufacture: 4,43E-03 kg_co2e
+    manufacture: 4.43E-03 kg_co2e
     use:
   resource_depletion: !ImpactValue
-    manufacture: 1,68E-07 kg_Sbe
+    manufacture: 1.68E-07 kg_Sbe
     use:
   acidification: !ImpactValue
-    manufacture: 2,04E-05 mol_Hpos
+    manufacture: 2.04E-05 mol_Hpos
     use:
   fine_particles: !ImpactValue
-    manufacture: 1,76E-10 disease_incidence
+    manufacture: 1.76E-10 disease_incidence
     use:
   ionizing_radiations: !ImpactValue
-    manufacture: 1,75E-02 kg_Bq_u235e
+    manufacture: 1.75E-02 kg_Bq_u235e
     use:
   water_depletion: !ImpactValue
-    manufacture: 8,09E-02 cubic_meter
+    manufacture: 8.09E-02 cubic_meter
     use:
   raw_materials: !ImpactValue
-    manufacture: 2,75E-02 kg_mips
+    manufacture: 2.75E-02 kg_mips
     use:
 source: >
   Negaoctet
 methodology: >
   Fixed-line network; at consumer; xDSL, FFTx average mix in France
+---
+!ImpactSource
+id: "ram"
+name: "RAM"
+unit: gigabyte * year
+uses:
+  - { quantity: 0.047 kWh, resource_id: datacenter }
+environmental_impact: !EnvironmentalImpact
+  climate_change: !ImpactValue
+    manufacture: 4.46E-01 kg_co2e
+    use:
+  resource_depletion: !ImpactValue
+    manufacture: 9.20E-06 kg_Sbe
+    use:
+  acidification: !ImpactValue
+    manufacture: 2.57E-03 mol_Hpos
+    use:
+  fine_particles: !ImpactValue
+    manufacture: 1.40E-08 disease_incidence
+    use:
+  ionizing_radiations: !ImpactValue
+    manufacture: 1.17E-02 kg_Bq_u235e
+    use:
+  water_depletion: !ImpactValue
+    manufacture: 6.83E-01 cubic_meter
+    use:
+  raw_materials: !ImpactValue
+    manufacture: 1.72E+00 kg_mips
+    use:
+source: Négaoctet
+methodology:
+---
+!ImpactSource
+id: "vCPU"
+name: "vCPU"
+unit: vcpu * year
+uses:
+  - { quantity: 55 kWh, resource_id: datacenter }
+environmental_impact: !EnvironmentalImpact
+  climate_change: !ImpactValue
+    manufacture: 1.54E+00 kg_co2e
+    use:
+  resource_depletion: !ImpactValue
+    manufacture: 2.23E-04 kg_Sbe
+    use:
+  acidification: !ImpactValue
+    manufacture: 1.11E-02 mol_Hpos
+    use:
+  fine_particles: !ImpactValue
+    manufacture: 5.94E-08 disease_incidence
+    use:
+  ionizing_radiations: !ImpactValue
+    manufacture: 8.41E+00 kg_Bq_u235e
+    use:
+  water_depletion: !ImpactValue
+    manufacture: 1.74E+01 cubic_meter
+    use:
+  raw_materials: !ImpactValue
+    manufacture: 1.41E+01 kg_mips
+    use:
+source: Négaoctet
+methodology:
 ---
 !ImpactSource
 id: "small_vm"
@@ -1139,6 +1201,7 @@ uses:
   - { quantity: 1 people * day, resource_id: office }
   - { quantity: 1 people * day, resource_id: transportation }
   - { quantity: 7 * laptop * hour, resource_id: laptop }
+  - { quantity: 7 * monitor * hour, resource_id: monitor }
 environmental_impact: !EnvironmentalImpact
   climate_change: !ImpactValue
     manufacture:
@@ -1213,7 +1276,7 @@ methodology: >
     consumption=0.2878028747433265 kilowatt_hour
     resource_depletion = 4.85968514715948e-06 kg_Sbe
     acidification = 0.00565822496007301 mol_Hpos
-    climate_change = 1.0266940451745379 kg_co2e
+    climate_change = 1.0266940451745379 kg_codatacenter2e
     ionizing_radiations = 0.04163814738763404 kg_Bq_u235e
     fine_particles = 3.1371206935888665e-08 disease_incidence
     water_depletion = 1.7910107232489163 cubic_meter
