@@ -192,6 +192,7 @@ class ImpactSourceImpactSchema(Schema):
     sub_impacts = fields.Dict(
         keys=fields.Str(), values=Nested("ImpactSourceImpactSchema")
     )
+    total_impact = fields.Dict(keys=fields.Str(), values=Nested("ImpactValueSchema"))
 
 
 class TaskImpact:

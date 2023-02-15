@@ -158,6 +158,7 @@ export interface ImpactSourceImpact {
 	impact_source_id: string;
 	own_impact: EnvironmentalImpact;
 	sub_impacts: Record<ImpactSourceId, ImpactSourceImpact>;
+	total_impact: EnvironmentalImpact;
 }
 
 export interface TaskImpact {

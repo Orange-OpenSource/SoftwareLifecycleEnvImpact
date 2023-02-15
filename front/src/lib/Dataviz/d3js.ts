@@ -80,21 +80,9 @@ function constructSubLinksRecursive(selectedImpactCategory: string, links: D3JSL
 	}
 }
 
-function sumSubimpacts(selectedImpactCategory, sub_impacts: Record<ImpactSourceId, ImpactSourceImpact>) {
-	let sum = 0;
-	for (const [_, subImpact] of Object.entries(sub_impacts)) {
-		const total = impactValueTotal(subImpact.own_impact[selectedImpactCategory]).value;
-		if (total) {
-			sum += total;
-		}
-		sum += sumSubimpacts(selectedImpactCategory, subImpact.sub_impacts);
-	}
-	return sum;
-}
-
 function constructResourcesLinks(selectedImpactCategory: string, links: D3JSLink[], resourceImpact: ImpactSourceImpact, parentName: string) {
-	// If this resourceImpact has an own impact, push it toward the parentName
-	const total = impactValueTotal(resourceImpact.own_impact[selectedImpactCategory]).value;
+	// If this resourceImpact has a total imapct, push it toward the parentName
+	const total = impactValueTotal(resourceImpact.total_impact[selectedImpactCategory]).value;
 	if (total) {
 		links.push({
 			source: parentName,
@@ -102,13 +90,6 @@ function constructResourcesLinks(selectedImpactCategory: string, links: D3JSLink
 			value: total
 		});
 	}
-
-	// Push toward the parentName all this resource subImpacts values
-	links.push({
-		source: parentName,
-		target: resourceImpact.impact_source_id,
-		value: sumSubimpacts(selectedImpactCategory, resourceImpact.sub_impacts)
-	});
 
 	// Iterate through all of this subtasks to draw its impact toward
 	for (const [_, subImpact] of Object.entries(resourceImpact.sub_impacts)) {

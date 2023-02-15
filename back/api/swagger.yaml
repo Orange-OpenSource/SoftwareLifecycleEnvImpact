@@ -869,10 +869,12 @@ definitions:
       impact_source_id:
         type: string
         description: Unique identifier
-      total:
+      own_impact:
         $ref: "#/definitions/EnvironmentalImpact"
       sub_impacts:
         type: string
         additionalProperties:
           type: object
           $ref: "#/definitions/EnvironmentalImpact"
+      total_impact:
+        $ref: "#/definitions/EnvironmentalImpact"
