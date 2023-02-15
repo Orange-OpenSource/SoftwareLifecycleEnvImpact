@@ -94,7 +94,7 @@
 				.selectAll('rect')
 				.data(I)
 				.join('rect')
-				.attr('fill', (i) => colors[X[i] > 0 ? colors.length - 1 : 0])
+				.attr('fill', (i) => colors[X[i] < 0 ? colors.length - 1 : 0])
 				.attr('x', (i) => Math.min(xScale(0), xScale(X[i])))
 				.attr('y', (i) => yScale(Y[i]))
 				.attr('width', (i) => Math.abs(xScale(X[i]) - xScale(0)))

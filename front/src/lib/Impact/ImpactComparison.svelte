@@ -53,38 +53,76 @@
 
 		// First model
 		let modelImpact = await getTaskImpact(models[0].root_task);
-		getResourcesGrouped(true, selectedImpactCategory, models[0].name, final, modelImpact.impact_sources);
+		getResourcesGrouped(true, selectedImpactCategory, final, modelImpact.impact_sources);
 		// Little hack to retrieve the impact categories
 		if (impactCatgories == undefined) {
 			impactCatgories = modelImpact.total;
 		}
 
+		const firstTotal = impactValueTotal(modelImpact.total[selectedImpactCategory]).value;
+
 		// Second model
 		modelImpact = await getTaskImpact(models[1].root_task);
-		getResourcesGrouped(false, selectedImpactCategory, models[1].name, final, modelImpact.impact_sources);
+		getResourcesGrouped(false, selectedImpactCategory, final, modelImpact.impact_sources);
+
+		const secondTotal = impactValueTotal(modelImpact.total[selectedImpactCategory]).value;
+
+		// Add total
+		if (firstTotal && secondTotal) {
+			final.push({
+				first: firstTotal,
+				second: secondTotal,
+				name: 'Total'
+			});
+		}
 
 		return final;
 	}
 
-	function getResourcesGrouped(isFirstModel: boolean, selectedImpactCategory: string, modelName: string, data: D3JsDivergingData[], impacts: Record<ImpactSourceId, ImpactSourceImpact>) {
+	function sumSubimpacts(selectedImpactCategory, sub_impacts: Record<ImpactSourceId, ImpactSourceImpact>) {
+		// Edge case to add sub impacts for resource, such as electricity for servers
+		// Cannot use total in this context, as we want to keep resource not aggregated
+		let sum = 0;
+		for (const [_, subImpact] of Object.entries(sub_impacts)) {
+			const total = impactValueTotal(subImpact.own_impact[selectedImpactCategory]).value;
+			if (total) {
+				sum += total;
+			}
+			sum += sumSubimpacts(selectedImpactCategory, subImpact.sub_impacts);
+		}
+		return sum;
+	}
+
+	function getResourcesGrouped(isFirstModel: boolean, selectedImpactCategory: string, data: D3JsDivergingData[], impacts: Record<ImpactSourceId, ImpactSourceImpact>) {
 		if (impacts) {
 			for (const [sourceName, sourceImpact] of Object.entries(impacts)) {
-				const total = impactValueTotal(sourceImpact.own_impact[selectedImpactCategory]).value;
-				if (total) {
-					if (isFirstModel) {
+				let total = impactValueTotal(sourceImpact.own_impact[selectedImpactCategory]).value;
+				if (total && total) {
+					// Add used sub impacts without aggregating them
+					total += sumSubimpacts(selectedImpactCategory, sourceImpact.sub_impacts);
+
+					// Search if sourceName already pushed
+					let existingData = data.find((x) => x.name === sourceName);
+
+					if (existingData) {
+						// If already push, add to the right value
+						if (isFirstModel) {
+							existingData.first += total;
+						} else {
+							existingData.second += total;
+						}
+					} else {
+						// If not, create the associated entry
 						data.push({
-							first: total,
-							second: 0,
+							first: isFirstModel ? total : 0,
+							second: isFirstModel ? 0 : total,
 							name: sourceName
 						});
-					} else {
-						let a = data.find((x) => x.name === sourceName);
-						if (a) a.second = total;
 					}
 				}
 				for (const [_, subImpact] of Object.entries(sourceImpact.sub_impacts)) {
 					// Recursive call for childrens
-					getResourcesGrouped(isFirstModel, selectedImpactCategory, modelName, data, subImpact.sub_impacts);
+					getResourcesGrouped(isFirstModel, selectedImpactCategory, data, subImpact.sub_impacts);
 				}
 			}
 		}
