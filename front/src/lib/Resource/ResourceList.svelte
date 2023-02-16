@@ -20,7 +20,7 @@
 {#if error}
 	<Error message={error} />
 {/if}
-	
+
 <ul class="list-group list-group-flush list-group-numbered">
 	{#if task.resources != null}
 		{#each task.resources as resource}
