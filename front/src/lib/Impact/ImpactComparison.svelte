@@ -63,6 +63,7 @@
 
 		// Second model
 		modelImpact = await getTaskImpact(models[1].root_task);
+		console.log('Second model impact', modelImpact);
 		getResourcesGrouped(false, selectedImpactCategory, final, modelImpact.impact_sources);
 
 		const secondTotal = impactValueTotal(modelImpact.total[selectedImpactCategory]).value;
@@ -99,7 +100,7 @@
 				let total = impactValueTotal(sourceImpact.own_impact[selectedImpactCategory]).value;
 				if (total && total) {
 					// Add used sub impacts without aggregating them
-					total += sumSubimpacts(selectedImpactCategory, sourceImpact.sub_impacts);
+					// total += sumSubimpacts(selectedImpactCategory, sourceImpact.sub_impacts);
 
 					// Search if sourceName already pushed
 					let existingData = data.find((x) => x.name === sourceName);
@@ -107,23 +108,22 @@
 					if (existingData) {
 						// If already push, add to the right value
 						if (isFirstModel) {
-							existingData.first += total;
+							existingData.first += total / 1000;
 						} else {
-							existingData.second += total;
+							existingData.second += total / 1000;
 						}
 					} else {
 						// If not, create the associated entry
 						data.push({
-							first: isFirstModel ? total : 0,
-							second: isFirstModel ? 0 : total,
+							first: isFirstModel ? total / 1000 : 0,
+							second: isFirstModel ? 0 : total / 1000,
 							name: sourceName
 						});
 					}
 				}
-				for (const [_, subImpact] of Object.entries(sourceImpact.sub_impacts)) {
-					// Recursive call for childrens
-					getResourcesGrouped(isFirstModel, selectedImpactCategory, data, subImpact.sub_impacts);
-				}
+
+				// Recursive call for childrens
+				getResourcesGrouped(isFirstModel, selectedImpactCategory, data, sourceImpact.sub_impacts);
 			}
 		}
 	}

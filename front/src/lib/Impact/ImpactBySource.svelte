@@ -48,22 +48,30 @@
 	}
 
 	function getResourcesNodes(data: D3JStackedData[], impacts: Record<ImpactSourceId, ImpactSourceImpact>) {
-		if (impacts) {
+		if (impacts && Object.keys(impact).length > 0) {
 			for (const [sourceName, sourceImpact] of Object.entries(impacts)) {
 				for (const [impactCategory, impactValue] of Object.entries(sourceImpact.own_impact)) {
 					const total = impactValueTotal(impactValue).value;
+
 					if (total) {
-						data.push({
-							impactCategory: impactCategory,
-							category: sourceName,
-							value: total
-						});
+						// Search if sourceName already pushed
+						let existingData = data.find((x) => x.category === sourceName && x.impactCategory === impactCategory);
+
+						if (existingData) {
+							// If already push, add to the right value
+							existingData.value += total;
+						} else {
+							// If not, create the associated entry
+							data.push({
+								impactCategory: impactCategory,
+								category: sourceName,
+								value: total
+							});
+						}
 					}
 				}
-				for (const [_, subImpact] of Object.entries(sourceImpact.sub_impacts)) {
-					// Recursive call for childrens
-					getResourcesNodes(data, subImpact.sub_impacts);
-				}
+				//Recursive call
+				getResourcesNodes(data, sourceImpact.sub_impacts);
 			}
 		}
 	}

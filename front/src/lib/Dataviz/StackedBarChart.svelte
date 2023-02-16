@@ -135,14 +135,24 @@
 				.enter()
 				.append('rect')
 				.attr('x', function (d, i) {
-					// Do not display more than three rows
-					if (i < 3) return 0;
-					if (i < 6) return width / 4;
-					if (i < 9) return width / 2;
-					return width - width / 4;
+					if (series.length < 5) {
+						// Legend fits on one row
+						return i * (width / 4);
+					} else {
+						// If not, do not display more than three rows
+						if (i < 3) return 0;
+						if (i < 6) return width / 4;
+						if (i < 9) return width / 2;
+						return width - width / 4;
+					}
 				})
 				.attr('y', function (d, i) {
-					return bottomLegendMargin + (i % 3) * legendLineHeight;
+					if (series.length < 5) {
+						return legendLineHeight;
+					} else {
+						// If not, do not display more than three rows
+						return bottomLegendMargin + (i % 3) * legendLineHeight;
+					}
 				})
 				.attr('width', 12)
 				.attr('height', 12)
@@ -158,14 +168,24 @@
 					return [...zDomain][i]; // Legend label
 				})
 				.attr('x', function (d, i) {
-					// Do not display more than three rows
-					if (i < 3) return 0 + legendTextMargin;
-					if (i < 6) return width / 4 + legendTextMargin;
-					if (i < 9) return width / 2 + legendTextMargin;
-					return width - width / 4 + legendTextMargin;
+					if (series.length < 5) {
+						// Legend fits on one row
+						return marginLeft + i * (width / 4) + legendTextMargin;
+					} else {
+						// If not, do not display more than three rows
+						if (i < 3) return 0 + legendTextMargin;
+						if (i < 6) return width / 4 + legendTextMargin;
+						if (i < 9) return width / 2 + legendTextMargin;
+						return width - width / 4 + legendTextMargin;
+					}
 				})
 				.attr('y', function (d, i) {
-					return bottomLegendMargin + 11 + (i % 3) * legendLineHeight;
+					if (series.length < 5) {
+						return legendLineHeight + 11;
+					} else {
+						// If not, do not display more than three rows
+						return bottomLegendMargin + 11 + (i % 3) * legendLineHeight;
+					}
 				})
 				.attr('text-anchor', 'start')
 				.attr('alignment-baseline', 'hanging');

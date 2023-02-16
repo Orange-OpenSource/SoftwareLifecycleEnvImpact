@@ -73,7 +73,7 @@
 
 			// Create SVG
 			const svg = select(groupedBarChartSVG);
-			// let xLabel = '← decrease · Climate change · increase →';
+			let xLabel = 'tons CO2e';
 
 			svg
 				.append('g')
@@ -86,8 +86,16 @@
 						.clone()
 						.attr('y2', height - marginTop - marginBottom)
 						.attr('stroke-opacity', 0.1)
+				)
+				.call((g) =>
+					g
+						.append('text')
+						.attr('x', xScale(0))
+						.attr('y', -(marginTop-20))
+						.attr('fill', 'currentColor')
+						.attr('text-anchor', 'center')
+						.text(xLabel)
 				);
-			// .call((g) => g.append('text').attr('x', xScale(0)).attr('y', -22).attr('fill', 'currentColor').attr('text-anchor', 'center').text(xLabel));
 
 			const bar = svg
 				.append('g')
