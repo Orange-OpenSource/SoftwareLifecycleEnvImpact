@@ -343,187 +343,187 @@ methodology: >
     fine_particles = 2.5781428245493955e-09 disease_incidence
     water_depletion = 0.08464522016883413 cubic_meter
     raw_materials = 0.24184348619666896 kg_mips
----
-!ImpactSource
-id: "vCPUrm"
-name: "vCPU Rueil-Malmaison"
-unit: vcpu * month
-uses:
-environmental_impact: !EnvironmentalImpact
-  climate_change: !ImpactValue
-    manufacture:
-    use: "4.506211 kg_co2e"
-  resource_depletion: !ImpactValue
-    manufacture:
-    use: "8.78E-07 kg_Sbe"
-  acidification: !ImpactValue
-    manufacture:
-    use: "0.015592121 mol_Hpos"
-  fine_particles: !ImpactValue
-    manufacture:
-    use: "1.11281E-07 disease_incidence"
-  ionizing_radiations: !ImpactValue
-    manufacture:
-    use: "0.15738558 kg_Bq_u235e"
-  water_depletion: !ImpactValue
-    manufacture:
-    use: "8.61050442 cubic_meter"
-  raw_materials: !ImpactValue
-    manufacture:
-    use: "10.2950296 kg_mips"
-source: Orange (APL)
-methodology:
----
-!ImpactSource
-id: "vCPUvdr"
-name: "vCPU Val-de-Reuil"
-unit: vcpu * month
-uses:
-environmental_impact: !EnvironmentalImpact
-  climate_change: !ImpactValue
-    manufacture:
-    use: "0.2206123 kg_co2e"
-  resource_depletion: !ImpactValue
-    manufacture:
-    use: "4.85E-08 kg_Sbe"
-  acidification: !ImpactValue
-    manufacture:
-    use: "0.000766107 mol_Hpos"
-  fine_particles: !ImpactValue
-    manufacture:
-    use: "5.44803E-09 disease_incidence"
-  ionizing_radiations: !ImpactValue
-    manufacture:
-    use: "0.007705325 kg_Bq_u235e"
-  water_depletion: !ImpactValue
-    manufacture:
-    use: "0.416680258 cubic_meter"
-  raw_materials: !ImpactValue
-    manufacture:
-    use: "0.51490173 kg_mips"
-source: Orange (APL)
-methodology:
----
-!ImpactSource
-id: "RAMrm"
-name: "RAM Rueil-Malmaison"
-unit: gigabyte * month
-uses:
-environmental_impact: !EnvironmentalImpact
-  climate_change: !ImpactValue
-    manufacture:
-    use: "0.5186616 kg_co2e"
-  resource_depletion: !ImpactValue
-    manufacture:
-    use: "1.055E-08 kg_Sbe"
-  acidification: !ImpactValue
-    manufacture:
-    use: "0.002105015 mol_Hpos"
-  fine_particles: !ImpactValue
-    manufacture:
-    use: "1.15591E-08 disease_incidence"
-  ionizing_radiations: !ImpactValue
-    manufacture:
-    use: "0.00596069 kg_Bq_u235e"
-  water_depletion: !ImpactValue
-    manufacture:
-    use: "0.228200547 cubic_meter"
-  raw_materials: !ImpactValue
-    manufacture:
-    use: "0.12390367 kg_mips"
-source: Orange (APL)
-methodology:
----
-!ImpactSource
-id: "RAMvdr"
-name: "RAM Val-De-Rueil"
-unit: gigabyte * month
-uses:
-environmental_impact: !EnvironmentalImpact
-  climate_change: !ImpactValue
-    manufacture:
-    use: "0.267726 kg_co2e"
-  resource_depletion: !ImpactValue
-    manufacture:
-    use: "4.58E-09 kg_Sbe"
-  acidification: !ImpactValue
-    manufacture:
-    use: "0.001086803 mol_Hpos"
-  fine_particles: !ImpactValue
-    manufacture:
-    use: "5.97501E-09 disease_incidence"
-  ionizing_radiations: !ImpactValue
-    manufacture:
-    use: "0.002916121 kg_Bq_u235e"
-  water_depletion: !ImpactValue
-    manufacture:
-    use: "0.109300096 cubic_meter"
-  raw_materials: !ImpactValue
-    manufacture:
-    use: "0.053100643 kg_mips"
-source: Orange (APL)
-methodology:
----
-!ImpactSource
-id: "storageRm"
-name: "Storage Rueil-Malmaison"
-unit: gigabyte * month
-uses:
-environmental_impact: !EnvironmentalImpact
-  climate_change: !ImpactValue
-    manufacture:
-    use: "1.1922143 kg_co2e"
-  resource_depletion: !ImpactValue
-    manufacture:
-    use: "8.4877E-07 kg_Sbe"
-  acidification: !ImpactValue
-    manufacture:
-    use: "0.004756408 mol_Hpos"
-  fine_particles: !ImpactValue
-    manufacture:
-    use: "2.585E-08 disease_incidence"
-  ionizing_radiations: !ImpactValue
-    manufacture:
-    use: "0.041780379 kg_Bq_u235e"
-  water_depletion: !ImpactValue
-    manufacture:
-    use: "0.4456003 cubic_meter"
-  raw_materials: !ImpactValue
-    manufacture:
-    use: "0.53460201 kg_mips"
-source: Orange (APL)
-methodology:
----
-!ImpactSource
-id: "storageVdr"
-name: "Storage Val-De-Rueil"
-unit: gigabyte * month
-uses:
-environmental_impact: !EnvironmentalImpact
-  climate_change: !ImpactValue
-    manufacture:
-    use: "0.27820336 kg_co2e"
-  resource_depletion: !ImpactValue
-    manufacture:
-    use: "1.9103E-07 kg_Sbe"
-  acidification: !ImpactValue
-    manufacture:
-    use: "0.001095802 mol_Hpos"
-  fine_particles: !ImpactValue
-    manufacture:
-    use: "6.06201E-09 disease_incidence"
-  ionizing_radiations: !ImpactValue
-    manufacture:
-    use: "0.009720089 kg_Bq_u235e"
-  water_depletion: !ImpactValue
-    manufacture:
-    use: "0.121600071 cubic_meter"
-  raw_materials: !ImpactValue
-    manufacture:
-    use: "0.147600473 kg_mips"
-source: Orange (APL)
-methodology:
----
+# ---
+# !ImpactSource
+# id: "vCPUrm"
+# name: "vCPU Rueil-Malmaison"
+# unit: vcpu * month
+# uses:
+# environmental_impact: !EnvironmentalImpact
+#   climate_change: !ImpactValue
+#     manufacture:
+#     use: "4.506211 kg_co2e"
+#   resource_depletion: !ImpactValue
+#     manufacture:
+#     use: "8.78E-07 kg_Sbe"
+#   acidification: !ImpactValue
+#     manufacture:
+#     use: "0.015592121 mol_Hpos"
+#   fine_particles: !ImpactValue
+#     manufacture:
+#     use: "1.11281E-07 disease_incidence"
+#   ionizing_radiations: !ImpactValue
+#     manufacture:
+#     use: "0.15738558 kg_Bq_u235e"
+#   water_depletion: !ImpactValue
+#     manufacture:
+#     use: "8.61050442 cubic_meter"
+#   raw_materials: !ImpactValue
+#     manufacture:
+#     use: "10.2950296 kg_mips"
+# source: Orange (APL)
+# methodology:
+# ---
+# !ImpactSource
+# id: "vCPUvdr"
+# name: "vCPU Val-de-Reuil"
+# unit: vcpu * month
+# uses:
+# environmental_impact: !EnvironmentalImpact
+#   climate_change: !ImpactValue
+#     manufacture:
+#     use: "0.2206123 kg_co2e"
+#   resource_depletion: !ImpactValue
+#     manufacture:
+#     use: "4.85E-08 kg_Sbe"
+#   acidification: !ImpactValue
+#     manufacture:
+#     use: "0.000766107 mol_Hpos"
+#   fine_particles: !ImpactValue
+#     manufacture:
+#     use: "5.44803E-09 disease_incidence"
+#   ionizing_radiations: !ImpactValue
+#     manufacture:
+#     use: "0.007705325 kg_Bq_u235e"
+#   water_depletion: !ImpactValue
+#     manufacture:
+#     use: "0.416680258 cubic_meter"
+#   raw_materials: !ImpactValue
+#     manufacture:
+#     use: "0.51490173 kg_mips"
+# source: Orange (APL)
+# methodology:
+# ---
+# !ImpactSource
+# id: "RAMrm"
+# name: "RAM Rueil-Malmaison"
+# unit: gigabyte * month
+# uses:
+# environmental_impact: !EnvironmentalImpact
+#   climate_change: !ImpactValue
+#     manufacture:
+#     use: "0.5186616 kg_co2e"
+#   resource_depletion: !ImpactValue
+#     manufacture:
+#     use: "1.055E-08 kg_Sbe"
+#   acidification: !ImpactValue
+#     manufacture:
+#     use: "0.002105015 mol_Hpos"
+#   fine_particles: !ImpactValue
+#     manufacture:
+#     use: "1.15591E-08 disease_incidence"
+#   ionizing_radiations: !ImpactValue
+#     manufacture:
+#     use: "0.00596069 kg_Bq_u235e"
+#   water_depletion: !ImpactValue
+#     manufacture:
+#     use: "0.228200547 cubic_meter"
+#   raw_materials: !ImpactValue
+#     manufacture:
+#     use: "0.12390367 kg_mips"
+# source: Orange (APL)
+# methodology:
+# ---
+# !ImpactSource
+# id: "RAMvdr"
+# name: "RAM Val-De-Rueil"
+# unit: gigabyte * month
+# uses:
+# environmental_impact: !EnvironmentalImpact
+#   climate_change: !ImpactValue
+#     manufacture:
+#     use: "0.267726 kg_co2e"
+#   resource_depletion: !ImpactValue
+#     manufacture:
+#     use: "4.58E-09 kg_Sbe"
+#   acidification: !ImpactValue
+#     manufacture:
+#     use: "0.001086803 mol_Hpos"
+#   fine_particles: !ImpactValue
+#     manufacture:
+#     use: "5.97501E-09 disease_incidence"
+#   ionizing_radiations: !ImpactValue
+#     manufacture:
+#     use: "0.002916121 kg_Bq_u235e"
+#   water_depletion: !ImpactValue
+#     manufacture:
+#     use: "0.109300096 cubic_meter"
+#   raw_materials: !ImpactValue
+#     manufacture:
+#     use: "0.053100643 kg_mips"
+# source: Orange (APL)
+# methodology:
+# ---
+# !ImpactSource
+# id: "storageRm"
+# name: "Storage Rueil-Malmaison"
+# unit: gigabyte * month
+# uses:
+# environmental_impact: !EnvironmentalImpact
+#   climate_change: !ImpactValue
+#     manufacture:
+#     use: "1.1922143 kg_co2e"
+#   resource_depletion: !ImpactValue
+#     manufacture:
+#     use: "8.4877E-07 kg_Sbe"
+#   acidification: !ImpactValue
+#     manufacture:
+#     use: "0.004756408 mol_Hpos"
+#   fine_particles: !ImpactValue
+#     manufacture:
+#     use: "2.585E-08 disease_incidence"
+#   ionizing_radiations: !ImpactValue
+#     manufacture:
+#     use: "0.041780379 kg_Bq_u235e"
+#   water_depletion: !ImpactValue
+#     manufacture:
+#     use: "0.4456003 cubic_meter"
+#   raw_materials: !ImpactValue
+#     manufacture:
+#     use: "0.53460201 kg_mips"
+# source: Orange (APL)
+# methodology:
+# ---
+# !ImpactSource
+# id: "storageVdr"
+# name: "Storage Val-De-Rueil"
+# unit: gigabyte * month
+# uses:
+# environmental_impact: !EnvironmentalImpact
+#   climate_change: !ImpactValue
+#     manufacture:
+#     use: "0.27820336 kg_co2e"
+#   resource_depletion: !ImpactValue
+#     manufacture:
+#     use: "1.9103E-07 kg_Sbe"
+#   acidification: !ImpactValue
+#     manufacture:
+#     use: "0.001095802 mol_Hpos"
+#   fine_particles: !ImpactValue
+#     manufacture:
+#     use: "6.06201E-09 disease_incidence"
+#   ionizing_radiations: !ImpactValue
+#     manufacture:
+#     use: "0.009720089 kg_Bq_u235e"
+#   water_depletion: !ImpactValue
+#     manufacture:
+#     use: "0.121600071 cubic_meter"
+#   raw_materials: !ImpactValue
+#     manufacture:
+#     use: "0.147600473 kg_mips"
+# source: Orange (APL)
+# methodology:
+# ---
 !ImpactSource
 id: "electricity"
 name: "Electricity"
