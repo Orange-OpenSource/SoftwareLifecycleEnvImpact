@@ -45,7 +45,7 @@
 		{/each}
 	{/if}
 	{#if modify}
-		<li class="list-group-item d-flex p-1">
+		<li class="list-group-item d-flex p-1 bg-light">
 			<div class="ms-2">
 				<AddResource bind:task />
 			</div>
