@@ -214,8 +214,8 @@
                     "frequency": null,
                     "has_time_input": true,
                     "id": null,
-                    "impact_source_id": "vCPUvdr",
-                    "name": "vCPU Val-de-Reuil",
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
                     "period": {
                       "unit": "year",
                       "value": 3.0
@@ -233,8 +233,8 @@
                     "frequency": null,
                     "has_time_input": true,
                     "id": null,
-                    "impact_source_id": "RAMvdr",
-                    "name": "RAM Val-De-Rueil",
+                    "impact_source_id": "ram",
+                    "name": "RAM",
                     "period": {
                       "unit": "month",
                       "value": 3.0
@@ -252,8 +252,8 @@
                     "frequency": null,
                     "has_time_input": true,
                     "id": null,
-                    "impact_source_id": "storageVdr",
-                    "name": "Storage Val-De-Rueil",
+                    "impact_source_id": "storage",
+                    "name": "Storage",
                     "period": {
                       "unit": "year",
                       "value": 3.0

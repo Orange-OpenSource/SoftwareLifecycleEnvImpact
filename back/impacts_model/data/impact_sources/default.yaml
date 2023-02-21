@@ -523,7 +523,7 @@ methodology: >
 #     use: "0.147600473 kg_mips"
 # source: Orange (APL)
 # methodology:
-# ---
+---
 !ImpactSource
 id: "electricity"
 name: "Electricity"
