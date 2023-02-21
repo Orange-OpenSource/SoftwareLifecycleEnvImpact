@@ -25,13 +25,13 @@
 	function getHierarchyChildrenNodes(subImpacts: Record<ImpactSourceId, ImpactSourceImpact>): D3JSHierarchyNode[] {
 		let returnValue: D3JSHierarchyNode[] = [];
 		for (const [sourceName, impact] of Object.entries(subImpacts)) {
-			const total = impact.own_impact[selectedImpactCategory];
+			const total = impact.total_impact[selectedImpactCategory];
 			const manufacture = total.manufacture && total.manufacture.value ? total.manufacture.value : 0;
 			const use = total.use && total.use.value ? total.use.value : 0;
 			if (total) {
 				returnValue.push({
 					name: sourceName,
-					impact: impact.own_impact,
+					impact: impact.total_impact,
 					manufacture: manufacture,
 					use: use,
 					children: getHierarchyChildrenNodes(impact.sub_impacts)
@@ -84,7 +84,7 @@
 
 	<StackedBarChart chartData={convertResourcesImpactToStackedData()} />
 	<!-- <StackedBarChart chartData={TESTconvertResourcesImpactToStackedData()} /> -->
-	<Sunburst hierarchy={convertResourcesImpactToHierarchy()} />
+	<!-- <Sunburst hierarchy={convertResourcesImpactToHierarchy()} /> -->
 	<Sankey links={sourcesLinks} />
 	<!-- <Treemap hierarchy={convertResourcesImpactToHierarchy()} /> -->
 {/if}
