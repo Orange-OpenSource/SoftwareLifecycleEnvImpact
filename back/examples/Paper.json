@@ -5,12 +5,12 @@
     {
       "created_at": null,
       "id": null,
-      "name": "Paper copy",
+      "name": "Paper",
       "project_id": null,
       "root_task": {
         "created_at": null,
         "id": null,
-        "name": "Paper copy",
+        "name": "Paper",
         "parent_task_id": null,
         "resources": [],
         "subtasks": [

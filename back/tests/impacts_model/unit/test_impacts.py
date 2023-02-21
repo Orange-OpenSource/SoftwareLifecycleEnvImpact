@@ -1,4 +1,3 @@
-from genericpath import isfile
 import json
 from os import listdir
 from os.path import isfile, join

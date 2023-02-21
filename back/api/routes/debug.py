@@ -1,5 +1,7 @@
-from impacts_model.data_model import db, Model, Project, Resource, Task, ProjectSchema
+from os.path import isfile, join
+from impacts_model.data_model import db, ProjectSchema
 import json
+from os import listdir
 
 """
 Real project
@@ -27,10 +29,14 @@ def reset_db() -> None:
     # Create the database
     db.create_all()
 
-    f = open("examples/Real project.json", "r")
-    data = json.load(f)
-    schema = ProjectSchema()
-    new_project = schema.load(data)
+    # Fill with sampled projects
+    path = "examples"
+    for file in [f for f in listdir(path) if isfile(join(path, f))]:
+        f = open(path + "/" + file, "r")
+        data = json.load(f)
+        schema = ProjectSchema()
+        new_project = schema.load(data)
+        db.session.add(new_project)
 
-    db.session.add(new_project)
+    # Commit to db
     db.session.commit()
