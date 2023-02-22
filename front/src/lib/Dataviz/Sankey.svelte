@@ -86,7 +86,7 @@
 				.attr('y', (d) => (d.y1 + d.y0) / 2)
 				.attr('dy', '0.35em')
 				.attr('text-anchor', (d) => (d.x0 < width / 2 ? 'start' : 'end'))
-				.text((d) => d.id);
+				.text((d) => d.id + ' (' + Math.round(d.value * 100) / 100 + ')');
 
 			// Create link object
 			const link = svg
