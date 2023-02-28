@@ -29,6 +29,7 @@
 					try {
 						if (reader.result != null) {
 							res = await importProjectRequest(reader.result.toString());
+							if (browser && res != undefined) goto('/project/' + res.id);
 						}
 					} catch (e: any) {
 						error = e.message;
@@ -36,8 +37,8 @@
 				};
 			} else {
 				res = await createProjectRequest(projectName);
+				if (browser && res != undefined) goto('/project/' + res.id);
 			}
-			if (browser && res != undefined) goto('/project/' + res.id);
 		} catch (e: any) {
 			error = e.message;
 		}
