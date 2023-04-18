@@ -29,14 +29,18 @@ def reset_db() -> None:
     # Create the database
     db.create_all()
 
-    # Fill with sampled projects
     path = "examples"
-    for file in [f for f in listdir(path) if isfile(join(path, f))]:
-        f = open(path + "/" + file, "r")
-        data = json.load(f)
-        schema = ProjectSchema()
-        new_project = schema.load(data)
-        db.session.add(new_project)
+    # Fill with sampled projects
+    try:
+        for file in [f for f in listdir(path) if isfile(join(path, f))]:
+            f = open(path + "/" + file, "r")
+            data = json.load(f)
+            schema = ProjectSchema()
+            new_project = schema.load(data)
+            db.session.add(new_project)
+    except:
+        print("An error occurred while reading files")
+        print(listdir("."))
 
     # Commit to db
     db.session.commit()
