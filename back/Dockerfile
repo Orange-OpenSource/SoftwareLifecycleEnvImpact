@@ -12,6 +12,7 @@ RUN pip install -r requirements.txt
 # Copy the source code
 COPY ./api /app/api
 COPY ./impacts_model /app/impacts_model
+COPY ./examples /app/examples
 
 # Run Flask command
 CMD ["gunicorn", "-b", "0.0.0.0:5001", "api.server:create_app()"]
