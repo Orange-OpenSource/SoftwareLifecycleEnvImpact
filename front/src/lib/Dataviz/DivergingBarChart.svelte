@@ -91,7 +91,7 @@
 					g
 						.append('text')
 						.attr('x', xScale(0))
-						.attr('y', -(marginTop-20))
+						.attr('y', -(marginTop - 20))
 						.attr('fill', 'currentColor')
 						.attr('text-anchor', 'center')
 						.text(xLabel)

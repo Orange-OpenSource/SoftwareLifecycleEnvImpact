@@ -22,7 +22,7 @@
 	}
 
 	async function handleSubmit() {
-		// TODO error marche pas à cause du async
+		// TODO result not working due to async
 		error = '';
 		try {
 			if (selectedImpactSource != null) {

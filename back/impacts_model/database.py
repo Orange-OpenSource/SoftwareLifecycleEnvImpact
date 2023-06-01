@@ -6,8 +6,6 @@ def retrieve_all_models_db() -> List[Model]:
     return Model.query.all()
 
 
-
-
 def retrieve_similar_model_db(model_name: str, project_id: int) -> Model:
     return (
         Model.query.filter(Model.name == model_name)
@@ -27,6 +25,3 @@ def insert_model_db(model: Model) -> Model:
     db.session.add(model)
     db.session.commit()
     return model
-
-
-# TODO  all database functions should be there ?

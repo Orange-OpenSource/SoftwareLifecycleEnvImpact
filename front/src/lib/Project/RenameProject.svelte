@@ -39,7 +39,6 @@
 	<form slot="body" on:submit|preventDefault={renameProject}>
 		<div class="row g-3">
 			<div class="col-12">
-				<!-- TODO label ? -->
 				<input class="form-control" placeholder="Project new name" required bind:value={newName} />
 			</div>
 

@@ -110,7 +110,9 @@ def test_get_activity_impact_by_category(
 
     # Test adding a subactivity
     # activity = 3552, subactivity = 1776 -> 5328
-    result = activity_fixture_with_subactivity.get_impact().total[ImpactCategory.CLIMATE_CHANGE]
+    result = activity_fixture_with_subactivity.get_impact().total[
+        ImpactCategory.CLIMATE_CHANGE
+    ]
     assert isinstance(result, ImpactValue)
     assert result.manufacture is not None
     assert result.manufacture.units == KG_CO2E
@@ -145,7 +147,9 @@ def test_get_activity_impact_list(
 
     # Test adding a subactivity
     assert (
-        activity_fixture_with_subactivity.get_impact().total[ImpactCategory.CLIMATE_CHANGE].use
+        activity_fixture_with_subactivity.get_impact()
+        .total[ImpactCategory.CLIMATE_CHANGE]
+        .use
         == 3000 * KG_CO2E
     )
 

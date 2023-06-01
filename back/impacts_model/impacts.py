@@ -88,9 +88,7 @@ class ImpactValue:
         )
         self.use = self.use / unit if self.use is not None else None
 
-    def divided_by(
-        self, unit: Unit
-    ) -> ImpactValue:  # TODO regarder pour changer cettre cfonction et update direct
+    def divided_by(self, unit: Unit) -> ImpactValue:
         """
         Divide both manufacture and use by a unit, if they exists
         """
@@ -101,9 +99,7 @@ class ImpactValue:
             use=(self.use / unit if self.use is not None else None),
         )
 
-    def multiplied_by(
-        self, value: Quantity[Any]
-    ) -> ImpactValue:  # TODO regarder pour changer cettre cfonction et update direct
+    def multiplied_by(self, value: Quantity[Any]) -> ImpactValue:
         """
         Return a a new ImpactValue multiplied by the Quantity as parameter
         """

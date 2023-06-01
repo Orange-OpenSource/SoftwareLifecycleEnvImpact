@@ -45,7 +45,9 @@ def update_activity(activity_id: int) -> Any:
     :return: The updated activity if it exists with id, 403 if the JSONPatch format is incorrect, 404 else
     """
     activity = db.session.query(Activity).get_or_404(activity_id)
-    old_parent = activity.parent_activity_id  # Parent activity a to be saved before patch
+    old_parent = (
+        activity.parent_activity_id
+    )  # Parent activity a to be saved before patch
 
     try:
         activity_schema = ActivitySchema()
@@ -65,7 +67,9 @@ def update_activity(activity_id: int) -> Any:
         return abort(403, "Patch format is incorrect")
 
 
-def _exchange_parent(parent_id_to_set: int, activity: Activity, old_parent_id: int) -> None:
+def _exchange_parent(
+    parent_id_to_set: int, activity: Activity, old_parent_id: int
+) -> None:
     # Check when changing the parent of a activity, if its by one of its subactivities
     # If it is, it will set the subactivity parent as this of the activity
     # For a tree 1 -> 2 -> 3 and activity 2 goes under 3, 3 parent will be set as 1
@@ -74,7 +78,9 @@ def _exchange_parent(parent_id_to_set: int, activity: Activity, old_parent_id: i
     # Iterate through subactivities
     for i in range(len(activity.subactivities)):
         # Recursive call for each subactivity
-        _exchange_parent(parent_id_to_set, activity.subactivities[i], activity.parent_activity_id)
+        _exchange_parent(
+            parent_id_to_set, activity.subactivities[i], activity.parent_activity_id
+        )
 
         # If subactivity id is the one we want to set as parent
         if activity.subactivities[i].id == parent_id_to_set:

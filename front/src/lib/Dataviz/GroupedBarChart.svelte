@@ -80,16 +80,15 @@
 
 			if (title) bar.append('title').text(title);
 
-
 			// Add upper legend
 			svg
 				.append('g')
-				.attr('transform', `translate(0,${height-marginBottom})`)
+				.attr('transform', `translate(0,${height - marginBottom})`)
 				.call(xAxis)
 				.call((g) => g.select('.domain').remove())
 				.selectAll('text')
 				// .attr('x', 0)
-                // .attr('y', 0)
+				// .attr('y', 0)
 				.style('text-anchor', 'end')
 				.attr('transform', 'rotate(-45)');
 		}

@@ -6,7 +6,14 @@ from flask import abort, request
 
 from impacts_model.impacts import ActivityImpactSchema
 from api.routes.activity import get_activity
-from impacts_model.data_model import Model, ModelSchema, db, Project, Activity, ActivitySchema
+from impacts_model.data_model import (
+    Model,
+    ModelSchema,
+    db,
+    Project,
+    Activity,
+    ActivitySchema,
+)
 from impacts_model.database import (
     insert_model_db,
 )

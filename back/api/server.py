@@ -14,7 +14,7 @@ def handle_validation_exceptions(error):
     # return error.messages, 400
     response = flask.Response()
     # replace the body with JSON
-    response.status = 400   
+    response.status = 400
     response.data = json.dumps(error.messages)
     response.content_type = "application/json"
     return response
