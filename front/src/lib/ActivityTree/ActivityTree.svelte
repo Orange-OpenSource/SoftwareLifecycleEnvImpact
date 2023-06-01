@@ -1,16 +1,16 @@
 <script lang="ts">
-	import { getModelTasksRequest } from '$lib/api/model';
-	import TaskComponent from '$lib/Task/Task.svelte';
+	import { getModelActivitiesRequest } from '$lib/api/model';
+	import ActivityComponent from '$lib/Activity/Activity.svelte';
 	import Error from '$lib/Error.svelte';
 	import Spinner from '$lib/Spinner.svelte';
-	import type { Model, Task } from '$lib/api/dataModel';
+	import type { Model, Activity } from '$lib/api/dataModel';
 
 	/*Bound vars*/
 	export let selectedModel: Model;
-	export let selectedTask: Task;
+	export let selectedActivity: Activity;
 
 	let modify = false; // true if modifications are allowed (when "editing mode" is checked)
-	let rootTaskPromise: Promise<Task>;
+	let rootActivityPromise: Promise<Activity>;
 
 	/*Trigger update when selected model is updated*/
 	$: selectedModel, updateTree();
@@ -18,9 +18,9 @@
 	async function updateTree() {
 		modify = false;
 		if (selectedModel != undefined) {
-			rootTaskPromise = getModelTasksRequest(selectedModel.id).then((res) => {
-				/* Switch on modify if ther is no task in the model*/
-				if (res.subtasks.length === 0) {
+			rootActivityPromise = getModelActivitiesRequest(selectedModel.id).then((res) => {
+				/* Switch on modify if ther is no activity in the model*/
+				if (res.subactivities.length === 0) {
 					modify = true;
 				}
 				return res;
@@ -29,17 +29,17 @@
 	}
 </script>
 
-{#await rootTaskPromise}
+{#await rootActivityPromise}
 	<Spinner />
-{:then rootTask}
+{:then rootActivity}
 	{#if selectedModel == undefined}
 		No model selected
-	{:else if rootTask != undefined}
-		<!-- <Header bind:modify bind:selectedTask {selectedModel} /> -->
+	{:else if rootActivity != undefined}
+		<!-- <Header bind:modify bind:selectedActivity {selectedModel} /> -->
 
 		<div class="row sticky-top">
 			<div class="col-8">
-				<h2 class="title">Tasks</h2>
+				<h2 class="title">Activities</h2>
 			</div>
 			<div class="col-4 form-switch">
 				<input class="form-check-input" type="checkbox" bind:checked={modify} id="editmodeSwitch" />
@@ -48,8 +48,8 @@
 		</div>
 
 		<div
-			on:click|stopPropagation={() => (selectedTask = selectedModel.root_task)}
-			class="card bg-light {selectedModel.root_task === selectedTask ? 'border-primary' : ''}"
+			on:click|stopPropagation={() => (selectedActivity = selectedModel.root_activity)}
+			class="card bg-light {selectedModel.root_activity === selectedActivity ? 'border-primary' : ''}"
 			style="min-width: 15rem; width: fit-content;"
 		>
 			<div class="card-body">
@@ -57,7 +57,7 @@
 			</div>
 		</div>
 		<div class="col scroll">
-			<TaskComponent task={rootTask} bind:selectedTask {modify} {selectedModel} parentTask={rootTask} />
+			<ActivityComponent activity={rootActivity} bind:selectedActivity {modify} {selectedModel} parentActivity={rootActivity} />
 		</div>
 	{/if}
 {:catch error}

@@ -7,32 +7,32 @@
       "id": null,
       "name": "Initial",
       "project_id": null,
-      "root_task": {
+      "root_activity": {
         "created_at": null,
         "id": null,
         "name": "Initial",
-        "parent_task_id": null,
+        "parent_activity_id": null,
         "resources": [],
-        "subtasks": [
+        "subactivities": [
           {
             "created_at": null,
             "id": null,
             "name": "Build",
-            "parent_task_id": null,
+            "parent_activity_id": null,
             "resources": [],
-            "subtasks": [
+            "subactivities": [
               {
                 "created_at": null,
                 "id": null,
                 "name": "Inception",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [],
-                "subtasks": [
+                "subactivities": [
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Management",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -50,18 +50,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Environment/CM",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -79,18 +79,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Requirements",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -108,18 +108,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Design",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -137,18 +137,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Implementation",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -166,18 +166,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Assessment",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -195,18 +195,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Deployment",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -224,11 +224,11 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   }
                 ],
@@ -238,14 +238,14 @@
                 "created_at": null,
                 "id": null,
                 "name": "Elaboration",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [],
-                "subtasks": [
+                "subactivities": [
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Management",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -263,18 +263,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Environment/CM",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -292,18 +292,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Requirements",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -321,18 +321,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Design",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -350,18 +350,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Implementation",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -379,18 +379,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Assessment",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -408,18 +408,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Deployment",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -437,11 +437,11 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   }
                 ],
@@ -451,14 +451,14 @@
                 "created_at": null,
                 "id": null,
                 "name": "Construction",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [],
-                "subtasks": [
+                "subactivities": [
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Management",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -476,18 +476,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Environment/CM",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -505,18 +505,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Requirements",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -534,18 +534,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Design",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -563,18 +563,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Implementation",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -592,18 +592,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Assessment",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -621,18 +621,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Deployment",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -650,11 +650,11 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   }
                 ],
@@ -664,14 +664,14 @@
                 "created_at": null,
                 "id": null,
                 "name": "Transition",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [],
-                "subtasks": [
+                "subactivities": [
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Management",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -689,18 +689,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Environment/CM",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -718,18 +718,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Requirements",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -747,18 +747,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Design",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -776,18 +776,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Implementation",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -805,18 +805,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Assessment",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -834,18 +834,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Deployment",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -863,11 +863,11 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   }
                 ],
@@ -880,14 +880,14 @@
             "created_at": null,
             "id": null,
             "name": "Run",
-            "parent_task_id": null,
+            "parent_activity_id": null,
             "resources": [],
-            "subtasks": [
+            "subactivities": [
               {
                 "created_at": null,
                 "id": null,
                 "name": "External load balancing",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -905,7 +905,7 @@
                       "unit": "year",
                       "value": 15.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -924,18 +924,18 @@
                       "unit": "year",
                       "value": 15.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Consul",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -953,7 +953,7 @@
                       "unit": "year",
                       "value": 15.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -972,18 +972,18 @@
                       "unit": "year",
                       "value": 15.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "PostgreSQL",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -1001,7 +1001,7 @@
                       "unit": "year",
                       "value": 15.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -1020,18 +1020,18 @@
                       "unit": "year",
                       "value": 15.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "PgBouncer",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -1049,7 +1049,7 @@
                       "unit": "year",
                       "value": 15.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -1068,18 +1068,18 @@
                       "unit": "year",
                       "value": 15.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Internal load balancing node",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -1097,7 +1097,7 @@
                       "unit": "year",
                       "value": 15.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -1116,18 +1116,18 @@
                       "unit": "year",
                       "value": 15.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Redis/Sentinel - Cache",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -1145,7 +1145,7 @@
                       "unit": "year",
                       "value": 15.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -1164,18 +1164,18 @@
                       "unit": "year",
                       "value": 15.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Redis/Sentinel - Persistant",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -1193,7 +1193,7 @@
                       "unit": "year",
                       "value": 15.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -1212,18 +1212,18 @@
                       "unit": "year",
                       "value": 15.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Gitaly",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -1241,7 +1241,7 @@
                       "unit": "year",
                       "value": 15.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -1260,18 +1260,18 @@
                       "unit": "year",
                       "value": 15.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Praefect",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -1289,7 +1289,7 @@
                       "unit": "year",
                       "value": 15.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -1308,18 +1308,18 @@
                       "unit": "year",
                       "value": 15.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Praefect PostgreSQL",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -1337,7 +1337,7 @@
                       "unit": "year",
                       "value": 15.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -1356,18 +1356,18 @@
                       "unit": "year",
                       "value": 15.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Sidekiq",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -1385,7 +1385,7 @@
                       "unit": "year",
                       "value": 15.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -1404,18 +1404,18 @@
                       "unit": "year",
                       "value": 15.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "GitLab Rails",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -1433,7 +1433,7 @@
                       "unit": "year",
                       "value": 15.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -1452,18 +1452,18 @@
                       "unit": "year",
                       "value": 15.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Monitoring node",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -1481,7 +1481,7 @@
                       "unit": "year",
                       "value": 15.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -1500,18 +1500,18 @@
                       "unit": "year",
                       "value": 15.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Storage",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -1529,11 +1529,11 @@
                       "unit": "year",
                       "value": 15.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               }
             ],
@@ -1542,7 +1542,7 @@
         ],
         "updated_at": null
       },
-      "root_task_id": null,
+      "root_activity_id": null,
       "updated_at": null
     },
     {
@@ -1550,31 +1550,31 @@
       "id": null,
       "name": "At tipping point",
       "project_id": null,
-      "root_task": {
+      "root_activity": {
         "created_at": null,
         "id": null,
         "name": "At tipping point",
-        "parent_task_id": null,
+        "parent_activity_id": null,
         "resources": [],
-        "subtasks": [          {
+        "subactivities": [          {
             "created_at": null,
             "id": null,
             "name": "Build",
-            "parent_task_id": null,
+            "parent_activity_id": null,
             "resources": [],
-            "subtasks": [
+            "subactivities": [
               {
                 "created_at": null,
                 "id": null,
                 "name": "Inception",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [],
-                "subtasks": [
+                "subactivities": [
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Management",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -1592,18 +1592,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Environment/CM",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -1621,18 +1621,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Requirements",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -1650,18 +1650,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Design",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -1679,18 +1679,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Implementation",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -1708,18 +1708,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Assessment",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -1737,18 +1737,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Deployment",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -1766,11 +1766,11 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   }
                 ],
@@ -1780,14 +1780,14 @@
                 "created_at": null,
                 "id": null,
                 "name": "Elaboration",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [],
-                "subtasks": [
+                "subactivities": [
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Management",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -1805,18 +1805,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Environment/CM",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -1834,18 +1834,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Requirements",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -1863,18 +1863,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Design",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -1892,18 +1892,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Implementation",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -1921,18 +1921,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Assessment",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -1950,18 +1950,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Deployment",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -1979,11 +1979,11 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   }
                 ],
@@ -1993,14 +1993,14 @@
                 "created_at": null,
                 "id": null,
                 "name": "Construction",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [],
-                "subtasks": [
+                "subactivities": [
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Management",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -2018,18 +2018,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Environment/CM",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -2047,18 +2047,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Requirements",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -2076,18 +2076,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Design",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -2105,18 +2105,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Implementation",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -2134,18 +2134,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Assessment",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -2163,18 +2163,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Deployment",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -2192,11 +2192,11 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   }
                 ],
@@ -2206,14 +2206,14 @@
                 "created_at": null,
                 "id": null,
                 "name": "Transition",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [],
-                "subtasks": [
+                "subactivities": [
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Management",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -2231,18 +2231,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Environment/CM",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -2260,18 +2260,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Requirements",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -2289,18 +2289,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Design",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -2318,18 +2318,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Implementation",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -2347,18 +2347,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Assessment",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -2376,18 +2376,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Deployment",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -2405,11 +2405,11 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   }
                 ],
@@ -2422,14 +2422,14 @@
             "created_at": null,
             "id": null,
             "name": "Run",
-            "parent_task_id": null,
+            "parent_activity_id": null,
             "resources": [],
-            "subtasks": [
+            "subactivities": [
               {
                 "created_at": null,
                 "id": null,
                 "name": "External load balancing",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -2447,7 +2447,7 @@
                       "unit": "year",
                       "value": 749.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -2466,18 +2466,18 @@
                       "unit": "year",
                       "value": 749.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Consul",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -2495,7 +2495,7 @@
                       "unit": "year",
                       "value": 749.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -2514,18 +2514,18 @@
                       "unit": "year",
                       "value": 749.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "PostgreSQL",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -2543,7 +2543,7 @@
                       "unit": "year",
                       "value": 749.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -2562,18 +2562,18 @@
                       "unit": "year",
                       "value": 749.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "PgBouncer",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -2591,7 +2591,7 @@
                       "unit": "year",
                       "value": 749.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -2610,18 +2610,18 @@
                       "unit": "year",
                       "value": 749.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Internal load balancing node",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -2639,7 +2639,7 @@
                       "unit": "year",
                       "value": 749.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -2658,18 +2658,18 @@
                       "unit": "year",
                       "value": 749.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Redis/Sentinel - Cache",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -2687,7 +2687,7 @@
                       "unit": "year",
                       "value": 749.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -2706,18 +2706,18 @@
                       "unit": "year",
                       "value": 749.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Redis/Sentinel - Persistant",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -2735,7 +2735,7 @@
                       "unit": "year",
                       "value": 749.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -2754,18 +2754,18 @@
                       "unit": "year",
                       "value": 749.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Gitaly",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -2783,7 +2783,7 @@
                       "unit": "year",
                       "value": 749.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -2802,18 +2802,18 @@
                       "unit": "year",
                       "value": 749.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Praefect",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -2831,7 +2831,7 @@
                       "unit": "year",
                       "value": 749.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -2850,18 +2850,18 @@
                       "unit": "year",
                       "value": 749.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Praefect PostgreSQL",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -2879,7 +2879,7 @@
                       "unit": "year",
                       "value": 749.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -2898,18 +2898,18 @@
                       "unit": "year",
                       "value": 749.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Sidekiq",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -2927,7 +2927,7 @@
                       "unit": "year",
                       "value": 749.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -2946,18 +2946,18 @@
                       "unit": "year",
                       "value": 749.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "GitLab Rails",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -2975,7 +2975,7 @@
                       "unit": "year",
                       "value": 749.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -2994,18 +2994,18 @@
                       "unit": "year",
                       "value": 749.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Monitoring node",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -3023,7 +3023,7 @@
                       "unit": "year",
                       "value": 749.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -3042,18 +3042,18 @@
                       "unit": "year",
                       "value": 749.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Storage",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -3071,11 +3071,11 @@
                       "unit": "year",
                       "value": 749.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               }
             ],
@@ -3084,7 +3084,7 @@
         ],
         "updated_at": null
       },
-      "root_task_id": null,
+      "root_activity_id": null,
       "updated_at": null
     },
     {
@@ -3092,32 +3092,32 @@
       "id": null,
       "name": "One hosting year",
       "project_id": null,
-      "root_task": {
+      "root_activity": {
         "created_at": null,
         "id": null,
         "name": "One hosting year",
-        "parent_task_id": null,
+        "parent_activity_id": null,
         "resources": [],
-        "subtasks": [
+        "subactivities": [
           {
             "created_at": null,
             "id": null,
             "name": "Build",
-            "parent_task_id": null,
+            "parent_activity_id": null,
             "resources": [],
-            "subtasks": [
+            "subactivities": [
               {
                 "created_at": null,
                 "id": null,
                 "name": "Inception",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [],
-                "subtasks": [
+                "subactivities": [
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Management",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -3135,18 +3135,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Environment/CM",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -3164,18 +3164,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Requirements",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -3193,18 +3193,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Design",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -3222,18 +3222,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Implementation",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -3251,18 +3251,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Assessment",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -3280,18 +3280,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Deployment",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -3309,11 +3309,11 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   }
                 ],
@@ -3323,14 +3323,14 @@
                 "created_at": null,
                 "id": null,
                 "name": "Elaboration",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [],
-                "subtasks": [
+                "subactivities": [
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Management",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -3348,18 +3348,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Environment/CM",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -3377,18 +3377,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Requirements",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -3406,18 +3406,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Design",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -3435,18 +3435,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Implementation",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -3464,18 +3464,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Assessment",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -3493,18 +3493,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Deployment",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -3522,11 +3522,11 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   }
                 ],
@@ -3536,14 +3536,14 @@
                 "created_at": null,
                 "id": null,
                 "name": "Construction",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [],
-                "subtasks": [
+                "subactivities": [
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Management",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -3561,18 +3561,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Environment/CM",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -3590,18 +3590,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Requirements",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -3619,18 +3619,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Design",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -3648,18 +3648,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Implementation",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -3677,18 +3677,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Assessment",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -3706,18 +3706,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Deployment",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -3735,11 +3735,11 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   }
                 ],
@@ -3749,14 +3749,14 @@
                 "created_at": null,
                 "id": null,
                 "name": "Transition",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [],
-                "subtasks": [
+                "subactivities": [
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Management",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -3774,18 +3774,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Environment/CM",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -3803,18 +3803,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Requirements",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -3832,18 +3832,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Design",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -3861,18 +3861,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Implementation",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -3890,18 +3890,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Assessment",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -3919,18 +3919,18 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Deployment",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -3948,11 +3948,11 @@
                           "unit": "business_month",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   }
                 ],
@@ -3965,14 +3965,14 @@
             "created_at": null,
             "id": null,
             "name": "Run",
-            "parent_task_id": null,
+            "parent_activity_id": null,
             "resources": [],
-            "subtasks": [
+            "subactivities": [
               {
                 "created_at": null,
                 "id": null,
                 "name": "External load balancing",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -3990,7 +3990,7 @@
                       "unit": "year",
                       "value": 1.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -4009,18 +4009,18 @@
                       "unit": "year",
                       "value": 1.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Consul",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -4038,7 +4038,7 @@
                       "unit": "year",
                       "value": 1.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -4057,18 +4057,18 @@
                       "unit": "year",
                       "value": 1.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "PostgreSQL",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -4086,7 +4086,7 @@
                       "unit": "year",
                       "value": 1.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -4105,18 +4105,18 @@
                       "unit": "year",
                       "value": 1.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "PgBouncer",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -4134,7 +4134,7 @@
                       "unit": "year",
                       "value": 1.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -4153,18 +4153,18 @@
                       "unit": "year",
                       "value": 1.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Internal load balancing node",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -4182,7 +4182,7 @@
                       "unit": "year",
                       "value": 1.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -4201,18 +4201,18 @@
                       "unit": "year",
                       "value": 1.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Redis/Sentinel - Cache",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -4230,7 +4230,7 @@
                       "unit": "year",
                       "value": 1.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -4249,18 +4249,18 @@
                       "unit": "year",
                       "value": 1.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Redis/Sentinel - Persistant",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -4278,7 +4278,7 @@
                       "unit": "year",
                       "value": 1.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -4297,18 +4297,18 @@
                       "unit": "year",
                       "value": 1.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Gitaly",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -4326,7 +4326,7 @@
                       "unit": "year",
                       "value": 1.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -4345,18 +4345,18 @@
                       "unit": "year",
                       "value": 1.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Praefect",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -4374,7 +4374,7 @@
                       "unit": "year",
                       "value": 1.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -4393,18 +4393,18 @@
                       "unit": "year",
                       "value": 1.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Praefect PostgreSQL",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -4422,7 +4422,7 @@
                       "unit": "year",
                       "value": 1.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -4441,18 +4441,18 @@
                       "unit": "year",
                       "value": 1.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Sidekiq",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -4470,7 +4470,7 @@
                       "unit": "year",
                       "value": 1.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -4489,18 +4489,18 @@
                       "unit": "year",
                       "value": 1.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "GitLab Rails",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -4518,7 +4518,7 @@
                       "unit": "year",
                       "value": 1.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -4537,18 +4537,18 @@
                       "unit": "year",
                       "value": 1.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Monitoring node",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -4566,7 +4566,7 @@
                       "unit": "year",
                       "value": 1.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -4585,18 +4585,18 @@
                       "unit": "year",
                       "value": 1.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Storage",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -4614,11 +4614,11 @@
                       "unit": "year",
                       "value": 1.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               }
             ],
@@ -4627,7 +4627,7 @@
         ],
         "updated_at": null
       },
-      "root_task_id": null,
+      "root_activity_id": null,
       "updated_at": null
     }
   ],

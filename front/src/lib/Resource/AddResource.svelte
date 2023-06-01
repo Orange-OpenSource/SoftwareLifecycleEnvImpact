@@ -4,10 +4,10 @@
 	import { addResourceRequest } from '$lib/api/resource';
 	import Error from '$lib/Error.svelte';
 	import Spinner from '$lib/Spinner.svelte';
-	import type { ImpactSource, Task } from '$lib/api/dataModel';
+	import type { ImpactSource, Activity } from '$lib/api/dataModel';
 
 	/*Bound var*/
-	export let task: Task;
+	export let activity: Activity;
 
 	let showModal = false;
 
@@ -21,14 +21,15 @@
 		error = '';
 	}
 
-	async function handleSubmit() { // TODO error marche pas à cause du async
+	async function handleSubmit() {
+		// TODO error marche pas à cause du async
 		error = '';
 		try {
 			if (selectedImpactSource != null) {
-				const res = await addResourceRequest(task.id, selectedImpactSource);
-				task.resources.push(res);
+				const res = await addResourceRequest(activity.id, selectedImpactSource);
+				activity.resources.push(res);
 				/*Redondant assignment to force Svelte to update components*/
-				task.resources = task.resources;
+				activity.resources = activity.resources;
 				showModal = false;
 			}
 		} catch (e: any) {

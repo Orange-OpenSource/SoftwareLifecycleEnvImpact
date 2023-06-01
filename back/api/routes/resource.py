@@ -3,7 +3,7 @@ from typing import Any
 import jsonpatch
 from flask import abort, request
 
-from impacts_model.data_model import db, Resource, ResourceSchema, Task
+from impacts_model.data_model import db, Resource, ResourceSchema, Activity
 from impacts_model.impacts import ImpactSourceImpactSchema
 
 
@@ -26,11 +26,11 @@ def create_resource(resource: dict[str, Any]) -> Any:
     :return: the resource inserted with its id
     """
 
-    task_id = resource.get("task_id")
+    activity_id = resource.get("activity_id")
 
-    existing_task = Task.query.filter(Task.id == task_id).one_or_none()
+    existing_activity = Activity.query.filter(Activity.id == activity_id).one_or_none()
 
-    if existing_task is not None:
+    if existing_activity is not None:
         schema = ResourceSchema()
         loaded_resource = schema.load(resource)
         db.session.add(loaded_resource)
@@ -41,7 +41,7 @@ def create_resource(resource: dict[str, Any]) -> Any:
     else:
         return abort(
             409,
-            "Task does not exist",
+            "Activity does not exist",
         )
 
 

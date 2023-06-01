@@ -1,4 +1,4 @@
-import { impactValueTotal, type EnvironmentalImpact, type ImpactSourceId, type ImpactSourceImpact, type Quantity, type Task, type TaskImpact } from '$lib/api/dataModel';
+import { impactValueTotal, type EnvironmentalImpact, type ImpactSourceImpact, type Activity, type ActivityImpact } from '$lib/api/dataModel';
 
 export interface D3JSHierarchyNode {
 	name: string;
@@ -7,7 +7,7 @@ export interface D3JSHierarchyNode {
 	use: number;
 	impact: EnvironmentalImpact;
 	children: D3JSHierarchyNode[];
-	task?: Task;
+	activity?: Activity;
 }
 
 export interface D3JSLink {
@@ -34,47 +34,47 @@ export interface D3JsDivergingData {
 	name: string;
 }
 
-export function constructLinks(selectedImpactCategory: string, task: Task, impact: TaskImpact, showTasks = true, showResources = true): D3JSLink[] {
+export function constructLinks(selectedImpactCategory: string, activity: Activity, impact: ActivityImpact, showActivities = true, showResources = true): D3JSLink[] {
 	const links: D3JSLink[] = [];
-	constructSubLinksRecursive(selectedImpactCategory, links, task, impact, showTasks, showResources);
+	constructSubLinksRecursive(selectedImpactCategory, links, activity, impact, showActivities, showResources);
 	return links;
 }
 
-function constructSubLinksRecursive(selectedImpactCategory: string, links: D3JSLink[], task: Task, taskImpact: TaskImpact, showTasks: boolean, showResources: boolean) {
-	// For each subtasks, create the link
-	for (const subtaskImpact of taskImpact.sub_tasks) {
-		// Retrieve the sub task associated to the impact
-		const subtask = task.subtasks.find((s) => s.id == Number(subtaskImpact.task_id))!;
+function constructSubLinksRecursive(selectedImpactCategory: string, links: D3JSLink[], activity: Activity, activityImpact: ActivityImpact, showActivities: boolean, showResources: boolean) {
+	// For each subactivities, create the link
+	for (const subactivityImpact of activityImpact.sub_activities) {
+		// Retrieve the sub activity associated to the impact
+		const subactivity = activity.subactivities.find((s) => s.id == Number(subactivityImpact.activity_id))!;
 
-		if (subtask != undefined) {
-			const total = subtaskImpact.total[selectedImpactCategory];
-			if (showTasks) {
+		if (subactivity != undefined) {
+			const total = subactivityImpact.total[selectedImpactCategory];
+			if (showActivities) {
 				if (total.use && total.use.value) {
 					// Push use
 					links.push({
-						source: task.name,
-						target: subtask.name,
+						source: activity.name,
+						target: subactivity.name,
 						value: total.use.value
 					});
 				}
 				// Push manufacture
 				if (total.manufacture && total.manufacture.value) {
 					links.push({
-						source: task.name,
-						target: subtask.name,
+						source: activity.name,
+						target: subactivity.name,
 						value: total.manufacture.value
 					});
 				}
 			}
-			// Recursive call for the subtask, and its subtasks
-			constructSubLinksRecursive(selectedImpactCategory, links, subtask, subtaskImpact, showTasks, showResources);
+			// Recursive call for the subactivity, and its subactivities
+			constructSubLinksRecursive(selectedImpactCategory, links, subactivity, subactivityImpact, showActivities, showResources);
 		}
 	} // Iterate through impact by source to create links
-	if (task.subtasks.length == 0) {
-		for (const [_, impactSourceImpact] of Object.entries(taskImpact.impact_sources)) {
+	if (activity.subactivities.length == 0) {
+		for (const [_, impactSourceImpact] of Object.entries(activityImpact.impact_sources)) {
 			// Draw resources impact links if needed
 			if (showResources) {
-				constructResourcesLinks(selectedImpactCategory, links, impactSourceImpact, showTasks ? task.name : 'Total');
+				constructResourcesLinks(selectedImpactCategory, links, impactSourceImpact, showActivities ? activity.name : 'Total');
 			}
 		}
 	}
@@ -91,7 +91,7 @@ function constructResourcesLinks(selectedImpactCategory: string, links: D3JSLink
 		});
 	}
 
-	// Iterate through all of this subtasks to draw its impact toward
+	// Iterate through all of this subactivities to draw its impact toward
 	for (const [_, subImpact] of Object.entries(resourceImpact.sub_impacts)) {
 		const own_impact = resourceImpact.own_impact[selectedImpactCategory];
 		// Push the resourceImpact manufacture towards manufacture
@@ -106,7 +106,7 @@ function constructResourcesLinks(selectedImpactCategory: string, links: D3JSLink
 		constructResourcesLinks(selectedImpactCategory, links, subImpact, resourceImpact.impact_source_id);
 	}
 
-	// If there isn't subtasks, draw to use and manufacture directly
+	// If there isn't subactivities, draw to use and manufacture directly
 	if (Object.entries(resourceImpact.sub_impacts).length == 0) {
 		const total = resourceImpact.own_impact[selectedImpactCategory];
 		// Push use

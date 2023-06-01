@@ -281,26 +281,26 @@ paths:
         404:
           description: No model found with this id
 
-  /models/{model_id}/tasks:
+  /models/{model_id}/activities:
     parameters:
       - name: model_id
         in: path
-        description: Id of the model to get the tasks from
+        description: Id of the model to get the activities from
         type: integer
         required: true
     get:
-      operationId: api.routes.model.get_tasks
+      operationId: api.routes.model.get_activities
       tags:
         - Model
-        - Task
-      summary: Get all tasks for a model
+        - Activity
+      summary: Get all activities for a model
       responses:
         200:
-          description: List of tasks
+          description: List of activities
           schema:
             type: array
             items:
-              $ref: "#/definitions/Task"
+              $ref: "#/definitions/Activity"
         404:
           description: No model found with this id
 
@@ -322,121 +322,121 @@ paths:
         200:
           description: Sucessfully read model impacts
           schema:
-            $ref: "#/definitions/TaskImpact"
+            $ref: "#/definitions/ActivityImpact"
         404:
           description: No model found with this id
 
-  /tasks:
+  /activities:
     get:
-      operationId: api.routes.task.get_tasks
+      operationId: api.routes.activity.get_activities
       tags:
-        - Task
-      summary: Get all tasks
+        - Activity
+      summary: Get all activities
       responses:
         200:
-          description: List of tasks
+          description: List of activities
           schema:
             type: array
             items:
-              $ref: "#/definitions/Task"
+              $ref: "#/definitions/Activity"
 
     post:
-      operationId: api.routes.task.create_task
+      operationId: api.routes.activity.create_activity
       tags:
-        - Task
-      description: Create a new task
+        - Activity
+      description: Create a new activity
       parameters:
-        - name: task
+        - name: activity
           in: body
-          description: Task to create
+          description: Activity to create
           required: true
           schema:
             type: object
             properties:
               name:
                 type: string
-                description: Name of the task
-              parent_task_id:
+                description: Name of the activity
+              parent_activity_id:
                 type: integer
-                description: Parent task id
+                description: Parent activity id
       responses:
         201:
-          description: Sucessfully created Task
+          description: Sucessfully created Activity
           schema:
-            $ref: "#/definitions/Task"
+            $ref: "#/definitions/Activity"
         409:
-          description: Task exists already
+          description: Activity exists already
 
-  /tasks/templates:
+  /activities/templates:
     get:
-      operationId: api.routes.task_template.get_task_templates
+      operationId: api.routes.activity_template.get_activity_templates
       tags:
-        - TaskTemplate
-      summary: Get all task templates
+        - ActivityTemplate
+      summary: Get all activity templates
       responses:
         200:
-          description: List of task templates
+          description: List of activity templates
           schema:
             type: array
             items:
-              $ref: "#/definitions/TaskTemplate"
+              $ref: "#/definitions/ActivityTemplate"
     post:
-      operationId: api.routes.task.create_task_from_template
+      operationId: api.routes.activity.create_activity_from_template
       tags:
-        - Task
-        - TaskTemplate
-      description: Create a new task from a given template
+        - Activity
+        - ActivityTemplate
+      description: Create a new activity from a given template
       parameters:
-        - name: task
+        - name: activity
           in: body
-          description: Task to create
+          description: Activity to create
           required: true
           schema:
             type: object
             properties:
               name:
                 type: string
-                description: Name of the task
-              parent_task_id:
+                description: Name of the activity
+              parent_activity_id:
                 type: integer
-                description: Parent task id
+                description: Parent activity id
               template_id:
                 type: integer
                 description: Id of the template to create from
       responses:
         201:
-          description: Sucessfully created Task
+          description: Sucessfully created Activity
           schema:
-            $ref: "#/definitions/Task"
+            $ref: "#/definitions/Activity"
         409:
-          description: Task exists already
+          description: Activity exists already
 
-  /tasks/{task_id}:
+  /activities/{activity_id}:
     parameters:
-      - name: task_id
+      - name: activity_id
         in: path
-        description: Id of the task to get
+        description: Id of the activity to get
         type: integer
         required: true
     get:
-      operationId: api.routes.task.get_task
+      operationId: api.routes.activity.get_activity
       tags:
-        - Task
-      summary: Read one task
-      description: Read one task
+        - Activity
+      summary: Read one activity
+      description: Read one activity
       responses:
         200:
-          description: Sucessfully read task
+          description: Sucessfully read activity
           schema:
-            $ref: "#/definitions/Task"
+            $ref: "#/definitions/Activity"
         404:
-          description: No task found with this id
+          description: No activity found with this id
     patch:
-      operationId: api.routes.task.update_task
+      operationId: api.routes.activity.update_activity
       tags:
-        - Task
-      summary: Update a task
-      description: Update a task
+        - Activity
+      summary: Update a activity
+      description: Update a activity
       parameters:
         - name: JsonPatch
           in: body
@@ -445,50 +445,50 @@ paths:
             $ref: "#/definitions/PatchRequest"
       responses:
         200:
-          description: Successfully updated task
+          description: Successfully updated activity
           schema:
-            $ref: "#/definitions/Task"
+            $ref: "#/definitions/Activity"
         403:
           description: Patch format is incorrect
         404:
-          description: No task with this id
+          description: No activity with this id
     delete:
-      operationId: api.routes.task.delete_task
+      operationId: api.routes.activity.delete_activity
       tags:
-        - Task
-      summary: Delete a task
-      description: Delete a task
+        - Activity
+      summary: Delete a activity
+      description: Delete a activity
       responses:
         200:
-          description: Successfully deleted task
+          description: Successfully deleted activity
           schema:
-            $ref: "#/definitions/Task"
+            $ref: "#/definitions/Activity"
         403:
-          description: Cannot delete the root task of a model
+          description: Cannot delete the root activity of a model
         404:
-          description: No task with this id
+          description: No activity with this id
 
-  /tasks/{task_id}/impacts:
+  /activities/{activity_id}/impacts:
     parameters:
-      - name: task_id
+      - name: activity_id
         in: path
-        description: Id of the task to get the impacts from
+        description: Id of the activity to get the impacts from
         type: integer
         required: true
     get:
-      operationId: api.routes.task.get_task_impacts
+      operationId: api.routes.activity.get_activity_impacts
       tags:
-        - Task
+        - Activity
         - Impact
-      summary: Read one task impacts
-      description: Read one task impacts
+      summary: Read one activity impacts
+      description: Read one activity impacts
       responses:
         200:
-          description: Sucessfully read task impacts
+          description: Sucessfully read activity impacts
           schema:
-            $ref: "#/definitions/TaskImpact"
+            $ref: "#/definitions/ActivityImpact"
         404:
-          description: No task found with this id
+          description: No activity found with this id
 
   /resources:
     get:
@@ -519,9 +519,9 @@ paths:
               name:
                 type: string
                 description: Name of the resource
-              task_id:
+              activity_id:
                 type: integer
-                description: Id of the task to create the resource in
+                description: Id of the activity to create the resource in
               template_id:
                 type: integer
                 description: Id of the template to create from
@@ -687,11 +687,11 @@ definitions:
       created_at:
         type: ["null", string]
         format: date
-        description: Creation date of the task
+        description: Creation date of the activity
       updated_at:
         type: ["null", string]
         format: date
-        description: Last update date of the task
+        description: Last update date of the activity
 
   Model:
     type: object
@@ -714,7 +714,7 @@ definitions:
         format: date
         description: Last update date of the model
 
-  Task:
+  Activity:
     type: object
     required:
       - name
@@ -725,27 +725,27 @@ definitions:
         description: Unique identifier
       name:
         type: string
-        description: Name of the task
+        description: Name of the activity
       resources:
         type: array
         items:
           $ref: "#/definitions/Resource"
-        description: Resources associated to the task
-      subtasks:
+        description: Resources associated to the activity
+      subactivities:
         type: array
         items:
-          $ref: "#/definitions/Task"
-        description: Subtasks
+          $ref: "#/definitions/Activity"
+        description: Subactivities
       created_at:
         type: ["null", integer]
         format: date
-        description: Creation date of the task
+        description: Creation date of the activity
       updated_at:
         type: ["null", integer]
         format: date
-        description: Last update date of the task
+        description: Last update date of the activity
 
-  TaskTemplate:
+  ActivityTemplate:
     type: object
     required:
       - id
@@ -758,10 +758,10 @@ definitions:
         description: Unique identifier
       name:
         type: string
-        description: Name of the task template
+        description: Name of the activity template
       unit:
         type: string
-        description: Unit of the task
+        description: Unit of the activity
       resources:
         type: array
         items:
@@ -827,17 +827,17 @@ definitions:
         "Water depletion": "0 cubic_meter",
       }
 
-  TaskImpact:
+  ActivityImpact:
     type: object
     properties:
-      task_id:
+      activity_id:
         type: integer
       total:
         $ref: "#/definitions/EnvironmentalImpact"
-      subtasks:
+      subactivities:
         type: array
         items:
-          $ref: "#/definitions/TaskImpact"
+          $ref: "#/definitions/ActivityImpact"
       impact_sources:
         type: string
         additionalProperties:

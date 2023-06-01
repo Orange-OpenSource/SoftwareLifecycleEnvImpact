@@ -1,8 +1,8 @@
-import type { Model, PatchDocument, Task } from '$lib/api/dataModel';
+import type { Model, PatchDocument, Activity } from '$lib/api/dataModel';
 import { get, post, patch, del } from './api';
 
-export async function getModelTasksRequest(modelId: number): Promise<Task> {
-	const res = await get('models/' + modelId + '/tasks');
+export async function getModelActivitiesRequest(modelId: number): Promise<Activity> {
+	const res = await get('models/' + modelId + '/activities');
 	return res.text().then((json: string) => {
 		return JSON.parse(json);
 	});

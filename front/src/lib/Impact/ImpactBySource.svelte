@@ -1,18 +1,18 @@
 <script lang="ts">
-	import { impactValueTotal, type ImpactSourceId, type ImpactSourceImpact, type Task, type TaskImpact } from '$lib/api/dataModel';
+	import { impactValueTotal, type ImpactSourceId, type ImpactSourceImpact, type Activity, type ActivityImpact } from '$lib/api/dataModel';
 	import { constructLinks, type D3JSHierarchyNode, type D3JStackedData } from '$lib/Dataviz/d3js';
 	import Sankey from '$lib/Dataviz/Sankey.svelte';
 	import StackedBarChart from '$lib/Dataviz/StackedBarChart.svelte';
 	import Sunburst from '$lib/Dataviz/Sunburst.svelte';
 	import { hierarchy, type HierarchyNode } from 'd3-hierarchy';
 
-	export let impact: TaskImpact;
+	export let impact: ActivityImpact;
 	export let selectedImpactCategory: string;
 
 	/*Bound var*/
-	export let selectedTask: Task;
+	export let selectedActivity: Activity;
 
-	$: sourcesLinks = constructLinks(selectedImpactCategory, selectedTask, impact, false, true);
+	$: sourcesLinks = constructLinks(selectedImpactCategory, selectedActivity, impact, false, true);
 
 	function convertResourcesImpactToHierarchy(): HierarchyNode<D3JSHierarchyNode> {
 		let final: D3JSHierarchyNode = {

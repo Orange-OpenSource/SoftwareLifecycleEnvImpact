@@ -9,7 +9,7 @@ projects_root = "/api/v1/projects"
 
 @pytest.fixture(scope="function")
 def project_fixture(db: SQLAlchemy):
-    """Project task fixture"""
+    """Project fixture"""
     project = Project(name="Test project")
     db.session.add(project)
     db.session.commit()
@@ -100,7 +100,7 @@ def test_patch_project(
     )
     assert response.status_code == 403
 
-    # Test no task 404
+    # Test 404
     db.session.delete(project_fixture)
     db.session.commit()
     response = client.patch(
@@ -122,11 +122,11 @@ def test_delete_project(
     response = client.delete(projects_root + "/" + str(project_fixture.id))
     assert response.status_code == 200
 
-    # Test that task is deleted
+    # Test that project is deleted
     response = client.get(projects_root + "/" + str(project_fixture.id))
     assert response.status_code == 404
 
-    # Test no task 404
+    # Test no project 404
     response = client.delete(projects_root + "/" + str(project_fixture.id))
     assert response.status_code == 404
 

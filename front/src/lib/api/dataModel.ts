@@ -12,11 +12,11 @@ export interface Project {
 	 */
 	models?: Array<Model>;
 	/**
-	 * Creation date of the task
+	 * Creation date of the activity
 	 */
 	created_at: string;
 	/**
-	 * Last update date of the task
+	 * Last update date of the activity
 	 */
 	updated_at: string;
 }
@@ -39,9 +39,9 @@ export interface Model {
 	 */
 	updated_at: string;
 	/**
-	 * Model root task
+	 * Model root activity
 	 */
-	root_task: Task;
+	root_activity: Activity;
 }
 
 export interface Resource {
@@ -72,48 +72,48 @@ export interface ImpactSource {
 
 export const TIME_UNITS = ['minute', 'hour', 'day', 'week', 'month', 'year'];
 
-export interface Task {
+export interface Activity {
 	/**
 	 * Unique identifier
 	 */
 	id: number;
 	/**
-	 * Name of the task
+	 * Name of the activity
 	 */
 	name: string;
 	/**
-	 * Resources associated to the task
+	 * Resources associated to the activity
 	 */
 	resources: Array<Resource>;
 	/**
-	 * Subtasks
+	 * Subactivities
 	 */
-	subtasks: Array<Task>;
+	subactivities: Array<Activity>;
 	/**
-	 * Creation date of the task
+	 * Creation date of the activity
 	 */
 	created_at: string;
 	/**
-	 * Last update date of the task
+	 * Last update date of the activity
 	 */
 	updated_at: string;
 	/**
-	 * Id of the parent task if it exists
+	 * Id of the parent activity if it exists
 	 */
-	parent_task_id: number;
+	parent_activity_id: number;
 }
 
-export interface TaskTemplate {
+export interface ActivityTemplate {
 	/**
 	 * Unique identifier
 	 */
 	id: number;
 	/**
-	 * Name of the task template
+	 * Name of the activity template
 	 */
 	name: string;
 	/**
-	 * Unit of the task
+	 * Unit of the activity
 	 */
 	unit: string;
 	/**
@@ -161,10 +161,10 @@ export interface ImpactSourceImpact {
 	total_impact: EnvironmentalImpact;
 }
 
-export interface TaskImpact {
-	task_id: number;
+export interface ActivityImpact {
+	activity_id: number;
 	total: EnvironmentalImpact;
-	sub_tasks: TaskImpact[];
+	sub_activities: ActivityImpact[];
 	impact_sources: Record<ImpactSourceId, ImpactSourceImpact>;
 }
 

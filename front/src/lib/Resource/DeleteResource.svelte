@@ -2,11 +2,11 @@
 	import { deleteResourceRequest } from '$lib/api/resource';
 	import Modal from '$lib/Modal.svelte';
 	import Error from '$lib/Error.svelte';
-	import type { Resource, Task } from '$lib/api/dataModel';
+	import type { Resource, Activity } from '$lib/api/dataModel';
 	import Icon from '@iconify/svelte';
 
 	/*Bound var*/
-	export let task: Task;
+	export let activity: Activity;
 
 	export let resource: Resource;
 
@@ -23,7 +23,7 @@
 		error = '';
 		try {
 			await deleteResourceRequest(resource);
-			task.resources = task.resources.filter((r) => r.id != resource.id);
+			activity.resources = activity.resources.filter((r) => r.id != resource.id);
 			showModal = false;
 		} catch (e: any) {
 			error = e.message;

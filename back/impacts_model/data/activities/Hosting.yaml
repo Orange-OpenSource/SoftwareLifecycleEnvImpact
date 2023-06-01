@@ -2,6 +2,6 @@ id: 4
 name: Hosting
 unit:
 impact_sources:
-subtasks:
+subactivities:
   - Storage
   - Compute

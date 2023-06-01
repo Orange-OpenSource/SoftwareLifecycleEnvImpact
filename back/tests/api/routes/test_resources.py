@@ -6,7 +6,7 @@ from unittest import mock
 from unittest.mock import MagicMock
 from impacts_model.impact_sources import ImpactSource, ImpactSourceError
 from impacts_model.data_model import QuantitySchema, Resource, ResourceSchema
-from impacts_model.data_model import Model, Project, Resource, Task
+from impacts_model.data_model import Model, Project, Resource, Activity
 from impacts_model.impacts import ImpactCategory, ImpactValue
 from impacts_model.quantities.quantities import (
     KG_CO2E,
@@ -24,16 +24,16 @@ def resource_fixture(db: SQLAlchemy):
     project = Project(name="Project test_resource")
     model = Model(name="Model test_resource")
     project.models = [model]
-    task = Task(name="test_resource task")
+    activity = Activity(name="test_resource activity")
 
     resource = Resource(
         name="testResource",
         impact_source_id="testid",
         amount=1 * SERVER,
     )
-    task.resources = [resource]
-    model.root_task = task
-    db.session.add_all([project, model, task, resource])
+    activity.resources = [resource]
+    model.root_activity = activity
+    db.session.add_all([project, model, activity, resource])
     db.session.commit()
     return resource
 
@@ -203,7 +203,7 @@ def test_post_resources(
         resources_root,
         json={
             "name": "testName",
-            "task_id": resource_fixture.task_id,
+            "activity_id": resource_fixture.activity_id,
             "impact_source_id": resource_fixture.impact_source_id,
             "amount": {"value": 3, "unit": "server"},
         },
@@ -212,14 +212,14 @@ def test_post_resources(
     assert response.json["impact_source_id"] == resource_fixture.impact_source_id
     assert response.json["id"] is not None
 
-    # Test 409 task does not  exists
-    Task.query.filter_by(id=resource_fixture.task_id).delete()
+    # Test 409 activity does not  exists
+    Activity.query.filter_by(id=resource_fixture.activity_id).delete()
     db.session.commit()
     response = client.post(
         resources_root,
         json={
             "name": "testName",
-            "task_id": resource_fixture.task_id,
+            "activity_id": resource_fixture.activity_id,
             "impact_source_id": resource_fixture.impact_source_id,
         },
     )
@@ -299,7 +299,7 @@ def test_patch_resource(
     )
     assert response.status_code == 403
 
-    # Test no task 404
+    # Test no activity 404
     db.session.delete(resource_fixture)
     db.session.commit()
     response = client.patch(
@@ -321,10 +321,10 @@ def test_delete_resource(
     response = client.delete(resources_root + "/" + str(resource_fixture.id))
     assert response.status_code == 200
 
-    # Test that task is deleted
+    # Test that activity is deleted
     response = client.get(resources_root + "/" + str(resource_fixture.id))
     assert response.status_code == 404
 
-    # Test no task 404
+    # Test no activity 404
     response = client.delete(resources_root + "/" + str(resource_fixture.id))
     assert response.status_code == 404

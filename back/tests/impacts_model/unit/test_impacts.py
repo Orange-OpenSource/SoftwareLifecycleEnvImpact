@@ -119,7 +119,7 @@ def test_example_impacts() -> None:
         schema = ProjectSchema()
         new_project = schema.load(data)
         for model in new_project.models:
-            model.root_task.get_impact()
+            model.root_activity.get_impact()
 
 
 def test_gitlab_computation() -> None:
@@ -131,7 +131,7 @@ def test_gitlab_computation() -> None:
     # co2_nominal = 19784699.84920407 * KG_CO2E
     co2_nominal = 14224422.988546003 * KG_CO2E
 
-    impact = new_project.models[0].root_task.get_impact()
+    impact = new_project.models[0].root_activity.get_impact()
 
     value = impact.total[ImpactCategory.CLIMATE_CHANGE]
     if value.manufacture is not None and value.use is not None:

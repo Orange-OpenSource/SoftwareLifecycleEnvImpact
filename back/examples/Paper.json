@@ -7,25 +7,25 @@
       "id": null,
       "name": "Paper",
       "project_id": null,
-      "root_task": {
+      "root_activity": {
         "created_at": null,
         "id": null,
         "name": "Paper",
-        "parent_task_id": null,
+        "parent_activity_id": null,
         "resources": [],
-        "subtasks": [
+        "subactivities": [
           {
             "created_at": null,
             "id": null,
             "name": "Build",
-            "parent_task_id": null,
+            "parent_activity_id": null,
             "resources": [],
-            "subtasks": [
+            "subactivities": [
               {
                 "created_at": null,
                 "id": null,
                 "name": "Selling",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -46,25 +46,25 @@
                       "unit": "month",
                       "value": 6.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Development",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [],
-                "subtasks": [
+                "subactivities": [
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Coding",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -82,7 +82,7 @@
                           "unit": "business_year",
                           "value": 1.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       },
                       {
@@ -101,18 +101,18 @@
                           "unit": "month",
                           "value": 10.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Testing",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "amount": {
@@ -130,7 +130,7 @@
                           "unit": "business_month",
                           "value": 6.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       },
                       {
@@ -149,11 +149,11 @@
                           "unit": "month",
                           "value": 6.0
                         },
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   }
                 ],
@@ -163,7 +163,7 @@
                 "created_at": null,
                 "id": null,
                 "name": "Design",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -181,11 +181,11 @@
                       "unit": "business_month",
                       "value": 2.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               }
             ],
@@ -195,14 +195,14 @@
             "created_at": null,
             "id": null,
             "name": "Run",
-            "parent_task_id": null,
+            "parent_activity_id": null,
             "resources": [],
-            "subtasks": [
+            "subactivities": [
               {
                 "created_at": null,
                 "id": null,
                 "name": "Hosting",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -220,7 +220,7 @@
                       "unit": "year",
                       "value": 3.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -239,7 +239,7 @@
                       "unit": "month",
                       "value": 3.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   },
                   {
@@ -258,18 +258,18 @@
                       "unit": "year",
                       "value": 3.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Maintenance",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -287,18 +287,18 @@
                       "unit": "year",
                       "value": 1.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Users",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "amount": {
@@ -322,11 +322,11 @@
                       "unit": "year",
                       "value": 3.0
                     },
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               }
             ],
@@ -335,7 +335,7 @@
         ],
         "updated_at": null
       },
-      "root_task_id": null,
+      "root_activity_id": null,
       "updated_at": null
     }
   ],

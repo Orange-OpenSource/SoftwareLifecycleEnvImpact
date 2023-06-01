@@ -3,4 +3,4 @@ name: Network
 unit: gb
 impact_sources:
   - Network
-subtasks:
+subactivities:

@@ -1,40 +1,40 @@
 <script lang="ts">
-	import ImpactBySubtask from './ImpactBySubtask.svelte';
+	import ImpactBySubactivity from './ImpactBySubactivity.svelte';
 	import ImpactBySource from './ImpactBySource.svelte';
-	import { getTaskImpact } from '$lib/api/task';
-	import type { TaskImpact, Task } from '$lib/api/dataModel';
+	import { getActivityImpact } from '$lib/api/activity';
+	import type { ActivityImpact, Activity } from '$lib/api/dataModel';
 	import Error from '$lib/Error.svelte';
 	import Spinner from '$lib/Spinner.svelte';
 	import ImpactComplete from './ImpactComplete.svelte';
 
 	/*Bound var*/
-	export let selectedTask: Task;
-	let olderTask: Task;
+	export let selectedActivity: Activity;
+	let olderActivity: Activity;
 
-	let impactPromise: Promise<TaskImpact>;
+	let impactPromise: Promise<ActivityImpact>;
 	export let selectedImpactCategory = 'Climate change';
 	export let showImpactCategorySelector = true;
 
-	/*Trigger update when selected task is updated*/
-	$: selectedTask, updateImpacts();
+	/*Trigger update when selected activity is updated*/
+	$: selectedActivity, updateImpacts();
 
 	function updateImpacts() {
-		// WIthout this, sometimes the selectedTask refresh was called indefinitely
-		if (selectedTask != undefined && (olderTask == undefined || olderTask != selectedTask)) {
-			olderTask = selectedTask;
-			impactPromise = getTaskImpact(selectedTask);
+		// WIthout this, sometimes the selectedActivity refresh was called indefinitely
+		if (selectedActivity != undefined && (olderActivity == undefined || olderActivity != selectedActivity)) {
+			olderActivity = selectedActivity;
+			impactPromise = getActivityImpact(selectedActivity);
 		}
 	}
 </script>
 
 <div class="col-md-auto">
-	{#if selectedTask != undefined}
+	{#if selectedActivity != undefined}
 		{#await impactPromise}
 			<Spinner />
 		{:then impact}
 			{#if impact != undefined && Object.keys(impact.impact_sources).length}
 				<div class="row">
-					<h1 class="text-primary">{selectedTask.name}</h1>
+					<h1 class="text-primary">{selectedActivity.name}</h1>
 				</div>
 				{#if showImpactCategorySelector}
 					<div class="d-flex">
@@ -45,16 +45,16 @@
 						</select>
 					</div>
 				{/if}
-				{#if impact.sub_tasks.length > 0}
+				{#if impact.sub_activities.length > 0}
 					<div class="row">
-						<ImpactComplete bind:selectedTask {impact} {selectedImpactCategory} />
+						<ImpactComplete bind:selectedActivity {impact} {selectedImpactCategory} />
 					</div>
 					<div class="row">
-						<ImpactBySubtask bind:selectedTask {impact} {selectedImpactCategory} />
+						<ImpactBySubactivity bind:selectedActivity {impact} {selectedImpactCategory} />
 					</div>
 				{/if}
 				<div class="row">
-					<ImpactBySource bind:selectedTask {impact} {selectedImpactCategory} />
+					<ImpactBySource bind:selectedActivity {impact} {selectedImpactCategory} />
 				</div>
 			{:else}
 				No impact

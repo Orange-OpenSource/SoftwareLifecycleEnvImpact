@@ -10,13 +10,13 @@
 </script>
 
 <div class="row">
-	<ImpactComparison {models} bind:selectedImpactCategory/>
+	<ImpactComparison {models} bind:selectedImpactCategory />
 </div>
 
 <div class="row">
 	{#each models as model}
 		<div class="col">
-			<Impact bind:selectedImpactCategory selectedTask={model.root_task} showImpactCategorySelector={false} />
+			<Impact bind:selectedImpactCategory selectedActivity={model.root_activity} showImpactCategorySelector={false} />
 		</div>
 	{/each}
 </div>

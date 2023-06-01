@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Model, Task } from '$lib/api/dataModel';
+	import type { Model } from '$lib/api/dataModel';
 
 	export let selectedModel: Model;
 

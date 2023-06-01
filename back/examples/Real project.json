@@ -9,65 +9,65 @@
       "id": null,
       "name": "Real project",
       "project_id": null,
-      "root_task": {
+      "root_activity": {
         "created_at": null,
         "id": null,
         "name": "Real project",
-        "parent_task_id": null,
+        "parent_activity_id": null,
         "resources": [],
-        "subtasks": [
+        "subactivities": [
           {
             "created_at": null,
             "id": null,
             "name": "Build",
-            "parent_task_id": null,
+            "parent_activity_id": null,
             "resources": [],
-            "subtasks": [
+            "subactivities": [
               {
                 "created_at": null,
                 "id": null,
                 "name": "Implementation",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [],
-                "subtasks": [
+                "subactivities": [
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Development",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "created_at": null,
                         "id": null,
                         "name": "People",
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null,
                         "impact_source_id": "people",
                         "amount": { "value": 100, "unit": "people" },
                         "period": { "value": 10, "unit": "day" }
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Design",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "created_at": null,
                         "id": null,
                         "name": "People",
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null,
                         "impact_source_id": "people",
                         "amount": { "value": 100, "unit": "people" },
                         "period": { "value": 10, "unit": "day" }
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   }
                 ],
@@ -77,40 +77,40 @@
                 "created_at": null,
                 "id": null,
                 "name": "Specifications",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "created_at": null,
                     "id": null,
                     "name": "People",
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null,
                     "impact_source_id": "people",
                     "amount": { "value": 100, "unit": "people" },
                     "period": { "value": 10, "unit": "day" }
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               },
               {
                 "created_at": null,
                 "id": null,
                 "name": "Management",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "created_at": null,
                     "id": null,
                     "name": "People",
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null,
                     "impact_source_id": "people",
                     "amount": { "value": 100, "unit": "people" },
                     "period": { "value": 10, "unit": "day" }
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               }
             ],
@@ -120,84 +120,84 @@
             "created_at": null,
             "id": null,
             "name": "Run",
-            "parent_task_id": null,
+            "parent_activity_id": null,
             "resources": [],
-            "subtasks": [
+            "subactivities": [
               {
                 "created_at": null,
                 "id": null,
                 "name": "Maintenance",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Storage",
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null,
                     "impact_source_id": "storage",
                     "amount": { "value": 10, "unit": "gigabyte" },
                     "period": { "value": 100, "unit": "day" }
                   }
                 ],
-                "subtasks": [
+                "subactivities": [
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Compute",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "created_at": null,
                         "id": null,
                         "name": "Server",
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null,
                         "impact_source_id": "vCPU",
                         "amount": { "value": 10, "unit": "vcpu" },
                         "period": { "value": 100, "unit": "day" }
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Storage",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "created_at": null,
                         "id": null,
                         "name": "Storage",
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null,
                         "impact_source_id": "storage",
                         "amount": { "value": 100, "unit": "gigabyte" },
                         "period": { "value": 100, "unit": "day" }
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   },
                   {
                     "created_at": null,
                     "id": null,
                     "name": "Network",
-                    "parent_task_id": null,
+                    "parent_activity_id": null,
                     "resources": [
                       {
                         "created_at": null,
                         "id": null,
                         "name": "Fixed network",
-                        "task_id": null,
+                        "activity_id": null,
                         "updated_at": null,
                         "impact_source_id": "fixed_network",
                         "amount": { "value": 100, "unit": "gigabyte" }
                       }
                     ],
-                    "subtasks": [],
+                    "subactivities": [],
                     "updated_at": null
                   }
                 ],
@@ -207,20 +207,20 @@
                 "created_at": null,
                 "id": null,
                 "name": "Usage",
-                "parent_task_id": null,
+                "parent_activity_id": null,
                 "resources": [
                   {
                     "created_at": null,
                     "id": null,
                     "name": "User device",
-                    "task_id": null,
+                    "activity_id": null,
                     "updated_at": null,
                     "impact_source_id": "userDevice",
                     "amount": { "value": 100, "unit": "user_device" },
                     "period": { "value": 10, "unit": "day" }
                   }
                 ],
-                "subtasks": [],
+                "subactivities": [],
                 "updated_at": null
               }
             ],
@@ -229,7 +229,7 @@
         ],
         "updated_at": null
       },
-      "root_task_id": null,
+      "root_activity_id": null,
       "updated_at": null
     }
   ]

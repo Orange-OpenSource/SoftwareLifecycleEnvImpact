@@ -3,4 +3,4 @@ name: UserDevice
 unit: users_number
 impact_sources:
   - UserDevice
-subtasks:
+subactivities:

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import TaskTree from '$lib/TaskTree/TaskTree.svelte';
+	import ActivityTree from '$lib/ActivityTree/ActivityTree.svelte';
 	import ModelList from '$lib/Model/ModelList.svelte';
 	import Impact from '$lib/Impact/Impact.svelte';
 	import Split from 'split.js';
@@ -9,7 +9,7 @@
 	import Spinner from '$lib/Spinner.svelte';
 	import ModelComparison from '$lib/Model/Comparison/ModelsComparison.svelte';
 	import { getProjectRequest } from '$lib/api/project';
-	import type { Model, Task } from '$lib/api/dataModel';
+	import type { Model, Activity } from '$lib/api/dataModel';
 
 	let projectId = $page.params.id; // id of project clicked on (arg in URL "/project/X")
 
@@ -22,13 +22,13 @@
 
 	let selectedModel: Model;
 	let selectedModels: Model[] = [];
-	let selectedTask: Task;
+	let selectedActivity: Activity;
 
 	let split: Split.Instance;
 
 	let compareModels = false;
 
-	$: selectedModel, updateSelectedTask();
+	$: selectedModel, updateSelectedActivity();
 
 	$: selectedModels, updateComparison();
 
@@ -44,10 +44,10 @@
 		if (selectedModels.length < 2) compareModels = false;
 	}
 
-	function updateSelectedTask() {
-		/*Select a model root task as selected task to display the complete model impacts*/
+	function updateSelectedActivity() {
+		/*Select a model root activity as selected activity to display the complete model impacts*/
 		if (selectedModel != undefined) {
-			selectedTask = selectedModel.root_task;
+			selectedActivity = selectedModel.root_activity;
 		}
 	}
 
@@ -109,14 +109,14 @@
 	{#if !compareModels}
 		<div id="split-1" class="overflow-auto">
 			<div class="ps-2">
-				<TaskTree bind:selectedTask {selectedModel} />
+				<ActivityTree bind:selectedActivity {selectedModel} />
 			</div>
 		</div>
 
 		<div id="split-2">
 			<div class="ps-2">
 				<h2 class="title sticky-top">Impact</h2>
-				<Impact bind:selectedTask />
+				<Impact bind:selectedActivity />
 			</div>
 		</div>
 	{:else}

@@ -2,6 +2,6 @@ id: 12
 name: Usage
 unit: user/day
 impact_sources:
-subtasks:
+subactivities:
   - UserDevice
   - Network

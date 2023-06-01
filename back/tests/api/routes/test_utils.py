@@ -1,7 +1,6 @@
 from flask.testing import FlaskClient
 from tests.api.routes.test_project import projects_root
 from tests.api.routes.test_model import models_root
-from tests.api.routes.test_task import tasks_root_path
 
 debug_root = "/api/v1/debug"
 

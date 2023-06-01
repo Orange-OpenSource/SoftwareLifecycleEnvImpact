@@ -27,7 +27,7 @@ from impacts_model.impacts import (
     EnvironmentalImpact,
     ImpactSourceId,
     ImpactSourceImpact,
-    TaskImpact,
+    ActivityImpact,
     merge_env_impact,
 )
 from impacts_model.quantities.quantities import (
@@ -49,7 +49,7 @@ class Resource(db.Model):  # type: ignore
     name = db.Column(db.String, nullable=False)
     impact_source_id = db.Column(db.String, nullable=False)
 
-    task_id = db.Column(db.Integer, db.ForeignKey("task.id"), nullable=False)
+    activity_id = db.Column(db.Integer, db.ForeignKey("activity.id"), nullable=False)
 
     _amount = db.Column(db.String, nullable=False)
     _duration = db.Column(db.String)
@@ -310,7 +310,7 @@ class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
         sqla_session = db.session
 
     id = fields.Integer(allow_none=True)
-    task_id = fields.Integer(allow_none=True)
+    activity_id = fields.Integer(allow_none=True)
     updated_at = fields.DateTime(allow_none=True)
     created_at = fields.DateTime(allow_none=True)
     has_time_input = fields.Bool()
@@ -459,22 +459,22 @@ class ResourceSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
             raise ValidationError(errors)
 
 
-class Task(db.Model):  # type: ignore
+class Activity(db.Model):  # type: ignore
     """
-    Table task representing one project phase
-    Has a parent task and can have sub tasks
+    Table activity representing one project phase
+    Has a parent activity and can have sub activities
     Inputs are linked to resources
     """
 
-    __tablename__ = "task"
+    __tablename__ = "activity"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String, nullable=False)
 
     # model_id = db.Column(db.Integer, db.ForeignKey("model.id"), nullable=False)
 
-    parent_task_id = db.Column(db.Integer, db.ForeignKey("task.id"))
-    subtasks = db.relationship(
-        "Task", foreign_keys=[parent_task_id], lazy=True, cascade="all"
+    parent_activity_id = db.Column(db.Integer, db.ForeignKey("activity.id"))
+    subactivities = db.relationship(
+        "Activity", foreign_keys=[parent_activity_id], lazy=True, cascade="all"
     )
 
     resources: list[Resource] = db.relationship(
@@ -487,25 +487,25 @@ class Task(db.Model):  # type: ignore
     )
 
     def __copy__(self):
-        """Override of copy function to return a Task stripped of ids"""
-        return Task(
+        """Override of copy function to return a Activity stripped of ids"""
+        return Activity(
             name=self.name,
-            subtasks=[copy(subtask) for subtask in self.subtasks],
+            subactivities=[copy(subactivity) for subactivity in self.subactivities],
             resources=[copy(resource) for resource in self.resources],
         )
 
-    def get_impact(self) -> TaskImpact:
+    def get_impact(self) -> ActivityImpact:
         """
-        Compute and return this Task complete impact as a TaskImpact
+        Compute and return this Activity complete impact as a ActivityImpact
         """
-        subtasks = self._get_subtasks_impact()
-        resources = self._get_resources_impact(subtasks)
+        subactivities = self._get_subactivities_impact()
+        resources = self._get_resources_impact(subactivities)
         total = self._get_total(resources)
 
-        return TaskImpact(
-            task_id=self.id,
+        return ActivityImpact(
+            activity_id=self.id,
             total=total,
-            sub_tasks=subtasks,
+            sub_activities=subactivities,
             impact_sources=resources,
         )
 
@@ -514,7 +514,7 @@ class Task(db.Model):  # type: ignore
         resources: dict[ImpactSourceId, ImpactSourceImpact],
     ) -> EnvironmentalImpact:
         """
-        Return the complete EnvironmentalImpact of the task as the sum of its resources
+        Return the complete EnvironmentalImpact of the activity as the sum of its resources
         """
         result: EnvironmentalImpact = {}
 
@@ -525,16 +525,16 @@ class Task(db.Model):  # type: ignore
         return result
 
     def _get_resources_impact(
-        self, subtasks_impacts: List[TaskImpact]
+        self, subactivities_impacts: List[ActivityImpact]
     ) -> dict[ImpactSourceId, ImpactSourceImpact]:
         """
-        Get resources impacts, sum of this one AND subtasks one
+        Get resources impacts, sum of this one AND subactivities one
         """
         result: dict[ImpactSourceId, ImpactSourceImpact] = {}
 
-        # Sum subtasks resources
-        for subtaskImpact in subtasks_impacts:
-            subImpactSources = subtaskImpact.impact_sources
+        # Sum subactivities resources
+        for subactivityImpact in subactivities_impacts:
+            subImpactSources = subactivityImpact.impact_sources
             # Iterate trough id
             for i in subImpactSources:
                 subImpactSource = subImpactSources[i]
@@ -553,47 +553,47 @@ class Task(db.Model):  # type: ignore
 
         return result
 
-    def _get_subtasks_impact(self) -> List[TaskImpact]:
+    def _get_subactivities_impact(self) -> List[ActivityImpact]:
         """
-        Return a dict with all subtask ids as key, with their TaskImpact as values
+        Return a dict with all subactivity ids as key, with their ActivityImpact as values
         """
-        impacts_list: List[TaskImpact] = []
-        for subtask in self.subtasks:
-            impacts_list.append(subtask.get_impact())
+        impacts_list: List[ActivityImpact] = []
+        for subactivity in self.subactivities:
+            impacts_list.append(subactivity.get_impact())
         return impacts_list
 
 
-class TaskSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
+class ActivitySchema(ma.SQLAlchemyAutoSchema):  # type: ignore
     """
-    Schema for Task to serialize/deserialize
+    Schema for Activity to serialize/deserialize
     Specify nested elements to show theme completely when deserializing, ot only their id
     """
 
     class Meta(ma.SQLAlchemyAutoSchema.Meta):  # type: ignore
         """Schema meta class"""
 
-        model = Task
+        model = Activity
         include_relationships = True
         load_instance = True
         include_fk = True
         sqla_session = db.session
 
     id = ma.auto_field(allow_none=True)
-    subtasks = Nested("TaskSchema", many=True)
+    subactivities = Nested("ActivitySchema", many=True)
     resources = Nested(ResourceSchema, many=True)
 
 
 class Model(db.Model):  # type: ignore
     """
-    Table Model representing one possibility for a project with a tree of tasks
+    Table Model representing one possibility for a project with a tree of activities
     """
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String, nullable=False)
 
-    root_task_id = db.Column(db.Integer, db.ForeignKey("task.id"))
-    root_task = db.relationship(
-        Task, lazy=True, foreign_keys=[root_task_id], cascade="all"
+    root_activity_id = db.Column(db.Integer, db.ForeignKey("activity.id"))
+    root_activity = db.relationship(
+        Activity, lazy=True, foreign_keys=[root_activity_id], cascade="all"
     )
 
     project_id = db.Column(db.Integer, db.ForeignKey("project.id"), nullable=False)
@@ -605,15 +605,15 @@ class Model(db.Model):  # type: ignore
 
     def __copy__(self):
         """Override of copy function to return a Model stripped of ids"""
-        copy_root = copy(self.root_task)
+        copy_root = copy(self.root_activity)
         copy_root.name += " copy"
-        return Model(name=self.name + " copy", root_task=copy_root)
+        return Model(name=self.name + " copy", root_activity=copy_root)
 
 
 class ModelSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
     """
     Schema for Model to serialize/deserialize
-    Nested tasks to show them when deserializing
+    Nested activities to show them when deserializing
     """
 
     class Meta(ma.SQLAlchemyAutoSchema.Meta):  # type: ignore
@@ -626,8 +626,8 @@ class ModelSchema(ma.SQLAlchemyAutoSchema):  # type: ignore
         sqla_session = db.session
 
     id = ma.auto_field(allow_none=True)
-    root_task = Nested("TaskSchema")
-    tasks = Nested("TaskSchema", many=True)
+    root_activity = Nested("ActivitySchema")
+    activities = Nested("ActivitySchema", many=True)
     project_id = ma.auto_field(allow_none=True)
 
 

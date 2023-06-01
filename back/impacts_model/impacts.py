@@ -195,24 +195,24 @@ class ImpactSourceImpactSchema(Schema):
     total_impact = fields.Dict(keys=fields.Str(), values=Nested("ImpactValueSchema"))
 
 
-class TaskImpact:
+class ActivityImpact:
     def __init__(
         self,
-        task_id: str,
+        activity_id: str,
         total: EnvironmentalImpact,
-        sub_tasks: list[TaskImpact],
+        sub_activities: list[ActivityImpact],
         impact_sources: dict[ImpactSourceId, ImpactSourceImpact],
     ) -> None:
-        self.task_id = task_id
+        self.activity_id = activity_id
         self.total = total
-        self.sub_tasks = sub_tasks
+        self.sub_activities = sub_activities
         self.impact_sources = impact_sources
 
 
-class TaskImpactSchema(Schema):
-    task_id = fields.Str()
+class ActivityImpactSchema(Schema):
+    activity_id = fields.Str()
     total = fields.Dict(keys=fields.Str(), values=Nested("ImpactValueSchema"))
-    sub_tasks = fields.Nested("TaskImpactSchema", many=True)
+    sub_activities = fields.Nested("ActivityImpactSchema", many=True)
     impact_sources = fields.Dict(
         keys=fields.Str(), values=Nested("ImpactSourceImpactSchema")
     )

@@ -4,9 +4,9 @@ from copy import copy
 import jsonpatch
 from flask import abort, request
 
-from impacts_model.impacts import TaskImpactSchema
-from api.routes.task import get_task
-from impacts_model.data_model import Model, ModelSchema, db, Project, Task, TaskSchema
+from impacts_model.impacts import ActivityImpactSchema
+from api.routes.activity import get_activity
+from impacts_model.data_model import Model, ModelSchema, db, Project, Activity, ActivitySchema
 from impacts_model.database import (
     insert_model_db,
 )
@@ -42,9 +42,9 @@ def get_model_impact(model_id: int) -> Any:
     """
     model = db.session.query(Model).get_or_404(model_id)
 
-    task_impact = model.root_task.get_impact()
-    schema = TaskImpactSchema()
-    return schema.dump(task_impact)
+    activity_impact = model.root_activity.get_impact()
+    schema = ActivityImpactSchema()
+    return schema.dump(activity_impact)
 
 
 def update_model(model_id: int) -> Any:
@@ -91,14 +91,14 @@ def delete_model(model_id: int) -> Any:
     return 200
 
 
-def get_tasks(model_id: int) -> Any:
+def get_activities(model_id: int) -> Any:
     """
-    GET /models/{model_id}/tasks
-    :param model_id: id of the model to get the tasks
-    :return: a list of tasks corresponding to a model id
+    GET /models/{model_id}/activities
+    :param model_id: id of the model to get the activities
+    :return: a list of activities corresponding to a model id
     """
     model = db.session.query(Model).get_or_404(model_id)
-    return get_task(model.root_task_id)
+    return get_activity(model.root_activity_id)
 
 
 def create_model(model: dict[str, Any]) -> Any:
@@ -120,12 +120,12 @@ def create_model(model: dict[str, Any]) -> Any:
         schema = ModelSchema()
         model_loaded = schema.load(model)
 
-        if model_loaded.root_task == None:
-            # Create a model only with a name imply to create the associate root_task
-            root_task = Task(
+        if model_loaded.root_activity == None:
+            # Create a model only with a name imply to create the associate root_activity
+            root_activity = Activity(
                 name=model_loaded.name,
             )
-            model_loaded.root_task = root_task
+            model_loaded.root_activity = root_activity
 
         db.session.add(model_loaded)
         db.session.commit()

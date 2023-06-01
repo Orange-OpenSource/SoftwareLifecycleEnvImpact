@@ -2,6 +2,6 @@ id: 5
 name: Implementation
 unit: man_days
 impact_sources:
-subtasks:
+subactivities:
   - Development
   - Design

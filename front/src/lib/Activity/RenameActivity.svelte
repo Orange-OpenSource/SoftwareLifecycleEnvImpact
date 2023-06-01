@@ -1,29 +1,29 @@
 <script lang="ts">
 	import Error from '$lib/Error.svelte';
-	import { renameTaskRequest } from '$lib/api/task';
+	import { renameActivityRequest } from '$lib/api/activity';
 	import Modal from '$lib/Modal.svelte';
-	import type { Task } from '$lib/api/dataModel';
+	import type { Activity } from '$lib/api/dataModel';
 	import Icon from '@iconify/svelte';
 
 	/* Bound var */
-	export let task: Task;
+	export let activity: Activity;
 
 	let showModal = false;
 	let error = '';
-	let newName = task.name;
+	let newName = activity.name;
 
 	$: showModal, clearModal(); //Clean error message when closing modal
 
 	function clearModal() {
 		error = '';
-		newName = task.name;
+		newName = activity.name;
 	}
 
-	async function renameTask() {
+	async function renameActivity() {
 		error = '';
 		try {
-			const res = await renameTaskRequest(task, newName);
-			task.name = res.name;
+			const res = await renameActivityRequest(activity, newName);
+			activity.name = res.name;
 			showModal = false;
 		} catch (e: any) {
 			error = e.message;
@@ -35,17 +35,17 @@
 	<Icon icon="material-symbols:edit-outline" width="25" height="25" alt="Duplicate" loading="lazy" />
 </button>
 <Modal bind:showModal>
-	<span slot="title">Rename task</span>
+	<span slot="title">Rename activity</span>
 
-	<form slot="body" on:submit|preventDefault={renameTask}>
+	<form slot="body" on:submit|preventDefault={renameActivity}>
 		<div class="row g-3">
 			<div class="col-12">
 				<!-- TODO label ? -->
-				<input class="form-control" placeholder="Task new name" required bind:value={newName} />
+				<input class="form-control" placeholder="Activity new name" required bind:value={newName} />
 			</div>
 
 			<div class="col-12">
-				<button type="submit" data-dismiss="modal" class="btn btn-primary">Rename task</button>
+				<button type="submit" data-dismiss="modal" class="btn btn-primary">Rename activity</button>
 			</div>
 		</div>
 		{#if error}

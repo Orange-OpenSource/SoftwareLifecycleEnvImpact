@@ -3,11 +3,11 @@
 	import { select } from 'd3-selection';
 	import * as d3 from 'd3';
 	import type { D3JSHierarchyNode } from './d3js';
-	import type { Task } from '$lib/api/dataModel';
+	import type { Activity } from '$lib/api/dataModel';
 	import { exportSvg } from '$lib/utils';
 
 	/*Bound var*/
-	export let selectedTask: Task;
+	export let selectedActivity: Activity;
 
 	export let hierarchy: d3.HierarchyNode<D3JSHierarchyNode>;
 
@@ -84,11 +84,11 @@
 			addTextElement(vis, totalValue);
 
 			// prepare a color scale
-			// Different color scale if selected task is defined or not
+			// Different color scale if selected activity is defined or not
 			const color = d3
 				.scaleOrdinal()
 				.domain(names)
-				.range(selectedTask != undefined ? d3.schemeSet2 : d3.schemeSet3);
+				.range(selectedActivity != undefined ? d3.schemeSet2 : d3.schemeSet3);
 			// const color = scaleOrdinal(quantize(interpolateRainbow, names.length + 1))
 
 			// Create nodes
@@ -142,9 +142,9 @@
 					vis.selectAll('path').style('opacity', 1);
 				})
 				.on('click', (event, d) => {
-					// Select clicked task
-					if (d.data.task != undefined) {
-						selectedTask = d.data.task;
+					// Select clicked activity
+					if (d.data.activity != undefined) {
+						selectedActivity = d.data.activity;
 					}
 				});
 		}

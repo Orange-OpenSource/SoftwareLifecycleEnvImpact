@@ -4,7 +4,7 @@ from flask.testing import FlaskClient
 from flask_sqlalchemy import SQLAlchemy
 from unittest import mock
 from unittest.mock import MagicMock
-from impacts_model.data_model import Model, ModelSchema, Project, Resource, Task
+from impacts_model.data_model import Model, ModelSchema, Project, Resource, Activity
 from impacts_model.impact_sources import ImpactSource
 from impacts_model.impacts import ImpactCategory, ImpactValue
 from impacts_model.quantities.quantities import (
@@ -24,10 +24,10 @@ def model_fixture(db: SQLAlchemy) -> Model:
     project = Project(name="Project test_model")
     project.models = [model]
 
-    task = Task(name="Test task")
+    activity = Activity(name="Test activity")
 
-    model.root_task = task
-    db.session.add_all([project, model, task])
+    model.root_activity = activity
+    db.session.add_all([project, model, activity])
     db.session.commit()
     return model
 
@@ -100,7 +100,7 @@ def test_get_one_model(
     assert response.json["id"] is model_fixture.id
     assert response.json["name"] == model_fixture.name
 
-    # Test no task 404
+    # Test no activity 404
     db.session.delete(model_fixture)
     db.session.commit()
     response = client.get(models_root + "/" + str(model_fixture.id))
@@ -199,22 +199,22 @@ def test_delete_model(
     assert response.status_code == 404
 
 
-def test_get_model_tasks(client: FlaskClient, db: SQLAlchemy) -> None:
+def test_get_model_activities(client: FlaskClient, db: SQLAlchemy) -> None:
     """
-    Test response of GET /models/<id>/tasks
+    Test response of GET /models/<id>/activities
     :param client: flask client fixture
     :param db: SQLAlchemy database fixture
     """
-    task1 = Task(name="Task 1")
-    task2 = Task(name="Task 2")
+    activity1 = Activity(name="Activity 1")
+    activity2 = Activity(name="Activity 2")
     model = Model(name="Model 1")
     project = Project(name="Project 1")
     project.models = [model]
-    model.root_task = task1
-    db.session.add_all([task1, task2, model, project])
+    model.root_activity = activity1
+    db.session.add_all([activity1, activity2, model, project])
     db.session.commit()
 
-    response = client.get(models_root + "/" + str(model.id) + "/tasks")
+    response = client.get(models_root + "/" + str(model.id) + "/activities")
     assert response.status_code == 200
 
 

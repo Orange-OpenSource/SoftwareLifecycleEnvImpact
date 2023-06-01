@@ -1,4 +1,4 @@
-from impacts_model.data_model import db, Model, Task
+from impacts_model.data_model import db, Model, Activity
 from typing import List
 
 
@@ -17,12 +17,12 @@ def retrieve_similar_model_db(model_name: str, project_id: int) -> Model:
 
 
 def insert_model_db(model: Model) -> Model:
-    if model.root_task == None:
-        # Create a model only with a name imply to create the associate root_task
-        root_task = Task(
+    if model.root_activity == None:
+        # Create a model only with a name imply to create the associate root_activity
+        root_activity = Activity(
             name=model.name,
         )
-        model.root_task = root_task
+        model.root_activity = root_activity
 
     db.session.add(model)
     db.session.commit()

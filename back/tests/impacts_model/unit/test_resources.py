@@ -6,7 +6,7 @@ import pytest
 from flask_sqlalchemy import SQLAlchemy
 from pint import Quantity
 
-from impacts_model.data_model import Model, Project, Resource, Task
+from impacts_model.data_model import Model, Project, Resource, Activity
 from impacts_model.impact_sources import ImpactSource
 from impacts_model.impacts import EnvironmentalImpact, ImpactCategory, ImpactValue
 from impacts_model.quantities.quantities import (
@@ -36,7 +36,7 @@ def resource_fixture(db: SQLAlchemy) -> Resource:
     model = Model(name="Model test_resourcess")
     project.models = [model]
     project.base_model = model
-    task = Task(name="Test_resources task")
+    activity = Activity(name="Test_resources activity")
 
     resource = Resource(
         name="testResource",
@@ -44,9 +44,9 @@ def resource_fixture(db: SQLAlchemy) -> Resource:
         amount=2312 * SERVER,
     )
 
-    task.resources = [resource]
-    model.root_task = task
-    db.session.add_all([project, model, task, resource])
+    activity.resources = [resource]
+    model.root_activity = activity
+    db.session.add_all([project, model, activity, resource])
     db.session.commit()
     return resource
 
@@ -178,7 +178,7 @@ def test_resource_copy(resource_fixture: Resource):
 
     # Should not be the same
     assert resource_copy.id != resource_fixture.id
-    assert resource_copy.task_id != resource_fixture.task_id
+    assert resource_copy.activity_id != resource_fixture.activity_id
     assert resource_copy.created_at != resource_fixture.created_at
     assert resource_copy.updated_at != resource_fixture.updated_at
 

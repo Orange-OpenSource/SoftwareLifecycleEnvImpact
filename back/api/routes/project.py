@@ -9,7 +9,7 @@ from impacts_model.data_model import (
     ModelSchema,
     Project,
     ProjectSchema,
-    Task,
+    Activity,
 )
 
 
@@ -99,7 +99,7 @@ def create_project(project: dict[str, Any]) -> Any:
         schema = ProjectSchema()
         new_project = schema.load(project)
 
-        root_task = Task(
+        root_activity = Activity(
             name=name,
         )
 
@@ -107,10 +107,10 @@ def create_project(project: dict[str, Any]) -> Any:
             name=name,
         )
 
-        model.root_task = root_task
+        model.root_activity = root_activity
         new_project.models = [model]
 
-        db.session.add_all([new_project, model, root_task])
+        db.session.add_all([new_project, model, root_activity])
 
         db.session.commit()
 

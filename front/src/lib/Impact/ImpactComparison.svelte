@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { impactValueTotal, type EnvironmentalImpact, type ImpactSourceId, type ImpactSourceImpact, type Model } from '$lib/api/dataModel';
-	import { getTaskImpact } from '$lib/api/task';
+	import { getActivityImpact } from '$lib/api/activity';
 	import type { D3JGroupedData, D3JsDivergingData } from '$lib/Dataviz/d3js';
 	import Error from '$lib/Error.svelte';
 	import GroupedBarChart from '$lib/Dataviz/GroupedBarChart.svelte';
@@ -17,7 +17,7 @@
 	async function getModelsImpactAsStackedData(selectedImpactCategory: string, models: Model[]): Promise<D3JGroupedData[]> {
 		let final: D3JGroupedData[] = [];
 		for (let model in models) {
-			let modelImpact = await getTaskImpact(models[model].root_task);
+			let modelImpact = await getActivityImpact(models[model].root_activity);
 
 			if (impactCatgories == undefined) {
 				// Little hack to retrieve the impact categories
@@ -52,7 +52,7 @@
 		let final: D3JsDivergingData[] = [];
 
 		// First model
-		let modelImpact = await getTaskImpact(models[0].root_task);
+		let modelImpact = await getActivityImpact(models[0].root_activity);
 		getResourcesGrouped(true, selectedImpactCategory, final, modelImpact.impact_sources);
 		// Little hack to retrieve the impact categories
 		if (impactCatgories == undefined) {
@@ -62,7 +62,7 @@
 		const firstTotal = impactValueTotal(modelImpact.total[selectedImpactCategory]).value;
 
 		// Second model
-		modelImpact = await getTaskImpact(models[1].root_task);
+		modelImpact = await getActivityImpact(models[1].root_activity);
 		console.log('Second model impact', modelImpact);
 		getResourcesGrouped(false, selectedImpactCategory, final, modelImpact.impact_sources);
 

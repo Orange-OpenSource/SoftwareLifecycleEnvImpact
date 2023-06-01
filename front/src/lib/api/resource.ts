@@ -13,7 +13,7 @@ export async function renameResourceRequest(resource: Resource, newName: string)
 	});
 }
 
-export async function addResourceRequest(taskId: number, impact_source: ImpactSource) {
+export async function addResourceRequest(activityId: number, impact_source: ImpactSource) {
 	let period;
 	let amount = { value: 1, unit: impact_source.unit }; // create the quantity
 	// Check if time needed
@@ -28,7 +28,7 @@ export async function addResourceRequest(taskId: number, impact_source: ImpactSo
 
 	const res = await post('resources', {
 		name: impact_source.name,
-		task_id: taskId,
+		activity_id: activityId,
 		impact_source_id: impact_source.id,
 		amount: amount,
 		period: period
