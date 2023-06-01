@@ -1,6 +1,0 @@
-id: 11
-name: Storage
-unit: storage_hours
-impact_sources:
-  - Storage
-subactivities:

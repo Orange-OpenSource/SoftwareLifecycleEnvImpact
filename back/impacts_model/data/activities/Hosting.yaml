@@ -1,7 +1,0 @@
-id: 4
-name: Hosting
-unit:
-impact_sources:
-subactivities:
-  - Storage
-  - Compute

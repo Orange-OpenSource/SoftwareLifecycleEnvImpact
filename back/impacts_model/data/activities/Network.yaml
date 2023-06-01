@@ -1,6 +1,0 @@
-id: 8
-name: Network
-unit: gb
-impact_sources:
-  - Network
-subactivities:

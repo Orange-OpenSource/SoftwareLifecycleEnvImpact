@@ -1,6 +1,0 @@
-id: 1
-name: Compute
-unit: server_hours
-impact_sources:
-  - Compute
-subactivities:

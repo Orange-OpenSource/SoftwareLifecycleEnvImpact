@@ -13,7 +13,6 @@ from impacts_model.data_model import (
 from impacts_model.impacts import (
     ActivityImpactSchema,
 )
-from impacts_model.templates import get_activity_template_by_id, ActivityTemplate
 from typing import Optional
 
 
@@ -117,55 +116,6 @@ def delete_activity(activity_id: int) -> Any:
     return 200
 
 
-def insert_activity_db(
-    new_activity: Activity, template_id: Optional[int] = None
-) -> None:  # TODO remove from here
-    if template_id is not None:
-        activity_template: ActivityTemplate = get_activity_template_by_id(template_id)
-
-        for impact_source in activity_template.impact_sources:
-            new_activity.resources.append(
-                Resource(
-                    impact_source_id=impact_source.id,
-                    amount=1,
-                )
-            )
-
-    db.session.add(new_activity)
-    db.session.commit()
-
-
-def create_activity_from_template(activity: dict[str, Any]) -> Any:
-    """
-    POST /activities/templates
-
-    :param activity: activity to add
-    :return: the activity inserted with its id
-    """
-    name = activity.get("name")
-    parent_activity_id = activity.get("parent_activity_id")
-    template_id = activity.get("template_id")
-
-    existing_activity = (
-        Activity.query.filter(Activity.name == name)
-        .filter(Activity.parent_activity_id == parent_activity_id)
-        .one_or_none()
-    )
-
-    if existing_activity is None:
-        schema = ActivitySchema()
-        activity.pop("template_id")
-        new_activity = schema.load(activity)
-        insert_activity_db(new_activity, template_id)
-        data = schema.dump(new_activity)
-        return data, 201
-    else:
-        return abort(
-            409,
-            "Activity {activity} exists already".format(activity=activity),
-        )
-
-
 def create_activity(activity: dict[str, Any]) -> Any:
     """
     POST /activities/
@@ -185,7 +135,8 @@ def create_activity(activity: dict[str, Any]) -> Any:
     if existing_activity is None:
         schema = ActivitySchema()
         new_activity = schema.load(activity)
-        insert_activity_db(new_activity)
+        db.session.add(new_activity)
+        db.session.commit()
         data = schema.dump(new_activity)
         return data, 201
     else:

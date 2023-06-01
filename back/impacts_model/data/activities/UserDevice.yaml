@@ -1,6 +1,0 @@
-id: 13
-name: UserDevice
-unit: users_number
-impact_sources:
-  - UserDevice
-subactivities:

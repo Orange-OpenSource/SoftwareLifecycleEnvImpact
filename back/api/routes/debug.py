@@ -3,20 +3,6 @@ from impacts_model.data_model import db, ProjectSchema
 import json
 from os import listdir
 
-"""
-Real project
-    Build
-        Implementation
-            Development
-            Design
-        Specifications
-        Management
-    Run
-        Maintenance
-        Hosting
-        Usage
-"""
-
 
 def reset_db() -> None:
     """

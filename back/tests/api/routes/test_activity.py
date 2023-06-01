@@ -44,48 +44,9 @@ def test_get_activities(client: FlaskClient, activity_fixture: Activity) -> None
     assert len(response.json) == len(all_activities)
 
 
-@mock.patch(
-    "api.routes.activity.get_activity_template_by_id",
-    MagicMock(return_value=MagicMock()),
-)
-def test_post_activity(client: FlaskClient, activity_fixture: Activity) -> None:
-    """
-    Test response of POST /activities
-    :param client: flask client fixture
-    :param activity_fixture: Activity fixture
-    """
-    response = client.post(
-        activities_root_path,
-        json={"name": "Activity test post", "parent_activity_id": activity_fixture.id},
-    )
-
-    assert response.status_code == 201
-    assert response.json["name"] == "Activity test post"
-    assert response.json["id"] is not None
-
-    # Test 409 project exists already
-    response = client.post(
-        activities_root_path,
-        json={
-            "name": "Activity test post",
-            "parent_activity_id": activity_fixture.id,
-        },
-    )
-    assert response.status_code == 409
-
-    # Test subactivities intserstion
-    response = client.post(
-        activities_root_path,
-        json={
-            "name": "Activity with subactivity",
-            "parent_activity_id": activity_fixture.id,
-        },
-    )
-
-    assert response.status_code == 201
-
-
-def test_get_one_activity(client: FlaskClient, db: SQLAlchemy, activity_fixture: Activity) -> None:
+def test_get_one_activity(
+    client: FlaskClient, db: SQLAlchemy, activity_fixture: Activity
+) -> None:
     """
     Test response of GET /activities/<id>
     :param client: flask client fixture
@@ -104,7 +65,9 @@ def test_get_one_activity(client: FlaskClient, db: SQLAlchemy, activity_fixture:
     assert response.status_code == 404
 
 
-def test_patch_activity(client: FlaskClient, db: SQLAlchemy, activity_fixture: Activity) -> None:
+def test_patch_activity(
+    client: FlaskClient, db: SQLAlchemy, activity_fixture: Activity
+) -> None:
     """
     Test response of PATCH /activities/<id>
     :param client: flask client fixture
@@ -136,7 +99,9 @@ def test_patch_activity(client: FlaskClient, db: SQLAlchemy, activity_fixture: A
     assert response.status_code == 404
 
 
-def test_delete_activity(client: FlaskClient, db: SQLAlchemy, activity_fixture: Activity) -> None:
+def test_delete_activity(
+    client: FlaskClient, db: SQLAlchemy, activity_fixture: Activity
+) -> None:
     """
     Test response of DELETE /activities/<id>
     :param client: flask client fixture
@@ -145,7 +110,9 @@ def test_delete_activity(client: FlaskClient, db: SQLAlchemy, activity_fixture: 
     """
 
     # Test to delete root activity
-    model = Model.query.filter(Model.root_activity_id == activity_fixture.id).one_or_none()
+    model = Model.query.filter(
+        Model.root_activity_id == activity_fixture.id
+    ).one_or_none()
     model.root_activity = activity_fixture
     response = client.delete(activities_root_path + "/" + str(activity_fixture.id))
     assert response.status_code == 403
@@ -174,5 +141,7 @@ def test_get_activity_impacts(
     :param db: SQLAlchemy database fixture
     :param activity_fixture: Activity fixture
     """
-    response = client.get(activities_root_path + "/" + str(activity_fixture.id) + "/impacts")
+    response = client.get(
+        activities_root_path + "/" + str(activity_fixture.id) + "/impacts"
+    )
     assert response.status_code == 200

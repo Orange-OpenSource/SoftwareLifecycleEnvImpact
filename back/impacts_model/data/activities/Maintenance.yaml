@@ -1,6 +1,0 @@
-id: 6
-name: Maintenance
-unit: man_days
-impact_sources:
-  - People
-subactivities:

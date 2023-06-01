@@ -103,25 +103,6 @@ export interface Activity {
 	parent_activity_id: number;
 }
 
-export interface ActivityTemplate {
-	/**
-	 * Unique identifier
-	 */
-	id: number;
-	/**
-	 * Name of the activity template
-	 */
-	name: string;
-	/**
-	 * Unit of the activity
-	 */
-	unit: string;
-	/**
-	 * Resources
-	 */
-	resources: Array<Resource>;
-}
-
 export interface ImpactValue {
 	manufacture?: Quantity;
 	use?: Quantity;

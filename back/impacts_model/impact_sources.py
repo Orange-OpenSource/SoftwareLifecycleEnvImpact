@@ -20,7 +20,7 @@ from marshmallow import Schema, fields
 
 class ImpactSource:
     """
-    A source of environmental impact_sources
+    A source of environmental impact
     """
 
     def __init__(

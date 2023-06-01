@@ -27,17 +27,6 @@ export async function deleteActivityRequest(activity: Activity): Promise<Activit
 	});
 }
 
-export async function createActivityFromTemplateRequest(name: string, parent_activity_id: number, template_id: number): Promise<Activity> {
-	const res = await post('activities/templates', {
-		name: name,
-		parent_activity_id: parent_activity_id,
-		template_id: template_id
-	});
-	return res.text().then((json: string) => {
-		return JSON.parse(json);
-	});
-}
-
 export async function createActivityRequest(name: string, parent_activity_id: number): Promise<Activity> {
 	const res = await post('activities', {
 		name: name,

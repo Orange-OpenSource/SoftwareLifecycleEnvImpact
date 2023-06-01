@@ -1,7 +1,0 @@
-id: 12
-name: Usage
-unit: user/day
-impact_sources:
-subactivities:
-  - UserDevice
-  - Network

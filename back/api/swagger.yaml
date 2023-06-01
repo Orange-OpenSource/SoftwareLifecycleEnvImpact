@@ -367,50 +367,6 @@ paths:
         409:
           description: Activity exists already
 
-  /activities/templates:
-    get:
-      operationId: api.routes.activity_template.get_activity_templates
-      tags:
-        - ActivityTemplate
-      summary: Get all activity templates
-      responses:
-        200:
-          description: List of activity templates
-          schema:
-            type: array
-            items:
-              $ref: "#/definitions/ActivityTemplate"
-    post:
-      operationId: api.routes.activity.create_activity_from_template
-      tags:
-        - Activity
-        - ActivityTemplate
-      description: Create a new activity from a given template
-      parameters:
-        - name: activity
-          in: body
-          description: Activity to create
-          required: true
-          schema:
-            type: object
-            properties:
-              name:
-                type: string
-                description: Name of the activity
-              parent_activity_id:
-                type: integer
-                description: Parent activity id
-              template_id:
-                type: integer
-                description: Id of the template to create from
-      responses:
-        201:
-          description: Sucessfully created Activity
-          schema:
-            $ref: "#/definitions/Activity"
-        409:
-          description: Activity exists already
-
   /activities/{activity_id}:
     parameters:
       - name: activity_id
@@ -522,9 +478,6 @@ paths:
               activity_id:
                 type: integer
                 description: Id of the activity to create the resource in
-              template_id:
-                type: integer
-                description: Id of the template to create from
       responses:
         201:
           description: Sucessfully created Resource
@@ -744,29 +697,6 @@ definitions:
         type: ["null", integer]
         format: date
         description: Last update date of the activity
-
-  ActivityTemplate:
-    type: object
-    required:
-      - id
-      - name
-      - unit
-      - resources
-    properties:
-      id:
-        type: integer
-        description: Unique identifier
-      name:
-        type: string
-        description: Name of the activity template
-      unit:
-        type: string
-        description: Unit of the activity
-      resources:
-        type: array
-        items:
-          $ref: "#/definitions/Resource"
-        description: Resources
 
   Resource:
     type: object

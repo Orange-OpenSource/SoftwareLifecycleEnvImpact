@@ -1,8 +1,0 @@
-id: 9
-name: Run
-unit: day
-impact_sources:
-subactivities:
-  - Maintenance
-  - Hosting
-  - Usage

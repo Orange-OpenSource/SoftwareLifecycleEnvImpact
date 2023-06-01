@@ -1,8 +1,0 @@
-id: 0
-name: Build
-unit: man_days
-impact_sources:
-subactivities:
-  - Implementation
-  - Specification
-  - Management
