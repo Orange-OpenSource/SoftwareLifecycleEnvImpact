@@ -10,6 +10,8 @@ Install dependencies :
 npm install
 ```
 
+Create `.env` file using `.env.example`
+
 Start a development server (host on http://localhost:3000) :
 
 ```bash
