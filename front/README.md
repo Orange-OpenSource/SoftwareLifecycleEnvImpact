@@ -1,22 +1,16 @@
-# Software life cycle environmental footprint
+# Frontend
 
-Web application to estimate the environmental footprint of a software development project life cycle.
-
-## Installation
-
-Install dependencies :
+## Getting started
 
 ```bash
 npm install
+cp .env.example .env
 ```
 
-Create `.env` file using `.env.example`
-
-Start a development server (host on http://localhost:3000) :
+## Running the frontend
 
 ```bash
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
+
+A development server is accessible at http://localhost:3000
