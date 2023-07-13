@@ -14,34 +14,6 @@ services:
       - "traefik.http.middlewares.serviceheaders.headers.accesscontrolalloworiginlist=*"
       - "traefik.http.routers.modelback.middlewares=serviceheaders"
 
-  boaviztapi:
-    image: ghcr.io/boavizta/boaviztapi:0.2.0a0
-    volumes:
-      - ./boaviztapi:/usr/src/app
-    expose:
-      - 5000
-    labels:
-      - "traefik.enable=true"
-      - "traefik.port=80"
-      - "traefik.http.routers.boaviztaback.rule=PathPrefix(`/boaviztapi`)"
-      - "traefik.http.middlewares.serviceheaders.headers.accesscontrolalloworiginlist=*"
-      - "traefik.http.routers.boaviztaback.middlewares=serviceheaders"
-
-  # boaviztapi_front:
-  #   stdin_open: true
-  #   build: ./boaviztapi_front
-  #   volumes:
-  #     - ./boaviztapi_front:/usr/src/app
-  #     - /usr/src/app/node_modules
-  #   expose:
-  #     - 3000
-  #   depends_on:
-  #     - boaviztapi
-  #   labels:
-  #     - "traefik.enable=true"
-  #     - "traefik.port=80"
-  #     - "traefik.http.routers.boaviztafront.rule=PathPrefix(`/boavizta`)"
-
   front:
     stdin_open: true
     build: ./front
@@ -55,7 +27,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.port=80"
-      - "traefik.http.routers.modelfront.rule=!PathPrefix(`/boaviztapi`) && !PathPrefix(`/api`)"
+      - "traefik.http.routers.modelfront.rule=!PathPrefix(`/api`)"
 
   reverse-proxy:
     image: "traefik:v2.7"

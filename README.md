@@ -17,6 +17,13 @@ T. Simon, P. Rust, R. Rouvoy, and J. Penhoat, in International Conference on Inf
 
 ## Getting started
 
-[Frontend installation](./front/README.md)
+Run
 
-[Backend installation](./back/README.md)
+```
+docker-compose up --build
+```
+
+Or install seperatly:
+
+- [Frontend](./front/README.md)
+- [Backend](./back/README.md)
