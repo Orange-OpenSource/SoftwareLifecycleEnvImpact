@@ -23,7 +23,9 @@ Run
 docker-compose up --build
 ```
 
-Or install seperatly:
+and access at [localhost](http://localhost/).
+
+Or install separately the:
 
 - [Frontend](./front/README.md)
 - [Backend](./back/README.md)
