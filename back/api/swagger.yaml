@@ -1,0 +1,810 @@
+swagger: "2.0"
+info:
+  description: "API to model a software lifecycle development and its environmental impacts."
+  version: "0.1.0"
+  title: "Software environmental impact"
+
+basePath: /api/v1
+
+paths:
+  /projects:
+    get:
+      operationId: api.routes.project.get_projects
+      tags:
+        - Project
+      summary: Get all projects
+      responses:
+        200:
+          description: list of projects
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Project"
+
+    post:
+      operationId: api.routes.project.create_project
+      tags:
+        - Project
+      summary: Create a new project
+      parameters:
+        - name: project
+          in: body
+          description: project to create
+          required: True
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name of the project
+      responses:
+        201:
+          description: Successfully created project
+          schema:
+            $ref: "#/definitions/Project"
+        409:
+          description: Project exists already
+
+  /projects/import:
+    post:
+      operationId: api.routes.project.import_project
+      tags:
+        - Project
+      summary: Create a new project
+      parameters:
+        - name: project
+          in: body
+          description: project to create
+          required: True
+          schema:
+            $ref: "#/definitions/Project"
+      responses:
+        201:
+          description: Successfully created project
+          schema:
+            $ref: "#/definitions/Project"
+        409:
+          description: Project exists already
+
+  /projects/{project_id}:
+    parameters:
+      - name: project_id
+        in: path
+        description: Id of the project to get
+        type: integer
+        required: true
+    get:
+      operationId: api.routes.project.get_project
+      tags:
+        - Project
+      summary: Read one project
+      description: Read one project
+      responses:
+        200:
+          description: Successfully read project
+          schema:
+            $ref: "#/definitions/Project"
+        404:
+          description: No project found with this id
+    patch:
+      operationId: api.routes.project.update_project
+      tags:
+        - Project
+      summary: Update a project
+      description: Update a project
+      parameters:
+        - name: JsonPatch
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/PatchRequest"
+      responses:
+        200:
+          description: Successfully updated project
+          schema:
+            $ref: "#/definitions/Project"
+        403:
+          description: Patch format is incorrect
+        404:
+          description: No project project with this id
+    delete:
+      operationId: api.routes.project.delete_project
+      tags:
+        - Project
+      summary: Delete a project
+      description: Delete a project
+      responses:
+        200:
+          description: Successfully deleted project
+          schema:
+            $ref: "#/definitions/Project"
+        404:
+          description: No project project with this id
+
+  /projects/{project_id}/export:
+    parameters:
+      - name: project_id
+        in: path
+        description: Id of the project to get
+        type: integer
+        required: true
+    get:
+      operationId: api.routes.project.export_project
+      tags:
+        - Project
+      summary: Export one project to json without id
+      description: Export one project to json without id
+      responses:
+        200:
+          description: Successfully exported project
+          schema:
+            $ref: "#/definitions/Project"
+        404:
+          description: No project found with this id
+
+  /projects/{project_id}/models:
+    parameters:
+      - name: project_id
+        in: path
+        description: Id of the project you want to get the models
+        type: integer
+        required: true
+    get:
+      operationId: api.routes.project.get_models
+      tags:
+        - Project
+        - Model
+      summary: Get all models for a project
+      responses:
+        200:
+          description: Successfully read models for the project
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Model"
+        404:
+          description: No project found with this id
+
+  /models:
+    get:
+      operationId: api.routes.model.get_models
+      tags:
+        - Model
+      summary: Get all models
+      responses:
+        200:
+          description: list of models
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Model"
+
+    post:
+      operationId: api.routes.model.create_model
+      tags:
+        - Model
+      description: Create a new model
+      parameters:
+        - name: model
+          in: body
+          description: Model to create
+          required: True
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name of the model
+              project_id:
+                type: integer
+                description: Id of the related project
+      responses:
+        201:
+          description: Successfully created model
+          schema:
+            $ref: "#/definitions/Model"
+        409:
+          description: Model exists already
+
+  /models/{model_id}:
+    parameters:
+      - name: model_id
+        in: path
+        description: Id of the model to get
+        type: integer
+        required: true
+    get:
+      operationId: api.routes.model.get_model
+      tags:
+        - Model
+      summary: Read one model
+      description: Read one model
+      responses:
+        200:
+          description: Successfully read model
+          schema:
+            $ref: "#/definitions/Model"
+        404:
+          description: No model found with this id
+    patch:
+      operationId: api.routes.model.update_model
+      tags:
+        - Model
+      summary: Update a model
+      description: Update a model
+      parameters:
+        - name: JsonPatch
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/PatchRequest"
+      responses:
+        200:
+          description: Successfully updated model
+          schema:
+            $ref: "#/definitions/Model"
+        403:
+          description: Patch format is incorrect
+        404:
+          description: No model found with this id
+    delete:
+      operationId: api.routes.model.delete_model
+      tags:
+        - Model
+      summary: Delete a model
+      description: Delete a model
+      responses:
+        200:
+          description: Successfully deleted model
+          schema:
+            $ref: "#/definitions/Model"
+        404:
+          description: No model project with this id
+
+  /models/{model_id}/copy:
+    parameters:
+      - name: model_id
+        in: path
+        description: Id of the model to copy
+        type: integer
+        required: true
+    post:
+      operationId: api.routes.model.duplicate_model
+      tags:
+        - Model
+      description: Create a new model by duplicating another
+      responses:
+        201:
+          description: Successfully created model
+          schema:
+            $ref: "#/definitions/Model"
+        404:
+          description: No model found with this id
+
+  /models/{model_id}/activities:
+    parameters:
+      - name: model_id
+        in: path
+        description: Id of the model to get the activities from
+        type: integer
+        required: true
+    get:
+      operationId: api.routes.model.get_activities
+      tags:
+        - Model
+        - Activity
+      summary: Get all activities for a model
+      responses:
+        200:
+          description: List of activities
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Activity"
+        404:
+          description: No model found with this id
+
+  /models/{model_id}/impact:
+    parameters:
+      - name: model_id
+        in: path
+        description: Id of the model to get the impact from
+        type: integer
+        required: true
+    get:
+      operationId: api.routes.model.get_model_impact
+      tags:
+        - Model
+        - Impact
+      summary: Read one model impacts
+      description: Read one model impacts
+      responses:
+        200:
+          description: Sucessfully read model impacts
+          schema:
+            $ref: "#/definitions/ActivityImpact"
+        404:
+          description: No model found with this id
+
+  /activities:
+    get:
+      operationId: api.routes.activity.get_activities
+      tags:
+        - Activity
+      summary: Get all activities
+      responses:
+        200:
+          description: List of activities
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Activity"
+
+    post:
+      operationId: api.routes.activity.create_activity
+      tags:
+        - Activity
+      description: Create a new activity
+      parameters:
+        - name: activity
+          in: body
+          description: Activity to create
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name of the activity
+              parent_activity_id:
+                type: integer
+                description: Parent activity id
+      responses:
+        201:
+          description: Sucessfully created Activity
+          schema:
+            $ref: "#/definitions/Activity"
+        409:
+          description: Activity exists already
+
+  /activities/{activity_id}:
+    parameters:
+      - name: activity_id
+        in: path
+        description: Id of the activity to get
+        type: integer
+        required: true
+    get:
+      operationId: api.routes.activity.get_activity
+      tags:
+        - Activity
+      summary: Read one activity
+      description: Read one activity
+      responses:
+        200:
+          description: Sucessfully read activity
+          schema:
+            $ref: "#/definitions/Activity"
+        404:
+          description: No activity found with this id
+    patch:
+      operationId: api.routes.activity.update_activity
+      tags:
+        - Activity
+      summary: Update a activity
+      description: Update a activity
+      parameters:
+        - name: JsonPatch
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/PatchRequest"
+      responses:
+        200:
+          description: Successfully updated activity
+          schema:
+            $ref: "#/definitions/Activity"
+        403:
+          description: Patch format is incorrect
+        404:
+          description: No activity with this id
+    delete:
+      operationId: api.routes.activity.delete_activity
+      tags:
+        - Activity
+      summary: Delete a activity
+      description: Delete a activity
+      responses:
+        200:
+          description: Successfully deleted activity
+          schema:
+            $ref: "#/definitions/Activity"
+        403:
+          description: Cannot delete the root activity of a model
+        404:
+          description: No activity with this id
+
+  /activities/{activity_id}/impacts:
+    parameters:
+      - name: activity_id
+        in: path
+        description: Id of the activity to get the impacts from
+        type: integer
+        required: true
+    get:
+      operationId: api.routes.activity.get_activity_impacts
+      tags:
+        - Activity
+        - Impact
+      summary: Read one activity impacts
+      description: Read one activity impacts
+      responses:
+        200:
+          description: Sucessfully read activity impacts
+          schema:
+            $ref: "#/definitions/ActivityImpact"
+        404:
+          description: No activity found with this id
+
+  /resources:
+    get:
+      operationId: api.routes.resource.get_resources
+      tags:
+        - Resource
+      summary: Get all resources
+      responses:
+        200:
+          description: List of resources
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Resource"
+    post:
+      operationId: api.routes.resource.create_resource
+      tags:
+        - Resource
+      description: Create a new resource
+      parameters:
+        - name: resource
+          in: body
+          description: Resource to create
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name of the resource
+              activity_id:
+                type: integer
+                description: Id of the activity to create the resource in
+      responses:
+        201:
+          description: Sucessfully created Resource
+          schema:
+            $ref: "#/definitions/Resource"
+        409:
+          description: Resource exists already
+
+  /resources/{resource_id}:
+    parameters:
+      - name: resource_id
+        in: path
+        description: Id of the resource to get
+        type: integer
+        required: true
+    get:
+      operationId: api.routes.resource.get_resource
+      tags:
+        - Resource
+      summary: Read one resource
+      description: Read one resource
+      responses:
+        200:
+          description: Sucessfully read resource
+          schema:
+            $ref: "#/definitions/Resource"
+        404:
+          description: No resource found with this id
+    patch:
+      operationId: api.routes.resource.update_resource
+      tags:
+        - Resource
+      summary: Update a resource
+      description: Update a resource
+      parameters:
+        - name: JsonPatch
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/PatchRequest"
+      responses:
+        200:
+          description: Successfully updated resource
+          schema:
+            $ref: "#/definitions/Resource"
+        403:
+          description: Patch format is incorrect
+        404:
+          description: No resource with this id
+    delete:
+      operationId: api.routes.resource.delete_resource
+      tags:
+        - Resource
+      summary: Delete a resource
+      description: Delete a resource
+      responses:
+        200:
+          description: Successfully deleted resource
+          schema:
+            $ref: "#/definitions/Resource"
+        404:
+          description: No resource with this id
+
+  /resources/{resource_id}/impacts:
+    parameters:
+      - name: resource_id
+        in: path
+        description: Id of the resource to get
+        type: integer
+        required: true
+    get:
+      operationId: api.routes.resource.get_resource_impacts
+      tags:
+        - Resource
+        - Impact
+      summary: Get resource impact
+      responses:
+        200:
+          description: Impacts
+          schema:
+            $ref: "#/definitions/ImpactSourceImpact"
+
+  /impactsources:
+    get:
+      operationId: api.routes.impact_sources.get_impact_sources
+      tags:
+        - ImpactSource
+      summary: Get all impact sources names and ids
+      responses:
+        200:
+          description: ImpactSources
+          schema:
+            $ref: "#/definitions/ImpactSource"
+
+  /debug/reset:
+    get:
+      summary: Debug function to reset the database
+      operationId: api.routes.debug.reset_db
+      responses:
+        200:
+          description: Database reset status
+
+definitions:
+  PatchRequest:
+    type: array
+    items:
+      $ref: "#/definitions/PatchDocument"
+  PatchDocument:
+    description: A JSONPatch document as defined by RFC 6902
+    required:
+      - "op"
+      - "path"
+    properties:
+      op:
+        type: string
+        description: The operation to be performed
+        enum:
+          - "merge"
+          - "remove"
+          - "replace"
+          - "move"
+          - "copy"
+          - "test"
+      path:
+        type: string
+        description: A JSON-Pointer
+      value:
+        type: [string, object]
+        description: The value to be used within the operations.
+
+  Quantity:
+    type: object
+    required:
+      - value
+      - unit
+    properties:
+      value:
+        type: number
+        description: quantity magnitude
+      unit:
+        type: string
+        description: quantity unit
+
+  Project:
+    type: object
+    required:
+      - name
+    properties:
+      id:
+        type: ["null", integer]
+        description: Unique identifier
+      name:
+        type: string
+        description: Name of the project
+      models:
+        type: array
+        items:
+          $ref: "#/definitions/Model"
+        description: List of the project models
+      created_at:
+        type: ["null", string]
+        format: date
+        description: Creation date of the activity
+      updated_at:
+        type: ["null", string]
+        format: date
+        description: Last update date of the activity
+
+  Model:
+    type: object
+    required:
+      - name
+      - project_id
+    properties:
+      id:
+        type: ["null", integer]
+        description: Unique identifier
+      name:
+        type: string
+        description: Name of the model
+      created_at:
+        type: ["null", string]
+        format: date
+        description: Creation date of the model
+      updated_at:
+        type: ["null", string]
+        format: date
+        description: Last update date of the model
+
+  Activity:
+    type: object
+    required:
+      - name
+      - type
+    properties:
+      id:
+        type: integer
+        description: Unique identifier
+      name:
+        type: string
+        description: Name of the activity
+      resources:
+        type: array
+        items:
+          $ref: "#/definitions/Resource"
+        description: Resources associated to the activity
+      subactivities:
+        type: array
+        items:
+          $ref: "#/definitions/Activity"
+        description: Subactivities
+      created_at:
+        type: ["null", integer]
+        format: date
+        description: Creation date of the activity
+      updated_at:
+        type: ["null", integer]
+        format: date
+        description: Last update date of the activity
+
+  Resource:
+    type: object
+    required:
+      - id
+      - name
+      - unit
+    properties:
+      id:
+        type: integer
+        description: Unique identifier
+      name:
+        type: string
+        description: Resource name
+      has_time_input:
+        type: ["null", boolean]
+        description: True if the impact source require a time to be set
+      impact_source_id:
+        type: string
+        description: ImpactSource id
+      amount:
+        type: object
+        $ref: "#/definitions/Quantity"
+        description: Amount of the resource consumed
+      duration:
+        type: object
+        $ref: "#/definitions/Quantity"
+        description: Duration of the resource
+      frequency:
+        type: object
+        $ref: "#/definitions/Quantity"
+        description: Frequency of the resource
+      period:
+        type: object
+        $ref: "#/definitions/Quantity"
+        description: Period of the resource
+      created_at:
+        type: ["null", string]
+        format: date
+        description: Creation date of the resource
+      updated_at:
+        type: ["null", string]
+        format: date
+        description: Last update date of the resource
+
+  EnvironmentalImpact:
+    type: object
+    additionalProperties:
+      $ref: "#/definitions/Quantity"
+    example:
+      {
+        "Acidification": "0 mol_Hpos",
+        "Climate change": "1522.8450773144025 kg_co2e",
+        "Fine particles": "0 disease_incidence",
+        "Ionizing radiations": "0 kg_Bq_u235e",
+        "Resource depletion": "0 kg_Sbe",
+        "Raw materials": "0 kg_mips",
+        "Water depletion": "0 cubic_meter",
+      }
+
+  ActivityImpact:
+    type: object
+    properties:
+      activity_id:
+        type: integer
+      total:
+        $ref: "#/definitions/EnvironmentalImpact"
+      subactivities:
+        type: array
+        items:
+          $ref: "#/definitions/ActivityImpact"
+      impact_sources:
+        type: string
+        additionalProperties:
+          type: object
+          $ref: "#/definitions/EnvironmentalImpact"
+
+  ImpactSource:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Unique identifier
+      name:
+        type: string
+        description: Name of the impact source
+      unit:
+        type: string
+        description: Unit of the impact source
+      source:
+        type: string
+        description: Source of the impact source
+      methodology:
+        type: string
+        description: Methodology of the impact source
+
+  ImpactSourceImpact:
+    type: object
+    properties:
+      impact_source_id:
+        type: string
+        description: Unique identifier
+      own_impact:
+        $ref: "#/definitions/EnvironmentalImpact"
+      sub_impacts:
+        type: string
+        additionalProperties:
+          type: object
+          $ref: "#/definitions/EnvironmentalImpact"
+      total_impact:
+        $ref: "#/definitions/EnvironmentalImpact"

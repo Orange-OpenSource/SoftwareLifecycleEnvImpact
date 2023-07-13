@@ -1,0 +1,106 @@
+/*
+ActivityTree properties
+*/
+div.activity {
+	padding: 50px 0px 0px 90px;
+	width: fit-content;
+	position: relative;
+	text-align: start;
+}
+
+div.activity:before {
+	content: '';
+	position: absolute;
+	top: 10px;
+	left: 15px;
+	border-left: 2px dashed #a2a5b5;
+	width: 1px;
+	height: 100%;
+}
+
+div.activity:after {
+	content: '';
+	position: absolute;
+	border-top: 2px dashed #a2a5b5;
+	top: 80px;
+	left: 20px;
+	width: 60px;
+}
+
+div.activity:last-child:before {
+	top: 16px;
+	height: 63px;
+}
+
+.row-modify-leaf {
+	position: relative;
+}
+
+.row-modify-leaf:after {
+	content: '';
+	position: absolute;
+	border-top: 2px dashed #a2a5b5;
+	top: 31px;
+	left: 210px;
+	width: 50px;
+}
+
+.btn-activity-tile {
+	background-color: #ececece1;
+	border-radius: 3px;
+	border: none;
+	padding: 10px 20px 10px 20px;
+	-webkit-box-shadow: 5px 5px 3px -6px #000000;
+	box-shadow: 5px 5px 3px -6px #000000;
+}
+
+.btn-add-activity-leaf {
+	content: '';
+	position: absolute;
+	left: 270px;
+	top: 8px;
+}
+
+/*
+Split.js related properties
+*/
+.split {
+	display: flex;
+	flex-direction: row;
+	min-height: calc(100% - 40px);
+}
+
+.gutter {
+	background-color: #eee;
+	background-repeat: no-repeat;
+	background-position: 50%;
+}
+
+.gutter.gutter-horizontal {
+	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+	cursor: col-resize;
+}
+
+/*Fix for modal flickering when triggered from inside list group*/
+.list-group-item,
+.list-group-item:hover {
+	z-index: auto;
+}
+
+.line-around {
+	display: flex;
+	flex-direction: row;
+}
+.line-around:before,
+.line-around:after {
+	content: '';
+	flex: 1 1;
+	border-bottom: 1px solid;
+	margin: auto;
+}
+.line-around:before {
+	margin-right: 10px;
+}
+.line-around:after {
+	margin-left: 10px;
+}

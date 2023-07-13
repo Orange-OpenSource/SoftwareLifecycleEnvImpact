@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  back:
+    build: ./back
+    volumes:
+      - ./back:/usr/src/app
+    expose:
+      - 5001
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=80"
+      - "traefik.http.routers.modelback.rule=PathPrefix(`/api`)"
+      - "traefik.http.middlewares.serviceheaders.headers.accesscontrolalloworiginlist=*"
+      - "traefik.http.routers.modelback.middlewares=serviceheaders"
+
+  front:
+    stdin_open: true
+    build: ./front
+    volumes:
+      - ./front:/usr/src/app
+      - /usr/src/app/node_modules
+    expose:
+      - 3001
+    depends_on:
+      - back
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=80"
+      - "traefik.http.routers.modelfront.rule=!PathPrefix(`/api`)"
+
+  reverse-proxy:
+    image: "traefik:v2.7"
+    container_name: "traefik"
+    command:
+      - --entrypoints.web.address=:80
+      - --providers.docker=true
+    ports:
+      - "80:80"
+      - "8080:8080"
+      - "5001:5001"
+      - "5000:5000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock

@@ -1,0 +1,34 @@
+cubic_meter = meter ** 3 = m3
+kg_co2e = kilogram
+kg_Sbe = kilogram
+mol_Hpos = mol
+disease_incidence = []
+kg_Bq_u235e = becquerel * kg
+kg_mips = kg
+gigabyte = byte * 1e6
+terabyte = gigabyte * 1000
+
+man_day = day
+kWh = watt_hour * 1000
+
+electricity_mix = kg_co2e / kWh
+life_expectancy = year
+
+amortization = kg_co2e / day
+
+user_device = []
+device = []
+laptop = []
+smartphone = []
+tablet = []
+television = []
+monitor= []
+server = []
+people = []
+vcpu = []
+vm = []
+
+business_day = day
+business_week = 5 * business_day
+business_month = 4.348214285714285 * business_week
+business_year = 12 * business_month

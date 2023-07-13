@@ -1,0 +1,4636 @@
+{
+  "created_at": null,
+  "id": null,
+  "models": [
+    {
+      "created_at": null,
+      "id": null,
+      "name": "Initial",
+      "project_id": null,
+      "root_activity": {
+        "created_at": null,
+        "id": null,
+        "name": "Initial",
+        "parent_activity_id": null,
+        "resources": [],
+        "subactivities": [
+          {
+            "created_at": null,
+            "id": null,
+            "name": "Build",
+            "parent_activity_id": null,
+            "resources": [],
+            "subactivities": [
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Inception",
+                "parent_activity_id": null,
+                "resources": [],
+                "subactivities": [
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Management",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 368.4
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Environment/CM",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 263.1
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Requirements",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 999.9
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Design",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 499.9
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Implementation",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 210.5
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Assessment",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 210.5
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Deployment",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 78.9
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  }
+                ],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Elaboration",
+                "parent_activity_id": null,
+                "resources": [],
+                "subactivities": [
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Management",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 1263.0
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Environment/CM",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 842.0
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Requirements",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 1894.5
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Design",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 3789.0
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Implementation",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 1368.2
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Assessment",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 1052.5
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Deployment",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 315.7
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  }
+                ],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Construction",
+                "parent_activity_id": null,
+                "resources": [],
+                "subactivities": [
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Management",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 3332.9
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Environment/CM",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 1666.5
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Requirements",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 2666.3
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Design",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 5332.7
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Implementation",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 11331.9
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Assessment",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 7999.0
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Deployment",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 999.9
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  }
+                ],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Transition",
+                "parent_activity_id": null,
+                "resources": [],
+                "subactivities": [
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Management",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 736.7
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Environment/CM",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 263.1
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Requirements",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 210.5
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Design",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 210.5
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Implementation",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 999.9
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Assessment",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 1263.0
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Deployment",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 1578.7
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  }
+                ],
+                "updated_at": null
+              }
+            ],
+            "updated_at": null
+          },
+          {
+            "created_at": null,
+            "id": null,
+            "name": "Run",
+            "parent_activity_id": null,
+            "resources": [],
+            "subactivities": [
+              {
+                "created_at": null,
+                "id": null,
+                "name": "External load balancing",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 8.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 8.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Consul",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 6.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 6.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "PostgreSQL",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 360.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 96.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "PgBouncer",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 6.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 6.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Internal load balancing node",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 8.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 8.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Redis/Sentinel - Cache",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 45.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 12.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Redis/Sentinel - Persistant",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 45.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 12.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Gitaly",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 720.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 192.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Praefect",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 12.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 12.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Praefect PostgreSQL",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 2.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 2.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Sidekiq",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 60.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 16.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "GitLab Rails",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 360.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 384.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Monitoring node",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 4.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 4.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Storage",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 3000000.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "storage",
+                    "name": "Storage",
+                    "period": {
+                      "unit": "year",
+                      "value": 15.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              }
+            ],
+            "updated_at": null
+          }
+        ],
+        "updated_at": null
+      },
+      "root_activity_id": null,
+      "updated_at": null
+    },
+    {
+      "created_at": null,
+      "id": null,
+      "name": "At tipping point",
+      "project_id": null,
+      "root_activity": {
+        "created_at": null,
+        "id": null,
+        "name": "At tipping point",
+        "parent_activity_id": null,
+        "resources": [],
+        "subactivities": [          {
+            "created_at": null,
+            "id": null,
+            "name": "Build",
+            "parent_activity_id": null,
+            "resources": [],
+            "subactivities": [
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Inception",
+                "parent_activity_id": null,
+                "resources": [],
+                "subactivities": [
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Management",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 368.4
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Environment/CM",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 263.1
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Requirements",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 999.9
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Design",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 499.9
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Implementation",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 210.5
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Assessment",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 210.5
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Deployment",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 78.9
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  }
+                ],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Elaboration",
+                "parent_activity_id": null,
+                "resources": [],
+                "subactivities": [
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Management",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 1263.0
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Environment/CM",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 842.0
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Requirements",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 1894.5
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Design",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 3789.0
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Implementation",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 1368.2
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Assessment",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 1052.5
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Deployment",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 315.7
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  }
+                ],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Construction",
+                "parent_activity_id": null,
+                "resources": [],
+                "subactivities": [
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Management",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 3332.9
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Environment/CM",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 1666.5
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Requirements",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 2666.3
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Design",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 5332.7
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Implementation",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 11331.9
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Assessment",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 7999.0
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Deployment",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 999.9
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  }
+                ],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Transition",
+                "parent_activity_id": null,
+                "resources": [],
+                "subactivities": [
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Management",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 736.7
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Environment/CM",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 263.1
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Requirements",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 210.5
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Design",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 210.5
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Implementation",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 999.9
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Assessment",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 1263.0
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Deployment",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 1578.7
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  }
+                ],
+                "updated_at": null
+              }
+            ],
+            "updated_at": null
+          },
+          {
+            "created_at": null,
+            "id": null,
+            "name": "Run",
+            "parent_activity_id": null,
+            "resources": [],
+            "subactivities": [
+              {
+                "created_at": null,
+                "id": null,
+                "name": "External load balancing",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 8.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 749.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 8.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 749.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Consul",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 6.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 749.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 6.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 749.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "PostgreSQL",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 360.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 749.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 96.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 749.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "PgBouncer",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 6.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 749.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 6.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 749.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Internal load balancing node",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 8.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 749.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 8.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 749.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Redis/Sentinel - Cache",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 45.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 749.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 12.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 749.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Redis/Sentinel - Persistant",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 45.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 749.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 12.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 749.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Gitaly",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 720.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 749.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 192.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 749.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Praefect",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 12.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 749.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 12.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 749.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Praefect PostgreSQL",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 2.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 749.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 2.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 749.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Sidekiq",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 60.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 749.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 16.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 749.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "GitLab Rails",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 360.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 749.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 384.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 749.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Monitoring node",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 4.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 749.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 4.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 749.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Storage",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 3000000.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "storage",
+                    "name": "Storage",
+                    "period": {
+                      "unit": "year",
+                      "value": 749.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              }
+            ],
+            "updated_at": null
+          }
+        ],
+        "updated_at": null
+      },
+      "root_activity_id": null,
+      "updated_at": null
+    },
+    {
+      "created_at": null,
+      "id": null,
+      "name": "One hosting year",
+      "project_id": null,
+      "root_activity": {
+        "created_at": null,
+        "id": null,
+        "name": "One hosting year",
+        "parent_activity_id": null,
+        "resources": [],
+        "subactivities": [
+          {
+            "created_at": null,
+            "id": null,
+            "name": "Build",
+            "parent_activity_id": null,
+            "resources": [],
+            "subactivities": [
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Inception",
+                "parent_activity_id": null,
+                "resources": [],
+                "subactivities": [
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Management",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 368.4
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Environment/CM",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 263.1
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Requirements",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 999.9
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Design",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 499.9
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Implementation",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 210.5
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Assessment",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 210.5
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Deployment",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 78.9
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  }
+                ],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Elaboration",
+                "parent_activity_id": null,
+                "resources": [],
+                "subactivities": [
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Management",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 1263.0
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Environment/CM",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 842.0
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Requirements",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 1894.5
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Design",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 3789.0
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Implementation",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 1368.2
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Assessment",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 1052.5
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Deployment",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 315.7
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  }
+                ],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Construction",
+                "parent_activity_id": null,
+                "resources": [],
+                "subactivities": [
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Management",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 3332.9
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Environment/CM",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 1666.5
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Requirements",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 2666.3
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Design",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 5332.7
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Implementation",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 11331.9
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Assessment",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 7999.0
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Deployment",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 999.9
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  }
+                ],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Transition",
+                "parent_activity_id": null,
+                "resources": [],
+                "subactivities": [
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Management",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 736.7
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Environment/CM",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 263.1
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Requirements",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 210.5
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Design",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 210.5
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Implementation",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 999.9
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Assessment",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 1263.0
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Deployment",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "amount": {
+                          "unit": "people",
+                          "value": 1578.7
+                        },
+                        "created_at": null,
+                        "duration": null,
+                        "frequency": null,
+                        "has_time_input": true,
+                        "id": null,
+                        "impact_source_id": "people",
+                        "name": "People",
+                        "period": {
+                          "unit": "business_month",
+                          "value": 1.0
+                        },
+                        "activity_id": null,
+                        "updated_at": null
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  }
+                ],
+                "updated_at": null
+              }
+            ],
+            "updated_at": null
+          },
+          {
+            "created_at": null,
+            "id": null,
+            "name": "Run",
+            "parent_activity_id": null,
+            "resources": [],
+            "subactivities": [
+              {
+                "created_at": null,
+                "id": null,
+                "name": "External load balancing",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 8.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 1.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 8.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 1.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Consul",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 6.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 1.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 6.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 1.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "PostgreSQL",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 360.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 1.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 96.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 1.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "PgBouncer",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 6.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 1.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 6.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 1.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Internal load balancing node",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 8.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 1.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 8.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 1.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Redis/Sentinel - Cache",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 45.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 1.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 12.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 1.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Redis/Sentinel - Persistant",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 45.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 1.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 12.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 1.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Gitaly",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 720.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 1.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 192.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 1.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Praefect",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 12.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 1.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 12.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 1.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Praefect PostgreSQL",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 2.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 1.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 2.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 1.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Sidekiq",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 60.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 1.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 16.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 1.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "GitLab Rails",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 360.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 1.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 384.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 1.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Monitoring node",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 4.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "ram",
+                    "name": "RAM",
+                    "period": {
+                      "unit": "year",
+                      "value": 1.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  },
+                  {
+                    "amount": {
+                      "unit": "vcpu",
+                      "value": 4.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "vCPU",
+                    "name": "vCPU",
+                    "period": {
+                      "unit": "year",
+                      "value": 1.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Storage",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "amount": {
+                      "unit": "gigabyte",
+                      "value": 3000000.0
+                    },
+                    "created_at": null,
+                    "duration": null,
+                    "frequency": null,
+                    "has_time_input": true,
+                    "id": null,
+                    "impact_source_id": "storage",
+                    "name": "Storage",
+                    "period": {
+                      "unit": "year",
+                      "value": 1.0
+                    },
+                    "activity_id": null,
+                    "updated_at": null
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              }
+            ],
+            "updated_at": null
+          }
+        ],
+        "updated_at": null
+      },
+      "root_activity_id": null,
+      "updated_at": null
+    }
+  ],
+  "name": "Gitlab",
+  "updated_at": null
+}

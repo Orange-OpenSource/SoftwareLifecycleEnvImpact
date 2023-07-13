@@ -1,0 +1,236 @@
+{
+  "created_at": null,
+  "id": null,
+  "name": "Real project",
+  "updated_at": null,
+  "models": [
+    {
+      "created_at": null,
+      "id": null,
+      "name": "Real project",
+      "project_id": null,
+      "root_activity": {
+        "created_at": null,
+        "id": null,
+        "name": "Real project",
+        "parent_activity_id": null,
+        "resources": [],
+        "subactivities": [
+          {
+            "created_at": null,
+            "id": null,
+            "name": "Build",
+            "parent_activity_id": null,
+            "resources": [],
+            "subactivities": [
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Implementation",
+                "parent_activity_id": null,
+                "resources": [],
+                "subactivities": [
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Development",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "created_at": null,
+                        "id": null,
+                        "name": "People",
+                        "activity_id": null,
+                        "updated_at": null,
+                        "impact_source_id": "people",
+                        "amount": { "value": 100, "unit": "people" },
+                        "period": { "value": 10, "unit": "day" }
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Design",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "created_at": null,
+                        "id": null,
+                        "name": "People",
+                        "activity_id": null,
+                        "updated_at": null,
+                        "impact_source_id": "people",
+                        "amount": { "value": 100, "unit": "people" },
+                        "period": { "value": 10, "unit": "day" }
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  }
+                ],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Specifications",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "People",
+                    "activity_id": null,
+                    "updated_at": null,
+                    "impact_source_id": "people",
+                    "amount": { "value": 100, "unit": "people" },
+                    "period": { "value": 10, "unit": "day" }
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Management",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "People",
+                    "activity_id": null,
+                    "updated_at": null,
+                    "impact_source_id": "people",
+                    "amount": { "value": 100, "unit": "people" },
+                    "period": { "value": 10, "unit": "day" }
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              }
+            ],
+            "updated_at": null
+          },
+          {
+            "created_at": null,
+            "id": null,
+            "name": "Run",
+            "parent_activity_id": null,
+            "resources": [],
+            "subactivities": [
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Maintenance",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Storage",
+                    "activity_id": null,
+                    "updated_at": null,
+                    "impact_source_id": "storage",
+                    "amount": { "value": 10, "unit": "gigabyte" },
+                    "period": { "value": 100, "unit": "day" }
+                  }
+                ],
+                "subactivities": [
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Compute",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "created_at": null,
+                        "id": null,
+                        "name": "Server",
+                        "activity_id": null,
+                        "updated_at": null,
+                        "impact_source_id": "vCPU",
+                        "amount": { "value": 10, "unit": "vcpu" },
+                        "period": { "value": 100, "unit": "day" }
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Storage",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "created_at": null,
+                        "id": null,
+                        "name": "Storage",
+                        "activity_id": null,
+                        "updated_at": null,
+                        "impact_source_id": "storage",
+                        "amount": { "value": 100, "unit": "gigabyte" },
+                        "period": { "value": 100, "unit": "day" }
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  },
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "Network",
+                    "parent_activity_id": null,
+                    "resources": [
+                      {
+                        "created_at": null,
+                        "id": null,
+                        "name": "Fixed network",
+                        "activity_id": null,
+                        "updated_at": null,
+                        "impact_source_id": "fixed_network",
+                        "amount": { "value": 100, "unit": "gigabyte" }
+                      }
+                    ],
+                    "subactivities": [],
+                    "updated_at": null
+                  }
+                ],
+                "updated_at": null
+              },
+              {
+                "created_at": null,
+                "id": null,
+                "name": "Usage",
+                "parent_activity_id": null,
+                "resources": [
+                  {
+                    "created_at": null,
+                    "id": null,
+                    "name": "User device",
+                    "activity_id": null,
+                    "updated_at": null,
+                    "impact_source_id": "userDevice",
+                    "amount": { "value": 100, "unit": "user_device" },
+                    "period": { "value": 10, "unit": "day" }
+                  }
+                ],
+                "subactivities": [],
+                "updated_at": null
+              }
+            ],
+            "updated_at": null
+          }
+        ],
+        "updated_at": null
+      },
+      "root_activity_id": null,
+      "updated_at": null
+    }
+  ]
+}
